@@ -60,12 +60,11 @@ GUICtrlSetState($frmBotEmbeddedShieldInput, $GUI_HIDE)
 ;~ ------------------------------------------------------
 ;~ Header Menu
 ;~ ------------------------------------------------------
-
+SplashStep("Loading Header Menu...")
 GUISwitch($frmBot)
 ;$idMENU_DONATE = GUICtrlCreateMenu("&" & GetTranslated(601,18,"Paypal Donate?"))
 ;_GUICtrlMenu_SetItemType(_GUICtrlMenu_GetMenu($frmBot), 0, $MFT_RIGHTJUSTIFY) ; move to right
 ;$idMENU_DONATE_SUPPORT = GUICtrlCreateMenuItem(GetTranslated(601,19,"Support the development"), $idMENU_DONATE)
-;GUICtrlSetOnEvent(-1, "")
 
 ;~ ------------------------------------------------------
 ;~ GUI Bottom
@@ -86,6 +85,8 @@ SplashStep(GetTranslated(500, 27, "Loading Attack tab..."))
 #include "GUI\MBR GUI Design Child Attack.au3"
 SplashStep(GetTranslated(500, 28, "Loading Bot tab..."))
 #include "GUI\MBR GUI Design Child Bot.au3"
+SplashStep("Loading MOD tab...")
+#include "GUI\MBR GUI Design Child Mod.au3"
 ;GUISetState()
 GUISwitch($frmBotEx)
 $tabMain = GUICtrlCreateTab(5, 85 + $_GUI_MAIN_TOP, $_GUI_MAIN_WIDTH - 9, $_GUI_MAIN_HEIGHT - 225); , $TCS_MULTILINE)
@@ -94,15 +95,16 @@ $tabGeneral = GUICtrlCreateTabItem(GetTranslated(600,1, "Log"))
 $tabVillage = GUICtrlCreateTabItem(GetTranslated(600,2, "Village")) ; Village
 $tabAttack = GUICtrlCreateTabItem(GetTranslated(600,3,"Attack Plan"))
 $tabBot = GUICtrlCreateTabItem(GetTranslated(600,4,"Bot"))
+$tabMOD = GUICtrlCreateTabItem("Mods")
 
 ;~ -------------------------------------------------------------
 ;~ About Us Tab
 ;~ -------------------------------------------------------------
 SplashStep(GetTranslated(500, 29, "Loading About Us tab..."))
 $tabAboutUs = GUICtrlCreateTabItem(GetTranslated(600,5, "About Us"))
-Local $x = 30, $y = 150 + $_GUI_MAIN_TOP
-	$grpCredits = GUICtrlCreateGroup("Credits", $x - 20, $y - 20, 450, 375)
-		$lblCreditsBckGrnd = GUICtrlCreateLabel("", $x - 20, $y - 20, 450, 375)  ; adds fixed white background for entire tab, if using "Labels"
+Local $x = 30, $y = 130 + $_GUI_MAIN_TOP
+	$grpCredits = GUICtrlCreateGroup("Credits", $x - 20, $y - 20, 450, 365)
+		$lblCreditsBckGrnd = GUICtrlCreateLabel("", $x - 20, $y - 20, 450, 365)  ; adds fixed white background for entire tab, if using "Labels"
 		GUICtrlSetBkColor(-1, $COLOR_WHITE)
 		$txtCredits = "My Bot is brought to you by a worldwide team of open source"  & @CRLF & _
 						"programmers and a vibrant community of forum members!"
@@ -140,7 +142,7 @@ Local $x = 30, $y = 150 + $_GUI_MAIN_TOP
 		$labelForumURL = GUICtrlCreateLabel("https://mybot.run/forums/index.php?/forum/4-official-releases/", $x+25, $y, 450, 20)
 			GUICtrlSetFont(-1, 9.5, $FW_BOLD)
 			GUICtrlSetColor(-1, $COLOR_BLUE)
-		$y = 445
+		$y = 425
 		$txtWarn =	"By running this program, the user accepts all responsibility that arises from the use of this software."  & @CRLF & _
 						"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even " & @CRLF & _
 						"the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General " & @CRLF & _
@@ -150,6 +152,14 @@ Local $x = 30, $y = 150 + $_GUI_MAIN_TOP
 			GUICtrlSetColor(-1, 0x000053)
 ;			GUICtrlSetBkColor(-1, $COLOR_WHITE)
 			GUICtrlSetFont(-1, 6, $FW_BOLD)
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+
+Local $x = 30, $y = 470; + $_GUI_MAIN_TOP
+	$CheckVersionConfig = GUICtrlCreateButton("Check Version", $x - 20, $y +15, 100, 20)
+	$x = 210
+	$DownloadLatestConfig = GUICtrlCreateButton("Download Latest", $x - 20, $y +15, 100, 20)
+	$x = 380
+	$ModSupportConfig = GUICtrlCreateButton("Mod Support", $x - 20, $y +15, 100, 20)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 GUICtrlCreateTabItem("")
 
@@ -172,6 +182,7 @@ Bind_ImageList($hGUI_ACTIVEBASE_TAB)
 Bind_ImageList($hGUI_AttackOption_TAB)
 Bind_ImageList($hGUI_THSNIPE_TAB)
 Bind_ImageList($hGUI_BOT_TAB)
+Bind_ImageList($hGUI_MOD_TAB)
 Bind_ImageList($hGUI_STRATEGIES_TAB)
 Bind_ImageList($hGUI_STATS_TAB)
 #EndRegion ; Bind Icon images to all Tabs in all GUI windows (main and children)

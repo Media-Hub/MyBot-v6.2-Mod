@@ -130,7 +130,7 @@ Func AttackReport()
 		EndIf
 		;Display League in Stats ==>
 		GUICtrlSetData($lblLeague, "")
-		
+
 		If StringInStr($LeagueShort, "1") > 1 Then
 			GUICtrlSetData($lblLeague, "1")
 		ElseIf StringInStr($LeagueShort, "2") > 1 Then
@@ -174,7 +174,13 @@ Func AttackReport()
 	SetLog("Stars earned: " & $starsearned)
 
 	Local $AtkLogTxt
-	$AtkLogTxt = "" & _NowTime(4) & "|"
+	;Chalicucu
+	If $ichkSwitchAcc = 1 Then
+	  $AtkLogTxt = String($nCurCOCAcc) & " |" & String(_NowTime(4)) & "|"
+	Else
+	$iLastAtkTime = _NowTime(4) ;loot hour:mins last raid Added by CDudz Modified by CDudz
+	$AtkLogTxt = StringFormat("%1d", _GUICtrlComboBox_GetCurSel($cmbProfile) + 1) & "|"
+	$AtkLogTxt &= "" & _NowTime(4) & "|"
 	$AtkLogTxt &= StringFormat("%5d", $iTrophyCurrent) & "|"
 	$AtkLogTxt &= StringFormat("%6d", $SearchCount) & "|"
 	$AtkLogTxt &= StringFormat("%7d", $iGoldLast) & "|"
@@ -186,6 +192,7 @@ Func AttackReport()
 	$AtkLogTxt &= StringFormat("%6d", $iElixirLastBonus) & "|"
 	$AtkLogTxt &= StringFormat("%4d", $iDarkLastBonus) & "|"
 	$AtkLogTxt &= $LeagueShort & "|"
+	EndIf
 
 	Local $AtkLogTxtExtend
 	$AtkLogTxtExtend = "|"

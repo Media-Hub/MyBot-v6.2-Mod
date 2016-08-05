@@ -164,6 +164,11 @@ Func Train()
 	If _Sleep($iDelayRunBot6) Then Return ; wait for window to open
 	If Not (IsTrainPage()) Then Return ; exit if I'm not in train page
 
+	;Chalicucu get remain train time
+	$iRemainTrainTime = RemainTrainTime(True, False, False)
+	SetLog("Training remain: " & $iRemainTrainTime & " minute(s)", $COLOR_GREEN)
+	SetCurTrainTime($iRemainTrainTime)
+
 	checkAttackDisable($iTaBChkIdle) ; Check for Take-A-Break after opening train page
 
 	; CHECK IF NEED TO MAKE TROOPS
@@ -248,7 +253,7 @@ Func Train()
 		$BarrackDarkStatus[0] = False
 		$BarrackDarkStatus[1] = False
 		SetLog("Your Army Camps are now Full", $COLOR_RED)
-		If ($PushBulletEnabled = 1 And $ichkAlertPBCampFull = 1) Then PushMsg("CampFull")
+		If ($PushBulletEnabled = 1 Or $TelegramEnabled = 1) And $ichkAlertPBCampFull = 1 Then PushMsgToPushBullet("CampFull")
 	EndIf
 
 	;If is fullArmy or FirstStart or we are using the Barracks modes is not necessary count the donations , the $Cur will add the correct troops to make
@@ -271,6 +276,8 @@ Func Train()
 	; ########################################  2nd Stage : Calculating of Troops to Make ##############################################
 
 	If $debugsetlogTrain = 1 Then SetLog("Total ArmyCamp :" & $TotalCamp, $COLOR_PURPLE)
+
+If $IsWaitingForHeroesSpells = 0 Then
 
 	If $fullarmy = True Then
 		SetLog("Calculating Troops before Training new Army.", $COLOR_BLUE)
@@ -516,14 +523,16 @@ Func Train()
 						If $icount = 7 Then ExitLoop
 					WEnd
 				EndIf
-				$icount = 0
-				While Not _ColorCheck(_GetPixelColor(599, 202 + $midOffsetY, True), Hex(0xD0D0C0, 6), 20) ; while not disappears  green arrow
-					If Not (IsTrainPage()) Then Return
-					Click(568, 177 + $midOffsetY, 10, $isldTrainITDelay, "#0273") ; Remove Troops in training
-					$icount += 1
-					If $icount = 100 Then ExitLoop
-				WEnd
-				If $debugsetlogTrain = 1 And $icount = 100 Then SetLog("Train warning 6", $COLOR_PURPLE)
+				If $iChkDontRemove = 0 Then
+					$icount = 0
+					While Not _ColorCheck(_GetPixelColor(599, 202 + $midOffsetY, True), Hex(0xD0D0C0, 6), 20) ; while not disappears  green arrow
+						If Not (IsTrainPage()) Then Return
+						Click(568, 177 + $midOffsetY, 10, $isldTrainITDelay, "#0273") ; Remove Troops in training
+						$icount += 1
+						If $icount = 100 Then ExitLoop
+					WEnd
+					If $debugsetlogTrain = 1 And $icount = 100 Then SetLog("Train warning 6", $COLOR_PURPLE)
+				EndIf
 			EndIf
 			If _Sleep($iDelayTrain2) Then Return
 			If Not (IsTrainPage()) Then Return ; exit from train if no train page
@@ -595,15 +604,17 @@ Func Train()
 						If $icount = 7 Then ExitLoop
 					WEnd
 				EndIf
-				$icount = 0
-				While Not _ColorCheck(_GetPixelColor(593, 200 + $midOffsetY, True), Hex(0xD0D0C0, 6), 20) ; while not disappears  green arrow
-					If Not (IsTrainPage()) Then Return ;exit if no train page
-					Click(568, 177 + $midOffsetY, 10, $isldTrainITDelay, "#0284") ; Remove Troops in training
-					$icount += 1
-					If $RunState = False Then Return
-					If $icount = 100 Then ExitLoop
-				WEnd
-				If $debugsetlogTrain = 1 And $icount = 100 Then SetLog("Train warning 7", $COLOR_PURPLE)
+				If $iChkDontRemove = 0 Then
+					$icount = 0
+					While Not _ColorCheck(_GetPixelColor(593, 200 + $midOffsetY, True), Hex(0xD0D0C0, 6), 20) ; while not disappears  green arrow
+						If Not (IsTrainPage()) Then Return ;exit if no train page
+						Click(568, 177 + $midOffsetY, 10, $isldTrainITDelay, "#0284") ; Remove Troops in training
+						$icount += 1
+						If $RunState = False Then Return
+						If $icount = 100 Then ExitLoop
+					WEnd
+					If $debugsetlogTrain = 1 And $icount = 100 Then SetLog("Train warning 7", $COLOR_PURPLE)
+				EndIf
 			EndIf
 
 			If _Sleep($iDelayTrain1) Then Return
@@ -879,16 +890,17 @@ Func Train()
 							If $icount = 7 Then ExitLoop
 						WEnd
 					EndIf
-
-					$icount = 0
-					While Not _ColorCheck(_GetPixelColor(599, 202 + $midOffsetY, True), Hex(0xD0D0C0, 6), 20) ; while not disappears  green arrow
-						If Not (IsTrainPage()) Then Return
-						Click(568, 177 + $midOffsetY, 10, 0, "#0273") ; Remove Troops in training
-						$icount += 1
-						If $icount = 100 Then ExitLoop
-						If $RunState = False Then Return
-					WEnd
-					If $debugsetlogTrain = 1 And $icount = 100 Then SetLog("Train warning 6", $COLOR_PURPLE)
+					If $iChkDontRemove = 0 Then
+						$icount = 0
+						While Not _ColorCheck(_GetPixelColor(599, 202 + $midOffsetY, True), Hex(0xD0D0C0, 6), 20) ; while not disappears  green arrow
+							If Not (IsTrainPage()) Then Return
+							Click(568, 177 + $midOffsetY, 10, 0, "#0273") ; Remove Troops in training
+							$icount += 1
+							If $icount = 100 Then ExitLoop
+							If $RunState = False Then Return
+						WEnd
+						If $debugsetlogTrain = 1 And $icount = 100 Then SetLog("Train warning 6", $COLOR_PURPLE)
+					EndIf
 				EndIf
 				If _Sleep($iDelayTrain2) Then ExitLoop
 				If Not (IsTrainPage()) Then Return ; exit from train if no train page
@@ -945,15 +957,17 @@ Func Train()
 							If $icount = 7 Then ExitLoop
 						WEnd
 					EndIf
-					$icount = 0
-					While Not _ColorCheck(_GetPixelColor(599, 202 + $midOffsetY, True), Hex(0xD0D0C0, 6), 20) ; while not disappears  green arrow
-						If Not (IsTrainPage()) Then Return ;exit if no train page
-						Click(568, 177 + $midOffsetY, 10, 0, "#0287") ; Remove Troops in training
-						$icount += 1
-						If $icount = 100 Then ExitLoop
-						If $RunState = False Then Return
-					WEnd
-					If $debugsetlogTrain = 1 And $icount = 100 Then SetLog("Train warning 9", $COLOR_PURPLE)
+					If $iChkDontRemove = 0 Then
+						$icount = 0
+						While Not _ColorCheck(_GetPixelColor(599, 202 + $midOffsetY, True), Hex(0xD0D0C0, 6), 20) ; while not disappears  green arrow
+							If Not (IsTrainPage()) Then Return ;exit if no train page
+							Click(568, 177 + $midOffsetY, 10, 0, "#0287") ; Remove Troops in training
+							$icount += 1
+							If $icount = 100 Then ExitLoop
+							If $RunState = False Then Return
+						WEnd
+						If $debugsetlogTrain = 1 And $icount = 100 Then SetLog("Train warning 9", $COLOR_PURPLE)
+					EndIf
 				EndIf
 				If _Sleep($iDelayTrain1) Then Return
 				For $i = 0 To UBound($TroopDarkName) - 1
@@ -1163,7 +1177,7 @@ Func Train()
 	EndIf
 	;;;;;;;;;;;; End Training Dark Troops ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	If $debugsetlogTrain = 1 Then SetLog("---=====================END TRAIN =======================================---", $COLOR_PURPLE)
-
+EndIf
 
 	If _Sleep($iDelayTrain4) Then Return
 	BrewSpells() ; Create Spells

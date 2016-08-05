@@ -2064,8 +2064,19 @@ Func saveConfig() ;Saves the controls settings to the config
 	EndIf
 	If GUICtrlRead($chkCollect) = $GUI_CHECKED Then
 		IniWriteS($config, "other", "chkCollect", 1)
+		IniWriteS($config, "other","treasuryGold", GUICtrlRead($txtTRGold))
+		IniWriteS($config, "other","treasuryElixir", GUICtrlRead($txtTRElixir))
+		IniWriteS($config, "other","treasuryDark", GUICtrlRead($txtTRDElixir))
 	Else
 		IniWriteS($config, "other", "chkCollect", 0)
+		IniWriteS($config, "other","treasuryGold", GUICtrlRead($txtTRGold))
+		IniWriteS($config, "other","treasuryElixir", GUICtrlRead($txtTRElixir))
+		IniWriteS($config, "other","treasuryDark", GUICtrlRead($txtTRDElixir))
+	EndIf
+	If GUICtrlRead($chkTRFull) = $GUI_CHECKED Then
+		IniWriteS($config, "other", "chkTRFull", 1)
+	Else
+		IniWriteS($config, "other", "chkTRFull", 0)
 	EndIf
 	If GUICtrlRead($chkTombstones) = $GUI_CHECKED Then
 		IniWriteS($config, "other", "chkTombstones", 1)
@@ -2445,6 +2456,63 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWriteS($config, "search", "TSEnableAfterArmyCamps2", GUICtrlRead($txtTSArmyCamps2))
 	;==> Apply to switch Attack Standard after THSnipe End
 
+	; pushbullet stuff
+	If GUICtrlRead($chkVillageStatIncrement) = $GUI_CHECKED Then
+		IniWrite($config, "pushbullet", "VillageStatIncrement", 1)
+	Else
+		IniWrite($config, "pushbullet", "VillageStatIncrement", 0)
+	EndIf
+	IniWrite($config, "pushbullet", "VillageStatIncrementTXT", GUICtrlRead($txtVillageStatIncrement))
+
+	If GUICtrlRead($chkSearchNotifyCount) = $GUI_CHECKED Then
+		IniWrite($config, "pushbullet", "SearchNotifyCount", 1)
+	Else
+		IniWrite($config, "pushbullet", "SearchNotifyCount", 0)
+	EndIf
+	IniWrite($config, "pushbullet", "SearchNotifyCountTXT", GUICtrlRead($txtSearchNotifyCount))
+	; End Pushbullet Stuff
+
+	; CSV Deployment Speed Mod
+	IniWriteS($config, "attack", "CSVSpeedDB", $isldSelectedCSVSpeed[$DB])
+	IniWriteS($config, "attack", "CSVSpeedAB", $isldSelectedCSVSpeed[$LB])
+
+	; SmartZap Settings - Added by LunaEclipse
+	If GUICtrlRead($chkSmartLightSpell) = $GUI_CHECKED Then
+		IniWrite($config, "SmartZap", "UseSmartZap", 1)
+	Else
+		IniWrite($config, "SmartZap", "UseSmartZap", 0)
+	EndIf
+	If GUICtrlRead($chkSmartZapDB) = $GUI_CHECKED Then
+		IniWrite($config, "SmartZap", "ZapDBOnly", 1)
+	Else
+		IniWrite($config, "SmartZap", "ZapDBOnly", 0)
+	EndIf
+    If GUICtrlRead($chkSmartZapSaveHeroes) = $GUI_CHECKED Then
+        IniWrite($config, "SmartZap", "THSnipeSaveHeroes", 1)
+    Else
+        IniWrite($config, "SmartZap", "THSnipeSaveHeroes", 0)
+    EndIf
+	IniWrite($config, "SmartZap", "MinDE", GUICtrlRead($txtMinDark))
+
+	;ExtremeZap
+	If GUICtrlRead($chkExtLightSpell) = $GUI_CHECKED Then
+		IniWrite($config, "MOD", "ExtLightSpell", "1")
+	Else
+		IniWrite($config, "MOD", "ExtLightSpell", "0")
+	EndIf
+	IniWrite($config, "MOD", "MinDE", GUICtrlRead($txtMinDark))
+
+	; Android Settings
+	IniWrite($config, "Android", "Emulator", GUICtrlRead($cmbAndroid))
+	IniWrite($config, "Android", "Instance", GUICtrlRead($txtAndroidInstance))
+
+	; Misc Battle Settings
+	If GUICtrlRead($chkFastADBClicks) = $GUI_CHECKED Then
+		IniWrite($config, "Fast Clicks", "UseADBFastClicks", 1)
+	Else
+		IniWrite($config, "Fast Clicks", "UseADBFastClicks", 0)
+	EndIf
+
 	; Wait For Spells
 	If GUICtrlRead($chkDBSpellsWait) = $GUI_CHECKED Then
 		IniWriteS($config, "search", "ChkDBSpellsWait", 1)
@@ -2458,6 +2526,177 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWriteS($config, "search", "ChkABSpellsWait", 0)
 	EndIf
 	IniWriteS($config, "search", "TotalTrainSpaceSpell", 0)
+
+	; Check Collectors Outside
+	If GUICtrlRead($chkDBMeetCollOutside) = $GUI_CHECKED Then
+		IniWriteS($config, "search", "DBMeetCollOutside", 1)
+	Else
+		IniWriteS($config, "search", "DBMeetCollOutside", 0)
+	EndIf
+	IniWriteS($config, "search", "DBMinCollOutsidePercent", GUICtrlRead($txtDBMinCollOutsidePercent))
+
+	; Check Connections
+	If GUICtrlRead($chkConnection) = $GUI_CHECKED Then
+		$ichkConnection = 1
+	Else
+		$ichkConnection = 0
+	EndIf
+	IniWriteS($config, "general", "ChkConnect", $ichkConnection)
+
+	; ChatBot
+	IniWrite($config, "global", "chdelay",  GUICtrlRead($chkchatdelay))
+
+	; Close TakeBrake
+	If GUICtrlRead($chkCloseTakeBreak) = $GUI_CHECKED Then
+		$ichkCloseTakeBreak = 1
+	Else
+		$ichkCloseTakeBreak = 0
+	EndIf
+	IniWriteS($config, "general", "ChkCloseEmuPB", $ichkCloseTakeBreak)
+
+	; Multi Farming Setting
+	If GUICtrlRead($chkSwitchDonate) = $GUI_CHECKED Then
+		IniWrite($config, "Multy", "SwitchDonate", 1)
+	Else
+		IniWrite($config, "Multy", "SwitchDonate", 0)
+	EndIf
+
+	If GUICtrlRead($chkMultyFarming) = $GUI_CHECKED Then
+		IniWrite($config, "Multy", "MultyFarming", 1)
+	Else
+		IniWrite($config, "Multy", "MultyFarming", 0)
+	EndIf
+	IniWrite($config, "Multy", "Account", GUICtrlRead($Account))
+
+	; Donate Stats
+	If GUICtrlRead($chkDStats) = $GUI_CHECKED Then
+		IniWrite($config, "donate", "chkDStats", 1)
+	Else
+		IniWrite($config, "donate", "chkDStats", 0)
+	EndIf
+
+	If GUICtrlRead($chkLimitDStats) = $GUI_CHECKED Then
+		IniWrite($config, "stats", "chkLimitDStats", 1)
+	Else
+		IniWrite($config, "stats", "chkLimitDStats", 0)
+	EndIf
+
+	; Don't Barack Mode
+	If GUICtrlRead($chkDontRemove) = $GUI_CHECKED Then
+		IniWrite($config, "troop", "DontRemove", 1)
+	Else
+		IniWrite($config, "troop", "DontRemove", 0)
+	EndIf
+
+	If GUICtrlRead($chkBarrackSpell) = $GUI_CHECKED Then
+		IniWrite($config, "Spells", "BarrackSpell", 1)
+	Else
+		IniWrite($config, "Spells", "BarrackSpell", 0)
+	EndIf
+
+	; Telegram Notify
+	$TelegramToken = GUICtrlRead($TelegramTokenValue)
+	IniWriteS($config, "pushbullet", "AccountToken2", $TelegramToken)
+	IniWriteS($config, "pushbullet", "PBEnabled2", $TelegramEnabled)
+
+	If GUICtrlRead($chkPBenabled2) = $GUI_CHECKED Then
+		$TelegramEnabled = 1
+	Else
+		$TelegramEnabled = 0
+	EndIf
+
+	If GUICtrlRead($chkAlertBuilderIdle) = $GUI_CHECKED Then
+		IniWriteS($config, "pushbullet", "AlertBuilderIdle", "1")
+	Else
+		IniWriteS($config, "pushbullet", "AlertBuilderIdle", "0")
+	EndIf
+
+	; Clan Hop Setting
+	If GUICtrlRead($chkClanHop) = $GUI_CHECKED Then
+		IniWrite($config, "Others", "ClanHop", 1)
+	Else
+		IniWrite($config, "Others", "ClanHop", 0)
+	EndIf
+
+	; Profile Switch Settings
+	If GUICtrlRead($chkGoldSwitchMax) = $GUI_CHECKED Then
+		IniWrite($config, "profiles", "chkGoldSwitchMax", 1)
+	Else
+		IniWrite($config, "profiles", "chkGoldSwitchMax", 0)
+	EndIf
+	IniWrite($config, "profiles", "cmbGoldMaxProfile", _GUICtrlComboBox_GetCurSel($cmbGoldMaxProfile))
+	IniWrite($config, "profiles", "txtMaxGoldAmount", GUICtrlRead($txtMaxGoldAmount))
+
+	If GUICtrlRead($chkGoldSwitchMin) = $GUI_CHECKED Then
+		IniWrite($config, "profiles", "chkGoldSwitchMin", 1)
+	Else
+		IniWrite($config, "profiles", "chkGoldSwitchMin", 0)
+	EndIf
+	IniWrite($config, "profiles", "cmbGoldMinProfile", _GUICtrlComboBox_GetCurSel($cmbGoldMinProfile))
+	IniWrite($config, "profiles", "txtMinGoldAmount", GUICtrlRead($txtMinGoldAmount))
+
+	If GUICtrlRead($chkElixirSwitchMax) = $GUI_CHECKED Then
+		IniWrite($config, "profiles", "chkElixirSwitchMax", 1)
+	Else
+		IniWrite($config, "profiles", "chkElixirSwitchMax", 0)
+	EndIf
+	IniWrite($config, "profiles", "cmbElixirMaxProfile", _GUICtrlComboBox_GetCurSel($cmbElixirMaxProfile))
+	IniWrite($config, "profiles", "txtMaxElixirAmount", GUICtrlRead($txtMaxElixirAmount))
+
+	If GUICtrlRead($chkElixirSwitchMin) = $GUI_CHECKED Then
+		IniWrite($config, "profiles", "chkElixirSwitchMin", 1)
+	Else
+		IniWrite($config, "profiles", "chkElixirSwitchMin", 0)
+	EndIf
+	IniWrite($config, "profiles", "cmbElixirMinProfile", _GUICtrlComboBox_GetCurSel($cmbElixirMinProfile))
+	IniWrite($config, "profiles", "txtMinElixirAmount", GUICtrlRead($txtMinElixirAmount))
+
+	If GUICtrlRead($chkDESwitchMax) = $GUI_CHECKED Then
+		IniWrite($config, "profiles", "chkDESwitchMax", 1)
+	Else
+		IniWrite($config, "profiles", "chkDESwitchMax", 0)
+	EndIf
+	IniWrite($config, "profiles", "cmbDEMaxProfile", _GUICtrlComboBox_GetCurSel($cmbDEMaxProfile))
+	IniWrite($config, "profiles", "txtMaxDEAmount", GUICtrlRead($txtMaxDEAmount))
+
+	If GUICtrlRead($chkDESwitchMin) = $GUI_CHECKED Then
+		IniWrite($config, "profiles", "chkDESwitchMin", 1)
+	Else
+		IniWrite($config, "profiles", "chkDESwitchMin", 0)
+	EndIf
+	IniWrite($config, "profiles", "cmbDEMinProfile", _GUICtrlComboBox_GetCurSel($cmbDEMinProfile))
+	IniWrite($config, "profiles", "txtMinDEAmount", GUICtrlRead($txtMinDEAmount))
+
+	If GUICtrlRead($chkTrophySwitchMax) = $GUI_CHECKED Then
+		IniWrite($config, "profiles", "chkTrophySwitchMax", 1)
+	Else
+		IniWrite($config, "profiles", "chkTrophySwitchMax", 0)
+	EndIf
+	IniWrite($config, "profiles", "cmbTrophyMaxProfile", _GUICtrlComboBox_GetCurSel($cmbTrophyMaxProfile))
+	IniWrite($config, "profiles", "txtMaxTrophyAmount", GUICtrlRead($txtMaxTrophyAmount))
+
+	If GUICtrlRead($chkTrophySwitchMin) = $GUI_CHECKED Then
+		IniWrite($config, "profiles", "chkTrophySwitchMin", 1)
+	Else
+		IniWrite($config, "profiles", "chkTrophySwitchMin", 0)
+	EndIf
+	IniWrite($config, "profiles", "cmbTrophyMinProfile", _GUICtrlComboBox_GetCurSel($cmbTrophyMinProfile))
+	IniWrite($config, "profiles", "txtMinTrophyAmount", GUICtrlRead($txtMinTrophyAmount))
+
+	;Chalicucu Switch CoC Account
+	If GUICtrlRead($chkSwitchAcc) = $GUI_CHECKED Then
+		IniWrite($profile, "switchcocacc", "Enable", 1)
+	Else
+		IniWrite($profile, "switchcocacc", "Enable", 0)
+	EndIf
+	IniWrite($profile, "switchcocacc", "totalacc", GUICtrlRead($txtTotalCoCAcc))
+	IniWrite($profile, "switchcocacc", "order", GUICtrlRead($txtAccBottingOrder))
+	IniWrite($profile, "switchcocacc", "profile", GUICtrlRead($txtProfileIdxOrder))
+	If GUICtrlRead($chkAccRelax) = $GUI_CHECKED Then
+		IniWrite($profile, "switchcocacc", "AttackRelax", 1)
+	Else
+		IniWrite($profile, "switchcocacc", "AttackRelax", 0)
+	EndIf
 
 	If $hFile <> -1 Then FileClose($hFile)
 
