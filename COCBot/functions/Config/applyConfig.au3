@@ -705,11 +705,19 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	GUICtrlSetData($txtFullTroop, $fulltroop)
 
 	If $ichkCloseWaitEnable = 1 Then
+		For $i = $chkCloseWaitTrain To $lblCloseWaitRdmPercent
+			GUICtrlSetState($i, $GUI_SHOW)
+		Next
 		GUICtrlSetState($chkCloseWaitEnable, $GUI_CHECKED)
 		_GUI_Value_STATE("ENABLE", $groupCloseWaitTrain)
+		GUICtrlSetState($chkSwitchAcc, $GUI_DISABLE)
 	ElseIf $ichkCloseWaitEnable = 0 Then
+		For $i = $chkCloseWaitTrain To $lblCloseWaitRdmPercent
+			GUICtrlSetState($i, $GUI_HIDE)
+		Next
 		GUICtrlSetState($chkCloseWaitEnable, $GUI_UNCHECKED)
 		_GUI_Value_STATE("DISABLE", $groupCloseWaitTrain)
+		GUICtrlSetState($chkSwitchAcc, $GUI_ENABLE)
 	EndIf
 	If $ichkCloseWaitTrain = 1 Then
 		GUICtrlSetState($chkCloseWaitTrain, $GUI_CHECKED)

@@ -60,11 +60,12 @@ GUICtrlSetState($frmBotEmbeddedShieldInput, $GUI_HIDE)
 ;~ ------------------------------------------------------
 ;~ Header Menu
 ;~ ------------------------------------------------------
-SplashStep("Loading Header Menu...")
+
 GUISwitch($frmBot)
 ;$idMENU_DONATE = GUICtrlCreateMenu("&" & GetTranslated(601,18,"Paypal Donate?"))
 ;_GUICtrlMenu_SetItemType(_GUICtrlMenu_GetMenu($frmBot), 0, $MFT_RIGHTJUSTIFY) ; move to right
 ;$idMENU_DONATE_SUPPORT = GUICtrlCreateMenuItem(GetTranslated(601,19,"Support the development"), $idMENU_DONATE)
+;GUICtrlSetOnEvent(-1, "")
 
 ;~ ------------------------------------------------------
 ;~ GUI Bottom

@@ -48,12 +48,12 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 		Else
 			SetLog("King and/or Queen dropped, close attack.")
 			If ($ichkSmartZap = 1 Or $ichkExtLightSpell = 1) Then SetLog("Skipping SmartZap Or ExtremeZap to protect your royals!", $COLOR_FUCHSIA)
-;		EndIf
-;
-;		;Apply to switch Attack Standard after THSnipe End  ==>
-;		If CompareResources($DB) And $iAtkAlgorithm[$DB] = 0 And $ichkTSActivateCamps2 = 1 And Int($CurCamp / $TotalCamp * 100) >= Int($iEnableAfterArmyCamps2) then
-;			$iMatchMode = $DB
-;		Else
+		EndIf
+
+		;Apply to switch Attack Standard after THSnipe End  ==>
+		If CompareResources($DB) And $iAtkAlgorithm[$DB] = 0 And $ichkTSActivateCamps2 = 1 And Int($CurCamp / $TotalCamp * 100) >= Int($iEnableAfterArmyCamps2) then
+			$iMatchMode = $DB
+		Else
 			CloseBattle()
 			Return
 		EndIf
