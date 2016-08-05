@@ -12,7 +12,6 @@
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: No
 ; ===============================================================================================================================
-
 Func CheckVersion()
 	If $ichkVersion = 1 Then
 		CheckVersionHTML()
@@ -20,7 +19,7 @@ Func CheckVersion()
 			SetLog("WE CANNOT OBTAIN PRODUCT VERSION AT THIS TIME", $COLOR_ORANGE)
 		ElseIf VersionNumFromVersionTXT($sBotVersion) < VersionNumFromVersionTXT($lastversion) Then
 			SetLog("WARNING, YOUR BOT VERSION (" & $sBotVersion & ") IS OUT OF DATE.", $COLOR_RED)
-			SetLog("PLEASE DOWNLOAD THE LATEST(" & $lastversion & ") FROM https://MyBot.run               ", $COLOR_RED)
+			SetLog("PLEASE DOWNLOAD THE LATEST (" & $lastversion & ") FROM https://MyBot.run               ", $COLOR_RED)
 			SetLog(" ")
 			_PrintLogVersion($oldversmessage)
 		ElseIf VersionNumFromVersionTXT($sBotVersion) > VersionNumFromVersionTXT($lastversion) Then
@@ -38,7 +37,8 @@ Func CheckVersion()
 			SetLog("WE CANNOT OBTAIN MOD VERSION AT THIS TIME", $COLOR_ORANGE)
 		ElseIf VersionNumFromVersionTXT($sModversion) < VersionNumFromVersionTXT($lastModversion) Then
 			SetLog("WARNING, YOUR MOD VERSION (" & $sModversion & ") IS OUT OF DATE.", $COLOR_RED)
-			SetLog("CHIEF, PLEASE DOWNLOAD THE LATEST(" & $lastModversion & ") FROM TO ABOUT US", $COLOR_RED)
+			SetLog("CHIEF, PLEASE DOWNLOAD THE LATEST (" & $lastModversion & ")", $COLOR_RED)
+			SetLog("FROM https://github.com              ", $COLOR_RED)
 			SetLog(" ")
 			_PrintLogVersion($oldModversmessage)
 		ElseIf VersionNumFromVersionTXT($sModversion) > VersionNumFromVersionTXT($lastModversion) Then
@@ -51,9 +51,7 @@ Func CheckVersion()
 			SetLog(" ")
 			_PrintLogVersion($lastmessage)
 		EndIf
-
 		CheckMODVersion()
-
 	EndIf
 EndFunc   ;==>CheckVersion
 
@@ -196,7 +194,8 @@ Func CheckMODVersion()
 
 	If $sLatestReleaseTag <> $sGitHubModLatestReleaseTag Then
 		MsgBox(0, "", "Một Phiên Bản Mod By Nguyễn Anh Mới Đã Được Uploaded (" & $sLatestReleaseTag & "), Phiên Bản Của Bạn Đang Có Đã Lỗi Thời." & @CRLF & _
-		"Kiểm Tra Và Tải Về Phiên Bản Mới Nhất Từ Mục About Us")
+		"Hãy Tải Về Phiên Bản Mod Mới Nhất By Nguyễn Anh")
+		ShellExecute("https://github.com/" & $sGitHubModOwner & "/" & $sGitHubModRepo & "/releases/latest")
 		Return False
 	EndIf
 

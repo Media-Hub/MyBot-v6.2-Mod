@@ -236,9 +236,10 @@ Func getArmyTroopCount($bOpenArmyWindow = False, $bCloseArmyWindow = False, $tes
 					EndIf
 
 				EndIf
-				If $TroopQ <> 0 Then SetLog(" - No. of " & NameOfTroop($Troops[0]) & ": " & $TroopQ)
+				If $TroopQ <> 0 Then
+					SetLog(" - No. of " & NameOfTroop($Troops[0]) & ": " & $TroopQ)
 					_ArrayAdd($TroopSpellStats, $TroopName & "|" & $TroopQ)
-
+				EndIf
 			EndIf
 		Next
 

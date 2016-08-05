@@ -103,9 +103,9 @@ $tabMOD = GUICtrlCreateTabItem("Mods")
 ;~ -------------------------------------------------------------
 SplashStep(GetTranslated(500, 29, "Loading About Us tab..."))
 $tabAboutUs = GUICtrlCreateTabItem(GetTranslated(600,5, "About Us"))
-Local $x = 30, $y = 130 + $_GUI_MAIN_TOP
-	$grpCredits = GUICtrlCreateGroup("Credits", $x - 20, $y - 20, 450, 365)
-		$lblCreditsBckGrnd = GUICtrlCreateLabel("", $x - 20, $y - 20, 450, 365)  ; adds fixed white background for entire tab, if using "Labels"
+Local $x = 30, $y = 150 + $_GUI_MAIN_TOP
+	$grpCredits = GUICtrlCreateGroup("Credits", $x - 20, $y - 20, 450, 375)
+		$lblCreditsBckGrnd = GUICtrlCreateLabel("", $x - 20, $y - 20, 450, 375)  ; adds fixed white background for entire tab, if using "Labels"
 		GUICtrlSetBkColor(-1, $COLOR_WHITE)
 		$txtCredits = "My Bot is brought to you by a worldwide team of open source"  & @CRLF & _
 						"programmers and a vibrant community of forum members!"
@@ -143,7 +143,7 @@ Local $x = 30, $y = 130 + $_GUI_MAIN_TOP
 		$labelForumURL = GUICtrlCreateLabel("https://mybot.run/forums/index.php?/forum/4-official-releases/", $x+25, $y, 450, 20)
 			GUICtrlSetFont(-1, 9.5, $FW_BOLD)
 			GUICtrlSetColor(-1, $COLOR_BLUE)
-		$y = 425
+		$y = 445
 		$txtWarn =	"By running this program, the user accepts all responsibility that arises from the use of this software."  & @CRLF & _
 						"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even " & @CRLF & _
 						"the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General " & @CRLF & _
@@ -153,14 +153,6 @@ Local $x = 30, $y = 130 + $_GUI_MAIN_TOP
 			GUICtrlSetColor(-1, 0x000053)
 ;			GUICtrlSetBkColor(-1, $COLOR_WHITE)
 			GUICtrlSetFont(-1, 6, $FW_BOLD)
-	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
-Local $x = 30, $y = 470; + $_GUI_MAIN_TOP
-	$CheckVersionConfig = GUICtrlCreateButton("Check Version", $x - 20, $y +15, 100, 20)
-	$x = 210
-	$DownloadLatestConfig = GUICtrlCreateButton("Download Latest", $x - 20, $y +15, 100, 20)
-	$x = 380
-	$ModSupportConfig = GUICtrlCreateButton("Mod Support", $x - 20, $y +15, 100, 20)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 GUICtrlCreateTabItem("")
 
