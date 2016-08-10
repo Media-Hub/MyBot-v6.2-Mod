@@ -1,36 +1,36 @@
 ; #FUNCTION# ====================================================================================================================
-; Name ..........: MBR GUI Design Child Mod - Profiles
+; Name ..........: MBR GUI Design Child Mod - Options2
 ; Description ...: This file Includes GUI Design
 ; Syntax ........:
 ; Parameters ....: None
 ; Return values .: None
-; Author ........:
-; Modified ......:
-; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2016
+; Author ........: LunaEclipse(February, 2016)
+; Modified ......: TheRevenor (Jul, 2016)
+; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......:
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: No
 ; ===============================================================================================================================
-Global $txtPresetSaveFilename, $txtSavePresetMessage, $lblLoadPresetMessage,$btnGUIPresetDeleteConf, $chkCheckDeleteConf
-Global $cmbPresetList, $txtPresetMessage,$btnGUIPresetLoadConf,  $lblLoadPresetMessage,$btnGUIPresetDeleteConf, $chkCheckDeleteConf
+$hGUI_ModOptions2 = GUICreate("", $_GUI_MAIN_WIDTH - 28, $_GUI_MAIN_HEIGHT - 255 - 28, 5, 25, BitOR($WS_CHILD, $WS_TABSTOP), -1, $hGUI_MOD)
+GUISetBkColor($COLOR_WHITE, $hGUI_ModOptions2)
 
-$hGUI_Profiles = GUICreate("", $_GUI_MAIN_WIDTH - 28, $_GUI_MAIN_HEIGHT - 255 - 28, 5, 25, BitOR($WS_CHILD, $WS_TABSTOP), -1, $hGUI_MOD)
-GUISetBkColor($COLOR_WHITE, $hGUI_Profiles)
+GUISwitch($hGUI_ModOptions2)
 
-GUISwitch($hGUI_Profiles)
+$hGUI_ModOptions2_TAB = GUICtrlCreateTab(0, 0, $_GUI_MAIN_WIDTH - 30, $_GUI_MAIN_HEIGHT - 255 - 30, BitOR($TCS_MULTILINE, $TCS_RIGHTJUSTIFY))
 
-Local $x = 20, $y = 25
-	$grpProfiles = GUICtrlCreateGroup(GetTranslated(7,26, "Switch Profiles"), $x - 20, $y - 20, 438, 45)
+$hGUI_ModOptions2_TAB_ITEM1 = GUICtrlCreateTabItem("Multi Accounts Option")
+	Local $xStart = 0, $yStart = 0
+	Local $x = $xStart + 30, $y = $yStart + 50
+	$grpProfiles = GUICtrlCreateGroup(GetTranslated(7,26, "Switch Profiles"), $x - 25, $y - 25, 427, 85)
 		$y -= 0
-		$lblProfile = GUICtrlCreateLabel(GetTranslated(19,2,"Current Profile:"), $x - 10, $y, -1, -1)
-		$cmbProfile = GUICtrlCreateCombo("", $x + 75, $y - 5, 220, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbProfile = GUICtrlCreateCombo("", $x - 15, $y + 1, 120, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			$txtTip =GetTranslated(19,3, "Use this to switch to a different profile") & @CRLF & GetTranslated(19,4,"Your profiles can be found in") & ": " & @CRLF &  $sProfilePath
 			_GUICtrlSetTip(-1, $txtTip)
 			setupProfileComboBox()
 			GUICtrlSetState(-1, $GUI_SHOW)
 			GUICtrlSetOnEvent(-1, "cmbProfile")
-		$txtVillageName = GUICtrlCreateInput(GetTranslated(19,5,"MyVillage"), $x + 75, $y - 4, 220, 20, BitOR($SS_CENTER, $ES_AUTOHSCROLL))
+		$txtVillageName = GUICtrlCreateInput(GetTranslated(19,5,"MyVillage"), $x - 15, $y, 120, 20, BitOR($SS_CENTER, $ES_AUTOHSCROLL))
 			GUICtrlSetLimit (-1, 100, 0)
 			GUICtrlSetFont(-1, 9, 400, 1)
 			_GUICtrlSetTip(-1, GetTranslated(7,31, "Your village/profile's name"))
@@ -75,22 +75,22 @@ Local $x = 20, $y = 25
 			_GUIImageList_AddBitmap($bIconRecycle, @ScriptDir & "\images\Button\iconRecycle.bmp")
 		; IceCube (Misc v1.0)
 
-		$btnAdd = GUICtrlCreateButton("", $x + 300, $y - 5, 22, 22)
+		$btnAdd = GUICtrlCreateButton("", $x + 115, $y + 1, 22, 22)
 			_GUICtrlButton_SetImageList($btnAdd, $bIconAdd, 4)
 			GUICtrlSetOnEvent(-1, "btnAddConfirm")
 			GUICtrlSetState(-1, $GUI_SHOW)
 			_GUICtrlSetTip(-1, GetTranslated(7,103, "Add New Profile"))
-		$btnConfirmAdd = GUICtrlCreateButton("", $x + 300, $y - 5, 22, 22)
+		$btnConfirmAdd = GUICtrlCreateButton("", $x + 115, $y + 1, 22, 22)
 			_GUICtrlButton_SetImageList($btnConfirmAdd, $bIconConfirm, 4)
 			GUICtrlSetOnEvent(-1, "btnAddConfirm")
 			GUICtrlSetState(-1, $GUI_HIDE)
 			_GUICtrlSetTip(-1, GetTranslated(7,104, "Confirm"))
-		$btnConfirmRename = GUICtrlCreateButton("", $x + 300, $y - 5, 22, 22)
+		$btnConfirmRename = GUICtrlCreateButton("", $x + 115, $y + 1, 22, 22)
 			_GUICtrlButton_SetImageList($btnConfirmRename, $bIconConfirm, 4)
 			GUICtrlSetOnEvent(-1, "btnRenameConfirm")
 			GUICtrlSetState(-1, $GUI_HIDE)
 			_GUICtrlSetTip(-1, GetTranslated(7,104, "Confirm"))
-		$btnDelete = GUICtrlCreateButton("", $x + 327, $y - 5, 22, 22)
+		$btnDelete = GUICtrlCreateButton("", $x + 142, $y + 1, 22, 22)
 			_GUICtrlButton_SetImageList($btnDelete, $bIconDelete, 4)
 			GUICtrlSetOnEvent(-1, "btnDeleteCancel")
 			GUICtrlSetState(-1, $GUI_SHOW)
@@ -101,12 +101,12 @@ Local $x = 20, $y = 25
 				GUICtrlSetState(-1, $GUI_ENABLE)
 			EndIf
 
-		$btnCancel = GUICtrlCreateButton("", $x + 327, $y - 5, 22, 22)
+		$btnCancel = GUICtrlCreateButton("", $x + 142, $y + 1, 22, 22)
 			_GUICtrlButton_SetImageList($btnCancel, $bIconCancel, 4)
 			GUICtrlSetOnEvent(-1, "btnDeleteCancel")
 			GUICtrlSetState(-1, $GUI_HIDE)
 			_GUICtrlSetTip(-1, GetTranslated(7,106, "Cancel"))
-		$btnRename = GUICtrlCreateButton("", $x + 355, $y - 5, 22, 22)
+		$btnRename = GUICtrlCreateButton("", $x + 170, $y + 1, 22, 22)
 			_GUICtrlButton_SetImageList($btnRename, $bIconEdit, 4)
 			GUICtrlSetOnEvent(-1, "btnRenameConfirm")
 			_GUICtrlSetTip(-1, GetTranslated(7,107, "Rename Profile"))
@@ -116,7 +116,7 @@ Local $x = 20, $y = 25
 				GUICtrlSetState(-1, $GUI_ENABLE)
 			EndIf
 		; IceCube (Misc v1.0)
-		$btnRecycle = GUICtrlCreateButton("", $x + 383, $y - 5, 22, 22)
+		$btnRecycle = GUICtrlCreateButton("", $x + 198, $y + 1, 22, 22)
 			_GUICtrlButton_SetImageList($btnRecycle, $bIconRecycle, 4)
 			GUICtrlSetOnEvent(-1, "btnRecycle")
 			GUICtrlSetState(-1, $GUI_SHOW)
@@ -127,13 +127,166 @@ Local $x = 20, $y = 25
 				GUICtrlSetState(-1, $GUI_ENABLE)
 			EndIf
 		; IceCube (Misc v1.0)
+
+; Defining botting type of eachh profile - SwitchAcc - DEMEN
+	    $lblProfile = GUICtrlCreateLabel("Profile Type:", $x + 235, $y - 5, -1, -1)
+			$txtTip = "Choosing type for this Profile" & @CRLF & "Active Profile for botting" & @CRLF & "Donate Profile for donating only" & @CRLF & "Idle Profile for staying inactive"
+			GUICtrlSetTip(-1, $txtTip)
+
+	    $radActiveProfile= GUICtrlCreateRadio("Active", $x + 235, $y + 13, -1, 16)
+			GUICtrlSetTip(-1, "Set as Active Profile for training troops & attacking")
+			GUICtrlSetState(-1, $GUI_CHECKED)
+			GUICtrlSetOnEvent(-1, "radProfileType")
+
+		$radDonateProfile = GUICtrlCreateRadio("Donate", $x + 295, $y + 13, -1, 16)
+			GUICtrlSetTip(-1, "Set as Donating Profile for training troops & donating only")
+			GUICtrlSetOnEvent(-1, "radProfileType")
+
+		$radIdleProfile = GUICtrlCreateRadio("Idle", $x + 355, $y + 13, -1, 16)
+			GUICtrlSetTip(-1, "Set as Idle Profile. The Bot will ignore this Profile")
+			GUICtrlSetOnEvent(-1, "radProfileType")
+
+	    $lblMatchProfileAcc = GUICtrlCreateLabel("Matching Acc. No.", $x + 235, $y + 37, -1, 16)
+			$txtTip = "Select the index of CoC Account to match with this Profile"
+			GUICtrlSetTip(-1, $txtTip)
+
+		$cmbMatchProfileAcc = GUICtrlCreateCombo("", $x + 335, $y + 33, 60, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			GUICtrlSetData(-1, "---" & "|" & "Acc. 1" & "|" & "Acc. 2" & "|" & "Acc. 3" & "|" & "Acc. 4" & "|" & "Acc. 5" & "|" & "Acc. 6", "---")
+			GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "cmbMatchProfileAcc")
+
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
-		$y -= 5
+; SwitchAcc - DEMEN
+	Local $x = 25, $y = 130
+	$grpSwitchAcc = GUICtrlCreateGroup("Switch Account Mode", $x - 20, $y - 20, 210, 190)
 
-Local $x = 20, $y = 75
-	$grpGoldSwitch = GUICtrlCreateGroup(GetTranslated(19,7,"Gold Switch Profile Conditions"), $x - 20, $y - 20, 438, 75) ;Gold Switch
-		$chkGoldSwitchMax = GUICtrlCreateCheckbox(GetTranslated(19,8,"Switch To"), $x-10, $y - 5, -1, -1)
+		$chkSwitchAcc = GUICtrlCreateCheckbox("Enable Switch Account", $x - 10, $y, -1, -1)
+			$txtTip = "Switch to another account & profile when troop training time is >= 3 minutes" & @CRLF & "This function supports maximum 6 CoC accounts & 6 Bot profiles" & @CRLF & "Make sure to create sufficient Profiles equal to number of CoC Accounts, and align the index of accounts order with profiles order"
+			GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "chkSwitchAcc")
+			GUICtrlSetState(-1, $GUI_UNCHECKED)
+
+		$lblTotalAccount = GUICtrlCreateLabel("Total CoC Acc:", $x + 5, $y + 29, -1, -1)
+			$txtTip = "Choose number of CoC Accounts pre-logged"
+			GUICtrlSetState(-1, $GUI_DISABLE)
+
+		$cmbTotalAccount= GUICtrlCreateCombo("", $x + 90, $y + 25, -1, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			GUICtrlSetData(-1, "Auto detect" & "|" & "1 Account" & "|" & "2 Accounts" & "|" & "3 Accounts" & "|" & "4 Accounts" & "|" & "5 Accounts" & "|" & "6 Accounts", "Auto detect")
+			GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetState(-1, $GUI_DISABLE)
+
+		$radSmartSwitch= GUICtrlCreateRadio("Smart switch", $x + 5, $y + 55, -1, 16)
+			GUICtrlSetTip(-1, "Switch to account with the shortest remain training time")
+			GUICtrlSetState(-1, $GUI_CHECKED)
+			GUICtrlSetState(-1, $GUI_DISABLE)
+
+		$radNormalSwitch = GUICtrlCreateRadio("Normal switch", $x + 90, $y + 55, -1, 16)
+			GUICtrlSetTip(-1, "Switching accounts continously")
+			GUICtrlSetState(-1, $GUI_DISABLE)
+			GUICtrlSetOnEvent(-1, "radNormalSwitch")
+
+		$y += 80
+
+		$chkUseTrainingClose = GUICtrlCreateCheckbox("Combo Sleep after Switch Account", $x - 10, $y, -1, -1)
+			$txtTip = "Close CoC combo with Switch Account when there is more than 3 mins remaining on training time of all accounts."
+			GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "chkUseTrainingClose")
+
+	    $chkRestartAndroidSearchLimit = GUICtrlCreateCheckbox("Restart Android every" & ":", $x - 10, $y + 30, -1, -1)
+			$txtTip = "CLose Android after number of searches and restart to search enemy villages."
+			GUICtrlSetState(-1, $GUI_UNCHECKED)
+			GUICtrlSetOnEvent(-1, "chkRestartAndroidSearchLimit")
+		$txtRestartAndroidSearchLimit = GUICtrlCreateInput("200", $x + 10, $y + 60, 30, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+			GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetLimit(-1, 4)
+			GUICtrlSetState(-1, $GUI_DISABLE)
+		$lblRestartAndroidSearchLimit = GUICtrlCreateLabel("Search(es)", $x + 47, $y + 62, -1, -1)
+
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+
+	; Profiles & Account matching
+    Local $x = 238, $y = 130
+	  $grpSwitchAccMapping = GUICtrlCreateGroup("Profiles", $x - 20, $y - 20, 215, 190)
+
+		$btnUpdateProfiles = GUICtrlCreateButton("Update Profiles/ Acc matching", $x, $y - 5 , 170, 25)
+		GUICtrlSetOnEvent(-1, "btnUpdateProfile")
+
+		Global $lblProfileList[8]
+
+	  $y += 25
+		 For $i = 0 To 7
+			$lblProfileList[$i] = GUICtrlCreateLabel("", $x, $y + ($i) * 25, 190, 18, $SS_LEFT)
+		 Next
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+
+	; Multi Farming
+	Local $x = 25, $y = 323
+	$grpMultyFarming = GUICtrlCreateGroup( "Multi Farming With Smart Switch Setting", $x - 20, $y - 20, 427, 60)
+		$chkMultyFarming = GUICtrlCreateCheckbox(GetTranslated(17,1, "Multi Farming"), $x - 10, $y -7, -1 , -1)
+			$txtTip = GetTranslated(17,3, "Will switch account and attack, then switch back")
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "MultiFarming")
+			GUICtrlSetState(-1, $GUI_UNCHECKED)
+		$chkSwitchDonate = GUICtrlCreateCheckbox(GetTranslated(6,1, "Donate"), $x - 10, $y +13, -1, -1)
+			$txtTip = GetTranslated(17,4, "Will switch account For Donate, then switch back")
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "SwitchDonate")
+			GUICtrlSetState(-1, $GUI_UNCHECKED)
+		$Account = GUICtrlCreateInput("2", $x +170, $y -5, 18, 15, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+			$txtTip = GetTranslated(17,5, "How many account to use For Multi Farming")
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetLimit(-1, 1)
+			GUICtrlSetState(-1, $GUI_DISABLE)
+		$lblmultyAcc = GUICtrlCreateLabel(GetTranslated(17,2, "How Many:"), $x +100, $y -2, -1, -1)
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetState(-1, $GUI_DISABLE)
+		$lblmultyAccBtn = GUICtrlCreateLabel(GetTranslated(17, 22, "Fast Switch:"), $x +100, $y +18, -1, -1)
+			$txtTip = GetTranslated(17, 22, "Fast switch between accounts")
+			_GUICtrlSetTip(-1, $txtTip)
+		$btnmultyAcc1 = GUICtrlCreateButton("#1", $x + 170, $y +15, 20, 18)
+			$txtTip = GetTranslated(17,22, "Switch to Main Account")
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "btnmultyAcc1")
+			GUICtrlSetState(-1, $GUI_DISABLE)
+		$btnmultyAcc2 = GUICtrlCreateButton("#2", $x + 200, $y +15, 20, 18)
+			$txtTip = GetTranslated(17,23, "Switch to Second Account")
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "btnmultyAcc2")
+			GUICtrlSetState(-1, $GUI_DISABLE)
+		$btnmultyAcc3 = GUICtrlCreateButton("#3", $x + 230, $y +15, 20, 18)
+			$txtTip = GetTranslated(17,24, "Switch to Third Account")
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "btnmultyAcc3")
+			GUICtrlSetState(-1, $GUI_DISABLE)
+		$btnmultyAcc4 = GUICtrlCreateButton("#4", $x + 260, $y +15, 20, 18)
+			$txtTip = GetTranslated(17,25, "Switch to Fourth Account")
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "btnmultyAcc4")
+			GUICtrlSetState(-1, $GUI_DISABLE)
+		$btnmultyAcc5 = GUICtrlCreateButton("#5", $x + 290, $y +15, 20, 18)
+			$txtTip = GetTranslated(17,26, "Switch to Fifth Account")
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "btnmultyAcc5")
+			GUICtrlSetState(-1, $GUI_DISABLE)
+		$btnmultyAcc6 = GUICtrlCreateButton("#6", $x + 320, $y +15, 20, 18)
+			$txtTip = GetTranslated(17,27, "Switch to Sixth Account")
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "btnmultyAcc6")
+			GUICtrlSetState(-1, $GUI_DISABLE)
+		$btnmultyDetectAcc = GUICtrlCreateButton("?", $x + 350, $y +15, 20, 18)
+			$txtTip = GetTranslated(17,28, "Detect Current Account")
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "btnmultyDetectAcc")
+			GUICtrlSetState(-1, $GUI_ENABLE)
+		GUICtrlCreateGroup("", -99, -99, 1, 1)
+
+$hGUI_ModOptions2_TAB_ITEM2 = GUICtrlCreateTabItem("Switch Profile Option")
+	; Switch Profile
+	Local $xStart = 0, $yStart = 0
+	Local $x = $xStart + 30, $y = $yStart + 50
+	$grpGoldSwitch = GUICtrlCreateGroup(GetTranslated(19,7,"Gold Switch Profile Conditions"), $x - 20, $y - 20, 420, 75) ;Gold Switch
+		$chkGoldSwitchMax = GUICtrlCreateCheckbox(GetTranslated(19,8,"Switch To"), $x - 10, $y - 5, -1, -1)
 			$txtTip = GetTranslated(19,9,"Enable this to switch profiles when gold is above amount.")
 			_GUICtrlSetTip(-1, $txtTip)
 		$cmbGoldMaxProfile = GUICtrlCreateCombo("", $x + 60, $y - 5, 75, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
@@ -146,7 +299,7 @@ Local $x = 20, $y = 75
 			GUICtrlSetLimit(-1, 7)
 
 $y += 30
-		$chkGoldSwitchMin = GUICtrlCreateCheckbox(GetTranslated(19,8,"Switch To"), $x-10, $y - 5, -1, -1)
+		$chkGoldSwitchMin = GUICtrlCreateCheckbox(GetTranslated(19,8,"Switch To"), $x - 10, $y - 5, -1, -1)
 			$txtTip = GetTranslated(19,13,"Enable this to switch profiles when gold is below amount.")
 			_GUICtrlSetTip(-1, $txtTip)
 		$cmbGoldMinProfile = GUICtrlCreateCombo("", $x + 60, $y - 5, 75, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
@@ -157,11 +310,11 @@ $y += 30
 			$txtTip = GetTranslated(19,12,"Set the amount of Gold to trigger switching Profile.")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetLimit(-1, 7)
-		$picProfileGold = GUICtrlCreatePic(@ScriptDir & "\Images\GoldStorage.jpg", $x + 350, $y - 40, 60, 60)
+		$picProfileGold = GUICtrlCreatePic(@ScriptDir & "\Images\GoldStorage.jpg", $x + 335, $y - 40, 60, 60)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 $y += 48
-	$grpElixirSwitch = GUICtrlCreateGroup(GetTranslated(19,15,"Elixir Switch Profile Conditions"), $x - 20, $y - 20, 438, 75) ; Elixir Switch
-		$chkElixirSwitchMax = GUICtrlCreateCheckbox(GetTranslated(19,8,"Switch To"), $x-10, $y - 5, -1, -1)
+	$grpElixirSwitch = GUICtrlCreateGroup(GetTranslated(19,15,"Elixir Switch Profile Conditions"), $x - 20, $y - 20, 420, 75) ; Elixir Switch
+		$chkElixirSwitchMax = GUICtrlCreateCheckbox(GetTranslated(19,8,"Switch To"), $x - 10, $y - 5, -1, -1)
 			$txtTip = GetTranslated(19,16,"Enable this to switch profiles when Elixir is above amount.")
 			_GUICtrlSetTip(-1, $txtTip)
 
@@ -174,7 +327,7 @@ $y += 48
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetLimit(-1, 7)
 $y += 30
-		$chkElixirSwitchMin = GUICtrlCreateCheckbox(GetTranslated(19,8,"Switch To"), $x-10, $y - 5, -1, -1)
+		$chkElixirSwitchMin = GUICtrlCreateCheckbox(GetTranslated(19,8,"Switch To"), $x - 10, $y - 5, -1, -1)
 			$txtTip = GetTranslated(19,19,"Enable this to switch profiles when Elixir is below amount.")
 			_GUICtrlSetTip(-1, $txtTip)
 		$cmbElixirMinProfile = GUICtrlCreateCombo("", $x + 60, $y - 5, 75, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
@@ -185,11 +338,11 @@ $y += 30
 			$txtTip = GetTranslated(19,18,"Set the amount of Elixir to trigger switching Profile.")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetLimit(-1, 7)
-		$picProfileElixir = GUICtrlCreatePic(@ScriptDir & "\Images\ElixirStorage.jpg", $x + 350, $y - 40, 60, 60)
+		$picProfileElixir = GUICtrlCreatePic(@ScriptDir & "\Images\ElixirStorage.jpg", $x + 335, $y - 40, 60, 60)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 $y += 48
-	$grpDESwitch = GUICtrlCreateGroup(GetTranslated(19,21,"Dark Elixir Switch Profile Conditions"), $x - 20, $y - 20, 438, 75) ;DE Switch
-		$chkDESwitchMax = GUICtrlCreateCheckbox(GetTranslated(19,8,"Switch To"), $x-10, $y - 5, -1, -1)
+	$grpDESwitch = GUICtrlCreateGroup(GetTranslated(19,21,"Dark Elixir Switch Profile Conditions"), $x - 20, $y - 20, 420, 75) ;DE Switch
+		$chkDESwitchMax = GUICtrlCreateCheckbox(GetTranslated(19,8,"Switch To"), $x - 10, $y - 5, -1, -1)
 			$txtTip = GetTranslated(19,22,"Enable this to switch profiles when Dark Elixir is above amount.")
 			_GUICtrlSetTip(-1, $txtTip)
 		$cmbDEMaxProfile = GUICtrlCreateCombo("", $x + 60, $y - 5, 75, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
@@ -201,7 +354,7 @@ $y += 48
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetLimit(-1, 6)
 $y += 30
-		$chkDESwitchMin = GUICtrlCreateCheckbox(GetTranslated(19,8,"Switch To"), $x-10, $y - 5, -1, -1)
+		$chkDESwitchMin = GUICtrlCreateCheckbox(GetTranslated(19,8,"Switch To"), $x - 10, $y - 5, -1, -1)
 			$txtTip = GetTranslated(19,25,"Enable this to switch profiles when Dark Elixir is below amount.")
 			_GUICtrlSetTip(-1, $txtTip)
 		$cmbDEMinProfile = GUICtrlCreateCombo("", $x + 60, $y - 5, 75, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
@@ -212,11 +365,11 @@ $y += 30
 			$txtTip = GetTranslated(19,24,"Set the amount of Dark Elixir to trigger switching Profile.")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetLimit(-1, 6)
-		$picProfileDE = GUICtrlCreatePic(@ScriptDir & "\Images\DEStorage.jpg", $x + 350, $y - 40, 60, 60)
+		$picProfileDE = GUICtrlCreatePic(@ScriptDir & "\Images\DEStorage.jpg", $x + 335, $y - 40, 60, 60)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 $y += 48
-	$grpTrophySwitch = GUICtrlCreateGroup(GetTranslated(19,27,"Trophy Switch Profile Conditions"), $x - 20, $y - 20, 438, 75) ; Trophy Switch
-		$chkTrophySwitchMax = GUICtrlCreateCheckbox(GetTranslated(19,8,"Switch To"), $x-10, $y - 5, -1, -1)
+	$grpTrophySwitch = GUICtrlCreateGroup(GetTranslated(19,27,"Trophy Switch Profile Conditions"), $x - 20, $y - 20, 420, 75) ; Trophy Switch
+		$chkTrophySwitchMax = GUICtrlCreateCheckbox(GetTranslated(19,8,"Switch To"), $x - 10, $y - 5, -1, -1)
 			$txtTip = GetTranslated(19,28,"Enable this to switch profiles when Trophies are above amount.")
 			_GUICtrlSetTip(-1, $txtTip)
 		$cmbTrophyMaxProfile = GUICtrlCreateCombo("", $x + 60, $y - 5, 75, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
@@ -239,7 +392,6 @@ $y += 30
 			$txtTip = GetTranslated(19,30,"Set the amount of Trophies to trigger switching Profile.")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetLimit(-1, 4)
-		$picProfileTrophy = GUICtrlCreatePic(@ScriptDir & "\Images\TrophyLeague.jpg", $x + 350, $y - 40, 60, 60)
+		$picProfileTrophy = GUICtrlCreatePic(@ScriptDir & "\Images\TrophyLeague.jpg", $x + 335, $y - 40, 60, 60)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 		setupProfileComboBoxswitch()
-;GUICtrlCreateTabItem("")

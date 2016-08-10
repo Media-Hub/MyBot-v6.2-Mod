@@ -201,12 +201,12 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 
 		IniReadS($isldTrainITDelay, $config, "other", "TrainITDelay", "40")
 
-		IniReadS($ichkCloseWaitEnable, $config, "other", "chkCloseWaitEnable", "1")
+		IniReadS($ichkCloseWaitEnable, $config, "other", "chkCloseWaitEnable", "0")
 		IniReadS($ichkCloseWaitTrain, $config, "other", "chkCloseWaitTrain", "0")
 		IniReadS($ibtnCloseWaitStop, $config, "other", "btnCloseWaitStop", "0")
 		IniReadS($ibtnCloseWaitStopRandom, $config, "other", "btnCloseWaitStopRandom", "0")
-		IniReadS($ibtnCloseWaitExact, $config, "other", "btnCloseWaitExact", "0")
-		IniReadS($ibtnCloseWaitRandom, $config, "other", "btnCloseWaitRandom", "1")
+		IniReadS($ibtnCloseWaitExact, $config, "other", "btnCloseWaitExact", "1")
+		IniReadS($ibtnCloseWaitRandom, $config, "other", "btnCloseWaitRandom", "0")
 		IniReadS($icmbCloseWaitRdmPercent, $config, "other", "CloseWaitRdmPercent", "10")
 
 		IniReadS($ichkTroopOrder, $config, "troop", "chkTroopOrder", "0")
@@ -763,6 +763,9 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		$ichkSinglePBTForced = IniRead($config, "other", "chkSinglePBTForced", "0")
 		$iValueSinglePBTimeForced = IniRead($config, "other", "ValueSinglePBTimeForced", "18")
 		$iValuePBTimeForcedExit = IniRead($config, "other", "ValuePBTimeForcedExit", "15")
+		$ichkPBSleepBK = IniRead($config, "other", "chkPBSleepBK", "0")
+		$ichkPBSleepAQ = IniRead($config, "other", "chkPBSleepAQ", "0")
+		$ichkPBSleepGW = IniRead($config, "other", "chkPBSleepGW", "0")
 
 		$ichkLanguage = IniRead($config, "General", "ChkLanguage", "1")
 		$ichkDisableSplash = IniRead($config, "General", "ChkDisableSplash", $ichkDisableSplash)
@@ -1096,10 +1099,18 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		$icmbTrophyMinProfile = IniRead($config, "profiles", "cmbTrophyMinProfile", "0")
 		$itxtMinTrophyAmount = IniRead($config, "profiles", "txtMinTrophyAmount", "1000")
 
-		; Switch CoC Account
-		$nTotalCOCAcc = IniRead($profile, "switchcocacc", "totalacc", "0")
-		$ichkSwitchAcc = IniRead($profile, "switchcocacc", "Enable", "0")
-		$AccRelaxTogether = IniRead($profile, "switchcocacc", "AttackRelax", "0")
+		; SwitchAcc Mode - DEMEN
+		$ichkSwitchAcc = IniRead($profile, "Switch Account", "Enable", "0")
+		$icmbTotalCoCAcc = IniRead($profile, "Switch Account", "Total Coc Account", "0")	; 0 = AutoDetect
+		$ichkSmartSwitch = IniRead($profile, "Switch Account", "Smart Switch", "1")
+		$ichkCloseTraining = Number(IniRead($profile, "Switch Account", "Sleep Combo", "0"))
+
+		$ProfileType = IniRead($config, "Switch Account", "Profile Type", "")
+		$MatchProfileAcc = IniRead($config, "Switch Account", "Match Profile Acc", "")
+
+		; Restart Android after long search - DEMEN
+		$iChkRestartAndroidSearchLimit = IniRead($config, "Restart Android", "Enable", "1")
+		$iRestartAndroidSearchLimit = IniRead($config, "Restart Android", "Restart Android Search Limit", "200")
 
 	Else
 		Return False

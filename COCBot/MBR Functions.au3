@@ -122,7 +122,6 @@
 #include "functions\CreateArmy\TrainClick.au3"
 #include "functions\CreateArmy\Train.au3"
 #include "functions\CreateArmy\TrainIt.au3"
-#include "functions\CreateArmy\RemainTrainTime.au3"		;chalicucu add
 
 #include "functions\Image Search\ImageSearch.au3"
 #include "functions\Image Search\checkDeadBase.au3"
@@ -271,7 +270,6 @@
 #include "functions\Village\StarBonus.au3"
 #include "functions\Village\ClanHop.au3"
 #include "functions\Village\ProfileSwitch.au3"
-#include "functions\Village\SwitchCOCAcc.au3"		; Chalicucu Switch COC account
 
 ; Attack files - Added by LunaEclipse
 #include "functions\Attack\attackFunctions.au3"
@@ -295,3 +293,10 @@
 
 ; Multy Farming
 #include "functions\Mod\Multy\MultyFarmingRevenor.au3"
+
+; SwitchAcc - DEMEN
+#include "functions\Mod\Switch Accounts\SwitchAcc.au3"
+
+; Sleep Heroes
+#include "functions\Village\SleepHeroes.au3"
+

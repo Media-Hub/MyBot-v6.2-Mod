@@ -35,7 +35,7 @@ Local $hBotLaunchTime = TimerInit()
 
 Global $sGitHubModOwner = "NguyenAnhHD"
 Global $sGitHubModRepo = "MyBot-v6.2-Mod"
-Global $sGitHubModLatestReleaseTag = "v4.1.2"
+Global $sGitHubModLatestReleaseTag = "v4.1.3"
 Global $sModSupportUrl = "https://www.facebook.com/groups/clan.fire.dragon"
 
 $sBotVersion = "v6.2.1 Mod" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it it also use on Checkversion()
@@ -189,6 +189,7 @@ LoadAmountOfResourcesImages()
 
 ;~ InitializeVariables();initialize variables used in extra windows
 CheckVersion() ; check latest version on mybot.run site
+btnUpdateProfile() ; SwitchAcc - DEMEN
 
 ;~ Remember time in Milliseconds bot launched
 $iBotLaunchTime = TimerDiff($hBotLaunchTime)
@@ -201,8 +202,6 @@ EndIf
 
 ;~ Restore process priority
 ProcessSetPriority(@AutoItPID, $iBotProcessPriority)
-InitOrder()		;chalicucu init SwitchCOCAcc
-AccStatInit()	;chalicucu init stats [SwitchCOCAcc]
 
 ;AutoStart Bot if request
 AutoStart()
@@ -223,13 +222,17 @@ While 1
 WEnd
 
 Func runBot() ;Bot that runs everything in order
+
+	If $ichkSwitchAcc = 1 And $bReMatchAcc = True Then 				; SwitchAcc - DEMEN
+		$nCurProfile = _GUICtrlCombobox_GetCurSel($cmbProfile) + 1
+		Setlog("Rematching Profile [" & $nCurProfile &"] - " & $ProfileList[$nCurProfile] & " (CoC Acc. " & $aMatchProfileAcc[$nCurProfile-1] & ")")
+		SwitchCoCAcc()
+		$bReMatchAcc = False
+	EndIf
+
 	$TotalTrainedTroops = 0
 	Local $Quickattack = False
 	Local $iWaitTime
-	If $ichkSwitchAcc = 1 Then
-		RequestCC()		;Chalicucu
-		SwitchCOCAcc(True)	;Chalicucu, first match acc and profile
-	EndIf
 	While 1
 		$Restart = False
 		$fullArmy = False
@@ -258,7 +261,7 @@ Func runBot() ;Bot that runs everything in order
 			If $RequestShieldInfo = 1 Then PushMsgToPushBullet("ShieldInfo")
 				If _Sleep($iDelayRunBot3) Then Return
 			VillageReport()
-			ProfileSwitch() ; Added for Switch profile
+;			ProfileSwitch() ; Added for Switch profile
 			clanHop()
 			If $OutOfGold = 1 And (Number($iGoldCurrent) >= Number($itxtRestartGold)) Then ; check if enough gold to begin searching again
 				$OutOfGold = 0 ; reset out of gold flag
@@ -324,6 +327,8 @@ Func runBot() ;Bot that runs everything in order
 						GUICtrlRead($chkABWardenWait) = $GUI_CHECKED) Then
 					$IsWaitingForHeroesSpells = 0
 				EndIf
+			   ChkRemainHeroandSpell()
+			   If $ichkSwitchAcc = 1 And $aProfileType[$nCurProfile-1] = 2 Then checkSwitchAcc()
 
 					If $RunState = False Then Return
 					If $Restart = True Then ContinueLoop
@@ -354,11 +359,7 @@ Func runBot() ;Bot that runs everything in order
 					If _Sleep($iDelayRunBot3) Then Return
 					If $Restart = True Then ContinueLoop
 				PushMsgToPushBullet("CheckBuilderIdle")
-			   ;Chalicucu change Idle()
-				If Idle()= 1 Then
-					$Quickattack = False
-					ContinueLoop
-				EndIf
+				Idle()
 					;$fullArmy1 = $fullArmy
 					If _Sleep($iDelayRunBot3) Then Return
 					If $Restart = True Then ContinueLoop
@@ -547,49 +548,7 @@ Func Idle() ;Sequence that runs until Full Army
 		If $RequestBuilderInfo = 1 Then PushMsgToPushBullet("BuilderInfo")
 		If $RequestShieldInfo = 1 Then PushMsgToPushBullet("ShieldInfo")
 		If _Sleep($iDelayIdle1) Then Return
-		If $CommandStop = -1 Or ($ichkSwitchAcc = 1 And $CommandStop = 0) Then 	;Chalicucu
-            SetLog("====== Waiting for full army ======", $COLOR_GREEN)
-            If $ichkSwitchAcc = 1 And ($iRemainTrainTime > 2 Or $CommandStop = 0) Then    ;Chalicucu
-                RequestCC()
-				If _Sleep(1000) Then Return
-				SetLog("====== Switching COC account ======", $COLOR_GREEN)
-				If $CommandStop <> 0 And $iSwitchMode = 0 Then
-					Local $lRemainTrainTime = RemainTrainTime(True, False, True)
-					SetLog("Before leaving. Training remain: " & $lRemainTrainTime & " minute(s)", $COLOR_GREEN)
-					If $lRemainTrainTime >= 0 Then
-						$iRemainTrainTime = $lRemainTrainTime
-						SetCurTrainTime($iRemainTrainTime)
-					EndIf
-					ClickP($aAway, 1, 0, "#0167") ;Click Away
-				EndIf
-
-				If SwitchCOCAcc() Then     ;Chalicucu switch COC acc
-					checkMainScreen(True)
-					Train()
-					If $CommandStop <> 0 And $iRemainTrainTime > 0 Then		;new village camp
-						CloseCOC()
-						If $iRemainTrainTime < 3 Then
-							SetLog("====== Sleeping " & $iRemainTrainTime & " minutes and wait to attack ======", $COLOR_GREEN)
-							If _Sleep($iRemainTrainTime * 60000) Then Return
-						Else
-							If $iSwitchMode = 0 And $CommandStop <>  0 And $iSwitchCnt > $CoCAccNo Then
-								SetLog("====== Sleeping " & ($iRemainTrainTime - 2) & " minutes ======", $COLOR_GREEN)
-								If _Sleep(($iRemainTrainTime - 2) * 60000) Then Return		;turn back before 2 minutes to donation, fill army ... then attack
-							Else
-								SetLog("====== Sleeping 2 Seconds ======", $COLOR_GREEN)
-								If _Sleep(2000) Then Return
-							EndIf
-						EndIf
-						OpenCOC()
-					Else
-						If _Sleep(2000) Then Return
-					EndIf
-					Return 1
-				EndIf
-            Else
-                If _Sleep(30000) Then Return
-            EndIf
-        EndIf
+		If $CommandStop = -1 Then SetLog("====== Waiting for full army ======", $COLOR_GREEN)
 		Local $hTimer = TimerInit()
 		Local $iReHere = 0
 
@@ -701,7 +660,11 @@ Func Idle() ;Sequence that runs until Full Army
 		If $OutOfGold = 1 Or $OutOfElixir = 1 Then Return  ; Halt mode due low resources, only 1 idle loop
 		If $iChkSnipeWhileTrain = 1 Then SnipeWhileTrain()  ;snipe while train
 
-		If $CommandStop = -1 Then SmartWait4Train()  ; Check if closing bot/emulator while training and not in halt mode
+		If $CommandStop = -1 And $ichkSwitchAcc = 1 Then
+		   checkSwitchAcc()					; SwitchAcc - DEMEN
+		ElseIf $ichkSwitchAcc <> 1 Then		; SwitchAcc - DEMEN
+		   SmartWait4Train()  ; Check if closing bot/emulator while training and not in halt mode
+		EndIf
 	WEnd
 EndFunc   ;==>Idle
 
@@ -742,7 +705,7 @@ Func AttackMain() ;Main control for attack functions
 		Else
 			Setlog("No one of search condition match:", $COLOR_BLUE)
 			Setlog("Waiting on troops, heroes and/or spells according to search settings", $COLOR_BLUE)
-			BotCommand()			;Chalicucu
+			If $ichkSwitchAcc = 1 Then CheckSwitchAcc() 		; SwitchAcc - DEMEN
 		EndIf
 	Else
 		SetLog("Attacking Not Planned, Skipped..", $COLOR_RED)

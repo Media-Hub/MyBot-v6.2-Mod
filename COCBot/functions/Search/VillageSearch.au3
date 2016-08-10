@@ -310,6 +310,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 		;If SWHTSearchLimit($iSkipped + 1) Then Return True
 		; Return Home on Search limit
 		If SearchLimit($iSkipped + 1) Then Return True
+		If SearchLimitRestartAndroid($SearchCount) Then Return True
 
 		If checkAndroidTimeLag() = True Then
 		   $Restart = True
@@ -340,7 +341,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 					$iNbrOfOoS += 1
 					UpdateStats()
 					SetLog("Couldn't locate Next button", $COLOR_RED)
-					PushMsg("OoSResources")
+					PushMsgToPushBullet("OoSResources")
 				Else
 					SetLog("Have strange problem Couldn't locate Next button, Restarting CoC and Bot...", $COLOR_RED)
 					$Is_ClientSyncError = False ; disable fast OOS restart if not simple error and try restarting CoC
@@ -366,9 +367,11 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 
 		$iSkipped = $iSkipped + 1
 		$iSkippedVillageCount += 1
+		If $ichkSwitchAcc = 1 Then $aSkippedVillageCountAcc[$nCurProfile - 1] += 1 ; SwitchAcc Mod - DEMEN
 		If $iTownHallLevel <> "" Then
 			$iSearchCost += $aSearchCost[$iTownHallLevel - 1]
 			$iGoldTotal -= $aSearchCost[$iTownHallLevel - 1]
+			If $ichkSwitchAcc = 1 Then $aGoldTotalAcc[$nCurProfile -1] -= $aSearchCost[$iTownHallLevel - 1] ; Separate Stats per Each Account - SwitchAcc Mode - DEMEN
 		EndIf
 		UpdateStats()
 
@@ -400,7 +403,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 	EndIf
 
 	SetLog(_PadStringCenter(" Search Complete ", 50, "="), $COLOR_BLUE)
-	PushMsg("MatchFound")
+	PushMsgToPushBullet("MatchFound")
 
 
 ;~ 	; --- TH Detection Check Once Conditions ---
@@ -451,6 +454,24 @@ Func SearchLimit($iSkipped)
 		Return False
 	EndIf
 EndFunc   ;==>SearchLimit
+
+Func SearchLimitRestartAndroid($SearchCount); Restart Android after long search - DEMEN
+	If $iChkRestartAndroidSearchLimit = 1 And Mod($SearchCount, Number($iRestartAndroidSearchlimit)) = 0  Then
+		$Is_SearchLimit = True
+		Setlog("So many skips, Restart CoC and Android")
+		  CloseCoC()
+		  CloseAndroid()
+		  If _SleepStatus(10000) Then Return
+		  OpenAndroid()
+		  OpenCoC()
+ 		getArmyCapacity(True, True)
+ 		$Restart = True ; set force runbot restart flag
+ 		$Is_ClientSyncError = True ; set OOS flag for fast restart
+		Return True
+	Else
+		Return False
+    EndIf
+EndFunc; ==> SearchLimitAndroid (Restart Android after long search - DEMEN)
 
 
 Func WriteLogVillageSearch ($x)

@@ -1,5 +1,5 @@
 ; #FUNCTION# ====================================================================================================================
-; Name ..........: MBR GUI Design Child Mod - Option
+; Name ..........: MBR GUI Design Child Mod - Options
 ; Description ...: This file Includes GUI Design
 ; Syntax ........:
 ; Parameters ....: None
@@ -12,10 +12,10 @@
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: No
 ; ===============================================================================================================================
-$hGUI_ModOption = GUICreate("", $_GUI_MAIN_WIDTH - 28, $_GUI_MAIN_HEIGHT - 255 - 28, 5, 25, BitOR($WS_CHILD, $WS_TABSTOP), -1, $hGUI_MOD)
-GUISetBkColor($COLOR_WHITE, $hGUI_ModOption)
+$hGUI_ModOptions = GUICreate("", $_GUI_MAIN_WIDTH - 28, $_GUI_MAIN_HEIGHT - 255 - 28, 5, 25, BitOR($WS_CHILD, $WS_TABSTOP), -1, $hGUI_MOD)
+GUISetBkColor($COLOR_WHITE, $hGUI_ModOptions)
 
-GUISwitch($hGUI_ModOption)
+GUISwitch($hGUI_ModOptions)
 
 	; SmartZap Settings
 	Local $x = 20, $y = 25

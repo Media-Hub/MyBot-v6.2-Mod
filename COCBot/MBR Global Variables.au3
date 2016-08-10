@@ -200,8 +200,8 @@ EndFunc
 ; Updated in UpdateAndroidConfig() and $Android&Init() as well
 Global $InitAndroidActive = False
 Func InitAndroidConfig($bRestart = False)
-Global $Android = $AndroidAppConfig[$AndroidConfig][0]
 	If $bRestart = False Then
+	   $Android = $AndroidAppConfig[$AndroidConfig][0]
 	   $AndroidInstance = $AndroidAppConfig[$AndroidConfig][1]
 	   $Title = $AndroidAppConfig[$AndroidConfig][2]
 	EndIf
@@ -465,10 +465,11 @@ Global $ichkAlertPBCampFullTest = 0
 
 ;Info Notify - Added By TheRevenor
 Global $pAlertTopGain
-Global $RequestBuilderInfo = 0
-Global $RequestShieldInfo = 0
 Global $ichkAlertBuilderIdle
+Global $RequestScreenshotHD = 0
+Global $RequestBuilderInfo = 0
 Global $iReportIdleBuilder = 0
+Global $RequestShieldInfo = 0
 
 ;Pushbullet Stuff
 Global $StartTime = @HOUR & ":" & @MIN &", " & @MON & "/" & @MDAY
@@ -1162,6 +1163,10 @@ Global $iValueTotalCampForced = 200
 Global $ichkSinglePBTForced = 0
 Global $iValueSinglePBTimeForced = 18
 Global $iValuePBTimeForcedExit = 15
+Global $ClosedDueToPB = False
+Global $ichkPBSleepBK = 0
+Global $ichkPBSleepAQ = 0
+Global $ichkPBSleepGW = 0
 Global $bWaitShield = False
 Global $bGForcePBTUpdate = False
 
@@ -1472,7 +1477,7 @@ Global $THSnipeBeforeDBTiles = 0 , $THSnipeBeforeLBTiles = 0
 Global $THSnipeBeforeDBScript = 0 , $THSnipeBeforeLBScript = 0
 
 ; Close game while train
-Global $ichkCloseWaitTrain = 0, $ichkCloseWaitSpell, $ichkCloseWaitHero, $ibtnCloseWaitStop = 0, $ibtnCloseWaitStopRandom, $ibtnCloseWaitExact, $ibtnCloseWaitRandom, $icmbCloseWaitRdmPercent, $ichkCloseWaitEnable = 1
+Global $ichkCloseWaitTrain = 0, $ichkCloseWaitSpell, $ichkCloseWaitHero, $ibtnCloseWaitStop = 0, $ibtnCloseWaitStopRandom, $ibtnCloseWaitExact, $ibtnCloseWaitRandom, $icmbCloseWaitRdmPercent, $ichkCloseWaitEnable = 0
 Global $aTimeTrain[3] = [0, 0, 0] ; [Troop remaining time], [Spells remaining time], [Hero remaining time - when possible]
 Global $iCCRemainTime = 0  ; Time remaining until can request CC again
 
@@ -1617,55 +1622,40 @@ $iCSVSpeeds[10] = 2.5
 $iCSVSpeeds[11] = 2.75
 $iCSVSpeeds[12] = 3
 
-;=> *********** [Chalicucu] Switch COC account ************************************
-Global $nTotalCOCAcc	; up to 8		;Number of Google+ accounts on emulator
-Global $CoCAccNo
-Global $profile = $sProfilePath & "\profile.ini"
-$nTotalCOCAcc = Int(Iniread($profile, "switchcocacc", "totalacc", "0"))
-If $nTotalCOCAcc = 0 Then
-	SetLog("---------------Switch CoC Accounts ---------------", $COLOR_RED)
-	SetLog("Set up your total google account first!", $COLOR_RED)
-	SetLog("------------------------------------------------------", $COLOR_RED)
-	$nTotalCOCAcc = 8
-EndIf
-Global $ichkSwitchAcc = Int(IniRead($profile, "switchcocacc" , "Enable" ,"1"))
-Global $nCurCOCAcc = 1     ;Chalicucu Current COC account index : 1 of 3 acc
-Global $nCurStep = -1
-Global $anCOCAccIdx[$CoCAccNo]		; = [1, 3, 2]       ; 1->3->2->1	; Account walking step
-Global $anBotProfileIdx[$nTotalCOCAcc]; = [1, 2, 3]		;	bot profile index correspond to COC account
-;InitOrder()
-;Training progress for accounts
-Global $AccDonBarb[$nTotalCOCAcc], $AccDonArch[$nTotalCOCAcc], $AccDonGiant[$nTotalCOCAcc], $AccDonGobl[$nTotalCOCAcc], $AccDonWall[$nTotalCOCAcc], $AccDonBall[$nTotalCOCAcc], $AccDonWiza[$nTotalCOCAcc], $AccDonHeal[$nTotalCOCAcc]
-Global $AccDonMini[$nTotalCOCAcc], $AccDonHogs[$nTotalCOCAcc], $AccDonValk[$nTotalCOCAcc], $AccDonGole[$nTotalCOCAcc], $AccDonWitc[$nTotalCOCAcc], $AccDonLava[$nTotalCOCAcc], $AccDonDrag[$nTotalCOCAcc], $AccDonPekk[$nTotalCOCAcc]
-Global $AccBarbComp[$nTotalCOCAcc], $AccArchComp[$nTotalCOCAcc], $AccGoblComp[$nTotalCOCAcc], $AccGiantComp[$nTotalCOCAcc], $AccWallComp[$nTotalCOCAcc], $AccWizaComp[$nTotalCOCAcc], $AccMiniComp[$nTotalCOCAcc], $AccHogsComp[$nTotalCOCAcc]
-Global $AccDragComp[$nTotalCOCAcc], $AccBallComp[$nTotalCOCAcc], $AccPekkComp[$nTotalCOCAcc], $AccHealComp [$nTotalCOCAcc], $AccValkComp[$nTotalCOCAcc], $AccGoleComp[$nTotalCOCAcc], $AccWitcComp[$nTotalCOCAcc], $AccLavaComp[$nTotalCOCAcc]
-Global $AccCurBarb[$nTotalCOCAcc],  $AccCurArch[$nTotalCOCAcc],  $AccCurGiant[$nTotalCOCAcc], $AccCurGobl[$nTotalCOCAcc],  $AccCurWall[$nTotalCOCAcc],  $AccCurBall[$nTotalCOCAcc],  $AccCurWiza[$nTotalCOCAcc],  $AccCurHeal[$nTotalCOCAcc]
-Global $AccCurMini[$nTotalCOCAcc],  $AccCurHogs[$nTotalCOCAcc],  $AccCurValk[$nTotalCOCAcc], $AccCurGole[$nTotalCOCAcc],  $AccCurWitc[$nTotalCOCAcc],  $AccCurLava[$nTotalCOCAcc],  $AccCurDrag[$nTotalCOCAcc],  $AccCurPekk[$nTotalCOCAcc]
-Global $AccFirstStart[$nTotalCOCAcc]
-Global $AccTotalTrainedTroops[$nTotalCOCAcc]
+;SwitchAcc - DEMEN
+Global $profile = $sProfilePath & "\Profile.ini"
+Global $aconfig[8]
+Global $ichkSwitchAcc = 0
 
-Global $AccRelaxTogether = Iniread($profile, "switchcocacc", "AttackRelax", 1)
-Global $iChkAtkPln = (Number(Iniread($profile, "switchcocacc", "CheckAtkPln", 1)) = 1)
+Global $icmbTotalCoCAcc		; 0 = Auto detect, 1 = 1 account, 2 = 2 accounts
+Global $nTotalCoCAcc
+Global $ichkSmartSwitch = 1
 
-Global $iAccGoldStart[$nTotalCOCAcc], $iAccElixirStart[$nTotalCOCAcc], $iAccDarkStart[$nTotalCOCAcc], $iAccTrophyStart[$nTotalCOCAcc]
-Global $iAccAttacked[$nTotalCOCAcc], $iAccSkippedCount[$nTotalCOCAcc]
-Global $AccStatFlg[$nTotalCOCAcc]
+Global $ichkCloseTraining = 0
 
-Global $iSwitchMode = Iniread($profile, "switchcocacc", "SwitchMode", 0)		;0: shortest training mode (STM), 1: fixed order mode
-Global $iRemainTrainTime = 0	;remain train time of current account
+Global $nCurProfile = 1
+Global $ProfileList
+Global $nTotalProfile = 1
 
-;STM mode control
-Global $aTimerStart[1]		;tracing start training time
-Global $accTrainTime[1]		;Remain train time of attacking account
-Global $accDonate[1] = [-1]	;donation list
-Global $accAttack[1] = [-1]	;attacking list
-Global $nCurAtkIdx = 0		;current attack index
-Global $nLastDonAcc = 0		;last donate account
-Global $iSwitchCnt = 0		;counting switching time to identify next switching step
+Global $ProfileType			; Type of the Current Profile, 1 = active, 2 = donate, 3 = idle
+Global $aProfileType[8]		; Type of the all Profiles, 1 = active, 2 = donate, 3 = idle
 
-;<= *********** [Chalicucu] Switch COC account ************************************
+Global $MatchProfileAcc		; Account match with Current Profile
+Global $aMatchProfileAcc[8]	; Accounts match with All Profiles
 
-Global $iAtkPlan_HalfHour = True		;Chalicucu, attack more half hour in attack plan
+Global $DonateSwitchCounter = 0
+
+Global $bReMatchAcc = False
+
+Global $aTimerStart[8]
+Global $aTimerEnd[8]
+Global $aRemainTrainTime[8]
+Global $aUpdateRemainTrainTime[8]
+Global $nNexProfile
+Global $nMinRemainTrain
+
+Global $iChkRestartAndroidSearchLimit
+Global $iRestartAndroidSearchLimit
 
 ;=== No variables below ! ================================================
 

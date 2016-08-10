@@ -576,7 +576,7 @@ $hGUI_ARMY_TAB_ITEM4 = GUICtrlCreateTabItem(GetTranslated(641,1,"Options"))
 			$txtTip = GetTranslated(641, 4, "Option will exit CoC game for time required to complete TROOP training when SHIELD IS ACTIVE")& @CRLF & _
 			GetTranslated(641, 5, "Close for Spell creation will be enabled when 'Wait for Spells' is selected on Search tabs")  & @CRLF & _
 			GetTranslated(641, 6, "Close for Hero healing will be enabled when 'Wait for Heroes' is enabled on Search tabs")
-			GUICtrlSetState(-1, $GUI_CHECKED)
+			GUICtrlSetState(-1, $GUI_UNCHECKED)
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkCloseWaitEnable")
 	$y +=	28
@@ -608,7 +608,7 @@ $hGUI_ARMY_TAB_ITEM4 = GUICtrlCreateTabItem(GetTranslated(641,1,"Options"))
 		$btnCloseWaitExact = GUICtrlCreateRadio(GetTranslated(641,16, "Exact Time"),$x + 18, $y+1, 110, -1)
 			$txtTip = GetTranslated(641,17, "Select to wait exact time required for troops to complete training")
 			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetState(-1, $GUI_UNCHECKED)
+			GUICtrlSetState(-1, $GUI_CHECKED)
 			GUICtrlSetOnEvent(-1, "btnCloseWaitRandom")
 		$picCloseWaitExact = GUICtrlCreateIcon ($pIconLib, $eIcnHourGlass, $x-13, $y + 13, 24, 24)
 			$txtTip = GetTranslated(641,18, "Select how much time to wait when feature enables")
@@ -617,7 +617,7 @@ $hGUI_ARMY_TAB_ITEM4 = GUICtrlCreateTabItem(GetTranslated(641,1,"Options"))
 		$btnCloseWaitRandom = GUICtrlCreateRadio(GetTranslated(641,19, "Random Time"), $x + 18, $y+1, 110, -1)
 			$txtTip = GetTranslated(641,20, "Select to ADD a random extra wait time like human who forgets to clash")
 			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetState(-1, $GUI_CHECKED)
+			GUICtrlSetState(-1, $GUI_UNCHECKED)
 			GUICtrlSetOnEvent(-1, "btnCloseWaitRandom")
 	$y +=	28
 		$cmbCloseWaitRdmPercent = GUICtrlCreateCombo("", $x + 36, $y, 40, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
@@ -635,14 +635,14 @@ $hGUI_ARMY_TAB_ITEM4 = GUICtrlCreateTabItem(GetTranslated(641,1,"Options"))
 		$lbltxtTrainITDelay = GUICtrlCreateLabel(GetTranslated(636,32, "delay"), $x-10, $y, 37, 30)
 			$txtTip = GetTranslated(636,33, "Increase the delay if your PC is slow or to create human like training click speed")
 			_GUICtrlSetTip(-1, $txtTip)
-		$lbltxtTrainITDelayTime = GUICtrlCreateLabel("40 ms", $x-10, $y+15, 37, 30)
+		$lbltxtTrainITDelayTime = GUICtrlCreateLabel("25 ms", $x-10, $y+15, 37, 30)
 			_GUICtrlSetTip(-1, $txtTip)
 		$sldTrainITDelay = GUICtrlCreateSlider($x + 30, $y, 90, 25, BitOR($TBS_TOOLTIPS, $TBS_AUTOTICKS))
 			_GUICtrlSetTip(-1, GetTranslated(636,33, -1))
 			_GUICtrlSlider_SetTipSide(-1, $TBTS_BOTTOM)
 			_GUICtrlSlider_SetTicFreq(-100, 100)
 			GUICtrlSetLimit(-1, 500, 1) ; change max/min value
-			GUICtrlSetData(-1, 40) ; default value
+			GUICtrlSetData(-1, 25) ; default value
 			GUICtrlSetOnEvent(-1, "sldTrainITDelay")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 

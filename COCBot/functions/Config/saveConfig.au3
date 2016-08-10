@@ -676,6 +676,25 @@ Func saveConfig() ;Saves the controls settings to the config
 	$iValueSinglePBTimeForced = GUICtrlRead($txtSinglePBTimeForced)
 	$iValuePBTimeForcedExit = GUICtrlRead($txtPBTimeForcedExit)
 
+	;- Barbarian King
+	If GUICtrlRead($chkPBSleepBK) = $GUI_CHECKED Then
+		$ichkPBSleepBK = 1
+	Else
+		$ichkPBSleepBK = 0
+	EndIf
+	;- Archer Queen
+	If GUICtrlRead($chkPBSleepAQ) = $GUI_CHECKED Then
+		$ichkPBSleepAQ = 1
+	Else
+		$ichkPBSleepAQ = 0
+	EndIf
+	;- Grand Warden
+	If GUICtrlRead($chkPBSleepGW) = $GUI_CHECKED Then
+		$ichkPBSleepGW = 1
+	Else
+		$ichkPBSleepGW = 0
+	EndIf
+
 	If GUICtrlRead($chkUseRandomClick) = $GUI_CHECKED Then
 		$iUseRandomClick = 1
 	Else
@@ -2332,6 +2351,9 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWriteS($config, "other", "chkSinglePBTForced", $ichkSinglePBTForced)
 	IniWriteS($config, "other", "ValueSinglePBTimeForced", $iValueSinglePBTimeForced)
 	IniWriteS($config, "other", "ValuePBTimeForcedExit", $iValuePBTimeForcedExit)
+	IniWriteS($config, "other", "chkPBSleepBK", $ichkPBSleepBK)
+	IniWriteS($config, "other", "chkPBSleepAQ", $ichkPBSleepAQ)
+	IniWriteS($config, "other", "chkPBSleepGW", $ichkPBSleepGW)
 
 	IniWriteS($config, "General", "ChkLanguage", $ichkLanguage)
 
@@ -2683,20 +2705,49 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWrite($config, "profiles", "cmbTrophyMinProfile", _GUICtrlComboBox_GetCurSel($cmbTrophyMinProfile))
 	IniWrite($config, "profiles", "txtMinTrophyAmount", GUICtrlRead($txtMinTrophyAmount))
 
-	;Chalicucu Switch CoC Account
+	; SwitchAcc Mode - DEMEN
+	If GUICtrlRead($radActiveProfile) = $GUI_CHECKED Then														; 1 = Active, 2 = Donate, 3 = Idle
+		IniWrite($config, "Switch Account", "Profile Type", 1)
+		IniWrite($profile, "Profile Type", _GUICtrlCombobox_GetCurSel($cmbProfile)+1, 1)
+	 ElseIf GUICtrlRead($radDonateProfile) = $GUI_CHECKED Then
+		IniWrite($config, "Switch Account", "Profile Type", 2)
+		IniWrite($profile, "Profile Type", _GUICtrlCombobox_GetCurSel($cmbProfile)+1, 2)
+	 Else
+		IniWrite($config, "Switch Account", "Profile Type", 3)
+		IniWrite($profile, "Profile Type", _GUICtrlCombobox_GetCurSel($cmbProfile)+1, 3)
+	EndIf
+
+	IniWrite($config, "Switch Account", "Match Profile Acc", _GUICtrlCombobox_GetCurSel($cmbMatchProfileAcc))	 ; 0 = No Acc (idle), 1 = Acc 1, 2 = Acc 2, etc.
+
 	If GUICtrlRead($chkSwitchAcc) = $GUI_CHECKED Then
-		IniWrite($profile, "switchcocacc", "Enable", 1)
+		IniWrite($profile, "Switch Account", "Enable", 1)
 	Else
-		IniWrite($profile, "switchcocacc", "Enable", 0)
+		IniWrite($profile, "Switch Account", "Enable", 0)
 	EndIf
-	IniWrite($profile, "switchcocacc", "totalacc", GUICtrlRead($txtTotalCoCAcc))
-	IniWrite($profile, "switchcocacc", "order", GUICtrlRead($txtAccBottingOrder))
-	IniWrite($profile, "switchcocacc", "profile", GUICtrlRead($txtProfileIdxOrder))
-	If GUICtrlRead($chkAccRelax) = $GUI_CHECKED Then
-		IniWrite($profile, "switchcocacc", "AttackRelax", 1)
+
+	IniWrite($profile, "Switch Account", "Total Coc Account", _GUICtrlCombobox_GetCurSel($cmbTotalAccount))	; 0 = AutoDetect, 1 = 1 Acc, 2 = 2 Acc, etc.
+
+	If GUICtrlRead($radSmartSwitch) = $GUI_CHECKED Then
+	   IniWrite($profile, "Switch Account", "Smart Switch", 1)
 	Else
-		IniWrite($profile, "switchcocacc", "AttackRelax", 0)
+	   IniWrite($profile, "Switch Account", "Smart Switch", 0)
 	EndIf
+
+	If GUICtrlRead($chkUseTrainingClose) = $GUI_CHECKED Then
+		IniWrite($profile, "Switch Account", "Sleep Combo", 1)
+	Else
+		IniWrite($profile, "Switch Account", "Sleep Combo", 0)
+	EndIf
+
+
+   	; Restart Android after long search - DEMEN
+
+	If GUICtrlRead($ChkRestartAndroidSearchLimit) = $GUI_CHECKED Then
+		IniWrite($config, "Restart Android", "Enable", 1)
+	Else
+		IniWrite($config, "Restart Android", "Enable", 0)
+	EndIf
+	IniWrite($config, "Restart Android", "Restart Android Search Limit", GUICtrlRead($TxtRestartAndroidSearchlimit))
 
 	If $hFile <> -1 Then FileClose($hFile)
 

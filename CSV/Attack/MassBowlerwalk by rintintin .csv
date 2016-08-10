@@ -1,0 +1,71 @@
+NOTE  |Author: Ahsan - ver. 1.4b-
+NOTE  |Attack: Mass Bowler Walk
+NOTE  |Make Troops: 12-20 Bowler, 6-8 healer, 8 WBs (optional)
+NOTE  |Make Spells: 2-3 rage, 1-2 jump, 4 eq (optional)
+NOTE  |Cost =  Elixer = 177K, DE = 4800
+
+
+      |-----------------------------------------------------------------------------------------------|
+      |                                                                                               |
+      |                                                                                               |
+
+      |EXTR. GOLD |EXTR.ELIXIR|EXTR. DARK |DEPO. GOLD |DEPO.ELIXIR|DEPO. DARK |TOWNHALL   |FORCED SIDE|
+SIDE  |0          |0          |0          |0          |0          |0          |10         |           |
+
+
+      |VECTOR_____|SIDE_______|DROP_POINTS|ADDTILES___|VERSUS_____|RANDOMX_PX_|RANDOMY_PX_|___________|
+MAKE  |A          |FRONT-LEFT |10         |1          |INT-EXT    |0          |2          |           |vector for bowler front left
+MAKE  |B          |FRONT-RIGHT|10         |1          |INT-EXT    |0          |2          |           |vector for bowler front right
+MAKE  |C          |FRONT-LEFT |10         |4          |INT-EXT    |0          |3          |           |vector for healer front left
+MAKE  |D          |FRONT-RIGHT|10         |4          |INT-EXT    |0          |3          |           |vector for healer front right
+MAKE  |F          |FRONT-LEFT |10         |1          |INT-EXT    |0          |1          |           |vector for wall breakers front left
+MAKE  |G          |FRONT-RIGHT|10         |1          |INT-EXT    |0          |1          |           |vector for wall breakers front right
+MAKE  |H          |FRONT-LEFT |10         |-7         |INT-EXT    |0          |1          |           |vector for jump spell
+MAKE  |I          |FRONT-LEFT |10         |-8         |INT-EXT    |0          |1          |           |vector for 1st rage middle
+MAKE  |J          |FRONT-LEFT |10         |-13        |INT-EXT    |0          |1          |           |vector for 2st rage middle
+MAKE  |K          |FRONT-LEFT |10         |-12        |INT-EXT    |0          |1          |           |vector for quakes
+MAKE  |L          |FRONT-LEFT |10         |-17        |INT-EXT    |0          |1          |           |vector for 3st rage middle
+
+
+      |VECTOR_____|INDEX______|QTY_X_VECT_|TROOPNAME__|DELAY_DROP_|DELAYCHANGE|SLEEPAFTER_|           |
+DROP  |K          |1          |4          |Espell     |75         |0          |500-600    |           |drop quake(s)
+DROP  |A          |8-10       |4          |bowl       |75         |0          |500-1000   |           |drop 4 bowlers each front left
+DROP  |C          |8-10       |2          |heal       |75         |0          |50-100     |           |drop 2 Healers each front left
+DROP  |B          |8-10       |4          |bowl       |75         |0          |500-1000   |           |drop 4 bowlers each front right
+DROP  |D          |8-10       |2          |heal       |75         |0          |50-100     |           |drop 2 Healers each front right
+DROP  |A	      |1	      |1          |HaSpell    |75         |0          |50-100     |  		  |drop 1 Haste Spell
+DROP  |A-B        |1-6        |6          |giant      |75         |0          |500-1000   | 		  |drop 6 giants
+DROP  |C-D        |1-6        |4          |heal       |75         |0          |50-100     |           |drop 2-4 healer front mid
+DROP  |A-B        |1-6        |10         |bowl       |75         |0          |500-1000   |           |drop 6-10 bowlers front mid
+DROP  |H          |1          |1          |JSpell     |0          |0          |0          |           |drop 1st jump spell
+DROP  |F          |1          |2          |wall       |500        |0          |0          |           |launch 2 wall breakers 
+DROP  |F-G        |1          |2          |wall       |0          |0          |0          |           |launch 4 wall breakers
+DROP  |F          |1          |2          |wall       |500        |0          |100        |           |launch 2 wall breakers 
+DROP  |F          |1          |2          |wall       |500        |0          |100        |           |launch 2 wall breakers 
+DROP  |F          |1          |2          |wall       |500        |0          |100        |           |launch 2 wall breakers 
+DROP  |F          |1          |2          |wall       |0          |0          |100        |           |launch 2 wall breakers 
+DROP  |A          |1          |1          |king       |0          |0          |100-300    |           |launch king  
+DROP  |A          |1          |1          |queen      |0          |0          |100-300    |           |launch queen
+DROP  |A          |1          |1          |castle     |0          |0          |100-300    |           |launch castle  
+DROP  |A          |1          |1          |warden     |0          |0          |500        |           |launch warden
+WAIT  |6000       |           |           |           |           |           |           |           |
+DROP  |L          |1          |1          |FSpell     |0          |0          |0          |           |drop freeze spell
+DROP  |I          |1          |1          |RSpell     |0          |0          |0          |           |drop 1st rage middle
+WAIT  |3500       |           |           |           |           |           |           |           |
+DROP  |K          |1          |1          |JSpell     |0          |0          |50-100     |           |drop 2st jump spell
+DROP  |J          |1          |1          |RSpell     |0          |0          |0          |           |drop 2st rage middle
+WAIT  |3500       |           |           |           |           |           |           |           |
+DROP  |L          |1          |1          |RSpell     |0          |0          |0          |           |drop 3st rage middle
+WAIT  |2000-4000  |           |           |           |           |           |           |           |
+DROP  |A          |1          |1          |warden     |0          |0          |500        |           |launch warden
+
+
+RECALC|           |           |           |           |           |           |           |           |Recalculate remaining troops and then launch...
+DROP  |C-D        |1-8        |20         |bowl       |0          |0          |100-300    |           |
+DROP  |C-D        |1-8        |20         |giant      |0          |0          |100-300    |           |
+DROP  |C-D        |1-8        |20         |heal       |0          |0          |100-300    |           |
+DROP  |C-D        |1-8        |20         |wall       |0          |0          |100-300    |           |
+DROP  |C-D        |1-8        |20         |arch       |0          |0          |100-300    |           |
+DROP  |C-D        |1-8        |20         |barb       |0          |0          |100-300    |           |
+DROP  |C-D        |1-8        |20         |mini       |0          |0          |100-300    |           |
+DROP  |C-D        |1-8        |20         |wiza       |10-30      |50-100     |100-300    |           |

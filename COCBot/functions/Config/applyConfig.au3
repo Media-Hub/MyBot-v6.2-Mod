@@ -710,14 +710,12 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 		Next
 		GUICtrlSetState($chkCloseWaitEnable, $GUI_CHECKED)
 		_GUI_Value_STATE("ENABLE", $groupCloseWaitTrain)
-		GUICtrlSetState($chkSwitchAcc, $GUI_DISABLE)
 	ElseIf $ichkCloseWaitEnable = 0 Then
 		For $i = $chkCloseWaitTrain To $lblCloseWaitRdmPercent
 			GUICtrlSetState($i, $GUI_HIDE)
 		Next
 		GUICtrlSetState($chkCloseWaitEnable, $GUI_UNCHECKED)
 		_GUI_Value_STATE("DISABLE", $groupCloseWaitTrain)
-		GUICtrlSetState($chkSwitchAcc, $GUI_ENABLE)
 	EndIf
 	If $ichkCloseWaitTrain = 1 Then
 		GUICtrlSetState($chkCloseWaitTrain, $GUI_CHECKED)
@@ -2058,6 +2056,22 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	GUICtrlSetData($txtPBTimeForcedExit, $iValuePBTimeForcedExit)
 	chkSinglePBTForced()
 
+	If $ichkPBSleepBK = 1 Then
+		GUICtrlSetState($chkPBSleepBK, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkPBSleepBK, $GUI_UNCHECKED)
+	EndIf
+	If $ichkPBSleepAQ = 1 Then
+		GUICtrlSetState($chkPBSleepAQ, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkPBSleepAQ, $GUI_UNCHECKED)
+	EndIf
+	If $ichkPBSleepGW = 1 Then
+		GUICtrlSetState($chkPBSleepGW, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkPBSleepGW, $GUI_UNCHECKED)
+	EndIf
+
 	;multilanguage
 	LoadLanguagesComboBox() ; recreate combo box values
 	_GUICtrlComboBox_SetCurSel($cmbLanguage, _GUICtrlComboBox_FindStringExact($cmbLanguage, $aLanguageFile[_ArraySearch($aLanguageFile, $sLanguage)][1]))
@@ -2815,6 +2829,49 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	_GUICtrlComboBox_SetCurSel($cmbTrophyMinProfile, $icmbTrophyMinProfile)
 	GUICtrlSetData($txtMinTrophyAmount, $itxtMinTrophyAmount)
 
+   ; SwitchAcc- DEMEN
+	Switch $ProfileType
+	Case 1
+	   GUICtrlSetState($radActiveProfile, $GUI_CHECKED)
+	Case 2
+	   GUICtrlSetState($radDonateProfile, $GUI_CHECKED)
+	Case 3
+	   GUICtrlSetState($radIdleProfile, $GUI_CHECKED)
+	EndSwitch
+
+	_GUICtrlCombobox_SetCurSel($cmbMatchProfileAcc, $MatchProfileAcc)
+
+ 	If $ichkSwitchAcc = 1 Then
+ 		GUICtrlSetState($chkSwitchAcc, $GUI_CHECKED)
+ 	Else
+ 		GUICtrlSetState($chkSwitchAcc, $GUI_UNCHECKED)
+ 	EndIf
+
+	If $ichkSmartSwitch = 1 Then
+	   GUICtrlSetState($radSmartSwitch, $GUI_CHECKED)
+ 	Else
+	   GUICtrlSetState($radNormalSwitch, $GUI_CHECKED)
+ 	EndIf
+
+	chkSwitchAcc()
+
+	If $ichkCloseTraining = 1 Then
+		GUICtrlSetState($chkUseTrainingClose, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkUseTrainingClose, $GUI_UNCHECKED)
+	EndIf
+
+	_GUICtrlCombobox_SetCurSel($cmbTotalAccount, $icmbTotalCoCAcc)	; 0 = AutoDetect
+
+	If $iChkRestartAndroidSearchLimit = 1 Then
+		GUICtrlSetState($chkRestartAndroidSearchLimit, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkRestartAndroidSearchLimit, $GUI_UNCHECKED)
+	 EndIf
+	 chkRestartAndroidSearchLimit()
+
+	 GUICtrlSetData($txtRestartAndroidSearchLimit, $iRestartAndroidSearchLimit)
+
 	;Apply to switch Attack Standard after THSnipe End ==>
 	If $ichkTSActivateCamps2 = 1 Then
 		GUICtrlSetState($chkTSActivateCamps2, $GUI_CHECKED)
@@ -2823,46 +2880,6 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	EndIf
 	chkTSActivateCamps2()
 	GUICtrlSetData($txtTSArmyCamps2, $iEnableAfterArmyCamps2)
-
-	;=> chalicucu & demen:  switchcocacc
-	If $ichkSwitchAcc = 1 Then
-		GUICtrlSetState($chkSwitchAcc, $GUI_CHECKED)
-		For $i = $lbSwitchMode To $lbMapHelp
-			GUICtrlSetState($i, $GUI_SHOW)
-		Next
-		GUICtrlSetState($chkCloseWaitEnable, $GUI_DISABLE)
-		For $i = $chkCloseWaitTrain To $lblCloseWaitRdmPercent
-			GUICtrlSetState($i, $GUI_HIDE)
-		Next
-		GUICtrlSetState($chkMultyFarming, $GUI_DISABLE)
-		GUICtrlSetState($chkSwitchDonate, $GUI_DISABLE)
-	Else
-		GUICtrlSetState($chkSwitchAcc, $GUI_UNCHECKED)
-		For $i = $lbSwitchMode To $lbMapHelp
- 			GUICtrlSetState($i, $GUI_HIDE)
-		Next
-		GUICtrlSetState($chkCloseWaitEnable, $GUI_ENABLE)
-		For $i = $chkCloseWaitTrain To $lblCloseWaitRdmPercent
-			GUICtrlSetState($i, $GUI_SHOW)
-		Next
-		GUICtrlSetState($chkMultyFarming, $GUI_ENABLE)
-		GUICtrlSetState($chkSwitchDonate, $GUI_ENABLE)
-	EndIf
-	If $AccRelaxTogether = 1 Then
-		GUICtrlSetState($chkAccRelax, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkAccRelax, $GUI_UNCHECKED)
-	EndIf
-	If $iChkAtkPln Then
-		GUICtrlSetState($chkAtkPln, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkAtkPln, $GUI_UNCHECKED)
-	EndIf
-	GUICtrlSetData($txtTotalCoCAcc, $nTotalCOCAcc)
-	GUICtrlSetData($txtTotalCoCAcc, IniRead($profile, "switchcocacc" , "totalacc" ,"0"))
-	GUICtrlSetData($txtAccBottingOrder, IniRead($profile, "switchcocacc" , "order" ,"123"))
-	GUICtrlSetData($txtProfileIdxOrder, IniRead($profile, "switchcocacc" , "profile" ,"123"))
-	_GUICtrlComboBox_SetCurSel($cmbSwitchMode, $iSwitchMode)
 
 	; Reenabling window redraw - Keep this last....
 	If $bRedrawAtExit Then SetRedrawBotWindow(True)

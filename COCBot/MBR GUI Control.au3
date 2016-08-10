@@ -45,7 +45,7 @@ Global $aMainTabItems[7] = [$tabMain, $tabGeneral, $tabVillage, $tabAttack, $tab
 Global $aTabControlsVillage[6] = [$hGUI_VILLAGE_TAB, $hGUI_VILLAGE_TAB_ITEM1, $hGUI_VILLAGE_TAB_ITEM2, $hGUI_VILLAGE_TAB_ITEM3, $hGUI_VILLAGE_TAB_ITEM4, $hGUI_VILLAGE_TAB_ITEM5]
 Global $aTabControlsDonate[4] = [$hGUI_DONATE_TAB, $hGUI_DONATE_TAB_ITEM1, $hGUI_DONATE_TAB_ITEM2, $hGUI_DONATE_TAB_ITEM3]
 Global $aTabControlsUpgrade[5] = [$hGUI_UPGRADE_TAB, $hGUI_UPGRADE_TAB_ITEM1, $hGUI_UPGRADE_TAB_ITEM2, $hGUI_UPGRADE_TAB_ITEM3, $hGUI_UPGRADE_TAB_ITEM4]
-Global $aTabControlsNotify[4] = [$hGUI_NOTIFY_TAB, $hGUI_NOTIFY_TAB_ITEM1, $hGUI_NOTIFY_TAB_ITEM2, $hGUI_NOTIFY_TAB_ITEM3]
+Global $aTabControlsNotify[3] = [$hGUI_NOTIFY_TAB, $hGUI_NOTIFY_TAB_ITEM1, $hGUI_NOTIFY_TAB_ITEM2]
 
 Global $aTabControlsAttack[4] = [$hGUI_ATTACK_TAB, $hGUI_ATTACK_TAB_ITEM1, $hGUI_ATTACK_TAB_ITEM2, $hGUI_ATTACK_TAB_ITEM3]
 Global $aTabControlsArmy[5] = [$hGUI_ARMY_TAB, $hGUI_ARMY_TAB_ITEM1, $hGUI_ARMY_TAB_ITEM2, $hGUI_ARMY_TAB_ITEM3, $hGUI_ARMY_TAB_ITEM4]
@@ -57,8 +57,9 @@ Global $aTabControlsAttackOptions[5] = [$hGUI_AttackOption_TAB, $hGUI_AttackOpti
 Global $aTabControlsStrategies[3] = [$hGUI_STRATEGIES_TAB, $hGUI_STRATEGIES_TAB_ITEM1, $hGUI_STRATEGIES_TAB_ITEM2]
 
 Global $aTabControlsBot[4] = [$hGUI_BOT_TAB, $hGUI_BOT_TAB_ITEM1, $hGUI_BOT_TAB_ITEM2, $hGUI_BOT_TAB_ITEM3]
-Global $aTabControlsMOD[6] = [$hGUI_MOD_TAB, $hGUI_MOD_TAB_ITEM1, $hGUI_MOD_TAB_ITEM2, $hGUI_MOD_TAB_ITEM3, $hGUI_MOD_TAB_ITEM4, $hGUI_MOD_TAB_ITEM5]
-Global $aTabControlsStats[4] = [$hGUI_STATS_TAB, $hGUI_STATS_TAB_ITEM1, $hGUI_STATS_TAB_ITEM2, $hGUI_STATS_TAB_ITEM3]
+Global $aTabControlsMOD[5] = [$hGUI_MOD_TAB, $hGUI_MOD_TAB_ITEM1, $hGUI_MOD_TAB_ITEM2, $hGUI_MOD_TAB_ITEM3, $hGUI_MOD_TAB_ITEM4]
+Global $aTabControlsModOptions2[3] = [$hGUI_ModOptions2_TAB, $hGUI_ModOptions2_TAB_ITEM1, $hGUI_ModOptions2_TAB_ITEM2]
+Global $aTabControlsStats[5] = [$hGUI_STATS_TAB, $hGUI_STATS_TAB_ITEM1, $hGUI_STATS_TAB_ITEM2, $hGUI_STATS_TAB_ITEM3, $hGUI_STATS_TAB_ITEM4]
 
 Global $aAlwaysEnabledControls[12] = [$chkUpdatingWhenMinimized, $chkHideWhenMinimized, $chkDebugClick, $chkDebugSetlog, $chkDebugOcr, $chkDebugImageSave, $chkdebugBuildingPos, $chkdebugTrain, $chkdebugOCRDonate,$btnTestTrain, $btnTestDonateCC, $btnTestAttackBar]
 
@@ -127,6 +128,7 @@ Func IsTab($controlID)
 			_ArraySearch($aTabControlsStrategies, $controlID) <> -1 Or _
 			_ArraySearch($aTabControlsBot, $controlID) <> -1 Or _
 			_ArraySearch($aTabControlsMOD, $controlID) <> -1 Or _
+			_ArraySearch($aTabControlsModOptions2, $controlID) <> -1 Or _
 			_ArraySearch($aTabControlsStats, $controlID) <> -1 Then
 		Return True
 	EndIf
@@ -172,8 +174,8 @@ AtkLogHead()
 #include "GUI\MBR GUI Control Bot Options.au3"
 #include "GUI\MBR GUI Control Preset.au3"
 #include "GUI\MBR GUI Control Child Misc.au3"
-#include "GUI\MBR GUI Control Tab Profiles.au3"
 #include "GUI\MBR GUI Control Tab Mod Option.au3"
+#include "GUI\MBR GUI Control Tab Profiles.au3"
 
 ; Accelerator Key, more responsive than buttons in run-mode
 Local $aAccelKeys[1][2] = [["{ESC}", $btnStop]]
@@ -304,7 +306,7 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 		;Case $idMENU_DONATE_SUPPORT
 		;	ShellExecute("https://mybot.run/forums/index.php?/donate/make-donation/")
 		Case $CheckVersionConfig
-			If CheckMODVersion() Then MsgBox(0, "", "Bạn Đang Sử Dụng Phiên Bản Mod Mới Nhất By Nguyễn Anh")
+			If CheckMODVersion() Then MsgBox(0, "", "You Are Using The Latest Version Of Mod By Nguyen Anh")
 ;		Case $DownloadLatestConfig
 ;			ShellExecute("https://github.com/" & $sGitHubModOwner & "/" & $sGitHubModRepo & "/releases/latest")
 		Case $ModSupportConfig
@@ -353,22 +355,6 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 			btnTestDonateCC()
 		Case $btnTestAttackBar
 			btnTestAttackBar()
-	    Case $txtTotalCoCAcc			;chalicucu
-		   Switch $nNotifyCode
-			   Case $EN_KILLFOCUS
-				   SetLog("[Total account config]")
-				   ReCfgTotalAcc(Int(GUICtrlRead($txtTotalCoCAcc)))
-		   EndSwitch
-	    Case $txtAccBottingOrder		;chalicucu: reorder switch acc
-		   If $nNotifyCode = $EN_KILLFOCUS Then
-			   SetLog("[Account order config]")
-			   ReorderAcc(GUICtrlRead($txtAccBottingOrder), True)
-		   EndIf
-	    Case $txtProfileIdxOrder		;chalicucu: reorder profile for acc
-		   If $nNotifyCode = $EN_KILLFOCUS Then
-			   SetLog("[Profile config]")
-			   ReorderAllPro(GUICtrlRead($txtProfileIdxOrder), True)
-		   EndIf
 	EndSwitch
 
 	Return $GUI_RUNDEFMSG
@@ -983,8 +969,6 @@ Func tabBot()
 				GUISetState(@SW_HIDE, $hGUI_STATS)
 			Case $tabidx = 1 ; Options Debug
 				GUISetState(@SW_HIDE, $hGUI_STATS)
-			;Case $tabidx = 2 ; Strategies tab
-				;GUISetState(@SW_HIDE, $hGUI_STATS)
 			Case $tabidx = 2 ; Stats tab
 				GUISetState(@SW_SHOWNOACTIVATE, $hGUI_STATS)
 		EndSelect
@@ -994,33 +978,23 @@ Func tabMOD()
 	$tabidx = GUICtrlRead($hGUI_MOD_TAB)
 		Select
 			Case $tabidx = 0 ; Mod Option Tab
-				GUISetState(@SW_SHOWNOACTIVATE, $hGUI_ModOption)
-				GUISetState(@SW_HIDE, $hGUI_MultiCoC)
-				GUISetState(@SW_HIDE, $hGUI_Profiles)
+				GUISetState(@SW_SHOWNOACTIVATE, $hGUI_ModOptions)
+				GUISetState(@SW_HIDE, $hGUI_ModOptions2)
 				GUISetState(@SW_HIDE, $hGUI_ChatBot)
 				GUISetState(@SW_HIDE, $hGUI_DonateStats)
-			Case $tabidx = 1 ; Multi CoC Option Tab
-				GUISetState(@SW_HIDE, $hGUI_ModOption)
-				GUISetState(@SW_SHOWNOACTIVATE, $hGUI_MultiCoC)
-				GUISetState(@SW_HIDE, $hGUI_Profiles)
+			Case $tabidx = 1 ; Switch Profile $ Multi Option Tab
+				GUISetState(@SW_HIDE, $hGUI_ModOptions)
+				GUISetState(@SW_SHOWNOACTIVATE, $hGUI_ModOptions2)
 				GUISetState(@SW_HIDE, $hGUI_ChatBot)
 				GUISetState(@SW_HIDE, $hGUI_DonateStats)
-			Case $tabidx = 2 ; Profile Tab
-				GUISetState(@SW_HIDE, $hGUI_ModOption)
-				GUISetState(@SW_HIDE, $hGUI_MultiCoC)
-				GUISetState(@SW_SHOWNOACTIVATE, $hGUI_Profiles)
-				GUISetState(@SW_HIDE, $hGUI_ChatBot)
-				GUISetState(@SW_HIDE, $hGUI_DonateStats)
-			Case $tabidx = 3 ; Chat Bot Tab
-				GUISetState(@SW_HIDE, $hGUI_ModOption)
-				GUISetState(@SW_HIDE, $hGUI_MultiCoC)
-				GUISetState(@SW_HIDE, $hGUI_Profiles)
+			Case $tabidx = 2 ; Chat Bot Tab
+				GUISetState(@SW_HIDE, $hGUI_ModOptions)
+				GUISetState(@SW_HIDE, $hGUI_ModOptions2)
 				GUISetState(@SW_SHOWNOACTIVATE, $hGUI_ChatBot)
 				GUISetState(@SW_HIDE, $hGUI_DonateStats)
-			Case $tabidx = 4 ; Donate Stats Tab
-				GUISetState(@SW_HIDE, $hGUI_ModOption)
-				GUISetState(@SW_HIDE, $hGUI_MultiCoC)
-				GUISetState(@SW_HIDE, $hGUI_Profiles)
+			Case $tabidx = 3 ; Donate Stats Tab
+				GUISetState(@SW_HIDE, $hGUI_ModOptions)
+				GUISetState(@SW_HIDE, $hGUI_ModOptions2)
 				GUISetState(@SW_HIDE, $hGUI_ChatBot)
 				GUISetState(@SW_SHOWNOACTIVATE, $hGUI_DonateStats)
 		EndSelect
@@ -1279,7 +1253,7 @@ Func Bind_ImageList($nCtrl)
 
 		Case $hGUI_NOTIFY_TAB
 			; the icons for NOTIFY tab
-			Local $aIconIndex[3] = [$eIcnPushBullet, $eIcnOptions, $eIcnOptions]
+			Local $aIconIndex[2] = [$eIcnPushBullet, $eIcnOptions]
 
 		Case $hGUI_ATTACK_TAB
 			; the icons for attack tab
@@ -1311,7 +1285,11 @@ Func Bind_ImageList($nCtrl)
 
 		Case $hGUI_MOD_TAB
 			; the icons for Mod tab
-			Local $aIconIndex[5] = [$eIcnDrill, $eIcnAchievements, $eIcnProfile, $eIcnOptions, $eIcnCC]
+			Local $aIconIndex[4] = [$eIcnDrill, $eIcnAchievements, $eIcnOptions, $eIcnCC]
+
+		Case $hGUI_ModOptions2_TAB
+			; the icons for Mod tab
+			Local $aIconIndex[2] = [$eIcnOptions, $eIcnProfile]
 
 		Case $hGUI_STRATEGIES_TAB
 			; the icons for strategies tab
@@ -1319,7 +1297,7 @@ Func Bind_ImageList($nCtrl)
 
 		Case $hGUI_STATS_TAB
 			; the icons for stats tab
-			Local $aIconIndex[3] = [$eIcnGoldElixir, $eIcnOptions, $eIcnCamp]
+			Local $aIconIndex[4] = [$eIcnGoldElixir, $eIcnGoldElixir, $eIcnOptions, $eIcnCamp]		; - Add Icon for Tab Separate Stats - SwitchAcc Mode - DEMEN
 
 		Case Else
 			;do nothing

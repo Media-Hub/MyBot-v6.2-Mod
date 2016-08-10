@@ -193,8 +193,8 @@ Func CheckMODVersion()
 	FileDelete($tempJson)
 
 	If $sLatestReleaseTag <> $sGitHubModLatestReleaseTag Then
-		MsgBox(0, "", "Một Phiên Bản Mod By Nguyễn Anh Mới Đã Được Uploaded (" & $sLatestReleaseTag & "), Phiên Bản Của Bạn Đang Có Đã Lỗi Thời." & @CRLF & _
-		"Hãy Tải Về Phiên Bản Mod Mới Nhất By Nguyễn Anh")
+		MsgBox(0, "Attentions!", "Chief, A New Version Of Mod By Nguyen Anh Has Been Uploaded (" & $sLatestReleaseTag & "), Your Version Might Be Outdated." & @CRLF & _
+		"Please Download Latest Version From Official MOD By Nguyen Anh")
 		ShellExecute("https://github.com/" & $sGitHubModOwner & "/" & $sGitHubModRepo & "/releases/latest")
 		Return False
 	EndIf

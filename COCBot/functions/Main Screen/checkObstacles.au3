@@ -23,11 +23,8 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 		Return True
 	EndIf
 
-	;Chalicucu click Cancel Button while load other village
-	If _GetPixelColor(443, 430, True) = Hex(4284390935, 6) Then
-		PureClick(383, 430, 1, 0, "Click Cancel")      ;Click Cancel
-		If _Sleep(250) Then Return
-	EndIf
+	; SwitchAcc - DEMEN
+    PureClick(383, 405, 1, 0, "Click Cancel")      ;Click Cancel
 
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	; Detect All Reload Button errors => 1- Another device, 2- Take a break, 3- Connection lost or error, 4- Out of sync, 5- Inactive, 6- Maintenance
@@ -43,13 +40,13 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 			_ImageSearchArea($device, 0, 237, 321 + $midOffsetY, 293, 346 + $midOffsetY, $x, $y, 80) Then
 			If $sTimeWakeUp > 3600 Then
 				SetLog("Another Device has connected, waiting " & Floor(Floor($sTimeWakeUp / 60) / 60) & " hours " & Floor(Mod(Floor($sTimeWakeUp / 60), 60)) & " minutes " & Floor(Mod($sTimeWakeUp, 60)) & " seconds", $COLOR_RED)
-				PushMsg("AnotherDevice3600")
+				PushMsgToPushBullet("AnotherDevice3600")
 			ElseIf $sTimeWakeUp > 60 Then
 				SetLog("Another Device has connected, waiting " & Floor(Mod(Floor($sTimeWakeUp / 60), 60)) & " minutes " & Floor(Mod($sTimeWakeUp, 60)) & " seconds", $COLOR_RED)
-				PushMsg("AnotherDevice60")
+				PushMsgToPushBullet("AnotherDevice60")
 			Else
 				SetLog("Another Device has connected, waiting " & Floor(Mod($sTimeWakeUp, 60)) & " seconds", $COLOR_RED)
-				PushMsg("AnotherDevice")
+				PushMsgToPushBullet("AnotherDevice")
 			EndIf
 			If _SleepStatus($sTimeWakeUp * 1000) Then Return ; Wait as long as user setting in GUI, default 120 seconds
 			PureClickP($aReloadButton, 1, 0, "#0127");Check for "Another device" message
@@ -60,7 +57,7 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 		;;;;;;;##### 2- Take a break #####;;;;;;;
 		If _ImageSearchArea($break, 0, 165, 257 + $midOffsetY, 335, 295 + $midOffsetY, $x, $y, 100) Then ; used for all 3 different break messages
 			SetLog("Village must take a break, wait ...", $COLOR_RED)
-			PushMsg("TakeBreak")
+			PushMsgToPushBullet("TakeBreak")
 			If _SleepStatus($iDelaycheckObstacles4) Then Return ; 2 Minutes
 			PureClickP($aReloadButton, 1, 0, "#0128");Click on reload button
 			If $ichkSinglePBTForced = 1 Then $bGForcePBTUpdate = True
@@ -173,7 +170,7 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 	EndIf
 	If _ImageSearchArea($CocStopped, 0, 250, 328 + $midOffsetY, 618, 402 + $midOffsetY, $x, $y, 70) Then
 		SetLog("CoC Has Stopped Error .....", $COLOR_RED)
-		PushMsg("CoCError")
+		PushMsgToPushBullet("CoCError")
 		If _Sleep($iDelaycheckObstacles1) Then Return
 		PureClick(250 + $x, 328 + $midOffsetY + $y, 1, 0, "#0129");Check for "CoC has stopped error, looking for OK message" on screen
 		If _Sleep($iDelaycheckObstacles2) Then Return

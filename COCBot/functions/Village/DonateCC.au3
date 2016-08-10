@@ -438,7 +438,7 @@ Func DonateCC($Check = False)
 			EndIf
 		EndIf
 	WEnd
-	
+
 	SetLog("-----------End Donate-----------", $COLOR_BLUE)
 	If _Sleep($iDelayDonateCC2) Then Return
 
@@ -676,7 +676,7 @@ Func DonateTroopType($Type, $Quant = 0, $Custom = False, $bDonateAll = False)
 
 			;DonateStats =========================================
 			$DonatedValue = $iDonSpellsQuantity
-			
+
 			; Assign the donated quantity Spells to train : $Don $SpellName
 			; need to implement assign $DonPoison etc later
 
@@ -686,7 +686,7 @@ Func DonateTroopType($Type, $Quant = 0, $Custom = False, $bDonateAll = False)
 			SetLog("No " & NameOfTroop($Type) & " available to donate..", $COLOR_RED)
 		EndIf
 	EndIf
-	
+
 	;===================================== DonateStats =====================================;
 
 	If $bDonate And $ichkDStats = 1 And $DonatedValue <> 0 Then
@@ -834,7 +834,7 @@ Func DonateWindow($Open = True)
 		EndIf
 
 		;===================================== End DonateStats =====================================;
-		
+
 		Click($DonatePixel[0] + 50, $DonatePixel[1] + 10, 1, 0, "#0174")
 	Else
 		If $debugsetlog = 1 Then SetLog("Could not find the Donate Button!", $COLOR_PURPLE)

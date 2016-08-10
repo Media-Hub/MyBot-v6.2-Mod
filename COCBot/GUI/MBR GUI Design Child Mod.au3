@@ -17,9 +17,8 @@ Global $FirstControlToHideMOD = GUICtrlCreateDummy()
 $hGUI_MOD = GUICreate("", $_GUI_MAIN_WIDTH - 20, $_GUI_MAIN_HEIGHT - 255, $_GUI_CHILD_LEFT, $_GUI_CHILD_TOP, BitOR($WS_CHILD, $WS_TABSTOP), -1, $frmBotEx)
 ;GUISetBkColor($COLOR_WHITE, $hGUI_MOD)
 
-#include "MBR GUI Design Child Mod - Option.au3"
-#include "MBR GUI Design Child Mod - MultiCoC.au3"
-#include "MBR GUI Design Child Mod - Profiles.au3"
+#include "MBR GUI Design Child Mod - Options.au3"
+#include "MBR GUI Design Child Mod - Options2.au3"
 #include "MBR GUI Design Child Mod - ChatBot.au3"
 #include "MBR GUI Design Child Mod - DonateStats.au3"
 
@@ -28,12 +27,10 @@ GUISwitch($hGUI_MOD)
 $hGUI_MOD_TAB = GUICtrlCreateTab(0, 0, $_GUI_MAIN_WIDTH - 20, $_GUI_MAIN_HEIGHT - 255, BitOR($TCS_MULTILINE, $TCS_RIGHTJUSTIFY))
 $hGUI_MOD_TAB_ITEM1 = GUICtrlCreateTabItem("Mod Options")
 ; this tab will be empty because it is only used to display a child GUI
-$hGUI_MOD_TAB_ITEM2 = GUICtrlCreateTabItem("Multi CoC")
+$hGUI_MOD_TAB_ITEM2 = GUICtrlCreateTabItem("Switch Profile && Multi Options")
 ; this tab will be empty because it is only used to display a child GUI
-$hGUI_MOD_TAB_ITEM3 = GUICtrlCreateTabItem("Profiles")
+$hGUI_MOD_TAB_ITEM3 = GUICtrlCreateTabItem("Chat Bot")
 ; this tab will be empty because it is only used to display a child GUI
-$hGUI_MOD_TAB_ITEM4 = GUICtrlCreateTabItem("Chat Bot")
-; this tab will be empty because it is only used to display a child GUI
-$hGUI_MOD_TAB_ITEM5 = GUICtrlCreateTabItem("Donate Stats")
+$hGUI_MOD_TAB_ITEM4 = GUICtrlCreateTabItem("Donate Stats")
 ; this tab will be empty because it is only used to display a child GUI
 GUICtrlCreateTabItem("")

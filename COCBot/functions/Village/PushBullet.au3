@@ -22,16 +22,16 @@
 ;Prevent crashes
 $oMyError = ObjEvent("AutoIt.Error","MyErrFunc")
 Func MyErrFunc()
-  SetLog("COM Error!"    & @CRLF  & @CRLF & _
-             "err.description is: " & @TAB & $oMyError.description  & @CRLF & _
-             "err.windescription:"   & @TAB & $oMyError.windescription & @CRLF & _
-             "err.number is: "       & @TAB & hex($oMyError.number,8)  & @CRLF & _
-             "err.lastdllerror is: "   & @TAB & $oMyError.lastdllerror   & @CRLF & _
-             "err.scriptline is: "   & @TAB & $oMyError.scriptline   & @CRLF & _
-             "err.source is: "       & @TAB & $oMyError.source       & @CRLF & _
-             "err.helpfile is: "       & @TAB & $oMyError.helpfile     & @CRLF & _
-             "err.helpcontext is: " & @TAB & $oMyError.helpcontext _
-            )
+  ;SetLog("COM Error!"    & @CRLF  & @CRLF & _
+  ;           "err.description is: " & @TAB & $oMyError.description  & @CRLF & _
+  ;           "err.windescription:"   & @TAB & $oMyError.windescription & @CRLF & _
+  ;           "err.number is: "       & @TAB & hex($oMyError.number,8)  & @CRLF & _
+  ;           "err.lastdllerror is: "   & @TAB & $oMyError.lastdllerror   & @CRLF & _
+  ;           "err.scriptline is: "   & @TAB & $oMyError.scriptline   & @CRLF & _
+  ;           "err.source is: "       & @TAB & $oMyError.source       & @CRLF & _
+  ;           "err.helpfile is: "       & @TAB & $oMyError.helpfile     & @CRLF & _
+  ;           "err.helpcontext is: " & @TAB & $oMyError.helpcontext _
+  ;          )
 Endfunc
 
 Func _RemoteControlPushBullet()
@@ -81,16 +81,6 @@ Func _RemoteControlPushBullet()
 							$txtHelp &= '\n' & GetTranslated(620, 1, -1) & " <" & $iOrigPushBullet & "> " & GetTranslated(620, 23, "LASTRAIDTXT") & GetTranslated(620, 11, " - send the last raid loot values of <Village Name>")
 							$txtHelp &= '\n' & GetTranslated(620, 1, -1) & " <" & $iOrigPushBullet & "> " & GetTranslated(620, 24, "SCREENSHOT") & GetTranslated(620, 12, " - send a screenshot of <Village Name>")
 							$txtHelp &= '\n' & GetTranslated(620, 1, -1) & " <" & $iOrigPushBullet & "> SENDCHAT <TEXT> - send TEXT in clan chat of <Village Name>"
-							$txtHelp &= '\n' & GetTranslated(620,1, -1) & " " & GetTranslated(638,21,"ACC <account list>") & GetTranslated(638,26, " - set new play list")
-							$txtHelp &= '\n' & GetTranslated(620,1, -1) & " " & GetTranslated(638,22,"ADD <acc number>") & GetTranslated(638,27, " - add an account to play list")
-							$txtHelp &= '\n' & GetTranslated(620,1, -1) & " " & GetTranslated(638,23,"REM <acc number>") & GetTranslated(638,28, " - remove an account from play list")
-							$txtHelp &= '\n' & GetTranslated(620,1, -1) & " " & GetTranslated(638,24,"MAP <acc number>-<profile number>") & GetTranslated(638,29, " - set profile to an account. eg: BOT MAP 1-3")
-							$txtHelp &= '\n' & GetTranslated(620,1, -1) & " " & GetTranslated(638,25,"MODE <mode ID>") & GetTranslated(638,30, " - set switching mode. Eg: BOT MODE 0")
-							$txtHelp &= '\n' & GetTranslated(620,1, -1) & " " & GetTranslated(638,2,"PRO <profile number>") & GetTranslated(638,12, " - set new bot profiles")
-							$txtHelp &= '\n' & GetTranslated(620,1, -1) & " " & GetTranslated(638,3,"GETORDER") & GetTranslated(638,13, " - get current CoC account and bot profile")
-							$txtHelp &= '\n' & GetTranslated(620,1, -1) & " " & GetTranslated(638,4,"STOPSTART") & GetTranslated(638,14, " - stop then start bot again")
-							$txtHelp &= '\n' & GetTranslated(620,1, -1) & " " & GetTranslated(638,5,"ALLPRO <all profile number>") & GetTranslated(638,15, " - set up profiles correspond to all exists accounts")
-							$txtHelp &= '\n' & GetTranslated(620,1, -1) & " " & GetTranslated(638,10,"ATKP 1/0") & GetTranslated(638,20, " - 1-enable/0-disable attack plan")
 							$txtHelp &= '\n' & GetTranslated(620, 1, -1) & " <" & $iOrigPushBullet & "> GETCHATS <STOP|NOW|INTERVAL> - select any of this three option to do"
 							$txtHelp &= '\n'
 							$txtHelp &= '\n' & GetTranslated(620, 25, "Examples:")
@@ -173,6 +163,11 @@ Func _RemoteControlPushBullet()
 								_PushToPushBullet($iOrigPushBullet & " | " & GetTranslated(620, 48, "Request to Stop") & "..." & "\n" & GetTranslated(620, 50, "Your bot is currently stopped, no action was taken"))
 							EndIf
 									;=================================== "TheRevenor Notify" ===================================
+						Case GetTranslated(620, 1, -1) & " " & StringUpper($iOrigPushBullet) & " SCREENSHOTHD"
+							SetLog("Pushbullet: ScreenShot HD request received", $COLOR_GREEN)
+							$RequestScreenshot = 1
+							$RequestScreenshotHD = 1
+							_DeleteMessageOfPushBullet($iden[$x])
 						Case GetTranslated(620, 1, -1) & " " & StringUpper($iOrigPushBullet) & " BUILDER"
 							SetLog("Pushbullet: Builder Status request received", $COLOR_GREEN)
 							$RequestBuilderInfo = 1
@@ -190,69 +185,14 @@ Func _RemoteControlPushBullet()
 							_DeleteMessageOfPushBullet($iden[$x])
 									;=================================== "Chat Bot" ===================================
 						Case Else
-						    Local $lsNewOrd
-						    If StringLeft($body[$x], 7) = "BOT ACC" Then		;Chalicucu order switch COC Account
-							   $lsNewOrd = ReorderAcc(StringMid($body[$x], 9))
-							   _PushToPushBullet("Reordered COC account: " & $lsNewOrd & " (" & AccGetStep() & ")")
-							   _DeleteMessageOfPushBullet($iden[$x])
-						    ElseIf StringLeft($body[$x], 7) = "BOT PRO" Then		;Chalicucu order switch bot profile
-							   $lsNewOrd = ReorderCurPro(StringMid($body[$x], 9))
-							   _PushToPushBullet("Reordered bot profile: " & $lsNewOrd )
-							   _DeleteMessageOfPushBullet($iden[$x])
-						    ElseIf StringLeft($body[$x], 10) = "BOT ALLPRO" Then		;Chalicucu order switch bot profile
-							   $lsNewOrd = ReorderAllPro(StringMid($body[$x], 12))
-							   _PushToPushBullet("Reordered bot profile for all acc: " & $lsNewOrd )
-							   _DeleteMessageOfPushBullet($iden[$x])
-						    ElseIf StringLeft($body[$x], 7) = "BOT MAP" Then		;Chalicucu Mapping Account & Profile
-							   MapAccPro(StringMid($body[$x], 9))
-							   _PushToPushBullet("Mapping success: " & StringMid($body[$x], 9) )
-							   _DeleteMessageOfPushBullet($iden[$x])
-						    ElseIf $body[$x] = "BOT GETORDER" Then		;Chalicucu inquiry acc order
-							   SetLog("Get order: [" & $body[$x] & "]", $COLOR_RED)
-							   _PushToPushBullet("Ordered COC acc: " & AccGetOrder() & " (" & AccGetStep() _
-												   & ")\nCurrent:  " & $nCurCOCAcc _
-												   & "\nBot profile: " & ProGetOrderName() _
-												   & "\nSwitch Mode: " & $iSwitchMode & " - " & GUICtrlRead($cmbSwitchMode))
-							   _DeleteMessageOfPushBullet($iden[$x])
-						    ElseIf StringLeft($body[$x], 7) = "BOT ADD" Then		;Chalicucu Add Account to Playing list
-							   $lsNewOrd = AddAcc(StringMid($body[$x], 9))
-							   _PushToPushBullet($lsNewOrd)
-							   _DeleteMessageOfPushBullet($iden[$x])
-						    ElseIf StringLeft($body[$x], 7) = "BOT REM" Then		;Chalicucu Remove Account from Playing list
-							   $lsNewOrd = RemAcc(StringMid($body[$x], 9))
-							   _PushToPushBullet($lsNewOrd)
-							   _DeleteMessageOfPushBullet($iden[$x])
-						    ElseIf StringLeft($body[$x], 8) = "BOT MODE" Then		;Chalicucu Change Switching Mode
-							   $lsNewOrd = SwitchMode(StringMid($body[$x], 10))
-							   SetLog($lsNewOrd, $COLOR_RED)
-							   _PushToPushBullet($lsNewOrd)
-							   _DeleteMessageOfPushBullet($iden[$x])
-						    ElseIf $body[$x] = "BOT STOPSTART" Then		;Chalicucu Stop then start again
-							   btnStop()
-							   btnStart()
-							   SetLog("Receive STOPSTART", $COLOR_RED)
-							   _PushToPushBullet("Received STOPSTART")
-							   _DeleteMessageOfPushBullet($iden[$x])
-						    ElseIf StringLeft($body[$x],8) = "BOT ATKP" Then	;Chalicucu Option to enable/disable Attack Plan
-							   $iChkAtkPln = (Number(StringMid($body[$x],10))=1)
-							   IniWrite($profile, "switchcocacc" , "CheckAtkPln" , Number(StringMid($body[$x],10)))
-							   If $iChkAtkPln Then
-								   GUICtrlSetState($chkAtkPln, $GUI_CHECKED)
-								   _PushToPushBullet("Enabled attack scheduler!")
-							   Else
-								   GUICtrlSetState($chkAtkPln, $GUI_UNCHECKED)
-								   _PushToPushBullet("Disabled attack scheduler!")
-							   EndIf
-							   _DeleteMessageOfPushBullet($iden[$x])
-						    EndIf
-							If StringInStr($body[$x], StringUpper($iOrigPushBullet) & " SENDCHAT ") Then
+							If StringInStr($body[$x], StringUpper($iOrigPushBullet) & " SENDCHAT") Then
 								$FoundChatMessage = 1
 								$chatMessage = StringRight($body[$x], StringLen($body[$x]) - StringLen("BOT " & StringUpper($iOrigPushBullet) & " SENDCHAT "))
 								$chatMessage = StringLower($chatMessage)
 								ChatbotPushbulletQueueChat($chatMessage)
 								_PushToPushBullet($iOrigPushBullet & " | Chat queued, will send on next idle")
 								_DeleteMessageOfPushBullet($iden[$x])
-							ElseIf StringInStr($body[$x], StringUpper($iOrigPushBullet) & " GETCHATS ") Then
+							ElseIf StringInStr($body[$x], StringUpper($iOrigPushBullet) & " GETCHATS") Then
 								$FoundChatMessage = 1
 								$Interval = StringRight($body[$x], StringLen($body[$x]) - StringLen("BOT " & StringUpper($iOrigPushBullet) & " GETCHATS "))
 								If $Interval = "STOP" Then
@@ -271,6 +211,11 @@ Func _RemoteControlPushBullet()
 									EndIf
 								EndIf
 									_DeleteMessageOfPushBullet($iden[$x])
+							ElseIf $body[$x] = "BOT START" Then ;TheRevenor Start
+								btnStart()
+								SetLog("Pushbullet: Your request has been received. Bot is now Started", $COLOR_BLUE)
+								_PushToPushBullet("Request to Start..." & "\n" & "Your bot is now Starting.")
+								_DeleteMessageOfPushBullet($iden[$x])
 							Else
 								Local $lenstr = StringLen(GetTranslated(620, 1, -1) & " " & StringUpper($iOrigPushBullet) & " " & "")
 								Local $teststr = StringLeft($body[$x], $lenstr)
@@ -415,6 +360,7 @@ Func _RemoteControlPushBullet()
 					Case GetTranslated(18, 14, "Screenshot") & "\ud83c\udfa6"
 						SetLog("Telegram: ScreenShot request received", $COLOR_GREEN)
 						$RequestScreenshot = 1
+						$RequestScreenshotHD = 1
 					Case GetTranslated(18, 15, "Restart") & "\u21aa"
 						SetLog("Telegram: Your request has been received. Bot and BS restarting...", $COLOR_GREEN)
 						_PushToPushBullet($iOrigPushBullet & " | " & GetTranslated(18, 41, "Request to Restart...") & "\n" & GetTranslated(18, 42, "Your bot and BS are now restarting..."))
@@ -614,6 +560,10 @@ Func _RemoteControlPushBullet()
 								_PushToPushBullet($iOrigPushBullet & " | " & GetTranslated(18, 130, "Switched to Profile") & ": " & $VillageSelect & GetTranslated(18, 131, " Success!"))
 								btnStart()
 							EndIf
+						ElseIf StringInStr($body2, "START") Then ;TheRevenor Start
+								btnStart()
+								SetLog("Telegram: Your request has been received. Bot is now Started", $COLOR_BLUE)
+								_PushToPushBullet("Request to Start..." & "\n" & "Your bot is now Starting.")
 						Else
 							SetLog("Telegram: received command '" & $body2 & "' syntax wrong, command ignored.", $COLOR_RED)
 							_PushToPushBullet($iOrigPushBullet & " | " & GetTranslated(18,46,"Command received '" & $body2 & "' not recognized") & "\n" & GetTranslated(18,47,"Please push BOT HELP to obtain a complete command list."))
@@ -930,7 +880,7 @@ Func PushMsgToPushBullet($Message, $Source = "")
 			If ($PushBulletEnabled = 1 Or $TelegramEnabled = 1) And $pAnotherDevice = 1 Then _PushToPushBullet($iOrigPushBullet & " | 3. " & GetTranslated(620, 65, "Another Device has connected") & "\n" & GetTranslated(620, 66, "Another Device has connected, waiting") & " " & Floor(Mod($sTimeWakeUp, 60)) & " " & GetTranslated(603, 8, "seconds"))
 		Case "TakeBreak"
 			If ($PushBulletEnabled = 1 Or $TelegramEnabled = 1) And $pTakeAbreak = 1 AND $PersonalBreakNotified = False Then
-				_PushToPushBullet(@HOUR & ":" & @MIN &" - " & $iOrigPushBullet & " - Personal Break")
+				_PushToPushBullet(@HOUR & ":" & @MIN &" - " & $iOrigPushBullet & " | Personal Break.." & "\n" & GetTranslated(620, 67, "Chief, we need some rest!") & "\n" & GetTranslated(620, 68, "Village must take a break.."))
 				$PersonalBreakNotified = True
 			Endif
 		Case "CocError"
@@ -954,14 +904,19 @@ Func PushMsgToPushBullet($Message, $Source = "")
 		Case "RequestScreenshot"
 			Local $Date = @YEAR & "-" & @MON & "-" & @MDAY
 			Local $Time = @HOUR & "." & @MIN & "." & @SEC
-			_CaptureRegion(0, 0, $DEFAULT_WIDTH, $DEFAULT_HEIGHT)
+			_CaptureRegion(0, 0, $DEFAULT_WIDTH, $DEFAULT_HEIGHT - 45)
+			If $RequestScreenshotHD = 1 Then
+				$hBitmap_Scaled = $hBitmap
+			Else
 			$hBitmap_Scaled = _GDIPlus_ImageResize($hBitmap, _GDIPlus_ImageGetWidth($hBitmap) / 2, _GDIPlus_ImageGetHeight($hBitmap) / 2) ;resize image
+			EndIf
 			Local $Screnshotfilename = "Screenshot_" & $Date & "_" & $Time & ".jpg"
 			_GDIPlus_ImageSaveToFile($hBitmap_Scaled, $dirTemp & $Screnshotfilename)
 			_GDIPlus_ImageDispose($hBitmap_Scaled)
 			_PushFileToPushBullet($Screnshotfilename, "Temp", "image/jpeg", $iOrigPushBullet & " | " & GetTranslated(620, 84, "Screenshot of your village") & " " & "\n" & $Screnshotfilename)
 			SetLog("Pushbullet/Telegram: Screenshot sent!", $COLOR_GREEN)
 			$RequestScreenshot = 0
+			$RequestScreenshotHD = 0
 			;wait a second and then delete the file
 			If _Sleep($iDelayPushMsg2) Then Return
 			Local $iDelete = FileDelete($dirTemp & $Screnshotfilename)
@@ -993,6 +948,9 @@ Func PushMsgToPushBullet($Message, $Source = "")
 				$Result = $oHTTP.ResponseText
 				$SearchNotifyCountMsgIden = _StringBetween($Result, '"iden":"', '"', "", False) ;store pushbullet IDEN so the msg can be deleted later
 				;SetLog("Pushbullet IDEN = " & $SearchNotifyCountMsgIden[0]) ;debugging purposes
+			ElseIf $TelegramEnabled = 1 Then
+				Local $Time = @HOUR & ":" & @MIN & ":" & @SEC
+				_PushToPushBullet($Time &" - " & $iOrigPushBullet & " - Searching - [S]"& _NumberFormat($SearchCount))
 			EndIf
 		Case "AttackCountStats" ;Send stats every xxx attacks
 				Local $Time = @HOUR & ":" & @MIN & ":" & @SEC
