@@ -35,7 +35,7 @@ Local $hBotLaunchTime = TimerInit()
 
 Global $sGitHubModOwner = "NguyenAnhHD"
 Global $sGitHubModRepo = "MyBot-v6.2-Mod"
-Global $sGitHubModLatestReleaseTag = "v4.1.4"
+Global $sGitHubModLatestReleaseTag = "v4.1.4.1"
 Global $sModSupportUrl = "https://www.facebook.com/groups/clan.fire.dragon"
 
 $sBotVersion = "v6.2.1 Mod" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it it also use on Checkversion()
