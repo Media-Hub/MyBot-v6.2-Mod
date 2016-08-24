@@ -100,8 +100,6 @@
 #include "functions\Attack\Troops\SelectDropTroop.au3"
 #include "functions\Attack\Troops\SetSleep.au3"
 
-#include "functions\BotInfo\runningBots.au3"
-
 #include "functions\CreateArmy\_TrainMoveBtn.au3"
 #include "functions\CreateArmy\BarracksStatus.au3"
 #include "functions\CreateArmy\CheckFullArmy.au3"
@@ -290,9 +288,6 @@
 
 ; Check Collector Outside
 #include "functions\Mod\CollectorsOutside\AreCollectorsOutside.au3"
-
-; Multy Farming
-#include "functions\Mod\Multy\MultyFarmingRevenor.au3"
 
 ; SwitchAcc - DEMEN
 #include "functions\Mod\Switch Accounts\SwitchAcc.au3"

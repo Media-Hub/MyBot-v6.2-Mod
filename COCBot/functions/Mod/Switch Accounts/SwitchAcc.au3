@@ -66,7 +66,7 @@ Func InitiateSwitchAcc() ; Checking profiles setup in Mybot, First matching CoC 
    EndIf   ; ====== Counting CoC Accounts
 
    $nTotalCoCAcc = $icmbTotalCoCAcc
-   Setlog ($nTotalCoCAcc & " CoC Account(s) available")
+   Setlog ("Total CoC Account(s): " & $nTotalCoCAcc)
 
    If $aProfileType[$nCurProfile-1] <> 1 Then							; Not Active profile
 	  $i = _ArraySearch($aProfileType, 1)
@@ -93,26 +93,26 @@ Func InitiateSwitchAcc() ; Checking profiles setup in Mybot, First matching CoC 
    Setlog ("Matching CoC Account with Bot Profile. Trying to Switch Account", $COLOR_BLUE)
 
    SwitchCOCAcc()
+   If $bReMatchAcc = False Then runBot()
 
 EndFunc
 
 Func CheckWaitHero1()	; get hero regen time remaining if enabled
-    Local $aResult, $iActiveHero
+    Local $iActiveHero
 	Local $aHeroResult[3]
 	$aTimeTrain[2] = 0
 
 	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("CheckWaitHero", $COLOR_PURPLE)
-	  For $j = 0 To UBound($aResult) - 1
-		$aHeroResult[$j] = 0 ; reset old values
-	  Next
-	  If _Sleep($iDelayRespond) Then Return
+
 	  $aHeroResult = getArmyHeroTime("all")
-	  Setlog("Getting Hero's recover time, King: " & $aHeroResult[0] & " m, Queen: " & $aHeroResult[1] & " m, GW: " & $aHeroResult[2] & " m.")
+
 	  If @error Then
 		Setlog("getArmyHeroTime return error, exit Check Hero's wait time!", $COLOR_RED)
-		Return ; if error, then quit smartwait
+		Return ; if error, then quit Check Hero's wait time
 	  EndIf
-	  If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SetLog("getArmyHeroTime returned: " & $aHeroResult[0] & ":" & $aHeroResult[1] & ":" & $aHeroResult[2], $COLOR_PURPLE)
+
+	  Setlog("Getting Hero's recover time, King: " & $aHeroResult[0] & " m, Queen: " & $aHeroResult[1] & " m, GW: " & $aHeroResult[2] & " m.")
+
 	  If _Sleep($iDelayRespond) Then Return
 	  If $aHeroResult[0] > 0 Or $aHeroResult[1] > 0 Or $aHeroResult[2] > 0 Then ; check if hero is enabled to use/wait and set wait time
 		 For $pTroopType = $eKing To $eWarden ; check all 3 hero
@@ -209,13 +209,13 @@ Func SwitchProfile($SwitchCase) 										; Switch profile (1 = Active, 2 = Dona
 	 Else
 		$NextProfile = 1
 	 EndIf
-	 While $aProfileType[$nCurProfile-1] = 3
+	 While $aProfileType[$NextProfile-1] = 3
 		If $NextProfile < $nTotalProfile Then
 		   $NextProfile += 1
 		Else
 		   $NextProfile = 1
 		EndIf
-		If $aProfileType[$nCurProfile-1] <> 3 Then ExitLoop
+		If $aProfileType[$NextProfile-1] <> 3 Then ExitLoop
 	  WEnd
      _GUICtrlComboBox_SetCurSel($cmbProfile, $NextProfile-1)
 	  cmbProfile()
@@ -229,6 +229,7 @@ EndFunc
 
 Func CheckSwitchAcc(); Switch CoC Account with or without sleep combo - DEMEN
 
+   If IsMainPage() = False Then checkMainScreen()	; Sometimes the bot cannot open Army Overview Window
    getArmyTroopTime(True, False)
 
    If IsWaitforSpellsActive() Then
@@ -285,20 +286,28 @@ Func CheckSwitchAcc(); Switch CoC Account with or without sleep combo - DEMEN
 		 SwitchProfile($SwitchCase)
 	  EndIf
 
-	  If $ichkCloseTraining = 1 And $nMinRemainTrain > 3 And $SwitchCase <> 2 Then
+	  If $ichkCloseTraining >= 1 And $nMinRemainTrain > 3 And $SwitchCase <> 2 Then
 		 VillageReport()
 		 If $canRequestCC = True Then
 			Setlog("Try Request troops before going to sleep", $COLOR_BLUE)
 			RequestCC()
 		 EndIf
 		 PoliteCloseCoC()
+		 If $ichkCloseTraining = 2 Then CloseAndroid()
 		 EnableGuiControls() ; enable emulator menu controls
 		 SetLog("Enable emulator menu controls due long wait time!")
-		 WaitnOpenCoC(($nMinRemainTrain - 1.5) * 60 * 1000, True)
+		 If $ichkCloseTraining = 1 Then
+			 WaitnOpenCoC(($nMinRemainTrain - 1) * 60 * 1000, True)
+		 Else
+			 If _SleepStatus(($nMinRemainTrain - 1.5) * 60 * 1000) Then Return
+			 OpenAndroid()
+			 OpenCoC()
+		 EndIf
+
 		 SaveConfig()
-		  readConfig()
-		  applyConfig()
-		  DisableGuiControls()
+		 readConfig()
+		 applyConfig()
+		 DisableGuiControls()
 	  EndIf
 	  If $SwitchCase <> 3 Then runBot()
    Else
@@ -381,10 +390,10 @@ Func SwitchCOCAcc()
 		 If _Sleepstatus(1000) Then Return
 		 PureClick(480, 200, 1, 0, "Click CONFIRM")      ;Click CONFIRM
 		 Setlog("OKAY button clicked")
-		 Setlog("please wait 10 seconds for loading CoC")
+		 Setlog("please wait 15 seconds for loading CoC")
 		 If _Sleepstatus(3000) Then Return
 		 ClickP($aAway, 1, 0, "#0167") ;Click Away
-		 If _Sleepstatus(10000) Then Return
+		 If _Sleepstatus(15000) Then Return
 		 $bReMatchAcc = False
 	   Else
 		 Setlog("Error in typing CONFIRM or finding OKAY button, reloading CoC", $COLOR_RED)

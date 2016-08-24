@@ -2576,20 +2576,6 @@ Func saveConfig() ;Saves the controls settings to the config
 	EndIf
 	IniWriteS($config, "general", "ChkCloseEmuPB", $ichkCloseTakeBreak)
 
-	; Multi Farming Setting
-	If GUICtrlRead($chkSwitchDonate) = $GUI_CHECKED Then
-		IniWrite($config, "Multy", "SwitchDonate", 1)
-	Else
-		IniWrite($config, "Multy", "SwitchDonate", 0)
-	EndIf
-
-	If GUICtrlRead($chkMultyFarming) = $GUI_CHECKED Then
-		IniWrite($config, "Multy", "MultyFarming", 1)
-	Else
-		IniWrite($config, "Multy", "MultyFarming", 0)
-	EndIf
-	IniWrite($config, "Multy", "Account", GUICtrlRead($Account))
-
 	; Donate Stats
 	If GUICtrlRead($chkDStats) = $GUI_CHECKED Then
 		IniWrite($config, "donate", "chkDStats", 1)
@@ -2706,6 +2692,7 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWrite($config, "profiles", "txtMinTrophyAmount", GUICtrlRead($txtMinTrophyAmount))
 
 	; SwitchAcc Mode - DEMEN
+
 	If GUICtrlRead($radActiveProfile) = $GUI_CHECKED Then														; 1 = Active, 2 = Donate, 3 = Idle
 		IniWrite($config, "Switch Account", "Profile Type", 1)
 		IniWrite($profile, "Profile Type", _GUICtrlCombobox_GetCurSel($cmbProfile)+1, 1)
@@ -2734,7 +2721,11 @@ Func saveConfig() ;Saves the controls settings to the config
 	EndIf
 
 	If GUICtrlRead($chkUseTrainingClose) = $GUI_CHECKED Then
-		IniWrite($profile, "Switch Account", "Sleep Combo", 1)
+		If GUICtrlRead($radCloseCoC) = $GUI_CHECKED Then
+			IniWrite($profile, "Switch Account", "Sleep Combo", 1)		; Sleep Combo = 1 => Close CoC
+		Else
+			IniWrite($profile, "Switch Account", "Sleep Combo", 2)		; Sleep Combo = 2 => Close Android
+		EndIf
 	Else
 		IniWrite($profile, "Switch Account", "Sleep Combo", 0)
 	EndIf
@@ -2742,12 +2733,13 @@ Func saveConfig() ;Saves the controls settings to the config
 
    	; Restart Android after long search - DEMEN
 
-	If GUICtrlRead($ChkRestartAndroidSearchLimit) = $GUI_CHECKED Then
+	If GUICtrlRead($ChkRestartAndroid) = $GUI_CHECKED Then
 		IniWrite($config, "Restart Android", "Enable", 1)
 	Else
 		IniWrite($config, "Restart Android", "Enable", 0)
 	EndIf
 	IniWrite($config, "Restart Android", "Restart Android Search Limit", GUICtrlRead($TxtRestartAndroidSearchlimit))
+	IniWrite($config, "Restart Android", "Restart Android Train Error", GUICtrlRead($TxtRestartAndroidTrainError))
 
 	If $hFile <> -1 Then FileClose($hFile)
 

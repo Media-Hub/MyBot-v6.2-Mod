@@ -18,13 +18,12 @@ Func clanHop()
     If GUICtrlRead($chkClanHop) = $GUI_CHECKED Then
 		$ichkClanHop = 1
 		SetLog("Start Clan Hopping", $COLOR_BLUE)
-		Train()
 	Else
 		$ichkClanHop = 0
         Return
     EndIf
     Local $boostInterval = 2400           ; Change this to change how often to boost.                                  Unit is seconds ( 2400  =  40mn )
-    Local $trainInterval = 120            ; Change this to change how often to train troops.                           Unit is seconds ( 900   =  15mn )
+    Local $trainInterval = 300            ; Change this to change how often to train troops.                           Unit is seconds ( 900   =  15mn )
     Local $collectInterval = 600          ; Change this to change how often the bot collects your resources.           Unit is seconds ( 600   =  10mn )
 	Local $checkCampInterval = 300        ; Change this to change how often the bot check the army inside your camps.  Unit is seconds ( 300   =  5mn  )
     Local $checkTombInterval = 3600       ; Change this to change how often the bot check tombs inside your camps.     Unit is seconds ( 3600  =  1h   )
@@ -38,7 +37,7 @@ Func clanHop()
 	Local $checkTombTimer = TimerInit()
 	Local $checkReArmTimer = TimerInit()
 ;	Local $checkShieldTimer = TimerInit()
-	
+
     While 1
         If (TimerDiff($boostTimer)/1000)>= $boostInterval Then                                   ; Check Boost Timer
             SetLog("Time for boosting!", $COLOR_GREEN)                                           ; 
@@ -135,7 +134,7 @@ Func clanHop()
             Click(336,80)                                                                        ; Click clan tab
         EndIf
         If _Sleep(500) THen Return
-        For $i = 0 To Random(0,4,1)                                                              ; Scroll down clan list (random 0 to 5 times, max 8)
+        For $i = 0 To Random(0,6,1)                                                              ; Scroll down clan list (random 0 to 5 times, max 8)
             Local $sCount = 0
             While $sCount < 1
                 If _Sleep(300) Then Return
@@ -161,9 +160,6 @@ Func clanHop()
         DonateCC(False)
 		If _Sleep(500) THen Return
 		SetLog("Check if I missed some requests")
-		DonateCC(False)
-		If _Sleep(500) THen Return
-		SetLog("Checking If There Is More Request")
 		DonateCC(False)
 		If _Sleep(300) THen Return
 		VillageReport()

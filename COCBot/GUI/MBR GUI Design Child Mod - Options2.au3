@@ -156,58 +156,54 @@ $hGUI_ModOptions2_TAB_ITEM1 = GUICtrlCreateTabItem("Multi Accounts Option")
 			GUICtrlSetOnEvent(-1, "cmbMatchProfileAcc")
 
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
+;GUISetState()
 
 ; SwitchAcc - DEMEN
 	Local $x = 25, $y = 130
-	$grpSwitchAcc = GUICtrlCreateGroup("Switch Account Mode", $x - 20, $y - 20, 210, 190)
+	$grpSwitchAcc = GUICtrlCreateGroup("Switch Account Mode", $x - 20, $y - 20, 210, 150)
 
 		$chkSwitchAcc = GUICtrlCreateCheckbox("Enable Switch Account", $x - 10, $y, -1, -1)
 			$txtTip = "Switch to another account & profile when troop training time is >= 3 minutes" & @CRLF & "This function supports maximum 6 CoC accounts & 6 Bot profiles" & @CRLF & "Make sure to create sufficient Profiles equal to number of CoC Accounts, and align the index of accounts order with profiles order"
 			GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkSwitchAcc")
-			GUICtrlSetState(-1, $GUI_UNCHECKED)
 
-		$lblTotalAccount = GUICtrlCreateLabel("Total CoC Acc:", $x + 5, $y + 29, -1, -1)
+		$lblTotalAccount = GUICtrlCreateLabel("Total CoC Acc:", $x + 15, $y + 29, -1, -1)
 			$txtTip = "Choose number of CoC Accounts pre-logged"
 			GUICtrlSetState(-1, $GUI_DISABLE)
 
-		$cmbTotalAccount= GUICtrlCreateCombo("", $x + 90, $y + 25, -1, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbTotalAccount= GUICtrlCreateCombo("", $x + 100, $y + 25, -1, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetData(-1, "Auto detect" & "|" & "1 Account" & "|" & "2 Accounts" & "|" & "3 Accounts" & "|" & "4 Accounts" & "|" & "5 Accounts" & "|" & "6 Accounts", "Auto detect")
 			GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetState(-1, $GUI_DISABLE)
 
-		$radSmartSwitch= GUICtrlCreateRadio("Smart switch", $x + 5, $y + 55, -1, 16)
+		$radSmartSwitch= GUICtrlCreateRadio("Smart switch", $x + 15 , $y + 55, -1, 16)
 			GUICtrlSetTip(-1, "Switch to account with the shortest remain training time")
 			GUICtrlSetState(-1, $GUI_CHECKED)
 			GUICtrlSetState(-1, $GUI_DISABLE)
 
-		$radNormalSwitch = GUICtrlCreateRadio("Normal switch", $x + 90, $y + 55, -1, 16)
+		$radNormalSwitch = GUICtrlCreateRadio("Normal switch", $x + 100, $y + 55, -1, 16)
 			GUICtrlSetTip(-1, "Switching accounts continously")
 			GUICtrlSetState(-1, $GUI_DISABLE)
 			GUICtrlSetOnEvent(-1, "radNormalSwitch")
 
 		$y += 80
 
-		$chkUseTrainingClose = GUICtrlCreateCheckbox("Combo Sleep after Switch Account", $x - 10, $y, -1, -1)
+		$chkUseTrainingClose = GUICtrlCreateCheckbox("Combo Sleep after Switch Account", $x, $y, -1, -1)
 			$txtTip = "Close CoC combo with Switch Account when there is more than 3 mins remaining on training time of all accounts."
 			GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkUseTrainingClose")
 
-	    $chkRestartAndroidSearchLimit = GUICtrlCreateCheckbox("Restart Android every" & ":", $x - 10, $y + 30, -1, -1)
-			$txtTip = "CLose Android after number of searches and restart to search enemy villages."
-			GUICtrlSetState(-1, $GUI_UNCHECKED)
-			GUICtrlSetOnEvent(-1, "chkRestartAndroidSearchLimit")
-		$txtRestartAndroidSearchLimit = GUICtrlCreateInput("200", $x + 10, $y + 60, 30, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
-			GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetLimit(-1, 4)
-			GUICtrlSetState(-1, $GUI_DISABLE)
-		$lblRestartAndroidSearchLimit = GUICtrlCreateLabel("Search(es)", $x + 47, $y + 62, -1, -1)
+		$radCloseCoC= GUICtrlCreateRadio("Close CoC", $x + 15 , $y + 30, -1, 16)
+			GUICtrlSetState(-1, $GUI_CHECKED)
+
+		$radCloseAndroid = GUICtrlCreateRadio("Close Android", $x + 100, $y + 30, -1, 16)
 
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 	; Profiles & Account matching
+
     Local $x = 238, $y = 130
-	  $grpSwitchAccMapping = GUICtrlCreateGroup("Profiles", $x - 20, $y - 20, 215, 190)
+	  $grpSwitchAccMapping = GUICtrlCreateGroup("Profiles", $x - 20, $y - 20, 215, 250)
 
 		$btnUpdateProfiles = GUICtrlCreateButton("Update Profiles/ Acc matching", $x, $y - 5 , 170, 25)
 		GUICtrlSetOnEvent(-1, "btnUpdateProfile")
@@ -218,68 +214,30 @@ $hGUI_ModOptions2_TAB_ITEM1 = GUICtrlCreateTabItem("Multi Accounts Option")
 		 For $i = 0 To 7
 			$lblProfileList[$i] = GUICtrlCreateLabel("", $x, $y + ($i) * 25, 190, 18, $SS_LEFT)
 		 Next
+
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
-	; Multi Farming
-	Local $x = 25, $y = 323
-	$grpMultyFarming = GUICtrlCreateGroup( "Multi Farming With Smart Switch Setting", $x - 20, $y - 20, 427, 60)
-		$chkMultyFarming = GUICtrlCreateCheckbox(GetTranslated(17,1, "Multi Farming"), $x - 10, $y -7, -1 , -1)
-			$txtTip = GetTranslated(17,3, "Will switch account and attack, then switch back")
-			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetOnEvent(-1, "MultiFarming")
+	; Restart Android - DEMEN
+	Local $x = 25, $y = 280
+	$grpRestartAndroid = GUICtrlCreateGroup("Restart Android", $x - 20, $y - 20, 210, 100)
+
+	    $chkRestartAndroid = GUICtrlCreateCheckbox("Restart Android every" & ":", $x, $y, -1, -1)
+			$txtTip = "Restart Android after long searches or after getting stuck at opening train window"
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
-		$chkSwitchDonate = GUICtrlCreateCheckbox(GetTranslated(6,1, "Donate"), $x - 10, $y +13, -1, -1)
-			$txtTip = GetTranslated(17,4, "Will switch account For Donate, then switch back")
-			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetOnEvent(-1, "SwitchDonate")
-			GUICtrlSetState(-1, $GUI_UNCHECKED)
-		$Account = GUICtrlCreateInput("2", $x +170, $y -5, 18, 15, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
-			$txtTip = GetTranslated(17,5, "How many account to use For Multi Farming")
-			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetLimit(-1, 1)
+			GUICtrlSetOnEvent(-1, "chkRestartAndroid")
+		$txtRestartAndroidSearchLimit = GUICtrlCreateInput("200", $x + 20, $y + 30, 30, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+			GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetLimit(-1, 4)
 			GUICtrlSetState(-1, $GUI_DISABLE)
-		$lblmultyAcc = GUICtrlCreateLabel(GetTranslated(17,2, "How Many:"), $x +100, $y -2, -1, -1)
-			_GUICtrlSetTip(-1, $txtTip)
+		$lblRestartAndroidSearchLimit = GUICtrlCreateLabel("Search(es)", $x + 57, $y + 32, -1, -1)
+
+		$txtRestartAndroidTrainError = GUICtrlCreateInput("10", $x + 20, $y + 55, 30, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+			GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetLimit(-1, 4)
 			GUICtrlSetState(-1, $GUI_DISABLE)
-		$lblmultyAccBtn = GUICtrlCreateLabel(GetTranslated(17, 22, "Fast Switch:"), $x +100, $y +18, -1, -1)
-			$txtTip = GetTranslated(17, 22, "Fast switch between accounts")
-			_GUICtrlSetTip(-1, $txtTip)
-		$btnmultyAcc1 = GUICtrlCreateButton("#1", $x + 170, $y +15, 20, 18)
-			$txtTip = GetTranslated(17,22, "Switch to Main Account")
-			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetOnEvent(-1, "btnmultyAcc1")
-			GUICtrlSetState(-1, $GUI_DISABLE)
-		$btnmultyAcc2 = GUICtrlCreateButton("#2", $x + 200, $y +15, 20, 18)
-			$txtTip = GetTranslated(17,23, "Switch to Second Account")
-			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetOnEvent(-1, "btnmultyAcc2")
-			GUICtrlSetState(-1, $GUI_DISABLE)
-		$btnmultyAcc3 = GUICtrlCreateButton("#3", $x + 230, $y +15, 20, 18)
-			$txtTip = GetTranslated(17,24, "Switch to Third Account")
-			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetOnEvent(-1, "btnmultyAcc3")
-			GUICtrlSetState(-1, $GUI_DISABLE)
-		$btnmultyAcc4 = GUICtrlCreateButton("#4", $x + 260, $y +15, 20, 18)
-			$txtTip = GetTranslated(17,25, "Switch to Fourth Account")
-			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetOnEvent(-1, "btnmultyAcc4")
-			GUICtrlSetState(-1, $GUI_DISABLE)
-		$btnmultyAcc5 = GUICtrlCreateButton("#5", $x + 290, $y +15, 20, 18)
-			$txtTip = GetTranslated(17,26, "Switch to Fifth Account")
-			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetOnEvent(-1, "btnmultyAcc5")
-			GUICtrlSetState(-1, $GUI_DISABLE)
-		$btnmultyAcc6 = GUICtrlCreateButton("#6", $x + 320, $y +15, 20, 18)
-			$txtTip = GetTranslated(17,27, "Switch to Sixth Account")
-			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetOnEvent(-1, "btnmultyAcc6")
-			GUICtrlSetState(-1, $GUI_DISABLE)
-		$btnmultyDetectAcc = GUICtrlCreateButton("?", $x + 350, $y +15, 20, 18)
-			$txtTip = GetTranslated(17,28, "Detect Current Account")
-			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetOnEvent(-1, "btnmultyDetectAcc")
-			GUICtrlSetState(-1, $GUI_ENABLE)
-		GUICtrlCreateGroup("", -99, -99, 1, 1)
+		$lblRestartAndroidTrainError = GUICtrlCreateLabel("times error at Train Window", $x + 57, $y + 57, -1, -1)
+
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 $hGUI_ModOptions2_TAB_ITEM2 = GUICtrlCreateTabItem("Switch Profile Option")
 	; Switch Profile

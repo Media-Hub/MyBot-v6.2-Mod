@@ -2699,22 +2699,6 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 		GUICtrlSetState($chkCloseTakeBreak, $GUI_UNCHECKED)
 	EndIf
 
-	; Multi Farming Settings
-	If $ichkSwitchDonate = 1 Then
-		GUICtrlSetState($chkSwitchDonate, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkSwitchDonate, $GUI_UNCHECKED)
-	EndIf
-		GUICtrlSetData($Account, $iAccount)
-
-	If $ichkMultyFarming = 1 Then
-		GUICtrlSetState($chkMultyFarming, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkMultyFarming, $GUI_UNCHECKED)
-	EndIf
-		GUICtrlSetData($Account, $iAccount)
-	MultiFarming()
-
 	; ChatBot
 	GUICtrlSetData($chkchatdelay, $ichkchatdelay)
 
@@ -2855,22 +2839,36 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 
 	chkSwitchAcc()
 
+
+	_GUICtrlCombobox_SetCurSel($cmbTotalAccount, $icmbTotalCoCAcc)	; 0 = AutoDetect
+
+	If $ichkCloseTraining >= 1 Then
+		GUICtrlSetState($chkUseTrainingClose, $GUI_CHECKED)
+		If $ichkCloseTraining = 1 Then
+			GUICtrlSetState($radCloseCoC, $GUI_CHECKED)
+		Else
+			GUICtrlSetState($radCloseAndroid, $GUI_CHECKED)
+		EndIf
+	Else
+		GUICtrlSetState($chkUseTrainingClose, $GUI_UNCHECKED)
+	EndIf
+
 	If $ichkCloseTraining = 1 Then
 		GUICtrlSetState($chkUseTrainingClose, $GUI_CHECKED)
 	Else
 		GUICtrlSetState($chkUseTrainingClose, $GUI_UNCHECKED)
 	EndIf
 
-	_GUICtrlCombobox_SetCurSel($cmbTotalAccount, $icmbTotalCoCAcc)	; 0 = AutoDetect
-
-	If $iChkRestartAndroidSearchLimit = 1 Then
-		GUICtrlSetState($chkRestartAndroidSearchLimit, $GUI_CHECKED)
+	; Restart Android after long search - DEMEN
+	If $iChkRestartAndroid = 1 Then
+		GUICtrlSetState($chkRestartAndroid, $GUI_CHECKED)
 	Else
-		GUICtrlSetState($chkRestartAndroidSearchLimit, $GUI_UNCHECKED)
+		GUICtrlSetState($chkRestartAndroid, $GUI_UNCHECKED)
 	 EndIf
-	 chkRestartAndroidSearchLimit()
+	 chkRestartAndroid()
 
 	 GUICtrlSetData($txtRestartAndroidSearchLimit, $iRestartAndroidSearchLimit)
+	 GUICtrlSetData($txtRestartAndroidTrainError, $iRestartAndroidTrainError)
 
 	;Apply to switch Attack Standard after THSnipe End ==>
 	If $ichkTSActivateCamps2 = 1 Then

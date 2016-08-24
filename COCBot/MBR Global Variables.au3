@@ -200,8 +200,8 @@ EndFunc
 ; Updated in UpdateAndroidConfig() and $Android&Init() as well
 Global $InitAndroidActive = False
 Func InitAndroidConfig($bRestart = False)
+Global $Android = $AndroidAppConfig[$AndroidConfig][0]
 	If $bRestart = False Then
-	   $Android = $AndroidAppConfig[$AndroidConfig][0]
 	   $AndroidInstance = $AndroidAppConfig[$AndroidConfig][1]
 	   $Title = $AndroidAppConfig[$AndroidConfig][2]
 	EndIf
@@ -1518,14 +1518,6 @@ Global $ichkElixirSwitchMax, $itxtMaxElixirAmount, $icmbElixirMaxProfile, $ichkE
 Global $ichkDESwitchMax, $itxtMaxDEAmount, $icmbDEMaxProfile, $ichkDESwitchMin, $itxtMinDEAmount, $icmbDEMinProfile
 Global $ichkTrophySwitchMax, $itxtMaxTrophyAmount, $icmbTrophyMaxProfile, $ichkTrophySwitchMin, $itxtMinTrophyAmount, $icmbTrophyMinProfile
 
-; Multi-Farming - Added by TheRevenor
-Global $iSwCount
-Global $ichkSwitchDonate
-Global $ichkMultyFarming
-Global $iAccount, $OkLoc, $AccountLoc
-Global $iconfirm
-Global $bAccount[6] = ["Main", "Second", "Third", "Fourth", "Fifth", "Sixth"]
-
 ; Donate Stats - Added by TheRevenor
 Global $ichkLimitDStats = 0
 Global $iLimitDStats = 5000
@@ -1654,8 +1646,12 @@ Global $aUpdateRemainTrainTime[8]
 Global $nNexProfile
 Global $nMinRemainTrain
 
-Global $iChkRestartAndroidSearchLimit
+Global $iChkRestartAndroid
 Global $iRestartAndroidSearchLimit
+Global $iRestartAndroidTrainError
+Global $iTrainWindowErrorCounter = 0
+
+Global $iRestartAndroidCounter = 1		; adding Restart Android as requested by antrisaromi
 
 ;=== No variables below ! ================================================
 

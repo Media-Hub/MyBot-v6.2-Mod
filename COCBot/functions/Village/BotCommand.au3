@@ -14,13 +14,22 @@
 ; Example .......: No
 ; ===============================================================================================================================
 Func BotCommand()
+
 	If $iChkBotStop = 1 Then
 
 		$MeetCondStop = False ; reset flags so bot can restart farming when conditions change.
 		$bTrainEnabled = True
 		$bDonationEnabled = True
 
-		If $icmbBotCond = 15 And $icmbHoursStop <> 0 Then $TimeToStop = $icmbHoursStop * 3600000 ; 3600000 = 1 Hours
+		If $FirstStart = True Then $iRestartAndroidCounter = 1						; Adding option to restart Android as requested by antrisaromi - DEMEN
+
+		If $icmbBotCond = 15 And $icmbHoursStop <> 0 Then
+			If $icmbBotCommand = 7 Then 											; Adding option to restart Android as requested by antrisaromi - DEMEN
+				$TimeToStop = $icmbHoursStop * 3600000 * $iRestartAndroidCounter
+			Else
+				$TimeToStop = $icmbHoursStop * 3600000 ; 3600000 = 1 Hours
+			EndIf
+		EndIf
 
 		Local $iTrophyCurrent = getTrophyMainScreen($aTrophies[0], $aTrophies[1])
 		Local $TrophyMax = Number($iTrophyCurrent) > Number($itxtMaxTrophy)
@@ -138,6 +147,15 @@ Func BotCommand()
 					If _Sleep($iDelayBotCommand1) Then Return
 					Shutdown(BitOR($SD_REBOOT, $SD_FORCE)) ; Reboot
 					Return True ; HaHa - No Return possible!
+				Case 7													; Adding option to restart Android as requested by antrisaromi
+					SetLog("Restarting Android...", $COLOR_BLUE)
+					If _Sleep($iDelayBotCommand1) Then Return
+					CloseAndroid()
+					If _Sleepstatus(10000) Then Return
+					$iRestartAndroidCounter += 1
+					OpenAndroid()
+					OpenCoC()
+					RunBot()
 			EndSwitch
 		EndIf
 	EndIf

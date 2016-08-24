@@ -17,7 +17,9 @@ Func cmbProfile()
 	saveConfig()
 
 	FileClose($hLogFileHandle)
+	$hLogFileHandle = ""		;- Writing log for each profile in SwitchAcc Mode - DEMEN (Special thanks to ezeck0001)
 	FileClose($hAttackLogFileHandle)
+	$hAttackLogFileHandle = ""	;- Writing log for each profile in SwitchAcc Mode - DEMEN (Special thanks to ezeck0001)
 
 	; Setup the profile in case it doesn't exist.
 	setupProfile()
@@ -140,49 +142,45 @@ Func chkSwitchAcc()
 		  GUICtrlSetState($chkSwitchAcc, $GUI_UNCHECKED)
 		  MsgBox($MB_OK, "SwitchAcc Mode", "Cannot enable SwitchAcc Mode" & @CRLF & "You have only " & _GUICtrlComboBox_GetCount($cmbProfile) & " Profile set", 30, $hGUI_BOT)
 	   Else
-		  For $i = $lblTotalAccount To $chkRestartAndroidSearchLimit
+		  For $i = $lblTotalAccount To $radNormalSwitch
 			 GUICtrlSetState($i, $GUI_ENABLE)
-			 GUICtrlSetState($chkCloseWaitEnable, $GUI_DISABLE)
-			 GUICtrlSetState($chkMultyFarming, $GUI_DISABLE)
-			 GUICtrlSetState($chkSwitchDonate, $GUI_DISABLE)
 		  Next
 		  If GUICtrlRead($radNormalSwitch) = $GUI_CHECKED And GUICtrlRead($chkUseTrainingClose) = $GUI_CHECKED Then
 			 GUICtrlSetState($radSmartSwitch, $GUI_CHECKED)
 		  EndIf
 	   EndIf
 	Else
-		For $i = $lblTotalAccount To $chkRestartAndroidSearchLimit
+		For $i = $lblTotalAccount To $radNormalSwitch
 			 GUICtrlSetState($i, $GUI_DISABLE)
-			 GUICtrlSetState($chkCloseWaitEnable, $GUI_ENABLE)
-			 GUICtrlSetState($chkMultyFarming, $GUI_ENABLE)
-			 GUICtrlSetState($chkSwitchDonate, $GUI_ENABLE)
 		  Next
 	EndIf
 EndFunc   ;==>chkSwitchAcc
 
 Func radNormalSwitch()
 	If GUICtrlRead($chkUseTrainingClose) = $GUI_CHECKED Then
-		GUICtrlSetState($radSmartSwitch, $GUI_CHECKED)
-		MsgBox($MB_OK, "SwitchAcc Mode", "Cannot enable Sleep Mode together with Normal Switch Mode", 30, $hGUI_BOT)
+	   GUICtrlSetState($radSmartSwitch, $GUI_CHECKED)
+	   MsgBox($MB_OK, "SwitchAcc Mode", "Cannot enable Sleep Mode together with Normal Switch Mode", 30, $hGUI_BOT)
 	EndIf
 EndFunc   ;==>radNormalSwitch  - Normal Switch is not on the same boat with Sleep Combo
 
 Func chkUseTrainingClose()
 	If GUICtrlRead($chkUseTrainingClose) = $GUI_CHECKED And GUICtrlRead($chkSwitchAcc) = $GUI_CHECKED And GUICtrlRead($radNormalSwitch) = $GUI_CHECKED Then
-		GUICtrlSetState($chkUseTrainingClose, $GUI_UNCHECKED)
-		MsgBox($MB_OK, "SwitchAcc Mode", "Cannot enable Sleep Mode together with Normal Switch Mode", 30, $hGUI_BOT)
+	   GUICtrlSetState($chkUseTrainingClose, $GUI_UNCHECKED)
+	   MsgBox($MB_OK, "SwitchAcc Mode", "Cannot enable Sleep Mode together with Normal Switch Mode", 30, $hGUI_BOT)
 	EndIf
 EndFunc   ;==>chkUseTrainingClose
 
-Func chkRestartAndroidSearchLimit()
-	If GUICtrlRead($chkRestartAndroidSearchLimit) = $GUI_CHECKED Then
-		GUICtrlSetState($txtRestartAndroidSearchLimit, $GUI_ENABLE)
-		GUICtrlSetState($lblRestartAndroidSearchLimit, $GUI_ENABLE)
+Func chkRestartAndroid()
+	If GUICtrlRead($chkRestartAndroid) = $GUI_CHECKED Then
+		For $i = $txtRestartAndroidSearchLimit To $lblRestartAndroidTrainError
+			GUICtrlSetState($i, $GUI_ENABLE)
+		Next
 	Else
-		GUICtrlSetState($txtRestartAndroidSearchLimit, $GUI_DISABLE)
-		GUICtrlSetState($lblRestartAndroidSearchLimit, $GUI_DISABLE)
+		For $i = $txtRestartAndroidSearchLimit To $lblRestartAndroidTrainError
+			GUICtrlSetState($i, $GUI_DISABLE)
+		Next
 	EndIf
-EndFunc   ;==>chkHibernate
+EndFunc   ;==>chkRestartAndroid
 
 ; ============= SwitchAcc Mode ============= - DEMEN
 

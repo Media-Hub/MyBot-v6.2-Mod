@@ -1054,11 +1054,6 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		; Close TakeBrake
 		$ichkCloseTakeBreak = IniRead($config, "general", "ChkCloseEmuPB", "0")
 
-		; Multi Farming Settings
-		$ichkSwitchDonate = IniRead($config, "Multy", "SwitchDonate", "0")
-		$ichkMultyFarming = IniRead($config, "Multy", "MultyFarming", "0")
-		$iAccount = IniRead($config, "Multy", "Account", "2")
-
 		; Donate Stats
 		$ichkDStats = IniRead($config, "donate", "chkDStats", "1")
 		$ichkLimitDStats = IniRead($config, "stats", "chkLimitDStats", "0")
@@ -1103,14 +1098,15 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		$ichkSwitchAcc = IniRead($profile, "Switch Account", "Enable", "0")
 		$icmbTotalCoCAcc = IniRead($profile, "Switch Account", "Total Coc Account", "0")	; 0 = AutoDetect
 		$ichkSmartSwitch = IniRead($profile, "Switch Account", "Smart Switch", "1")
-		$ichkCloseTraining = Number(IniRead($profile, "Switch Account", "Sleep Combo", "0"))
+		$ichkCloseTraining = Number(IniRead($profile, "Switch Account", "Sleep Combo", "0"))	; Sleep Combo, 1 = Close CoC, 2 = Close Android, 0 = No sleep
 
 		$ProfileType = IniRead($config, "Switch Account", "Profile Type", "")
 		$MatchProfileAcc = IniRead($config, "Switch Account", "Match Profile Acc", "")
 
 		; Restart Android after long search - DEMEN
-		$iChkRestartAndroidSearchLimit = IniRead($config, "Restart Android", "Enable", "1")
-		$iRestartAndroidSearchLimit = IniRead($config, "Restart Android", "Restart Android Search Limit", "200")
+		 $iChkRestartAndroid = IniRead($config, "Restart Android", "Enable", "1")
+		 $iRestartAndroidSearchLimit = IniRead($config, "Restart Android", "Restart Android Search Limit", "200")
+		 $iRestartAndroidTrainError= IniRead($config, "Restart Android", "Restart Android Train Error", "10")
 
 	Else
 		Return False

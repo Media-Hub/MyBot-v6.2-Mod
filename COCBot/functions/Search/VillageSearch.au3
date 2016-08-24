@@ -310,7 +310,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 		;If SWHTSearchLimit($iSkipped + 1) Then Return True
 		; Return Home on Search limit
 		If SearchLimit($iSkipped + 1) Then Return True
-		If SearchLimitRestartAndroid($SearchCount) Then Return True
+	    If SearchLimitRestartAndroid($SearchCount) Then Return True				; Restart Android after long search - DEMEN
 
 		If checkAndroidTimeLag() = True Then
 		   $Restart = True
@@ -455,11 +455,12 @@ Func SearchLimit($iSkipped)
 	EndIf
 EndFunc   ;==>SearchLimit
 
-Func SearchLimitRestartAndroid($SearchCount); Restart Android after long search - DEMEN
-	If $iChkRestartAndroidSearchLimit = 1 And Mod($SearchCount, Number($iRestartAndroidSearchlimit)) = 0  Then
+Func SearchLimitRestartAndroid($SearchCount); Restart-Android after long search - DEMEN
+	If $iChkRestartAndroid = 1 And Mod($SearchCount, Number($iRestartAndroidSearchlimit)) = 0  Then
 		$Is_SearchLimit = True
 		Setlog("So many skips, Restart CoC and Android")
-		  CloseCoC()
+		  MakeScreenshot($dirTemp, "jpg")
+		  PoliteCloseCoC()
 		  CloseAndroid()
 		  If _SleepStatus(10000) Then Return
 		  OpenAndroid()
@@ -471,8 +472,7 @@ Func SearchLimitRestartAndroid($SearchCount); Restart Android after long search 
 	Else
 		Return False
     EndIf
-EndFunc; ==> SearchLimitAndroid (Restart Android after long search - DEMEN)
-
+EndFunc; ==> SearchLimitRestartAndroid (Restart Android after long search - DEMEN)
 
 Func WriteLogVillageSearch ($x)
 	;this function write in BOT LOG the values setting for each attack mode ($DB,$LB, $TS)
