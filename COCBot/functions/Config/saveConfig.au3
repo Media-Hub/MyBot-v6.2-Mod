@@ -567,7 +567,7 @@ Func saveConfig() ;Saves the controls settings to the config
 	$icmbBotCond = _GUICtrlComboBox_GetCurSel($cmbBotCond)
 	$icmbHoursStop = _GUICtrlComboBox_GetCurSel($cmbHoursStop)
 
-	$sTimeWakeUp = GUICtrlRead($txtTimeWakeUp)
+	$sTimeWakeUp = Int(GUICtrlRead($txtTimeWakeUp)) * 60 ; Minutes are entered
 
 	$itxtRestartGold = GUICtrlRead($txtRestartGold)
 	$itxtRestartElixir = GUICtrlRead($txtRestartElixir)
@@ -2525,15 +2525,15 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWrite($config, "MOD", "MinDE", GUICtrlRead($txtMinDark))
 
 	; Android Settings
-	IniWrite($config, "Android", "Emulator", GUICtrlRead($cmbAndroid))
-	IniWrite($config, "Android", "Instance", GUICtrlRead($txtAndroidInstance))
+	;IniWrite($config, "Android", "Emulator", GUICtrlRead($cmbAndroid))
+	;IniWrite($config, "Android", "Instance", GUICtrlRead($txtAndroidInstance))
 
 	; Misc Battle Settings
-	If GUICtrlRead($chkFastADBClicks) = $GUI_CHECKED Then
-		IniWrite($config, "Fast Clicks", "UseADBFastClicks", 1)
-	Else
-		IniWrite($config, "Fast Clicks", "UseADBFastClicks", 0)
-	EndIf
+;	If GUICtrlRead($chkFastADBClicks) = $GUI_CHECKED Then
+;		IniWrite($config, "Fast Clicks", "UseADBFastClicks", 1)
+;	Else
+;		IniWrite($config, "Fast Clicks", "UseADBFastClicks", 0)
+;	EndIf
 
 	; Wait For Spells
 	If GUICtrlRead($chkDBSpellsWait) = $GUI_CHECKED Then

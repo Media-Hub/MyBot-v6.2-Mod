@@ -78,12 +78,6 @@ $y += 15
  			_GUICtrlSetTip(-1, $txtTip)
 		$picAttackNearDarkElixirDrillAB = GUICtrlCreateIcon($pIconLib, $eIcnDrill, $x + 20 , $y - 3, 24, 24)
  			_GUICtrlSetTip(-1, $txtTip)
-		$x += 25
-		$y += 125
-		$btnAttNow = GUICtrlCreateButton("Attack Now", $x, $y - 30, 91, 25)
-			_GUICtrlSetTip(-1, "Attack Now Button (Useful for Standart Attack Testing)")
-			GUISetState(@SW_SHOW)
-			GUICtrlSetOnEvent(-1, "AttackNowAB1")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 ;GUISetState()

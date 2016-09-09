@@ -37,7 +37,7 @@ $hGUI_NOTIFY_TAB_ITEM1 = GUICtrlCreateTabItem(GetTranslated(600,18,"PushBullet/T
 		$chkPBenabled = GUICtrlCreateCheckbox(GetTranslated(619, 3, "Enable Pushbullet"), $x + 40, $y)
 			GUICtrlSetOnEvent(-1, "chkPBenabled")
 			_GUICtrlSetTip(-1, GetTranslated(619, 4, "Enable PushBullet notifications"))
-		
+
 		$chkPBenabled2 = GUICtrlCreateCheckbox("Enable Telegram", $x + 40, $y +21)
 	    GUICtrlSetOnEvent(-1, "chkPBenabled2")
 	    _GUICtrlSetTip(-1, "Enable Telegram notifications")
@@ -75,7 +75,7 @@ $hGUI_NOTIFY_TAB_ITEM1 = GUICtrlCreateTabItem(GetTranslated(600,18,"PushBullet/T
 		$lblTelegramTokenValue = GUICtrlCreateLabel(GetTranslated(619, 14, "Access Token") & ":", $x, $y + 23, -1, -1, $SS_RIGHT)
 		$TelegramTokenValue = GUICtrlCreateInput("", $x + 85, $y +22, 315, 19)
 		GUICtrlSetState(-1, $GUI_DISABLE)
-		
+
 		$y += 30
 		$lblOrigPushBullet = GUICtrlCreateLabel(GetTranslated(619, 16, "Origin") & ":", $x, $y + 25, -1, -1, $SS_RIGHT)
 			$txtTip = GetTranslated(619,17, "Your Profile/Village name - Set this on the Misc Tab under Profiles.")
@@ -129,13 +129,13 @@ $hGUI_NOTIFY_TAB_ITEM1 = GUICtrlCreateTabItem(GetTranslated(600,18,"PushBullet/T
 			_GUICtrlSetTip(-1, "Send an Alert when a Top Gain is achived.")
 			GUICtrlSetState(-1, $GUI_DISABLE)
 		GUICtrlCreateGroup("", -99, -99, 1, 1)
-		
-;Periodic village stats and Searchcount Nofications.		
+
+;Periodic village stats and Searchcount Nofications.
 $y += 20
 		$chkSearchNotifyCount = GUICtrlCreateCheckbox("Searchcount.  Increment:", $x + 10, $y, -1, -1)
 		_GUICtrlSetTip(-1, "Searchcount Notification every ____ searches.  If getting pushbullet errors or acting funny, increase increment.  ")
 		GUICtrlSetState(-1, $GUI_DISABLE)
-		$txtSearchNotifyCount = GUICtrlCreateInput("25", $x + 150, $y + 2, 25, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+		$txtSearchNotifyCount = GUICtrlCreateInput("25", $x + 150, $y + 2, 30, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
 		$txtTip = "Searchcount Notification every ____ searches."
 		_GUICtrlSetTip(-1, $txtTip)
 		GUICtrlSetLimit(-1, 3)
@@ -152,7 +152,7 @@ $y += 20
 		GUICtrlSetState(-1, $GUI_DISABLE)
 ;$y += 20
 	;$chkAlertTopGain = GUICtrlCreateCheckbox("Top Gain", $x + 10, $y, -1, -1)
-		;_GUICtrlSetTip(-1, "Send an Alert when a Top Gain is achived.") 
+		;_GUICtrlSetTip(-1, "Send an Alert when a Top Gain is achived.")
 		;GUICtrlSetState(-1, $GUI_DISABLE)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 GUICtrlCreateTabItem("")
@@ -162,6 +162,7 @@ $hGUI_NOTIFY_TAB_ITEM2 = GUICtrlCreateTabItem(GetTranslated(600, 19, "Instructio
 			$x -= 10
 			$lblPBdesc = GUICtrlCreateLabel(GetTranslated(620, 1, "BOT") & " " & GetTranslated(620, 14,"HELP") & GetTranslated(620,2, " - send this help message") & @CRLF & _
 				GetTranslated(620, 1, -1) & " " & GetTranslated(620, 15,"DELETE") & GetTranslated(620, 3, " - delete all your previous messages") & @CRLF & _
+				GetTranslated(620, 1, -1) & " START - start the bot named" & @CRLF & _
 				GetTranslated(620, 1, -1) & " <" & GetTranslated(619, 16, -1) & "> " & GetTranslated(620, 16,"RESTART") & GetTranslated(620, 4, " - restart the bot named <Village Name> and Android Emulator") & @CRLF & _
 				GetTranslated(620, 1, -1) & " <" & GetTranslated(619, 16, -1) & "> " & GetTranslated(620, 17,"STOP") & GetTranslated(620, 5, " - stop the bot named <Village Name>") & @CRLF & _
 				GetTranslated(620, 1, -1) & " <" & GetTranslated(619, 16, -1) & "> " & GetTranslated(620, 18,"PAUSE") & GetTranslated(620, 6, " - pause the bot named <Village Name>") & @CRLF & _
@@ -170,8 +171,8 @@ $hGUI_NOTIFY_TAB_ITEM2 = GUICtrlCreateTabItem(GetTranslated(600, 19, "Instructio
 				GetTranslated(620, 1, -1) & " <" & GetTranslated(619, 16, -1) & "> " & GetTranslated(620, 21,"LOG") & GetTranslated(620, 9, " - send the current log file of <Village Name>") & @CRLF & _
 				GetTranslated(620, 1, -1) & " <" & GetTranslated(619, 16, -1) & "> " & GetTranslated(620, 22,"LASTRAID") & GetTranslated(620, 10, " - send the last raid loot screenshot of <Village Name>") & @CRLF & _
 				GetTranslated(620, 1, -1) & " <" & GetTranslated(619, 16, -1) & "> " & GetTranslated(620, 23,"LASTRAIDTXT") & GetTranslated(620, 11, " - send the last raid loot values of <Village Name>") & @CRLF & _
-				GetTranslated(620, 1, -1) & " <" & GetTranslated(619, 16, -1) & "> " & GetTranslated(620, 24,"SCREENSHOT") & GetTranslated(620, 12, " - send a screenshot of <Village Name>") & @CRLF & _ 
-				GetTranslated(620, 1, -1) & " <" & GetTranslated(619, 16, -1) & "> SCREENSHOTHD - send a screenshot in high resolution" & @CRLF & @CRLF & _ 
+				GetTranslated(620, 1, -1) & " <" & GetTranslated(619, 16, -1) & "> " & GetTranslated(620, 24,"SCREENSHOT") & GetTranslated(620, 12, " - send a screenshot of <Village Name>") & @CRLF & _
+				GetTranslated(620, 1, -1) & " <" & GetTranslated(619, 16, -1) & "> SCREENSHOTHD - send a screenshot in high resolution" & @CRLF & @CRLF & _
 				GetTranslated(600, 19, "Instructions") & " Chat Bot With PushBullet!" & @CRLF & _
 				GetTranslated(620, 1, -1) & " <" & GetTranslated(619, 16, -1) & "> SENDCHAT <Chat Message> - send Text in clan chat" & @CRLF & _
 				GetTranslated(620, 1, -1) & " <" & GetTranslated(619, 16, -1) & "> GETCHATS <STOP|NOW|INTERVAL> - select any of this three option" & @CRLF & @CRLF & _

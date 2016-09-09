@@ -51,17 +51,19 @@ EndFunc   ;==>txtMinDark
 
 Func ExtLightSpell()
 	If GUICtrlRead($chkExtLightSpell) = $GUI_CHECKED Then
+		GUICtrlSetState($chkSmartZapDB, $GUI_ENABLE)
 		GUICtrlSetState($txtMinDark, $GUI_ENABLE)
 		GUICtrlSetState($chkSmartLightSpell, $GUI_DISABLE)
 		$ichkExtLightSpell = 1
 	Else
 		GUICtrlSetState($chkSmartLightSpell, $GUI_ENABLE)
+		GUICtrlSetState($chkSmartZapDB, $GUI_DISABLE)
 		;GUICtrlSetState($txtMinDark, $GUI_DISABLE)
 		$ichkExtLightSpell = 0
 	EndIf
 EndFunc   ;==>GUILightSpell
 
-; Android Setting
+#cs ===>; Android Setting
 Func setupAndroidComboBox()
 	Local $androidString = ""
 	Local $aAndroid = getInstalledEmulators()
@@ -90,3 +92,4 @@ Func chkFastADBClicks()
 		$AndroidAdbClicksEnabled = False
 	EndIf
 EndFunc   ;==>chkFastADBClicks
+#ce

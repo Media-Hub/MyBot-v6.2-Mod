@@ -705,15 +705,9 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	GUICtrlSetData($txtFullTroop, $fulltroop)
 
 	If $ichkCloseWaitEnable = 1 Then
-		For $i = $chkCloseWaitTrain To $lblCloseWaitRdmPercent
-			GUICtrlSetState($i, $GUI_SHOW)
-		Next
 		GUICtrlSetState($chkCloseWaitEnable, $GUI_CHECKED)
 		_GUI_Value_STATE("ENABLE", $groupCloseWaitTrain)
 	ElseIf $ichkCloseWaitEnable = 0 Then
-		For $i = $chkCloseWaitTrain To $lblCloseWaitRdmPercent
-			GUICtrlSetState($i, $GUI_HIDE)
-		Next
 		GUICtrlSetState($chkCloseWaitEnable, $GUI_UNCHECKED)
 		_GUI_Value_STATE("DISABLE", $groupCloseWaitTrain)
 	EndIf
@@ -736,9 +730,11 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 
 	If $ibtnCloseWaitExact = 1 Then
 		GUICtrlSetState($btnCloseWaitExact, $GUI_CHECKED)
+		GUICtrlSetState($btnCloseWaitRandom, $GUI_UNCHECKED)
 	EndIf
 	If $ibtnCloseWaitRandom = 1 Then
 		GUICtrlSetState($btnCloseWaitRandom, $GUI_CHECKED)
+		GUICtrlSetState($btnCloseWaitExact, $GUI_UNCHECKED)
 	EndIf
 
 	_GUICtrlComboBox_SetCurSel($cmbCloseWaitRdmPercent, $icmbCloseWaitRdmPercent)
@@ -1932,7 +1928,7 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	_GUICtrlComboBox_SetCurSel($cmbHoursStop, $icmbHoursStop)
 	cmbBotCond()
 
-	GUICtrlSetData($txtTimeWakeUp, $sTimeWakeUp)
+	GUICtrlSetData($txtTimeWakeUp, Int(Int($sTimeWakeUp) / 60))
 
 	GUICtrlSetData($txtRestartGold, $itxtRestartGold)
 	GUICtrlSetData($txtRestartElixir, $itxtRestartElixir)
@@ -2644,7 +2640,7 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 
 	GUICtrlSetData($txtMinDark, $itxtMinDE)
 
-	; Android Settings
+#cs	; Android Settings
 	If _GUICtrlComboBox_FindStringExact($cmbAndroid, String($sAndroid)) <> -1 Then
 		_GUICtrlComboBox_SelectString($cmbAndroid, String($sAndroid))
 	Else
@@ -2661,7 +2657,7 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 		GUICtrlSetState($chkFastADBClicks, $GUI_UNCHECKED)
 		$AndroidAdbClicksEnabled = False
 	EndIf
-
+#ce
 	;Wait For Spells
 	If $iEnableSpellsWait[$DB] = 1 Then
 		GUICtrlSetState($chkDBSpellsWait, $GUI_CHECKED)

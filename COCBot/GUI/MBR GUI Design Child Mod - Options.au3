@@ -75,7 +75,7 @@ GUISwitch($hGUI_ModOptions)
 			_GUICtrlSetTip(-1, $txtTip)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
-	; Android Setting
+#cs	; Android Setting
 	Local $x = 20, $y = 177
 	$grpHideAndroid = GUICtrlCreateGroup("Android Options", $x - 20, $y - 20, 438, 73)
 		$cmbAndroid = GUICtrlCreateCombo("", $x - 10, $y - 5, 130, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
@@ -96,3 +96,4 @@ GUISwitch($hGUI_ModOptions)
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkFastADBClicks")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
+#ce

@@ -30,10 +30,10 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 			While GoldElixirChangeEBO()
 				If _Sleep($iDelayReturnHome1) Then Return
 			WEnd
-			
+
 			; Check to see if we should zap the DE Drills - Added by LunaEclipse
 			If IsAttackPage() Then (smartZap() Or ExtremeZap())
-			
+
 			;If Heroes were not activated: Hero Ability activation before End of Battle to restore health
 			If ($checkKPower = True Or $checkQPower = True) And $iActivateKQCondition = "Auto" Then
 				;_CaptureRegion()
@@ -112,14 +112,14 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 			WEnd
 		EndIf
 		If _Sleep($iDelayReturnHome3) Then Return ; wait for all report details
-		_CaptureRegion(0, 0, $DEFAULT_WIDTH, $DEFAULT_HEIGHT - 45)
+		_CaptureRegion()
 		AttackReport()
 	EndIf
 	If $TakeSS = 1 And $GoldChangeCheck = True Then
 		SetLog("Taking snapshot of your loot", $COLOR_GREEN)
 		Local $Date = @YEAR & "-" & @MON & "-" & @MDAY
 		Local $Time = @HOUR & "." & @MIN
-		_CaptureRegion(0, 0, $DEFAULT_WIDTH, $DEFAULT_HEIGHT - 45)
+		_CaptureRegion()
 		$hBitmap_Scaled = _GDIPlus_ImageResize($hBitmap, _GDIPlus_ImageGetWidth($hBitmap) / 2, _GDIPlus_ImageGetHeight($hBitmap) / 2) ;resize image
 		; screenshot filename according with new options around filenames
 		If $ScreenshotLootInfo = 1 Then
@@ -134,10 +134,10 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 	;push images if requested..
 	If $GoldChangeCheck = True Then
 		PushMsgToPushBullet ("LastRaid")
-		$AttackCount +=1 ;for periodic village stats per number of attacks
+		$AttackCount += 1 ;for periodic village stats per number of attacks
 	EndIf
 	;Delete searchcount messages if necessary
-    If $SearchNotifyCount = 1 And $searchcount>=1 And isarray($SearchNotifyCountMsgIden) Then
+    If $SearchNotifyCount = 1 And $searchcount >= 1 And isarray($SearchNotifyCountMsgIden) Then
         _DeleteMessageOfPushBullet ($SearchNotifyCountMsgIden[0])
 	EndIf
 

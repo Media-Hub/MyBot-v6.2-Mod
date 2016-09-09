@@ -1,11 +1,11 @@
 ; #FUNCTION# ====================================================================================================================
-; Name ..........: 
-; Description ...: 
-; Syntax ........: 
-; Parameters ....: 
+; Name ..........:
+; Description ...:
+; Syntax ........:
+; Parameters ....:
 ; Return values .: None
 ; Author ........: Boju(2016
-; Modified ......: 
+; Modified ......:
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2016
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......: checkMainscreen, isProblemAffect
@@ -20,7 +20,7 @@ Func ClickZone ($x, $y, $Offset = 7, $debugtxt = "", $times = 1, $speed = 0, $Ou
 	If $y-$Offset > $OutScreen Then
 		$BasY = $y
 	Else
-		$BasY = $y-$Offset  
+		$BasY = $y-$Offset
 	EndIf
 	Dim $TempBot[4] = [$x-$Offset, $BasY, $x+$Offset, $y+$Offset]
 	If $debugClick = 1 Then
@@ -57,19 +57,19 @@ Func ClickR($boundingBox, $x, $y, $times = 1, $speed = 0, $OutScreen = (680 + $b
 	If $y > $OutScreen Then
 		$y = $OutScreen
 	Else
-		$y = $y  
+		$y = $y
 	EndIf
 	$x = Round($x, 3)
 	$y = Round($y, 3)
 	If $times <> 1 Then
 		For $i = 0 To ($times - 1)
 			If $debugClick = 1 Then SetLog("_ControlClick " & "X=" & $x & " Y=" & $y & " ,t" & $times & ",s" & $speed & $AncVal, $COLOR_ORANGE, "Verdana", "7.5", 0)
-			_ControlClick($x, $y)
+			Click($x, $y)
 			If _Sleep($speed, False) Then ExitLoop
 		Next
 	Else
 		If $debugClick = 1 Then SetLog("_ControlClick " & "X=" & $x & " Y=" & $y & $AncVal, $COLOR_ORANGE, "Verdana", "7.5", 0)
-		_ControlClick($x, $y)
+		Click($x, $y)
 	EndIf
 EndFunc   ;==>ClickR
 
@@ -100,7 +100,7 @@ Func PureClickR($boundingBox, $x, $y, $times = 1, $speed = 0, $OutScreen = (680 
 	If $y > $OutScreen Then
 		$y = $OutScreen
 	Else
-		$y = $y  
+		$y = $y
 	EndIf
 	$x = Round($x, 3)
 	$y = Round($y, 3)

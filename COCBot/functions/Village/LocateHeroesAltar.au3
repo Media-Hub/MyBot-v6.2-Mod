@@ -48,7 +48,6 @@ Func _LocateQueenAltar()
 		$MsgBox = _ExtMsgBox(0, GetTranslated(640,1,"Ok|Cancel"), GetTranslated(640,35,"Locate Queen Altar"), $stext, 15, $frmBot)
 		If $MsgBox = 1 Then
 			WinGetAndroidHandle()
-			WinActivate($HWnD)
 			ClickP($aTopLeftClient)
 			Local $aPos = FindPos()
 			$QueenAltarPos[0] = $aPos[0]
@@ -169,7 +168,6 @@ Func _LocateKingAltar()
 
 	Local $stext, $MsgBox, $iSilly = 0, $iStupid = 0, $sErrorText = "", $sInfo
 	WinGetAndroidHandle()
-	WinActivate($HWnD)
 	checkMainScreen(False)
 
 	If _GetPixelColor($aTopLeftClient[0], $aTopLeftClient[1], True) <> Hex($aTopLeftClient[2], 6) Or _GetPixelColor($aTopRightClient[0], $aTopRightClient[1], True) <> Hex($aTopRightClient[2], 6) Then
@@ -188,7 +186,6 @@ Func _LocateKingAltar()
 		$MsgBox = _ExtMsgBox(0, GetTranslated(640,1,"Ok|Cancel"), GetTranslated(640,40,"Locate King Altar"), $stext, 15, $frmBot)
 		If $MsgBox = 1 Then
 			WinGetAndroidHandle()
-			WinActivate($HWnD)
 			Local $aPos = FindPos()
 			$KingAltarPos[0] = $aPos[0]
 			$KingAltarPos[1] = $aPos[1]
@@ -313,7 +310,6 @@ Func _LocateWardenAltar()
 	EndIf
 
 	WinGetAndroidHandle()
-	WinActivate($HWnD)
 	checkMainScreen(False)
 
 	If _GetPixelColor($aTopLeftClient[0], $aTopLeftClient[1], True) <> Hex($aTopLeftClient[2], 6) And _GetPixelColor($aTopRightClient[0], $aTopRightClient[1], True) <> Hex($aTopRightClient[2], 6) Then
@@ -332,7 +328,6 @@ Func _LocateWardenAltar()
 		$MsgBox = _ExtMsgBox(0, GetTranslated(640,1,"Ok|Cancel"), GetTranslated(640,42,"Locate Grand Warden Altar"), $stext, 15, $frmBot)
 		If $MsgBox = 1 Then
 			WinGetAndroidHandle()
-			WinActivate($HWnD)
 			Local $aPos = FindPos()
 			$WardenAltarPos[0] = $aPos[0]
 			$WardenAltarPos[1] = $aPos[1]

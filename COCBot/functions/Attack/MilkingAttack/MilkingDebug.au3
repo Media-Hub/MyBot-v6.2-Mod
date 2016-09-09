@@ -54,11 +54,11 @@ Func CheckMilkingBaseTest()
 	$hTimer = TimerInit()
 
 	_CaptureRegion2()
-	_CaptureRegion(0,0,$DEFAULT_WIDTH,$DEFAULT_HEIGHT,true)
+	_CaptureRegion()
 	$sendHBitmap = _GDIPlus_BitmapCreateHBITMAPFromBitmap($hBitmap)
 
 	Local $MilkFarmAtkPixelListSTR = ""
-	Local $ElixirVect = StringSplit(GetLocationElixirWithLevel(), "~", 2) 
+	Local $ElixirVect = StringSplit(GetLocationElixirWithLevel(), "~", 2)
 	Local $elixirfounds = UBound($ElixirVect)
 	Local $elixirmatch = 0
 	Local $elixirdiscard = 0

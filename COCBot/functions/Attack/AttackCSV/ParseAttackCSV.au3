@@ -18,7 +18,7 @@ Func ParseAttackCSV($debug = False)
 	Global $ATTACKVECTOR_M, $ATTACKVECTOR_N, $ATTACKVECTOR_O, $ATTACKVECTOR_P, $ATTACKVECTOR_Q, $ATTACKVECTOR_R
 	Global $ATTACKVECTOR_S, $ATTACKVECTOR_T, $ATTACKVECTOR_U, $ATTACKVECTOR_V, $ATTACKVECTOR_W, $ATTACKVECTOR_X
 	Global $ATTACKVECTOR_Y, $ATTACKVECTOR_Z
-	
+
 	;AwesomeGamer CSV Mod
 	For $i = 0 to Ubound($atkTroops) - 1
 		$remainingTroops[$i][0] = $atkTroops[$i][0]
@@ -37,9 +37,9 @@ Func ParseAttackCSV($debug = False)
 	Setlog("execute " & $filename)
 
 	Local $speedText = $iCSVSpeeds[$isldSelectedCSVSpeed[$iMatchMode]] & "x"
-	If $iCSVSpeeds[$isldSelectedCSVSpeed[$iMatchMode]] = 1 Then 
+	If $iCSVSpeeds[$isldSelectedCSVSpeed[$iMatchMode]] = 1 Then
 		$speedText = "Normal"
-	EndIf 
+	EndIf
 
 	Setlog(" - at " & $speedText & " speed")
 
@@ -153,7 +153,7 @@ Func ParseAttackCSV($debug = False)
 						;index...
 						Local $index1, $index2, $indexArray, $indexvect, $isIndexPercent
 						$indexvect = StringSplit($value2, "-", 2)
-						
+
 						;AwesomeGamer CSV Mod
 						If StringInStr($value2, "%") > 0 Then
 							$indexArray = 0
@@ -192,11 +192,11 @@ Func ParseAttackCSV($debug = False)
 							EndIf
 						EndIf
 						EndIf
-						
+
 						;qty...
 						Local $qty1, $qty2, $qtyvect, $isQtyPercent
 						$qtyvect = StringSplit($value3, "-", 2)
-						
+
 						;AwesomeGamer CSV Mod
 						If StringInStr($value3, "%") > 0 Then
 							$isQtyPercent = 1
@@ -226,7 +226,7 @@ Func ParseAttackCSV($debug = False)
 							EndIf
 						EndIf
 						EndIf
-						
+
 						;delay between points
 						Local $delaypoints1, $delaypoints2, $delaypointsvect
 						$delaypointsvect = StringSplit($value5, "-", 2)
@@ -309,6 +309,10 @@ Func ParseAttackCSV($debug = False)
 						EndIf
 						DropTroopFromINI($value1, $index1, $index2, $indexArray, $qty1, $qty2, $value4, $delaypoints1, $delaypoints2, $delaydrop1, $delaydrop2, $sleepdrop1, $sleepdrop2, $sleepbeforedrop1, $sleepbeforedrop2, $isQtyPercent, $isIndexPercent, $debug)
 						ReleaseClicks($AndroidAdbClicksTroopDeploySize)
+						If _Sleep($iDelayRespond) Then ; check for pause/stop, close file before return
+							FileClose($f)
+							Return
+						EndIf
 					Case "WAIT"
 						ReleaseClicks()
 						;sleep time
@@ -350,6 +354,10 @@ Func ParseAttackCSV($debug = False)
 							;READ RESOURCES
 							$Gold = getGoldVillageSearch(48, 69)
 							$Elixir = getElixirVillageSearch(48, 69 + 29)
+							If _Sleep($iDelayRespond) Then ; check for pause/stop, close file before return
+								FileClose($f)
+								Return
+							EndIf
 							$Trophies = getTrophyVillageSearch(48, 69 + 99)
 							If $Trophies <> "" Then ; If trophy value found, then base has Dark Elixir
 								$DarkElixir = getDarkElixirVillageSearch(48, 69 + 57)
@@ -376,7 +384,10 @@ Func ParseAttackCSV($debug = False)
 								$exitOneStar = 1
 								ExitLoop
 							EndIf
-							If _sleep($iDelayAttackCSV3) Then Return ;wait 5 ms to read commands from GUI
+							If _Sleep($iDelayRespond) Then ; check for pause/stop, close file before return
+								FileClose($f)
+								Return
+							EndIf
 							CheckHeroesHealth()
 						WEnd
 						If $exitOneStar = 1 Or $exitTwoStars = 1 Or $exitNoResources = 1 Then ExitLoop ;stop parse CSV file, start exit battle procedure
@@ -388,7 +399,7 @@ Func ParseAttackCSV($debug = False)
 						ReleaseClicks()
 						Setlog("Calculate main side... ")
 						If StringUpper($value8) = "TOP-LEFT" Or StringUpper($value8) = "TOP-RIGHT" Or StringUpper($value8) = "BOTTOM-LEFT" Or StringUpper($value8) = "BOTTOM-RIGHT" Then
-							$MAINSIDEMAINSIDE = StringUpper($value8)
+							$MAINSIDE = StringUpper($value8)
 							Setlog("Forced side: " & StringUpper($value8))
 						Else
 							Local $heightTopLeft = 0, $heightTopRight = 0, $heightBottomLeft = 0, $heightBottomRight = 0
@@ -570,7 +581,7 @@ Func ParseAttackCSV($debug = False)
 				If StringLeft($line, 7) <> "NOTE  |" And StringLeft($line, 7) <> "      |" And StringStripWS(StringUpper($line), 2) <> "" Then Setlog("attack row error, discard.: " & $line, $COLOR_RED)
 			EndIf
 			CheckHeroesHealth()
-			If _Sleep($iDelayRespond) Then ; check for pause/stop after each line of CSV, close file before retutn
+			If _Sleep($iDelayRespond) Then ; check for pause/stop after each line of CSV, close file before return
 				FileClose($f)
 				Return
 			EndIf
