@@ -174,7 +174,8 @@ Func AttackReport()
 	SetLog("Stars earned: " & $starsearned)
 
 	Local $AtkLogTxt
-	$AtkLogTxt = String($nCurProfile) & " |" & _NowTime(4) & "|"
+	$iLastAtkTime = _NowTime(4) ;loot hour:mins last raid Added by CDudz Modified by CDudz
+	$AtkLogTxt = String($nCurProfile) & "|" & _NowTime(4) & "|"  ; adding Acc No. in Attack Log - SwitchAcc - DEMEN
 	$AtkLogTxt &= StringFormat("%5d", $iTrophyCurrent) & "|"
 	$AtkLogTxt &= StringFormat("%6d", $SearchCount) & "|"
 	$AtkLogTxt &= StringFormat("%7d", $iGoldLast) & "|"
@@ -206,6 +207,8 @@ Func AttackReport()
 			$iShareAttackNow = 0
 		EndIf
 	EndIf
+
+	CoCStats($starsearned)
 
 	If $FirstAttack = 0 Then $FirstAttack = 1
 	$iGoldTotal += $iGoldLast + $iGoldLastBonus

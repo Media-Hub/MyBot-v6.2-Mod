@@ -30,7 +30,7 @@ Func IsTrainPage($writelogs = True)
 	Else
 		If $writelogs = True Then SetLog("Cannot find train Window.", $COLOR_RED) ; in case of $i = 29 in while loop
 
-		;	Restart Android - DEMEN
+		; Restart Android - DEMEN
 		If $iChkRestartAndroid = 1 Then
 			If $iTrainWindowErrorCounter >= $iRestartAndroidTrainError Then
 				MakeScreenshot($dirTemp, "jpg")

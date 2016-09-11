@@ -30,10 +30,13 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 			While GoldElixirChangeEBO()
 				If _Sleep($iDelayReturnHome1) Then Return
 			WEnd
-
+			
 			; Check to see if we should zap the DE Drills - Added by LunaEclipse
-			If IsAttackPage() Then (smartZap() Or ExtremeZap())
-
+			If IsAttackPage() Then 
+				smartZap()
+				ExtremeZap()
+			EndIf
+			
 			;If Heroes were not activated: Hero Ability activation before End of Battle to restore health
 			If ($checkKPower = True Or $checkQPower = True) And $iActivateKQCondition = "Auto" Then
 				;_CaptureRegion()
@@ -61,7 +64,8 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 	$checkQPower = False
 	$checkWPower = False
 
-	If $iMatchMode = $TS And $icmbTroopComp <> 8 Then $FirstStart = True ;reset barracks upon return when TH sniping w/custom army
+	;reset barracks upon return when TH sniping w/custom army
+	If $iTScheck = 1 and $iMatchMode = $TS And $icmbTroopComp <> 8 Then $FirstStart = True
 
 	SetLog("Returning Home", $COLOR_BLUE)
 	If $RunState = False Then Return

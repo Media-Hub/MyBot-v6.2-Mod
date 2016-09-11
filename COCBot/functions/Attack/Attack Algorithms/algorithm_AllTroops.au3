@@ -48,12 +48,6 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 		Else
 			SetLog("King and/or Queen dropped, close attack.")
 			If ($ichkSmartZap = 1 Or $ichkExtLightSpell = 1) Then SetLog("Skipping SmartZap Or ExtremeZap to protect your royals!", $COLOR_FUCHSIA)
-		EndIf
-
-		;Apply to switch Attack Standard after THSnipe End  ==>
-		If CompareResources($DB) And $iAtkAlgorithm[$DB] = 0 And $ichkTSActivateCamps2 = 1 And Int($CurCamp / $TotalCamp * 100) >= Int($iEnableAfterArmyCamps2) then
-			$iMatchMode = $DB
-		Else
 			CloseBattle()
 			Return
 		EndIf
@@ -79,7 +73,7 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 			SetLog("Attacking on all sides", $COLOR_BLUE)
 			$nbSides = 4
 		Case 4 ;Four Finger Classic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			SetLog("Attacking Classic Four Finger Fight Style", $COLOR_BLUE)
+			SetLog("Attacking Four Finger Classic Fight Style", $COLOR_BLUE)
 			$nbSides = 5
 		Case 5 ;DE Side - Live Base only ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			SetLog("Attacking on Dark Elixir Side.", $COLOR_BLUE)
@@ -143,29 +137,28 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 						, [$eGobl, $nbSides, 1, 1, 1] _
 						]
 		EndSwitch
-
 	; Four Finger Classic
 	ElseIf $nbSides = 5 Then
 		Local $listInfoDeploy[21][5] = [[$eGiant, $nbSides, 1, 1, 2], _
 						[$eGole,  $nbSides, 1, 1, 2], _
 						[$eLava,  $nbSides, 1, 1, 2], _
+						[$ePekk,  $nbSides, 1, 1, 2], _
+						["CC",           1, 1, 1, 1], _
 						[$eBarb,  $nbSides, 1, 1, 0], _
+						["HEROES",       1, 2, 1, 1], _
 						[$eWall,  $nbSides, 1, 1, 2], _
-						[$eArch,  $nbSides, 1, 1, 0], _
-						[$eHogs,  $nbSides, 1, 1, 2], _
-						[$eGobl,  $nbSides, 1, 1, 0], _
-						[$eValk,  $nbSides, 1, 1, 2], _
 						[$eBowl,  $nbSides, 1, 1, 0], _
 						[$eMine,  $nbSides, 1, 1, 0], _
-						[$ePekk,  $nbSides, 1, 1, 2], _
 						[$eDrag,  $nbSides, 1, 1, 2], _
 						[$eBall,  $nbSides, 1, 1, 2], _
 						[$eBabyD, $nbSides, 1, 1, 1], _
-						[$eWiza,  $nbSides, 1, 1, 2], _
 						[$eWitc,  $nbSides, 1, 1, 2], _
+						[$eValk,  $nbSides, 1, 1, 2], _
+						[$eHogs,  $nbSides, 1, 1, 2], _
+						[$eArch,  $nbSides, 1, 1, 0], _
+						[$eWiza,  $nbSides, 1, 1, 2], _
 						[$eMini,  $nbSides, 1, 1, 0], _
-						["CC",           1, 1, 1, 1], _
-						["HEROES",       1, 2, 1, 1]]
+						[$eGobl,  $nbSides, 1, 1, 0]]
 
 	Else
 		If $debugSetlog = 1 Then SetLog("listdeploy standard for attack", $COLOR_PURPLE)

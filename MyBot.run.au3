@@ -37,14 +37,14 @@ Local $hBotLaunchTime = TimerInit()
 
 Global $sGitHubModOwner = "NguyenAnhHD"
 Global $sGitHubModRepo = "MyBot-v6.2-Mod"
-Global $sGitHubModLatestReleaseTag = "v4.2"
-Global $sModSupportUrl = "https://www.facebook.com/groups/clan.fire.dragon"
+Global $sGitHubModLatestReleaseTag = "v4.2.1"
+Global $sModSupportUrl = "http://clashofclans.vn/threads/update-26-08-mybot-6-2-1-mod-v4-1-4-2.8075"
 
 $sBotVersion = "v6.2.2 Mod" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it it also use on Checkversion()
 $sBotTitle = "My Bot " & $sBotVersion & " By Nguyen Anh " & $sGitHubModLatestReleaseTag & " " ;~ Don't use any non file name supported characters like \ / : * ? " < > |
 $sModversion = $sGitHubModLatestReleaseTag
 
-;Global $sBotTitleDefault = $sBotTitle
+Global $sBotTitleDefault = $sBotTitle
 
 #include "COCBot\functions\Config\DelayTimes.au3"
 #include "COCBot\MBR Global Variables.au3"
@@ -84,9 +84,11 @@ If CheckPrerequisites() Then
 EndIf
 
 #include "COCBot\functions\Android\Android.au3"
+;#include "COCBot\functions\Android\SecureME.au3"
 
 ; Update Bot title
-$sBotTitle = $sBotTitle & "(" & ($AndroidInstance <> "" ? $AndroidInstance : $Android) & ")" ;Do not change this. If you do, multiple instances will not work.
+$sBotTitle = $sBotTitle & "(" & ($AndroidInstance <> "" ? $AndroidInstance : $Android) & ")" ; Do not change this. If you do, multiple instances will not work.
+WinSetTitle($frmBot, "", $sBotTitle)
 
 UpdateSplashTitle($sBotTitle & GetTranslated(500, 20, ", Profile: %s", $sCurrProfile))
 
@@ -119,6 +121,8 @@ EndIf
 
 $sMsg = GetTranslated(500, 5, "My Bot for %s is already running.\r\n\r\n", $sAndroidInfo)
 If $hMutex_BotTitle = 0 Then
+	;RemoveFolderFromInUseList()
+	;DeletePicturesHostFolder()
 	If IsHWnd($hSplash) Then GUIDelete($hSplash) ; Delete the splash screen since we don't need it anymore
 	MsgBox(BitOR($MB_OK, $MB_ICONINFORMATION, $MB_TOPMOST), $sBotTitle, $sMsg & $cmdLineHelp)
 	_GDIPlus_Shutdown()
@@ -179,8 +183,6 @@ If $FoundInstalledAndroid Then
 EndIf
 SetLog(GetTranslated(500, 8, "Android Emulator Configuration: %s", $sAndroidInfo), $COLOR_GREEN)
 
-;AdlibRegister("PushBulletRemoteControl", $PBRemoteControlInterval)
-;AdlibRegister("PushBulletDeleteOldPushes", $PBDeleteOldPushesInterval)
 
 ; Add Telegram extension by CDudz
 $lastmessage = GetLastMsg()
@@ -188,6 +190,8 @@ If $FirstRun = 1 Then
 	$lastremote = $lastuid
 	Getchatid(GetTranslated(620, 92, "select your remote")) ; receive Telegram chat id and send keyboard
 EndIf
+;AdlibRegister("PushBulletRemoteControl", $PBRemoteControlInterval)
+;AdlibRegister("PushBulletDeleteOldPushes", $PBDeleteOldPushesInterval)
 
 CheckDisplay() ; verify display size and DPI (Dots Per Inch) setting
 
@@ -200,6 +204,7 @@ LoadAmountOfResourcesImages()
 ;~ InitializeVariables();initialize variables used in extra windows
 CheckVersion() ; check latest version on mybot.run site
 btnUpdateProfile() ; SwitchAcc - DEMEN
+SetComboTroopComp()
 
 ;~ Remember time in Milliseconds bot launched
 $iBotLaunchTime = TimerDiff($hBotLaunchTime)
@@ -235,12 +240,12 @@ WEnd
 
 Func runBot() ;Bot that runs everything in order
 
-   If $ichkSwitchAcc = 1 And $bReMatchAcc = True Then 				; SwitchAcc - DEMEN
-	  $nCurProfile = _GUICtrlCombobox_GetCurSel($cmbProfile) + 1
-	  Setlog("Rematching Profile [" & $nCurProfile &"] - " & $ProfileList[$nCurProfile] & " (CoC Acc. " & $aMatchProfileAcc[$nCurProfile-1] & ")")
-	  SwitchCoCAcc()
-	  $bReMatchAcc = False
-   EndIf
+	If $ichkSwitchAcc = 1 And $bReMatchAcc = True Then ; SwitchAcc - DEMEN
+		$nCurProfile = _GUICtrlComboBox_GetCurSel($cmbProfile) + 1
+		Setlog("Rematching Profile [" & $nCurProfile & "] - " & $ProfileList[$nCurProfile] & " (CoC Acc. " & $aMatchProfileAcc[$nCurProfile - 1] & ")")
+		SwitchCoCAcc()
+		$bReMatchAcc = False
+	EndIf
 
 	$TotalTrainedTroops = 0
 	Local $Quickattack = False
@@ -273,7 +278,6 @@ Func runBot() ;Bot that runs everything in order
 				If _Sleep($iDelayRunBot3) Then Return
 			VillageReport()
 			ProfileSwitch() ; Added for Switch profile
-			clanHop()
 			If $OutOfGold = 1 And (Number($iGoldCurrent) >= Number($itxtRestartGold)) Then ; check if enough gold to begin searching again
 				$OutOfGold = 0 ; reset out of gold flag
 				Setlog("Switching back to normal after no gold to search ...", $COLOR_RED)
@@ -296,6 +300,7 @@ Func runBot() ;Bot that runs everything in order
 			checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
 			Local $aRndFuncList[3] = ['Collect', 'CheckTombs', 'ReArm']
+			If $FirstStart Then RunFirstAndDeleteQueuedTroops()
 			While 1
 				If $RunState = False Then Return
 				If $Restart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
@@ -313,7 +318,7 @@ Func runBot() ;Bot that runs everything in order
 				If $RunState = False Then Return
 				If $Restart = True Then ContinueLoop
 			If IsSearchAttackEnabled() Then  ; if attack is disabled skip reporting, requesting, donating, training, and boosting
-			   Local $aRndFuncList[10] = ['ReplayShare', 'ReportNotify', 'DonateCC,Train', 'BoostBarracks', 'BoostSpellFactory', 'BoostDarkSpellFactory', 'BoostKing', 'BoostQueen', 'BoostWarden', 'RequestCC']
+			   Local $aRndFuncList[7] = ['ReplayShare', 'ReportNotify', 'DonateCC,Train', 'BoostBarracks', 'BoostSpellFactories', 'BoostHeroes', 'RequestCC']
 			   While 1
 				   If $RunState = False Then Return
 				   If $Restart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
@@ -328,7 +333,8 @@ Func runBot() ;Bot that runs everything in order
 				   EndIf
 				   If checkAndroidTimeLag() = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
 			   WEnd
-			   If $ichkSwitchAcc = 1 And $aProfileType[$nCurProfile-1] = 2 Then checkSwitchAcc()  		;  Switching to active account after donation - SwitchAcc for  - DEMEN
+
+			   If $ichkSwitchAcc = 1 And $aProfileType[$nCurProfile - 1] = 2 Then checkSwitchAcc() ;  Switching to active account after donation - SwitchAcc for  - DEMEN
 
 					If $RunState = False Then Return
 					If $Restart = True Then ContinueLoop
@@ -336,6 +342,7 @@ Func runBot() ;Bot that runs everything in order
 					If Unbreakable() = True Then ContinueLoop
 				EndIf
 			EndIf
+			SmartUpgrade()
 			Local $aRndFuncList[3] = ['Laboratory', 'UpgradeHeroes', 'UpgradeBuilding']
 			While 1
 				If $RunState = False Then Return
@@ -359,6 +366,7 @@ Func runBot() ;Bot that runs everything in order
 					If _Sleep($iDelayRunBot3) Then Return
 					If $Restart = True Then ContinueLoop
 				PushMsgToPushBullet("CheckBuilderIdle")
+				clanHop()
 				Idle()
 					;$fullArmy1 = $fullArmy
 					If _Sleep($iDelayRunBot3) Then Return
@@ -475,6 +483,13 @@ Func Idle() ;Sequence that runs until Full Army
 		$iCollectCounter = $iCollectCounter + 1
 		If $CommandStop = -1 Then
 			Train()
+			;If ($iEnableSpellsWait[$iMatchMode] = 1 Or GUICtrlRead($chkDBKingWait) = $GUI_CHECKED Or GUICtrlRead($chkDBQueenWait) = $GUI_CHECKED Or _
+			;			GUICtrlRead($chkDBWardenWait) = $GUI_CHECKED Or GUICtrlRead($chkABKingWait) = $GUI_CHECKED Or GUICtrlRead($chkABQueenWait) = $GUI_CHECKED Or _
+			;			GUICtrlRead($chkABWardenWait) = $GUI_CHECKED) Then
+			;	GetReadTimeHeroesAndSpell()
+			;	ClickP($aAway, 1, 0, "#0000") ;Click Away
+			;	Sleep(1500)
+			;EndIf
 				If $Restart = True Then ExitLoop
 				If _Sleep($iDelayIdle1) Then ExitLoop
 				checkMainScreen(False)
@@ -518,11 +533,20 @@ Func Idle() ;Sequence that runs until Full Army
 		If $iChkSnipeWhileTrain = 1 Then SnipeWhileTrain()  ;snipe while train
 
 		If $CommandStop = -1 And $ichkSwitchAcc = 1 Then
-			checkSwitchAcc()					; SwitchAcc - DEMEN
-		ElseIf $ichkSwitchAcc <> 1 Then		; SwitchAcc - DEMEN
+			checkSwitchAcc()
+		ElseIf $ichkSwitchAcc <> 1 Then
 			SmartWait4Train()  ; Check if closing bot/emulator while training and not in halt mode
+			If ($ichkCloseWaitEnable = 1 And $iEnableSpellsWait[$iMatchMode] = 1 Or GUICtrlRead($chkDBKingWait) = $GUI_CHECKED Or GUICtrlRead($chkDBQueenWait) = $GUI_CHECKED Or _
+						GUICtrlRead($chkDBWardenWait) = $GUI_CHECKED Or GUICtrlRead($chkABKingWait) = $GUI_CHECKED Or GUICtrlRead($chkABQueenWait) = $GUI_CHECKED Or _
+						GUICtrlRead($chkABWardenWait) = $GUI_CHECKED) Then
+				If _Sleep(2000) Then return
+				GetReadTimeHeroesAndSpell()
+				ClickP($aAway, 1, 0, "#0000") ;Click Away
+				If _Sleep(1500) Then Return
+			EndIf
 			If $Restart = True Then ExitLoop ; if smart wait activated, exit to runbot in case user adjusted GUI or left emulator/bot in bad state
 		EndIf
+
 	WEnd
 EndFunc   ;==>Idle
 
@@ -563,7 +587,10 @@ Func AttackMain() ;Main control for attack functions
 		Else
 			Setlog("No one of search condition match:", $COLOR_BLUE)
 			Setlog("Waiting on troops, heroes and/or spells according to search settings", $COLOR_BLUE)
-			If $ichkSwitchAcc = 1 Then CheckSwitchAcc() 		; SwitchAcc - DEMEN
+			GetReadTimeHeroesAndSpell()
+			ClickP($aAway, 1, 0, "#0000") ;Click Away
+			Sleep(1500)
+			If $ichkSwitchAcc = 1 Then CheckSwitchAcc()
 		EndIf
 	Else
 		SetLog("Attacking Not Planned, Skipped..", $COLOR_RED)
@@ -646,15 +673,16 @@ Func _RunFunction($action)
 			_Sleep($iDelayRunBot1)
 		Case "BoostBarracks"
 			BoostBarracks()
-		Case "BoostSpellFactory"
+			BoostDarkBarracks()
+		Case "BoostSpellFactories"
 			BoostSpellFactory()
-		Case "BoostDarkSpellFactory"
+			If _Sleep($iDelayRunBot1) = False Then checkMainScreen(False)
 			BoostDarkSpellFactory()
-		Case "BoostKing"
+		Case "BoostHeroes"
 			BoostKing()
-		Case "BoostQueen"
+			If _Sleep($iDelayRunBot1) = False Then checkMainScreen(False)
 			BoostQueen()
-		Case "BoostWarden"
+			If _Sleep($iDelayRunBot1) = False Then checkMainScreen(False)
 			BoostWarden()
 		Case "RequestCC"
 			RequestCC()

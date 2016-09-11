@@ -28,7 +28,7 @@ Local $x = 15, $y = 45
 			GUICtrlSetOnEvent(-1, "chkBotStop")
 		$cmbBotCommand = GUICtrlCreateCombo("", $x + 20, $y - 3, 95, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetData(-1, GetTranslated(610,3, "Halt Attack") & "|" & GetTranslated(610,4, "Stop Bot") & "|" & GetTranslated(610,5, "Close Bot") & "|" & GetTranslated(610,6, "Close CoC+Bot") & "|" & GetTranslated(610,7, "Shutdown PC") & "|" & GetTranslated(610,8, "Sleep PC") & "|" & GetTranslated(610,9, "Reboot PC") & "|" & "Restart Android", GetTranslated(610,3, -1)) ; Adding option to restart Android as requested by antrisaromi - DEMEN
+			GUICtrlSetData(-1, GetTranslated(610,3, "Halt Attack") & "|" & GetTranslated(610,4, "Stop Bot") & "|" & GetTranslated(610,5, "Close Bot") & "|" & GetTranslated(610,6, "Close CoC+Bot") & "|" & GetTranslated(610,7, "Shutdown PC") & "|" & GetTranslated(610,8, "Sleep PC") & "|" & GetTranslated(610,9, "Reboot PC") & "|" & "Restart Android", GetTranslated(610,3, -1))
 			GUICtrlSetState (-1, $GUI_DISABLE)
 		$lblBotCond = GUICtrlCreateLabel(GetTranslated(610,10, "When..."), $x + 128, $y, 45, 17)
 		$cmbBotCond = GUICtrlCreateCombo("", $x + 175, $y - 3, 160, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
@@ -88,32 +88,11 @@ Local $x = 15, $y = 150
 		GUICtrlCreateIcon($pIconLib, $eIcnCollector, $x + 20, $y, 24, 24)
 		GUICtrlCreateIcon($pIconLib, $eIcnDrill, $x + 45, $y, 24, 24)
 		GUICtrlCreateIcon($pIconLib, $eIcnLootCart, $x + 70, $y, 24, 24)
-		$chkCollect = GUICtrlCreateCheckbox(GetTranslated(610,43, "Collect Resources && Loot Cart") & " && Treasury", $x + 100, $y + 4, -1, -1, -1)
-			$txtTip = GetTranslated(610,44, "Check this to automatically collect the Village's Resources") & " And Treasury" & @CRLF & GetTranslated(610,45, "from Gold Mines, Elixir Collectors and Dark Elixir Drills.") & @CRLF & GetTranslated(610,46, "This will also search for a Loot Cart in your village and collect it.")
+		$chkCollect = GUICtrlCreateCheckbox(GetTranslated(610,43, "Collect Resources && Loot Cart"), $x + 100, $y + 4, -1, -1, -1)
+			$txtTip = GetTranslated(610,44, "Check this to automatically collect the Village's Resources") & @CRLF & GetTranslated(610,45, "from Gold Mines, Elixir Collectors and Dark Elixir Drills.") & @CRLF & GetTranslated(610,46, "This will also search for a Loot Cart in your village and collect it.")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetState(-1, $GUI_CHECKED)
 	$y += 35
-	GUICtrlCreateGroup("Collect Treasury",$x + 220,$y,200,90)
-	GUICtrlCreateLabel("When meet minimum resources: ",$x + 230,$y + 15)
-	GUICtrlCreateIcon ($pIconLib, $eIcnGold, $x + 230, $y + 35, 16, 16)
-		$txtTRGold = GUICtrlCreateInput("1000", $x + 250, $y + 35, 50, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
-			$txtTip = "Minimum Gold value for the bot to collect treasury"
-			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetLimit(-1, 7)
-	GUICtrlCreateIcon ($pIconLib, $eIcnElixir, $x + 310, $y + 35, 16, 16)
-		$txtTRElixir = GUICtrlCreateInput("1000", $x + 330, $y + 35, 50, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
-			$txtTip = "Minimum Elixir value for the bot to collect treasury"
-			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetLimit(-1, 7)
-	GUICtrlCreateIcon ($pIconLib, $eIcnDark, $x + 230, $y + 60, 16, 16)
-		$txtTRDElixir = GUICtrlCreateInput("1000", $x + 250, $y + 60, 50, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
-			$txtTip = "Minimum Dark Elixir value for the bot to collect treasury"
-			GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetLimit(-1, 7)
-		$chkTRFull = GUICtrlCreateCheckbox("Also when full",$x + 310,$y + 60,100,18)
-			$txtTip = "Check if you want it to collect treasury when Gold Or Elixir Or DElixir is Full in Treasury"
-			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetLimit(-1, 7)
 		GUICtrlCreateIcon($pIconLib, $eIcnTombstone, $x + 32 , $y, 24, 24)
 		$chkTombstones = GUICtrlCreateCheckbox(GetTranslated(610,47, "Clear Tombstones"), $x + 100, $y + 4, -1, -1)
 			$txtTip = GetTranslated(610,48, "Check this to automatically clear tombstones after enemy attack.")
@@ -139,71 +118,79 @@ Local $x = 20, $y = 345
 	$grpLocateBuildings = GUICtrlCreateGroup(GetTranslated(610,53, "Locate Manually"), $x - 15, $y - 20, 440, 65)
 		$X -= 11
 		$y += 0
-		$btnLocateTownHall = GUICtrlCreateButton(GetTranslated(610,54, "Townhall"), $x, $y, 36, 36, $BS_ICON)
+		$btnLocateTownHall = GUICtrlCreateButton(GetTranslated(610,54, "Townhall"), $x, $y, 34, 34, $BS_ICON)
 			GUICtrlSetImage(-1, $pIconLib, $eIcnTH11, 1)
 			$sTxtRelocate = GetTranslated(610,55, "Relocate your")
 			$txtTip =  $sTxtRelocate & " " & GetTranslated(610,54, -1)
 			_GUICtrlSetTip(-1, $txtTip)
 			;GUICtrlSetState(-1, $GUI_HIDE)
 			GUICtrlSetOnEvent(-1, "btnLocateTownHall")
-		$x += 38
-		$btnLocateClanCastle = GUICtrlCreateButton(GetTranslated(610,56, "Clan Castle"), $x, $y, 36, 36, $BS_ICON)
+		$x += 36
+		$btnLocateClanCastle = GUICtrlCreateButton(GetTranslated(610,56, "Clan Castle"), $x, $y, 34, 34, $BS_ICON)
 			GUICtrlSetOnEvent(-1, "btnLocateClanCastle")
 			GUICtrlSetImage(-1, $pIconLib, $eIcnCC, 1)
 			$txtTip = $sTxtRelocate & " " & GetTranslated(610,56, -1)
 			_GUICtrlSetTip(-1, $txtTip)
-		$x += 38
-		$btnLocateArmyCamp = GUICtrlCreateButton(GetTranslated(610,57, "A.C."), $x, $y, 36, 36, $BS_ICON)
+		$x += 36
+		$btnLocateArmyCamp = GUICtrlCreateButton(GetTranslated(610,57, "A.C."), $x, $y, 34, 34, $BS_ICON)
 			GUICtrlSetOnEvent(-1, "btnLocateArmyCamp")
 			GUICtrlSetImage(-1, $pIconLib, $eIcnCamp, 1)
 			$txtTip = $sTxtRelocate & " " & GetTranslated(610,58, "Army Camp")
 			_GUICtrlSetTip(-1, $txtTip)
-		$x += 38
-		$btnLocateBarracks = GUICtrlCreateButton(GetTranslated(610,59, "Bar."), $x, $y, 36, 36, $BS_ICON)
+		$x += 36
+		$btnLocateBarracks = GUICtrlCreateButton(GetTranslated(610,59, "Bar."), $x, $y, 34, 34, $BS_ICON)
 			GUICtrlSetOnEvent(-1, "btnLocateBarracks")
 			GUICtrlSetImage(-1, $pIconLib, $eIcnBarrack, 1)
 			$txtTip = $sTxtRelocate & " " & GetTranslated(610,60, "Barrack")
 			_GUICtrlSetTip(-1, $txtTip)
-		$x += 38
-	    $btnLocateSpellFactory = GUICtrlCreateButton(GetTranslated(610,61, "S.F."), $x, $y, 36, 36, $BS_ICON)
+		$x += 36
+
+		$btnLocateDarkBarracks = GUICtrlCreateButton("DBarrack", $x, $y, 34, 34, $BS_ICON)
+			GUICtrlSetOnEvent(-1, "btnLocateDarkBarracks")
+			GUICtrlSetImage(-1, $pIconLib, $eIcnDarkBarrack, 1)
+			$txtTip = $sTxtRelocate & " " & "Dark Barracks"
+			_GUICtrlSetTip(-1, $txtTip)
+		$x += 36
+
+	    $btnLocateSpellFactory = GUICtrlCreateButton(GetTranslated(610,61, "S.F."), $x, $y, 34, 34, $BS_ICON)
 			GUICtrlSetOnEvent(-1, "btnLocateSpellfactory")
 			GUICtrlSetImage(-1, $pIconLib, $eIcnSpellFactory, 1)
 			$txtTip = $sTxtRelocate & " " & GetTranslated(610,62, "Spell Factory")
 			_GUICtrlSetTip(-1, $txtTip)
 			_ArrayConcatenate($G, $T)
-		$x += 38
-		$btnLocateSpellFactory = GUICtrlCreateButton(GetTranslated(610,63, "D.S.F."), $x, $y, 36, 36, $BS_ICON)
+		$x += 36
+		$btnLocateSpellFactory = GUICtrlCreateButton(GetTranslated(610,63, "D.S.F."), $x, $y, 34, 34, $BS_ICON)
 			GUICtrlSetOnEvent(-1, "btnLocateDarkSpellfactory")
 			GUICtrlSetImage(-1, $pIconLib, $eIcnDarkSpellFactory, 1)
 			$txtTip = $sTxtRelocate & " " & GetTranslated(610,64, "Dark Spell Factory")
 			_GUICtrlSetTip(-1, $txtTip)
 			_ArrayConcatenate($G, $T)
-		$x += 38
-		$btnLocateKingAltar = GUICtrlCreateButton(GetTranslated(610,65, "King"), $x, $y, 36, 36, $BS_ICON)
+		$x += 36
+		$btnLocateKingAltar = GUICtrlCreateButton(GetTranslated(610,65, "King"), $x, $y, 34, 34, $BS_ICON)
 			GUICtrlSetImage(-1, $pIconLib, $eIcnKingBoostLocate)
 			$txtTip = $sTxtRelocate & " " & GetTranslated(610,66, "Barbarian King Altar")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "btnLocateKingAltar")
-		$x += 38
-		$btnLocateQueenAltar = GUICtrlCreateButton(GetTranslated(610,67, "Queen"), $x, $y, 36, 36, $BS_ICON)
+		$x += 36
+		$btnLocateQueenAltar = GUICtrlCreateButton(GetTranslated(610,67, "Queen"), $x, $y, 34, 34, $BS_ICON)
 			GUICtrlSetImage(-1, $pIconLib, $eIcnQueenBoostLocate)
 			$txtTip = $sTxtRelocate & " " & GetTranslated(610,68, "Archer Queen Altar")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "btnLocateQueenAltar")
-		$x += 38
-		$btnLocateWardenAltar = GUICtrlCreateButton(GetTranslated(610,69, "Grand Warden"), $x, $y, 36, 36, $BS_ICON)
+		$x += 36
+		$btnLocateWardenAltar = GUICtrlCreateButton(GetTranslated(610,69, "Grand Warden"), $x, $y, 34, 34, $BS_ICON)
 			GUICtrlSetImage(-1, $pIconLib, $eIcnWardenBoostLocate)
 			$txtTip = $sTxtRelocate & " " & GetTranslated(610,70, "Grand Warden Altar")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "btnLocateWardenAltar")
-		$x += 38
-		$btnLocateLaboratory = GUICtrlCreateButton(GetTranslated(610,71, "Lab."), $x, $y, 36, 36, $BS_ICON)
+		$x += 36
+		$btnLocateLaboratory = GUICtrlCreateButton(GetTranslated(610,71, "Lab."), $x, $y, 34, 34, $BS_ICON)
 			GUICtrlSetImage(-1, $pIconLib, $eIcnLaboratory)
 			$txtTip = $sTxtRelocate & " " & GetTranslated(610,72, "Laboratory")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "btnLab")
-		$x += 53
-		$btnResetBuilding = GUICtrlCreateButton(GetTranslated(610,73, "Reset."), $x, $y, 36, 36, $BS_ICON)
+		$x += 37
+		$btnResetBuilding = GUICtrlCreateButton(GetTranslated(610,73, "Reset."), $x, $y, 34, 34, $BS_ICON)
 			GUICtrlSetImage(-1, $pIconLib, $eIcnBldgX)
 			$txtTip = GetTranslated(610,74, "Click here to reset all building locations,") & @CRLF & GetTranslated(610,75, "when you have changed your village layout.")
 			_GUICtrlSetTip(-1, $txtTip)

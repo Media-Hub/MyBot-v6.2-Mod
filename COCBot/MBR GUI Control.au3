@@ -44,7 +44,7 @@ Global $aMainTabItems[7] = [$tabMain, $tabGeneral, $tabVillage, $tabAttack, $tab
 
 Global $aTabControlsVillage[6] = [$hGUI_VILLAGE_TAB, $hGUI_VILLAGE_TAB_ITEM1, $hGUI_VILLAGE_TAB_ITEM2, $hGUI_VILLAGE_TAB_ITEM3, $hGUI_VILLAGE_TAB_ITEM4, $hGUI_VILLAGE_TAB_ITEM5]
 Global $aTabControlsDonate[4] = [$hGUI_DONATE_TAB, $hGUI_DONATE_TAB_ITEM1, $hGUI_DONATE_TAB_ITEM2, $hGUI_DONATE_TAB_ITEM3]
-Global $aTabControlsUpgrade[5] = [$hGUI_UPGRADE_TAB, $hGUI_UPGRADE_TAB_ITEM1, $hGUI_UPGRADE_TAB_ITEM2, $hGUI_UPGRADE_TAB_ITEM3, $hGUI_UPGRADE_TAB_ITEM4]
+Global $aTabControlsUpgrade[6] = [$hGUI_UPGRADE_TAB, $hGUI_UPGRADE_TAB_ITEM1, $hGUI_UPGRADE_TAB_ITEM2, $hGUI_UPGRADE_TAB_ITEM3, $hGUI_UPGRADE_TAB_ITEM4, $hGUI_UPGRADE_TAB_ITEM5]
 Global $aTabControlsNotify[3] = [$hGUI_NOTIFY_TAB, $hGUI_NOTIFY_TAB_ITEM1, $hGUI_NOTIFY_TAB_ITEM2]
 
 Global $aTabControlsAttack[4] = [$hGUI_ATTACK_TAB, $hGUI_ATTACK_TAB_ITEM1, $hGUI_ATTACK_TAB_ITEM2, $hGUI_ATTACK_TAB_ITEM3]
@@ -150,8 +150,8 @@ AtkLogHead()
 #include "GUI\MBR GUI Control Bot Options.au3"
 #include "GUI\MBR GUI Control Preset.au3"
 #include "GUI\MBR GUI Control Child Misc.au3"
-#include "GUI\MBR GUI Control Tab Mod Option.au3"
 #include "GUI\MBR GUI Control Tab Profiles.au3"
+#include "GUI\MBR GUI Control Tab Mod Option.au3"
 
 ; Accelerator Key, more responsive than buttons in run-mode
 Local $aAccelKeys[2][2] = [["{ESC}", $btnStop],["{PAUSE}", $btnPause]]
@@ -196,7 +196,7 @@ Func GUIControl_WM_NCACTIVATE($hWin, $iMsg, $wParam, $lParam)
 		If $AndroidEmbedded And $AndroidEmbedMode = 1 And AndroidShieldActiveDelay() = False Then
 			AndroidEmbedCheck(False, $iActive <> 0, 1) ; Always update z-order
 			AndroidShield("GUIControl_WM_NCACTIVATE", Default, False)
-		EndIf
+	EndIf
 	EndIf
 	$TogglePauseAllowed = $wasAllowed
     Return $GUI_RUNDEFMSG
@@ -255,11 +255,11 @@ Func GUIControl_WM_MOUSE($hWin, $iMsg, $wParam, $lParam)
 				Local $y = BitAND($lParam, 0xFFFF0000) / 0x10000
 				SetDebugLog("GUIControl_WM_MOUSE: " & ($iMSG = $WM_LBUTTONUP ? "$WM_LBUTTONUP" : "$WM_RBUTTONUP") & " $hWin=" & $hWin & ",$iMsg=" & $iMsg & ",$wParam=" & $wParam & ",$lParam=" & $lParam & ", X=" & $x & ", Y=" & $y, Default, True)
 			EndIf
-			If AndroidShieldHasFocus() = False Then
+		If AndroidShieldHasFocus() = False Then
 				; set focus to text box
-				Local $hInput = GUICtrlGetHandle($frmBotEmbeddedShieldInput)
-				_WinAPI_SetFocus($hInput)
-				AndroidShield("GUIControl_WM_MOUSE", Default, False, 0, True)
+			Local $hInput = GUICtrlGetHandle($frmBotEmbeddedShieldInput)
+			_WinAPI_SetFocus($hInput)
+			AndroidShield("GUIControl_WM_MOUSE", Default, False, 0, True)
 				$TogglePauseAllowed = $wasAllowed
 				Return $GUI_RUNDEFMSG
 			EndIf
@@ -268,7 +268,7 @@ Func GUIControl_WM_MOUSE($hWin, $iMsg, $wParam, $lParam)
 			If AndroidShieldHasFocus() = True Then
 				Local $hCtrlTarget = $AndroidEmbeddedCtrlTarget[0]
 				_SendMessage($hCtrlTarget, $iMsg, $wParam, $lParam)
-			EndIf
+		EndIf
 #ce
 	EndSwitch
 	;#cs
@@ -378,8 +378,8 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 		;	ShellExecute("https://mybot.run/forums/index.php?/donate/make-donation/")
 		Case $CheckVersionConfig
 			If CheckMODVersion() Then MsgBox(0, "", "You Are Using The Latest Version Of Mod By Nguyen Anh")
-;		Case $DownloadLatestConfig
-;			ShellExecute("https://github.com/" & $sGitHubModOwner & "/" & $sGitHubModRepo & "/releases/latest")
+		;Case $DownloadLatestConfig
+		;	ShellExecute("https://github.com/" & $sGitHubModOwner & "/" & $sGitHubModRepo & "/releases/latest")
 		Case $ModSupportConfig
 			ShellExecute($sModSupportUrl)
 		Case $btnDeletePBMessages
@@ -458,13 +458,13 @@ Func GUIControl_WM_MOVE($hWind, $iMsg, $wParam, $lParam)
 			$frmBotDockedPosY = ($frmBotPos[1] > -30000 ? $frmBotPos[1] : $frmBotDockedPosY)
 		EndIf
 
-		; required for screen change
+	; required for screen change
 		If $AndroidEmbedded And AndroidEmbedArrangeActive() = False Then
 			Local $iAction = AndroidEmbedCheck(True)
 			If $iAction > 0 Then
-				; reposition docked android
+		; reposition docked android
 				AndroidEmbedCheck(False, Default, $iAction)
-				; redraw bot also
+		; redraw bot also
 				;temp;_WinAPI_RedrawWindow($frmBotEx, 0, 0, $RDW_INVALIDATE)
 				;temp;_WinAPI_RedrawWindow($frmBotBottom, 0, 0, $RDW_INVALIDATE)
 			EndIf
@@ -627,6 +627,7 @@ Func BotClose($SaveConfig = Default, $bExit = True)
    $RunState = False
    $TPaused = False
    ResumeAndroid()
+   ;DeletePicturesHostFolder()
    SetLog("Closing " & $sBotTitle & " now ...")
    AndroidEmbed(False) ; detach Android Window
    AndroidShieldDestroy() ; destroy Shield Hooks
@@ -1097,6 +1098,8 @@ Func tabBot()
 				GUISetState(@SW_HIDE, $hGUI_STATS)
 			Case $tabidx = 1 ; Options Debug
 				GUISetState(@SW_HIDE, $hGUI_STATS)
+			;Case $tabidx = 2 ; Strategies tab
+				;GUISetState(@SW_HIDE, $hGUI_STATS)
 			Case $tabidx = 2 ; Stats tab
 				GUISetState(@SW_SHOWNOACTIVATE, $hGUI_STATS)
 		EndSelect
@@ -1377,7 +1380,7 @@ Func Bind_ImageList($nCtrl)
 
 		Case $hGUI_UPGRADE_TAB
 			; the icons for upgrade tab
-			Local $aIconIndex[4] = [$eIcnLaboratory, $eIcnKingAbility, $eIcnMortar, $eIcnWall]
+			Local $aIconIndex[5] = [$eIcnLaboratory, $eIcnKingAbility, $eIcnMortar, $eIcnWall, $eIcnUpgrade]
 
 		Case $hGUI_NOTIFY_TAB
 			; the icons for NOTIFY tab
@@ -1413,7 +1416,7 @@ Func Bind_ImageList($nCtrl)
 
 		Case $hGUI_MOD_TAB
 			; the icons for Mod tab
-			Local $aIconIndex[4] = [$eIcnDrill, $eIcnAchievements, $eIcnOptions, $eIcnCC]
+			Local $aIconIndex[4] = [$eIcnDrill, $eIcnAchievements, $eIcnOptions, $eIcnCCRequest]
 
 		Case $hGUI_ModOptions2_TAB
 			; the icons for Mod tab
@@ -1425,7 +1428,7 @@ Func Bind_ImageList($nCtrl)
 
 		Case $hGUI_STATS_TAB
 			; the icons for stats tab
-			Local $aIconIndex[4] = [$eIcnGoldElixir, $eIcnGoldElixir, $eIcnOptions, $eIcnCamp]		; - Add Icon for Tab Separate Stats - SwitchAcc Mode - DEMEN
+			Local $aIconIndex[4] = [$eIcnGoldElixir, $eIcnGoldElixir, $eIcnOptions, $eIcnCamp]
 
 		Case Else
 			;do nothing

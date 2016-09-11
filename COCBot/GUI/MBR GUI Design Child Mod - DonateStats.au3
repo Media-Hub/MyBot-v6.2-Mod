@@ -1,5 +1,5 @@
 ; #FUNCTION# ====================================================================================================================
-; Name ..........: MBR GUI Design Child Mod - DonateStarts
+; Name ..........: MBR GUI Design Child Mod - DonateStats
 ; Description ...: This file Includes GUI Design
 ; Syntax ........:
 ; Parameters ....: None

@@ -80,3 +80,14 @@ Func chkSmartAttackRedAreaDB()
 		Next
 	EndIf
 EndFunc   ;==>chkSmartAttackRedAreaDB
+
+Func AttackNowDB1()
+	If $RunState Then Return
+	$iMatchMode = $DB			; Select Dead Base As Attack Type
+	GUICtrlRead($cmbDeployDB)
+	$iMatchMode = $DB			; Select Dead Base As Attack Type
+	$RunState = True
+	PrepareAttack($iMatchMode)
+	Attack()					; Fire xD
+	$RunState = False
+EndFunc   ;==>AttackNow Dead Base

@@ -58,7 +58,7 @@ Func CheckMilkingBaseTest()
 	$sendHBitmap = _GDIPlus_BitmapCreateHBITMAPFromBitmap($hBitmap)
 
 	Local $MilkFarmAtkPixelListSTR = ""
-	Local $ElixirVect = StringSplit(GetLocationElixirWithLevel(), "~", 2)
+	Local $ElixirVect = StringSplit(GetLocationElixirWithLevel(), "~", 2) 
 	Local $elixirfounds = UBound($ElixirVect)
 	Local $elixirmatch = 0
 	Local $elixirdiscard = 0

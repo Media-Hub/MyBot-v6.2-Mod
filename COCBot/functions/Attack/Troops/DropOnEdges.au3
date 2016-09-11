@@ -15,6 +15,7 @@
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: No
 ; ===============================================================================================================================
+
 Func DropOnEdges($troop, $nbSides, $number, $slotsPerEdge = 0)
 	If $nbSides = 0 Or $number = 1 Then
 		OldDropTroop($troop, $Edges[0], $number);
@@ -32,10 +33,9 @@ Func DropOnEdges($troop, $nbSides, $number, $slotsPerEdge = 0)
 		Next
 		Return
 	EndIf
-	; Four Finger Classic attack
 	If $nbSides = 5 Then
 		If $slotsPerEdge = 2 Then
-			For $i = 0 To $nbSides - 4 ;Four Finger Deployment Giants
+			For $i = 0 To $nbSides - 4
 				KeepClicks()
 				Local $nbTroopsPerEdge = Round($nbTroopsLeft / (($nbSides-1) - $i * 2))
 				DropOnEdge($troop, $Edges[$i], $nbTroopsPerEdge, $slotsPerEdge, $Edges[$i + 2], $i)
@@ -43,7 +43,7 @@ Func DropOnEdges($troop, $nbSides, $number, $slotsPerEdge = 0)
 				ReleaseClicks()
 			Next
 		Else
-			For $i = 0 To $nbSides - 5 ;Four Finger Deployment Barch
+			For $i = 0 To $nbSides - 5
 				KeepClicks()
 				Local $nbTroopsPerEdge = Round($nbTroopsLeft / (($nbSides-1) - $i * 2))
 				DropOnEdge($troop, $Edges[$i], $nbTroopsPerEdge, $slotsPerEdge, $Edges[$i + 2], $i, $nbSides)

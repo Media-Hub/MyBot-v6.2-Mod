@@ -12,7 +12,7 @@
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: No
 ; ===============================================================================================================================
-#cs
+
 Func checkCollectors($log = False, $showLabel = True)
 	Local $anyCollectorsEnabled = 0
 	For $i = 6 To 12
@@ -35,7 +35,6 @@ Func checkCollectors($log = False, $showLabel = True)
 	EndIf
 	Return False
 EndFunc
-#ce
 Func chkLvl6()
 	If GUICtrlRead($chkLvl6) = $GUI_CHECKED Then
 		$chkLvl6Enabled = 1

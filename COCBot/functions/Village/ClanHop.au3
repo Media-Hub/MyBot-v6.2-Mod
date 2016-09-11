@@ -1,19 +1,18 @@
-; Script Start - Add your code below here
-; #FUNCTION# ====================================================================================================================
+; #FUNCTION# ============================================================================================================================
 ; Name ..........: clanHop.au3
-; Description ...: This functions joins random clans and fills requests
+; Version........: #13
+; Description ...: This function joins/quit random clans and fills requests indefinitly
 ; Syntax ........: clanHop()
 ; Parameters ....: None
 ; Return values .: None
 ; Author ........: zengzeng
 ; Modified ......: Rhinoceros
 ; Remarks .......: This file is a part of MyBotRun. Copyright 2015
-;                  MyBotRun is distributed under the terms of the GNU GPL
-; Related .......:
-; Link ..........: https://mybot.run/forums/thread-9319.html
-; Example .......:  =====================================================================================================================
-;MBR GUI_Taskbar CONTROLS
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; ................ MyBotRun is distributed under the terms of the GNU GPL
+; Related .......: No
+; Link ..........: https://mybot.run/forums/index.php?/topic/12051-mod-mybot-621-clan-hop-mod-12/
+; =======================================================================================================================================
+
 Func clanHop()
     If GUICtrlRead($chkClanHop) = $GUI_CHECKED Then
 		$ichkClanHop = 1
@@ -22,154 +21,154 @@ Func clanHop()
 		$ichkClanHop = 0
         Return
     EndIf
-    Local $boostInterval = 2400           ; Change this to change how often to boost.                                  Unit is seconds ( 2400  =  40mn )
-    Local $trainInterval = 300            ; Change this to change how often to train troops.                           Unit is seconds ( 900   =  15mn )
-    Local $collectInterval = 600          ; Change this to change how often the bot collects your resources.           Unit is seconds ( 600   =  10mn )
-	Local $checkCampInterval = 300        ; Change this to change how often the bot check the army inside your camps.  Unit is seconds ( 300   =  5mn  )
-    Local $checkTombInterval = 3600       ; Change this to change how often the bot check tombs inside your camps.     Unit is seconds ( 3600  =  1h   )
-    Local $checkReArmInterval = 18000     ; Change this to change how often the bot Rearm defense inside your camps.   Unit is seconds ( 18000 =  5h   )
-;	Local $checkShieldInterval = 300      ; Change this to change how often the bot check the ime left for shield.     Unit is seconds ( 300   =  5mn  )
-	
-    Local $boostTimer = TimerInit()
-    Local $trainTimer = TimerInit()
-    Local $collectTimer = TimerInit()
-	Local $checkCampTimer = TimerInit()
-	Local $checkTombTimer = TimerInit()
-	Local $checkReArmTimer = TimerInit()
-;	Local $checkShieldTimer = TimerInit()
+
+	Local $boostInterval = 2400           ; How often the bot boosts barracks		Unit in seconds (  2400 =  40mn )
+	Local $boostTimer = TimerInit()       ;
+	Local $trainInterval = 300            ; How often the bot trains troops			Unit in seconds (   300 =   5mn )
+	Local $trainTimer = TimerInit()       ;
+	Local $collectInterval = 600          ; How often the bot collects resources	Unit in seconds (   600 =  10mn )
+	Local $collectTimer = TimerInit()     ;
+	Local $checkTombInterval = 3600       ; How often the bot checks tombs			Unit in seconds (  3600 =  60mn )
+	Local $checkTombTimer = TimerInit()   ;
+	Local $checkReArmInterval = 18000     ; How often the bot rearms defense		Unit in seconds ( 18000 = 240mn )
+	Local $checkReArmTimer = TimerInit()  ;
 
     While 1
-        If (TimerDiff($boostTimer)/1000)>= $boostInterval Then                                   ; Check Boost Timer
-            SetLog("Time for boosting!", $COLOR_GREEN)                                           ; 
-            BoostBarracks()                                                                      ; 
-            SetLog("Done boosting. Returning to hopping", $COLOR_BLUE)                           ; 
-            $boostTimer = TimerInit()                       ; Reset boost timer                  ; 
+        If (TimerDiff($boostTimer)/1000)>= $boostInterval Then                                   ; CHECK BOOST TIMER
+;			SetLog("Time for boosting!", $COLOR_GREEN)                                           ; 
+			BoostBarracks()                                                                      ; 
+;			SetLog("Done boosting. Returning to hopping", $COLOR_BLUE)                           ; 
+			$boostTimer = TimerInit() ; Reset                                                    ; 
         EndIf                                                                                    ; 
-        If (TimerDiff($trainTimer)/1000)>=$trainInterval Then                                    ; Check Train interval
-            $FirstStart = False                                                                  ; 
-            SetLog("Time to train some troops")                                                  ; 
-			Train()                                                                              ; 
-			$trainTimer = TimerInit()                       ; Reset Train timer                  ; 
+
+        If (TimerDiff($trainTimer)/1000)>=$trainInterval Then                                    ; CHECK TRAIN INTERVAL
+			SetLog("Check troops")                                                               ;
+			checkMainScreen(False)                                                               ;
+			Click($aArmyTrainButton[0], $aArmyTrainButton[1], 1, 0,"#0347")                      ;     Click Army Overview
+			If _Sleep(500) Then Return                                                           ;
+			checkArmyCamp()                                                                      ; 
+            If $CurCamp > 50 Then                                                                ;     If total troops is more than 50
+;				SetLog("Time to train some troops")                                              ; 
+				Train()                                                                          ; 
+				$trainTimer = TimerInit() ; Reset                                                ; 
+			Else                                                                                 ;     If total troops is less than 50
+				SetLog("NEED TROOPS NOW !!!", $COLOR_RED)                                        ; 
+				checkMainScreen(False)                                                           ;
+				Train()                                                                          ; 
+				checkMainScreen(False)                                                           ;
+				SetLog("Waiting 2 x 4 minutes to have more troops in camps...", $COLOR_RED)      ;     Wait 8 minutes while training troops
+				SetLog("Waiting state 1/2 ...")                                                  ;     in 2 times to prevent disconnection
+				AndroidShieldForceDown(True)                                                     ;
+				If _SleepStatus(240000) Then Return                                              ;     240 000 = 4 minutes
+				Click(Random(87,260,1), Random(51,149,1))                                        ;     Random click
+				If _Sleep(300) Then Return                                                       ;
+				Click(Random(87,260,1), Random(51,149,1))                                        ;     Random click
+				SetLog("Waiting state 2/2 ...")                                                  ;
+				If _SleepStatus(240000) Then Return                                              ;     240 000 = 4 minutes
+				AndroidShieldForceDown(False)                                                    ;
+				SetLog("Done !", $COLOR_GREEN)                                                   ;
+				SetLog("Resume hopping")                                                         ; 
+				$checkCampTimer = TimerInit() ; Reset                                            ;  
+			EndIf                                                                                ;
         EndIf                                                                                    ; 
-        If (TimerDiff($collectTimer)/1000)>= $collectInterval Then                               ; Check Collect interval
+
+        If (TimerDiff($collectTimer)/1000)>= $collectInterval Then                               ; CHECK COLLECT INTERVAL
             Collect()                                                                            ; 
 			SetLog("Time to collect ressources")                                                 ; 
-            $collectTimer = TimerInit()                     ; Reset collect timer                ; 
+            $collectTimer = TimerInit() ; Reset                                                  ; 
 		EndIf                                                                                    ; 
-		If (TimerDiff($checkCampTimer)/1000)>= $checkCampInterval Then                           ; Check Army Camps
-            SetLog("Check troops")                                                               ;
-			If _Sleep(600) Then Return                                                           ; 
-		    Click($aArmyTrainButton[0], $aArmyTrainButton[1], 1, 0,"#0347")                      ; Click Button Army Overview
-            If _Sleep(500) Then Return                                                           ; 
-			checkArmyCamp()                                                                      ; 
-			If $CurCamp <= 50  Then                                                              ; If < or = 50 troops in camps then train
-			   SetLog("NEED TROOPS NOW !!! Waiting for troops to train...", $COLOR_RED)          ; 
-		       Train()                                                                           ; 
-			   SetLog("Waiting 2 x 4 minutes to have enough troops in camps...", $COLOR_RED)     ; Wait 8 minutes while training troops
-			   SetLog("Waiting state 1/2 ...")                                                   ; in 2 times to prevent disconnection
-			   If _SleepStatus(240000) Then Return                                               ; 240 000 = 4 minutes
-			   ClickP($aaway)                                                                    ;
-			   ClickP($aaway)                                                                    ;
-			   SetLog("Waiting state 2/2 ...")                                                   ;
-			   If _SleepStatus(240000) Then Return                                               ; 240 000 = 4 minutes
-			   SetLog("Done !", $COLOR_GREEN)                                                    ;
-			   SetLog("... Troops trained, resume hopping")                                      ; 
-		       $checkCampTimer = TimerInit()                ; Reset Check Camp timer             ;  
-			Else                                                                                 ; if more than 50 troops in camps then continue
-               SetLog("... We have enough troops in camps.", $COLOR_GREEN)                       ; 
-		       $checkCampTimer = TimerInit()                ; Reset Check Camp timer             ; 
-			EndIf                                                                                ; 
-        EndIf                                                                                    ;
-        If (TimerDiff($checkTombTimer)/1000)>= $checkTombInterval Then                           ; Check Tombstone on the ground
+
+        If (TimerDiff($checkTombTimer)/1000)>= $checkTombInterval Then                           ; CHECK TOMBSTONE ON THE GROUND
             SetLog("Check tombstone on the ground !", $COLOR_PURPLE)                             ;
             CheckTombs()                                                                         ;
             SetLog("Done. Returning to hopping", $COLOR_BLUE)                                    ;
-            $checkTombTimer = TimerInit()                  ; Reset Check Tomb timer              ;
+            $checkTombTimer = TimerInit() ; Reset                                                ;
         EndIf                                                                                    ;
-        If (TimerDiff($checkReArmTimer)/1000)>= $checkReArmInterval Then                         ; Check if defense need to be rearmed
+
+        If (TimerDiff($checkReArmTimer)/1000)>= $checkReArmInterval Then                         ; CHECK IF DEFENSE NEED TO BE REARMED
             SetLog("Check if your defense need to be rearmed !", $COLOR_PURPLE)                  ;
             ReArm()                                                                              ;
             SetLog("Done. Returning to hopping", $COLOR_BLUE)                                    ;
-            $checkReArmTimer = TimerInit()                 ; Reset Check ReArm timer             ;
+            $checkReArmTimer = TimerInit() ; Reset                                               ;
         EndIf                                                                                    ;
-;		If (TimerDiff($checkShieldTimer)/1000)>= $checkShieldInterval Then                       ; Check Time left for shield
-;           chkShieldStatus()                                                                    ;
-;           $checkShieldTimer = TimerInit()                ; Reset Check Shield timer            ;
-;        EndIf                                                                                   ;
-        checkMainScreen(False)
-        Local $icount
-        ClickP($aaway)
-        If _Sleep(500) Then Return
-        Click(190, 33, 1, 0)                                                                     ; Click Info Profile Button
-        If _Sleep(600) Then Return
-        _CaptureRegion()
+
+
+        checkMainScreen(False)                                                                   ; START OF SEQUENCE
+        Local $icount                                                                            ;
+		Click(Random(87,260,1), Random(51,149,1))                                                ;     Random click
+		If _Sleep(300) Then Return                                                               ;
+		Click(Random(87,260,1), Random(51,149,1))                                                ;     Random click
+        If _Sleep(500) Then Return                                                               ;
+		Click(Random(180,199,1), Random(21,40,1))                                                ; NEW Click Info Profile Button
+        If _Sleep(600) Then Return                                                               ;
+        _CaptureRegion()                                                                         ;
         While _ColorCheck(_GetPixelColor(242, 80, True), Hex(0x000000, 6), 20) = False           ; Wait for Info Profile to open
-            $iCount += 1
-            ;If _Sleep(600) Then Return
-            If $iCount >= 3 Then ExitLoop
-        WEnd
-        Click(369,80)                                                                            ; Click clan tab
-        If _Sleep(600) Then Return
-           _CaptureRegion()
+            $iCount += 1                                                                         ;
+            ;If _Sleep(600) Then Return                                                          ;
+            If $iCount >= 3 Then ExitLoop                                                        ;
+        WEnd                                                                                     ;
+		Click(Random(277,435,1), Random(58,106,1))                                               ; NEW Click clan tab
+        If _Sleep(600) Then Return                                                               ;
+           _CaptureRegion()                                                                      ;
         If _ColorCheck(_GetPixelColor(720,340), Hex(0xE55050,6)) Then                            ; If red leave clan button is there
-            SetLog("Leaving clan", $COLOR_BLUE)
-    		Click(720,340)                                                                       ; Click leave button
-            If _Sleep(600) THen Return
-            _CaptureRegion()
+            SetLog("Leaving clan", $COLOR_BLUE)                                                  ;
+			Click(Random(700,832,1), Random(324,354,1))                                          ; NEW Click leave button
+            If _Sleep(600) Then Return                                                           ;
+            _CaptureRegion()                                                                     ;
             If _Colorcheck(_GetPIxelColor(393,412), Hex(0xF0B964,6)) Then                        ; If orange do you really want to leave cancel button
-                Click(508,420)                                                                   ; Click okay
-            Else
-               SetLog("Error, cancel button not available, restarting...", $COLOR_RED)
-               ContinueLoop
-            EndIf
-            If _Sleep(1000) Then Return
-            Click(190, 33, 1, 0)                                                                 ; Click Info Profile Button
-            $icount = 0
+				Click(Random(445,581,1), Random(401,455,1))                                      ; NEW Click Okay
+            Else                                                                                 ;
+               SetLog("Error, cancel button not available, restarting...", $COLOR_RED)           ;
+               ContinueLoop                                                                      ;
+            EndIf                                                                                ;
+            If _Sleep(1000) Then Return                                                          ;
+			Click(Random(180,199,1), Random(21,40,1))                                            ; NEW Click Info Profile Button
+            $icount = 0                                                                          ;
             While _ColorCheck(_GetPixelColor(222, 60, True), Hex(0x000000, 6), 20) = False       ; Wait for Info Profile to open
-                $iCount += 1
-                If _Sleep(600) Then Return
-                If $iCount >= 3 Then ExitLoop
-            WEnd
-            SetLog("Searching for a new clan", $COLOR_BLUE)
-            Click(336,80)                                                                        ; Click clan tab
-        EndIf
-        If _Sleep(500) THen Return
-        For $i = 0 To Random(0,6,1)                                                              ; Scroll down clan list (random 0 to 5 times, max 8)
-            Local $sCount = 0
-            While $sCount < 1
-                If _Sleep(300) Then Return
-;                _PostMessage_ClickDrag(500, 650, 500, 316, "left", 300)                         ; Replace 300 with 600 for slow computers (not used anymore)
-                ClickDrag(500, 650, 500, 316, 600)  		        	                         ; Replace 300 with 600 for slow computers
-				If _Sleep(300) Then Return
-                $sCount += 1
-            WEnd
-        Next
-		If _Sleep(600) Then Return
-        Click(113, Random(285,650,1))                                                            ; Click random clan
-		If _Sleep(800) THen Return
+                $iCount += 1                                                                     ;
+                If _Sleep(600) Then Return                                                       ;
+                If $iCount >= 3 Then ExitLoop                                                    ;
+            WEnd                                                                                 ;
+            SetLog("Searching for a new clan", $COLOR_BLUE)                                      ;
+			Click(Random(277,435,1), Random(58,106,1))                                           ; NEW Click clan tab
+        EndIf                                                                                    ;
+        If _Sleep(500) Then Return                                                               ;
+        For $i = 0 To Random(0,7,1)                                                              ; Scroll down clan list (random 0 to 5 times, max 8)
+            Local $sCount = 0                                                                    ;
+            While $sCount < 1                                                                    ;
+                If _Sleep(300) Then Return                                                       ;
+				ClickDrag(500, 635, 500, 308, 600)                                               ; NEW Replace 300 with 600 for slow computers
+;				If _Sleep(300) Then Return                                                       ;
+                $sCount += 1                                                                     ;
+            WEnd                                                                                 ;
+        Next                                                                                     ;
+		If _Sleep(600) Then Return                                                               ;
+		Click(Random(22,839,1), Random(286,655,1))                                               ; NEW Click random clan
+		If _Sleep(800) Then Return                                                               ;
         If _ColorCheck(_GetPixelColor(720,335,True), Hex(0xC0E158,6), 20) Then                   ; Is join button there
-			SetLog("... Clan found !", $COLOR_BLUE)
-            Click(720,335)
-			SetLog("Entering clan", $COLOR_BLUE)
-        Else
-            SetLog("Oh oh ! I did something wrong, restarting...", $COLOR_RED)
-            ContinueLoop
-        EndIf
-        If _Sleep(3000) THen Return
-		SetLog("Time to donate troops")
-        DonateCC(False)
-		If _Sleep(500) THen Return
-		SetLog("Check if I missed some requests")
-		DonateCC(False)
-		If _Sleep(300) THen Return
-		VillageReport()
-		If _Sleep(300) THen Return
-		ProfileSwitch()
-		If $Restart = True Then ContinueLoop
-		chkShieldStatus()
-		If $Restart = True Then ContinueLoop
-	    checkAndroidTimeLag()
-		If $Restart = True Then ContinueLoop
-		;$cycleCount =$cycleCount+1
-    WEnd
-EndFunc
+			SetLog("... Clan found !", $COLOR_BLUE)                                              ;
+			Click(Random(700,832,1), Random(324,354,1))                                          ; NEW Click join clan
+			SetLog("Entering clan", $COLOR_BLUE)                                                 ;
+        Else                                                                                     ;
+            SetLog("Oh oh ! I did something wrong, restarting...", $COLOR_RED)                   ;
+            ContinueLoop                                                                         ;
+        EndIf                                                                                    ;
+        If _Sleep(6000) Then Return                                                              ; Wait for "you are now member of clan xxx" disappears
+		SetLog("Time to donate troops")                                                          ;
+        DonateCC(False)                                                                          ;
+		If _Sleep(500) Then Return                                                               ;
+		SetLog("Check if I missed some requests")                                                ;
+		DonateCC(False)                                                                          ;
+		If _Sleep(300) Then Return                                                               ;
+		VillageReport(False, True)                                                               ;
+		If _Sleep(300) Then Return                                                               ;
+		ProfileSwitch()                                                                          ;
+		If $Restart = True Then ContinueLoop                                                     ;
+		chkShieldStatus()                                                                        ;
+		If $Restart = True Then ContinueLoop                                                     ;
+	    checkAndroidTimeLag()                                                                    ;
+		If $Restart = True Then ContinueLoop                                                     ;
+		;$cycleCount =$cycleCount+1                                                              ;
+    WEnd                                                                                         ;
+
+EndFunc ; clanHop

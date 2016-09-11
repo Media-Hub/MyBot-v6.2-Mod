@@ -306,7 +306,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 		;If SWHTSearchLimit($iSkipped + 1) Then Return True
 		; Return Home on Search limit
 		If SearchLimit($iSkipped + 1) Then Return True
-	    If SearchLimitRestartAndroid($SearchCount) Then Return True				; Restart Android after long search - DEMEN
+		If SearchLimitRestartAndroid($SearchCount) Then Return True				; Restart Android after long search - DEMEN
 
 		If checkAndroidTimeLag() = True Then
 		   $Restart = True
@@ -391,8 +391,8 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 	;--- write in log match found ----
 	If $AlertSearch = 1 Then
 		TrayTip($sModeText[$iMatchMode] & " Match Found!", "Gold: " & $searchGold & "; Elixir: " & $searchElixir & "; Dark: " & $searchDark & "; Trophy: " & $searchTrophy, "", 0)
-		If FileExists(@WindowsDir & "\media\Festival\Windows Exclamation.wav") Then
-			SoundPlay(@WindowsDir & "\media\Festival\Windows Exclamation.wav", 1)
+		If FileExists(@WindowsDir & "\media\Sonata\Windows Logoff Sound.wav") Then
+			SoundPlay(@WindowsDir & "\media\Sonata\Windows Logoff Sound.wav", 1)
 		ElseIf FileExists(@WindowsDir & "\media\Windows Exclamation.wav") Then
 			SoundPlay(@WindowsDir & "\media\Windows Exclamation.wav", 1)
 		EndIf
@@ -452,23 +452,25 @@ Func SearchLimit($iSkipped)
 EndFunc   ;==>SearchLimit
 
 Func SearchLimitRestartAndroid($SearchCount); Restart-Android after long search - DEMEN
+	If Number($iRestartAndroidSearchlimit) = 0 Then $iRestartAndroidSearchLimit = 999
 	If $iChkRestartAndroid = 1 And Mod($SearchCount, Number($iRestartAndroidSearchlimit)) = 0  Then
 		$Is_SearchLimit = True
 		Setlog("So many skips, Restart CoC and Android")
-		  MakeScreenshot($dirTemp, "jpg")
-		  PoliteCloseCoC()
-		  CloseAndroid()
-		  If _SleepStatus(10000) Then Return
-		  OpenAndroid()
-		  OpenCoC()
- 		getArmyCapacity(True, True)
- 		$Restart = True ; set force runbot restart flag
- 		$Is_ClientSyncError = True ; set OOS flag for fast restart
+			MakeScreenshot($dirTemp, "jpg")
+			PoliteCloseCoC()
+			CloseAndroid()
+			If _SleepStatus(10000) Then Return
+			OpenAndroid()
+			OpenCoC()
+		getArmyCapacity(True, True)
+		$Restart = True ; set force runbot restart flag
+		$Is_ClientSyncError = True ; set OOS flag for fast restart
 		Return True
 	Else
 		Return False
-    EndIf
+	EndIf
 EndFunc; ==> SearchLimitRestartAndroid (Restart Android after long search - DEMEN)
+
 
 Func WriteLogVillageSearch ($x)
 	;this function write in BOT LOG the values setting for each attack mode ($DB,$LB, $TS)

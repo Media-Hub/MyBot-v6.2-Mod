@@ -46,7 +46,7 @@ Func _Sleep($iDelay, $iSleep = True, $CheckRunState = True, $SleepWhenPaused = T
 			$bMoveDivider = False
 		EndIf
 
-		If $iDeleteAllPBPushesNow = True Then PushMsgToPushBullet("DeleteAllPBMessages") ; only when button is pushed, and only when on a sleep cyle
+		If $iDeleteAllPBPushesNow = True Then PushMsg("DeleteAllPBMessages") ; only when button is pushed, and only when on a sleep cyle
 		If $iMakeScreenshotNow = True Then
 			If $iScreenshotType = 0 Then
 				MakeScreenshot($dirTemp, "jpg")

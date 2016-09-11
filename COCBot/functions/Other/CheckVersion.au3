@@ -38,11 +38,11 @@ Func CheckVersion()
 		ElseIf VersionNumFromVersionTXT($sModversion) < VersionNumFromVersionTXT($lastModversion) Then
 			SetLog("WARNING, YOUR MOD VERSION (" & $sModversion & ") IS OUT OF DATE.", $COLOR_RED)
 			SetLog("CHIEF, PLEASE DOWNLOAD THE LATEST (" & $lastModversion & ")", $COLOR_RED)
-			SetLog("FROM https://github.com              ", $COLOR_RED)
+			SetLog("FROM https://github.com/NguyenAnhHD               ", $COLOR_RED)
 			SetLog(" ")
 			_PrintLogVersion($oldModversmessage)
 		ElseIf VersionNumFromVersionTXT($sModversion) > VersionNumFromVersionTXT($lastModversion) Then
-			SetLog("YOU ARE USING A FUTURE MOD By Nguyen Anh VERSION CHIEF!", $COLOR_GREEN)
+			SetLog("YOU ARE USING A FUTURE MOD BY NGUYEN ANH VERSION CHIEF!", $COLOR_GREEN)
 			SetLog("YOUR MOD VERSION: " & $sModversion, $COLOR_GREEN)
 			SetLog("OFFICIAL MOD VERSION: " & $lastModversion, $COLOR_GREEN)
 			SetLog(" ")

@@ -186,7 +186,7 @@ Func _RemoteControlPushBullet()
 						Case GetTranslated(620, 1, -1) & " " & StringUpper($iOrigPushBullet) & " BUILDER"
 							SetLog("Pushbullet: Builder Status request received", $COLOR_GREEN)
 							$RequestBuilderInfo = 1
-							_DeleteMessageOfPushBullet($iden[$x])
+							_DeleteMessageOfPushBullet($iden[$x])						
 						Case GetTranslated(620, 1, -1) & " " & StringUpper($iOrigPushBullet) & " SHIELD"
 							SetLog("Pushbullet: Shield Status request received", $COLOR_GREEN)
 							$RequestShieldInfo = 1
@@ -913,7 +913,7 @@ Func PushMsgToPushBullet($Message, $Source = "")
 		Case "AnotherDevice"
 			If ($PushBulletEnabled = 1 Or $TelegramEnabled = 1) And $pAnotherDevice = 1 Then _PushToPushBullet($iOrigPushBullet & " | 3. " & GetTranslated(620, 65, "Another Device has connected") & "\n" & GetTranslated(620, 66, "Another Device has connected, waiting") & " " & Floor(Mod($sTimeWakeUp, 60)) & " " & GetTranslated(603, 8, "seconds"))
 		Case "TakeBreak"
-			If ($PushBulletEnabled = 1 Or $TelegramEnabled = 1) And $pTakeAbreak = 1 AND $PersonalBreakNotified = False Then
+			If ($PushBulletEnabled = 1 Or $TelegramEnabled = 1) And $pTakeAbreak = 1 AND $PersonalBreakNotified = False Then 
 				_PushToPushBullet(@HOUR & ":" & @MIN &" - " & $iOrigPushBullet & " | Personal Break.." & "\n" & GetTranslated(620, 67, "Chief, we need some rest!") & "\n" & GetTranslated(620, 68, "Village must take a break.."))
 				$PersonalBreakNotified = True
 			Endif
@@ -938,10 +938,10 @@ Func PushMsgToPushBullet($Message, $Source = "")
 		Case "RequestScreenshot"
 			Local $Date = @YEAR & "-" & @MON & "-" & @MDAY
 			Local $Time = @HOUR & "." & @MIN & "." & @SEC
-			_CaptureRegion()
 			If $RequestScreenshotHD = 1 Then
 				$hBitmap_Scaled = $hBitmap
 			Else
+			_CaptureRegion()
 			$hBitmap_Scaled = _GDIPlus_ImageResize($hBitmap, _GDIPlus_ImageGetWidth($hBitmap) / 2, _GDIPlus_ImageGetHeight($hBitmap) / 2) ;resize image
 			EndIf
 			Local $Screnshotfilename = "Screenshot_" & $Date & "_" & $Time & ".jpg"
@@ -1021,7 +1021,7 @@ Func PushMsgToPushBullet($Message, $Source = "")
 				If _Sleep($iDelayPushMsg2) Then Return
 					Local $iDelete = FileDelete($dirTemp & $Screnshotfilename)
 				If Not ($iDelete) Then SetLog("Pushbullet/Telegram: An error occurred deleting the temporary screenshot file.", $COLOR_RED)
-				Click(0, 0, 5)
+				Click(0, 0, 5)	
 		Case "ShieldInfo"
 			Click(0, 0, 5)
 			Click(435, 8)

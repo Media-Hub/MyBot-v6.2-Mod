@@ -147,12 +147,17 @@ Func chkSinglePBTForced()
 	If GUICtrlRead($chkSinglePBTForced) = $GUI_CHECKED Then
 		GUICtrlSetState($txtSinglePBTimeForced, $GUI_ENABLE)
 		GUICtrlSetState($txtPBTimeForcedExit, $GUI_ENABLE)
-		GUICtrlSetState($chkCloseTakeBreak, $GUI_ENABLE)
-		GUICtrlSetState($chkCloseTakeBreak, $GUI_CHECKED)
+		;GUICtrlSetState($chkCloseTakeBreak, $GUI_ENABLE)
+		For $i = $lblSleepHeroes To $chkCloseTakeBreak
+			GUICtrlSetState($i, $GUI_ENABLE)
+		Next
 	Else
 		GUICtrlSetState($txtSinglePBTimeForced, $GUI_DISABLE)
 		GUICtrlSetState($txtPBTimeForcedExit, $GUI_DISABLE)
-		GUICtrlSetState($chkCloseTakeBreak, $GUI_DISABLE)
+		;GUICtrlSetState($chkCloseTakeBreak, $GUI_DISABLE)
+		For $i = $lblSleepHeroes To $chkCloseTakeBreak
+			GUICtrlSetState($i, $GUI_DISABLE)
+		Next
 	EndIf
 	txtSinglePBTimeForced()
 EndFunc   ;==>chkSinglePBTForced
@@ -351,6 +356,7 @@ Func btnTestAttackBar()
 		$debugOcr = $currentOCR
 		$RunState = $currentRunState
 EndFunc
+
 
 Func btnTestClickDrag()
 

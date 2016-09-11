@@ -849,20 +849,8 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 
 	If $iChkCollect = 1 Then
 		GUICtrlSetState($chkCollect, $GUI_CHECKED)
-		GUICtrlSetData($txtTRGold, $itxtTRGold)
-		GUICtrlSetData($txtTRElixir, $itxtTRElixir)
-		GUICtrlSetData($txtTRDElixir, $itxtTRDElixir)
 	Else
 		GUICtrlSetState($chkCollect, $GUI_UNCHECKED)
-		GUICtrlSetData($txtTRGold, $itxtTRGold)
-		GUICtrlSetData($txtTRElixir, $itxtTRElixir)
-		GUICtrlSetData($txtTRDElixir, $itxtTRDElixir)
-	EndIf
-
-	If $ichkTRFull = 1 Then
-		GUICtrlSetState($chkTRFull,$GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkTRFull,$GUI_UNCHECKED)
 	EndIf
 
 	If $ichkTombstones = 1 Then
@@ -2121,6 +2109,10 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	; boost barracks ---------------------------------------------------------------------
 	_GUICtrlComboBox_SetCurSel($cmbQuantBoostBarracks, $icmbQuantBoostBarracks)
 	_GUICtrlComboBox_SetCurSel($cmbBoostBarracks, $icmbBoostBarracks)
+	; boost dark barrack
+	_GUICtrlComboBox_SetCurSel($cmbQuantBoostDarkBarracks, $icmbQuantBoostDarkBarracks)
+	_GUICtrlComboBox_SetCurSel($cmbBoostDarkBarracks, $icmbBoostDarkBarracks)
+
 	_GUICtrlComboBox_SetCurSel($cmbBoostSpellFactory, $icmbBoostSpellFactory)
 	_GUICtrlComboBox_SetCurSel($cmbBoostDarkSpellFactory, $icmbBoostDarkSpellFactory)
 	_GUICtrlComboBox_SetCurSel($cmbBoostBarbarianKing, $icmbBoostBarbarianKing)
@@ -2602,7 +2594,16 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	LoadABSnipeAttacks() ; recreate combo box values
 	_GUICtrlComboBox_SetCurSel($cmbTHSnipeBeforeLBScript, _GUICtrlComboBox_FindStringExact($cmbTHSnipeBeforeLBScript, $THSnipeBeforeLBScript))
 
-	; SmartZap Settings - Added by LunaEclipse
+	; Android Settings
+	If _GUICtrlComboBox_FindStringExact($cmbAndroid, String($sAndroid)) <> -1 Then
+		_GUICtrlComboBox_SelectString($cmbAndroid, String($sAndroid))
+	Else
+		_GUICtrlComboBox_SetCurSel($cmbAndroid, 0)
+	EndIf
+	GUICtrlSetData($txtAndroidInstance, $sAndroidInstance)
+	modifyAndroid()
+
+	; SmartZap Settings
 	If $ichkSmartZap = 1 Then
 		GUICtrlSetState($chkExtLightSpell, $GUI_DISABLE)
 		GUICtrlSetState($chkSmartLightSpell, $GUI_CHECKED)
@@ -2640,24 +2641,6 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 
 	GUICtrlSetData($txtMinDark, $itxtMinDE)
 
-#cs	; Android Settings
-	If _GUICtrlComboBox_FindStringExact($cmbAndroid, String($sAndroid)) <> -1 Then
-		_GUICtrlComboBox_SelectString($cmbAndroid, String($sAndroid))
-	Else
-		_GUICtrlComboBox_SetCurSel($cmbAndroid, 0)
-	EndIf
-	GUICtrlSetData($txtAndroidInstance, $sAndroidInstance)
-	modifyAndroid()
-
-	; Misc Battle Settings
-	If $AndroidAdbClicksEnabled = 1 Then
-		GUICtrlSetState($chkFastADBClicks, $GUI_CHECKED)
-		$AndroidAdbClicksEnabled = True
-	Else
-		GUICtrlSetState($chkFastADBClicks, $GUI_UNCHECKED)
-		$AndroidAdbClicksEnabled = False
-	EndIf
-#ce
 	;Wait For Spells
 	If $iEnableSpellsWait[$DB] = 1 Then
 		GUICtrlSetState($chkDBSpellsWait, $GUI_CHECKED)
@@ -2694,6 +2677,63 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	Else
 		GUICtrlSetState($chkCloseTakeBreak, $GUI_UNCHECKED)
 	EndIf
+
+	; SwitchAcc- DEMEN
+	Switch $ProfileType
+	Case 1
+		GUICtrlSetState($radActiveProfile, $GUI_CHECKED)
+	Case 2
+		GUICtrlSetState($radDonateProfile, $GUI_CHECKED)
+	Case 3
+		GUICtrlSetState($radIdleProfile, $GUI_CHECKED)
+	EndSwitch
+
+	_GUICtrlCombobox_SetCurSel($cmbMatchProfileAcc, $MatchProfileAcc)
+
+	If $ichkSwitchAcc = 1 Then
+		GUICtrlSetState($chkSwitchAcc, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkSwitchAcc, $GUI_UNCHECKED)
+	EndIf
+
+	If $ichkSmartSwitch = 1 Then
+		GUICtrlSetState($radSmartSwitch, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($radNormalSwitch, $GUI_CHECKED)
+	EndIf
+
+	chkSwitchAcc()
+
+
+	_GUICtrlCombobox_SetCurSel($cmbTotalAccount, $icmbTotalCoCAcc)	; 0 = AutoDetect
+
+	If $ichkCloseTraining >= 1 Then
+		GUICtrlSetState($chkUseTrainingClose, $GUI_CHECKED)
+		If $ichkCloseTraining = 1 Then
+			GUICtrlSetState($radCloseCoC, $GUI_CHECKED)
+		Else
+			GUICtrlSetState($radCloseAndroid, $GUI_CHECKED)
+		EndIf
+	Else
+		GUICtrlSetState($chkUseTrainingClose, $GUI_UNCHECKED)
+	EndIf
+
+	If $ichkCloseTraining = 1 Then
+		GUICtrlSetState($chkUseTrainingClose, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkUseTrainingClose, $GUI_UNCHECKED)
+	EndIf
+
+	; Restart Android after long search - DEMEN
+	If $iChkRestartAndroid = 1 Then
+		GUICtrlSetState($chkRestartAndroid, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkRestartAndroid, $GUI_UNCHECKED)
+	EndIf
+	chkRestartAndroid()
+
+	GUICtrlSetData($txtRestartAndroidSearchLimit, $iRestartAndroidSearchLimit)
+	GUICtrlSetData($txtRestartAndroidTrainError, $iRestartAndroidTrainError)
 
 	; ChatBot
 	GUICtrlSetData($chkchatdelay, $ichkchatdelay)
@@ -2739,6 +2779,20 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 		GUICtrlSetState($chkAlertBuilderIdle, $GUI_CHECKED)
 	ElseIf $ichkAlertBuilderIdle = 0 Then
 		GUICtrlSetState($chkAlertBuilderIdle, $GUI_UNCHECKED)
+	EndIf
+
+	; Notify Top Gain Loot
+	If $pAlertTopGain = 1 Then
+		GUICtrlSetState($chkAlertTopGain, $GUI_CHECKED)
+	ElseIf $pAlertTopGain = 0 Then
+		GUICtrlSetState($chkAlertTopGain, $GUI_UNCHECKED)
+	EndIf
+
+	; Notify SmartUpgrade
+	If $ichkAlertSmartUpgrade = 1 Then
+		GUICtrlSetState($chkAlertSmartUpgrade, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkAlertSmartUpgrade, $GUI_UNCHECKED)
 	EndIf
 
 	; Clan Hop Setting
@@ -2809,62 +2863,156 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	_GUICtrlComboBox_SetCurSel($cmbTrophyMinProfile, $icmbTrophyMinProfile)
 	GUICtrlSetData($txtMinTrophyAmount, $itxtMinTrophyAmount)
 
-   ; SwitchAcc- DEMEN
-	Switch $ProfileType
-	Case 1
-	   GUICtrlSetState($radActiveProfile, $GUI_CHECKED)
-	Case 2
-	   GUICtrlSetState($radDonateProfile, $GUI_CHECKED)
-	Case 3
-	   GUICtrlSetState($radIdleProfile, $GUI_CHECKED)
-	EndSwitch
-
-	_GUICtrlCombobox_SetCurSel($cmbMatchProfileAcc, $MatchProfileAcc)
-
- 	If $ichkSwitchAcc = 1 Then
- 		GUICtrlSetState($chkSwitchAcc, $GUI_CHECKED)
- 	Else
- 		GUICtrlSetState($chkSwitchAcc, $GUI_UNCHECKED)
- 	EndIf
-
-	If $ichkSmartSwitch = 1 Then
-	   GUICtrlSetState($radSmartSwitch, $GUI_CHECKED)
- 	Else
-	   GUICtrlSetState($radNormalSwitch, $GUI_CHECKED)
- 	EndIf
-
-	chkSwitchAcc()
-
-
-	_GUICtrlCombobox_SetCurSel($cmbTotalAccount, $icmbTotalCoCAcc)	; 0 = AutoDetect
-
-	If $ichkCloseTraining >= 1 Then
-		GUICtrlSetState($chkUseTrainingClose, $GUI_CHECKED)
-		If $ichkCloseTraining = 1 Then
-			GUICtrlSetState($radCloseCoC, $GUI_CHECKED)
-		Else
-			GUICtrlSetState($radCloseAndroid, $GUI_CHECKED)
-		EndIf
+	; SmartUpgrade
+	If $ichkSmartUpgrade = 1 Then
+		GUICtrlSetState($chkSmartUpgrade, $GUI_CHECKED)
 	Else
-		GUICtrlSetState($chkUseTrainingClose, $GUI_UNCHECKED)
+		GUICtrlSetState($chkSmartUpgrade, $GUI_UNCHECKED)
+	EndIf
+	chkSmartUpgrade()
+
+	GUICtrlSetData($SmartMinGold, $iSmartMinGold)
+	GUICtrlSetData($SmartMinElixir, $iSmartMinElixir)
+	GUICtrlSetData($SmartMinDark, $iSmartMinDark)
+
+	If $ichkIgnoreTH = 1 Then
+		GUICtrlSetState($chkIgnoreTH, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkIgnoreTH, $GUI_UNCHECKED)
 	EndIf
 
-	If $ichkCloseTraining = 1 Then
-		GUICtrlSetState($chkUseTrainingClose, $GUI_CHECKED)
+	If $ichkIgnoreKing = 1 Then
+		GUICtrlSetState($chkIgnoreKing, $GUI_CHECKED)
 	Else
-		GUICtrlSetState($chkUseTrainingClose, $GUI_UNCHECKED)
+		GUICtrlSetState($chkIgnoreKing, $GUI_UNCHECKED)
 	EndIf
 
-	; Restart Android after long search - DEMEN
-	If $iChkRestartAndroid = 1 Then
-		GUICtrlSetState($chkRestartAndroid, $GUI_CHECKED)
+	If $ichkIgnoreQueen = 1 Then
+		GUICtrlSetState($chkIgnoreQueen, $GUI_CHECKED)
 	Else
-		GUICtrlSetState($chkRestartAndroid, $GUI_UNCHECKED)
-	 EndIf
-	 chkRestartAndroid()
+		GUICtrlSetState($chkIgnoreQueen, $GUI_UNCHECKED)
+	EndIf
 
-	 GUICtrlSetData($txtRestartAndroidSearchLimit, $iRestartAndroidSearchLimit)
-	 GUICtrlSetData($txtRestartAndroidTrainError, $iRestartAndroidTrainError)
+	If $ichkIgnoreWarden = 1 Then
+		GUICtrlSetState($chkIgnoreWarden, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkIgnoreWarden, $GUI_UNCHECKED)
+	EndIf
+
+	If $ichkIgnoreCC = 1 Then
+		GUICtrlSetState($chkIgnoreCC, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkIgnoreCC, $GUI_UNCHECKED)
+	EndIf
+
+	If $ichkIgnoreLab = 1 Then
+		GUICtrlSetState($chkIgnoreLab, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkIgnoreLab, $GUI_UNCHECKED)
+	EndIf
+
+	If $ichkIgnoreBarrack = 1 Then
+		GUICtrlSetState($chkIgnoreBarrack, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkIgnoreBarrack, $GUI_UNCHECKED)
+	EndIf
+
+	If $ichkIgnoreDBarrack = 1 Then
+		GUICtrlSetState($chkIgnoreDBarrack, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkIgnoreDBarrack, $GUI_UNCHECKED)
+	EndIf
+
+	If $ichkIgnoreFactory = 1 Then
+		GUICtrlSetState($chkIgnoreFactory, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkIgnoreFactory, $GUI_UNCHECKED)
+	EndIf
+
+	If $ichkIgnoreDFactory = 1 Then
+		GUICtrlSetState($chkIgnoreDFactory, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkIgnoreDFactory, $GUI_UNCHECKED)
+	EndIf
+
+	If $ichkIgnoreGColl = 1 Then
+		GUICtrlSetState($chkIgnoreGColl, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkIgnoreGColl, $GUI_UNCHECKED)
+	EndIf
+
+	If $ichkIgnoreEColl = 1 Then
+		GUICtrlSetState($chkIgnoreEColl, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkIgnoreEColl, $GUI_UNCHECKED)
+	EndIf
+
+	If $ichkIgnoreDColl = 1 Then
+		GUICtrlSetState($chkIgnoreDColl, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkIgnoreDColl, $GUI_UNCHECKED)
+	EndIf
+
+	chkSmartUpgrade()
+
+	; CoCStarts
+	If $ichkCoCStats = 1 Then
+		GUICtrlSetState($chkCoCStats, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkCoCStats, $GUI_UNCHECKED)
+	EndIf
+	GUICtrlSetData($txtAPIKey, $MyApiKey)
+	chkCoCStats()
+
+	; Collect Treasury
+	If $ichkCollectTresory = 1 Then
+		GUICtrlSetState($chkCollectTresory, $GUI_CHECKED)
+		GUICtrlSetData($txtTreasuryGold, $itxtTreasuryGold)
+		GUICtrlSetData($txtTreasuryElixir, $itxtTreasuryElixir)
+		GUICtrlSetData($txtTreasuryDark, $itxtTreasuryDark)
+		For $i = $leurequisertarienTresor To $btnResetDE
+			GUICtrlSetState($i, $GUI_SHOW)
+		Next
+	Else
+		GUICtrlSetState($chkCollectTresory, $GUI_UNCHECKED)
+		GUICtrlSetData($txtTreasuryGold, $itxtTreasuryGold)
+		GUICtrlSetData($txtTreasuryElixir, $itxtTreasuryElixir)
+		GUICtrlSetData($txtTreasuryDark, $itxtTreasuryDark)
+		For $i = $leurequisertarienTresor To $btnResetDE
+			GUICtrlSetState($i, $GUI_HIDE)
+		Next
+	EndIf
+
+	If $ichkCollectTresoryGold = 1 Then
+		GUICtrlSetState($chkCollectTresoryGold, $GUI_CHECKED)
+		GUICtrlSetState($txtTreasuryGold, $GUI_SHOW)
+		GUICtrlSetState($eIcnGold, $GUI_SHOW)
+		GUICtrlSetState($btnResetOR, $GUI_SHOW)
+	Else
+		GUICtrlSetState($chkCollectTresoryGold, $GUI_UNCHECKED)
+	EndIf
+	chkCollectTresoryGold()
+
+	If $ichkCollectTresoryElixir = 1 Then
+		GUICtrlSetState($chkCollectTresoryElixir, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkCollectTresoryElixir, $GUI_UNCHECKED)
+	EndIf
+	chkCollectTresoryElixir()
+
+	If $ichkCollectTresoryDark = 1 Then
+		GUICtrlSetState($chkCollectTresoryDark, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkCollectTresoryDark, $GUI_UNCHECKED)
+	EndIf
+	chkCollectTresoryDark()
+	chkCollectTresory()
+
+	If $ichkTRFull = 1 Then
+		GUICtrlSetState($chkTRFull, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkTRFull, $GUI_UNCHECKED)
+	EndIf
 
 	;Apply to switch Attack Standard after THSnipe End ==>
 	If $ichkTSActivateCamps2 = 1 Then

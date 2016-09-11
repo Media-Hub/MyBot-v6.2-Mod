@@ -101,7 +101,7 @@ Func SmartWait4Train()
 
 	; get spell training time remaining if enabled
 	If ($ichkCloseWaitTrain = 1 Or BitAND($iTrainWaitCloseFlag, $TRAINWAIT_SHIELD) = $TRAINWAIT_SHIELD) And IsWaitforSpellsActive() Then
-	    $ichkCloseWaitSpell = 1 	; Added by DEMEN
+		$ichkCloseWaitSpell = 1 	; Added by DEMEN
 		If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("$ichkCloseWaitSpell enabled", $COLOR_PURPLE)
 		If $aTimeTrain[1] = 0 Then
 			getArmySpellTime()
@@ -116,12 +116,12 @@ Func SmartWait4Train()
 		EndIf
 		If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("$iTrainWaitCloseFlag:" & $iTrainWaitCloseFlag & ", spell time= " & StringFormat("%.2f", $aTimeTrain[1]), $COLOR_PURPLE)
 	Else
-	    $ichkCloseWaitSpell = 0 	; Added by DEMEN
+		$ichkCloseWaitSpell = 0 	; Added by DEMEN
 	EndIf
 
 	; get hero regen time remaining if enabled
 	If ($ichkCloseWaitTrain = 1 Or BitAND($iTrainWaitCloseFlag, $TRAINWAIT_SHIELD) = $TRAINWAIT_SHIELD) And IsWaitforHeroesActive() Then
-	    $ichkCloseWaitHero = 1	; Added by DEMEN
+		$ichkCloseWaitHero = 1	; Added by DEMEN
 		If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("$ichkCloseWaitHero enabled", $COLOR_PURPLE)
 		If $aTimeTrain[2] = 0 Then ; did we already read remaining time?
 			For $j = 0 To UBound($aResult) - 1
@@ -145,7 +145,7 @@ Func SmartWait4Train()
 					EndIf
 					$iActiveHero = -1
 					If IsSpecialTroopToBeUsed($pMatchMode, $pTroopType) And _
-							BitOR($iHeroAttack[$pMatchMode], $iHeroWait[$pMatchMode]) = $iHeroAttack[$pMatchMode] Then ; check if Hero enabled to wait
+							BitAND($iHeroAttack[$pMatchMode], $iHeroWait[$pMatchMode]) = $iHeroAttack[$pMatchMode] Then ; check if Hero enabled to wait
 						$iActiveHero = $pTroopType - $eKing ; compute array offset to active hero
 					EndIf
 					If $iActiveHero <> -1 And $aHeroResult[$iActiveHero] > 0 Then ; valid time?
@@ -237,37 +237,39 @@ Func SmartWait4Train()
 		$iShieldTime -= 45
 	EndIf
 	If $ichkCloseWaitTrain = 1 And $iTrainWaitTime >= 121 Then
-		If $iShieldTime > 0 Then
-			$iDiffTime = $iShieldTime - ($iTrainWaitTime) ; Find difference between train and shield time easy way?
-			If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("Time Train:Shield:Diff " & ($iTrainWaitTime) & ":" & $iShieldTime & ":" & $iDiffTime, $COLOR_PURPLE)
+	If $iShieldTime > 0 Then
+		$iDiffTime = $iShieldTime - ($iTrainWaitTime) ; Find difference between train and shield time easy way?
+		If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("Time Train:Shield:Diff " & ($iTrainWaitTime) & ":" & $iShieldTime & ":" & $iDiffTime, $COLOR_PURPLE)
 
-			If $iDiffTime <= 0 And $iShieldTime > 120 Then
-				; close game = $iShieldTime because less than train time remaining
-				Setlog("Smart wait while shield time= " & StringFormat("%.2f", $iShieldTime / 60) & " Minutes", $COLOR_BLUE)
-				UniversalCloseWaitOpenCoC($iShieldTime * 1000, "SmartWait4Train_", $StopEmulator)
-				For $i = 0 To UBound($aTimeTrain) - 1 ; reset remaining time array
-					$aTimeTrain[$i] = 0
-				Next
-			Else
-				; close game  = $iTrainWaitTime because shield is larger than train time
-				Setlog("Smart wait train time= " & StringFormat("%.2f", $iTrainWaitTime / 60) & " Minutes", $COLOR_BLUE)
-				UniversalCloseWaitOpenCoC($iTrainWaitTime * 1000, "SmartWait4Train_", $StopEmulator)
-				For $i = 0 To UBound($aTimeTrain) - 1 ; reset remaining time array
-					$aTimeTrain[$i] = 0
-				Next
-			EndIf
-
-		ElseIf ($ichkCloseWaitTrain = 1 And $aTimeTrain[0] > 0) Or ($ichkCloseWaitSpell = 1 And $aTimeTrain[1] > 0) Or ($ichkCloseWaitHero = 1 And $aTimeTrain[2] > 0) Then
-			;when no shield close game for $iTrainWaitTime time
-			Setlog("Smart Wait time= " & StringFormat("%.2f", $iTrainWaitTime / 60) & " Minutes", $COLOR_BLUE)
-			UniversalCloseWaitOpenCoC($iTrainWaitTime * 1000, "SmartWait4TrainNoShield_", $StopEmulator)
+		If $iDiffTime <= 0 And $iShieldTime > 120 Then
+			; close game = $iShieldTime because less than train time remaining
+			Setlog("Smart wait while shield time= " & StringFormat("%.2f", $iShieldTime / 60) & " Minutes", $COLOR_BLUE)
+			UniversalCloseWaitOpenCoC($iShieldTime * 1000, "SmartWait4Train_", $StopEmulator)
 			$Restart = True  ; Set flag to exit idle loop to deal with potential user changes to GUI
 			For $i = 0 To UBound($aTimeTrain) - 1 ; reset remaining time array
 				$aTimeTrain[$i] = 0
 			Next
 		Else
-			If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("Troop training with time remaining not enabled, skip SmartWait game exit", $COLOR_PURPLE)
- 		EndIf
+			; close game  = $iTrainWaitTime because shield is larger than train time
+			Setlog("Smart wait train time= " & StringFormat("%.2f", $iTrainWaitTime / 60) & " Minutes", $COLOR_BLUE)
+			UniversalCloseWaitOpenCoC($iTrainWaitTime * 1000, "SmartWait4Train_", $StopEmulator)
+			$Restart = True  ; Set flag to exit idle loop to deal with potential user changes to GUI
+			For $i = 0 To UBound($aTimeTrain) - 1 ; reset remaining time array
+				$aTimeTrain[$i] = 0
+			Next
+		EndIf
+
+	ElseIf ($ichkCloseWaitTrain = 1 And $aTimeTrain[0] > 0) Or ($ichkCloseWaitSpell = 1 And $aTimeTrain[1] > 0) Or ($ichkCloseWaitHero = 1 And $aTimeTrain[2] > 0) Then
+		;when no shield close game for $iTrainWaitTime time
+		Setlog("Smart Wait time= " & StringFormat("%.2f", $iTrainWaitTime / 60) & " Minutes", $COLOR_BLUE)
+		UniversalCloseWaitOpenCoC($iTrainWaitTime * 1000, "SmartWait4TrainNoShield_", $StopEmulator)
+		$Restart = True  ; Set flag to exit idle loop to deal with potential user changes to GUI
+		For $i = 0 To UBound($aTimeTrain) - 1 ; reset remaining time array
+			$aTimeTrain[$i] = 0
+		Next
+	Else
+		If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("Troop training with time remaining not enabled, skip SmartWait game exit", $COLOR_PURPLE)
+	EndIf
 
 	ElseIf $ichkCloseWaitTrain = 1 And $iTrainWaitTime <= 120 Then
 		Setlog("Waiting time < 2.00 Minutes, Not Close CoC Just Wait!", $COLOR_BLUE)

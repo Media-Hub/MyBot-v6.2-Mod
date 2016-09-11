@@ -415,7 +415,6 @@ $x += $Offx
 	$x = 25
 	$y = 191
 	$chkClanHop = GUICtrlCreateCheckbox("Hop Clans",$x + 275, $y - 5, -1, -1) ; New position of Hop clan check option
-		GUICtrlSetOnEvent(-1, "chkClanHop")
 		GUICtrlSetState(-1, $GUI_UNCHECKED)
 	$chkExtraAlphabets = GUICtrlCreateCheckbox(GetTranslated(612,25, "Enable Cyrillic Alphabet Recognition"), $x - 15 , $y +149, -1, -1)
 	_GUICtrlSetTip(-1, GetTranslated(612,26, "Check this to enable the Cyrillic Alphabet."))

@@ -1,5 +1,5 @@
 ; #FUNCTION# ====================================================================================================================
-; Name ..........: MBR GUI Controls Tab Mod Option
+; Name ..........: MBR GUI Control Tab Mod Option
 ; Description ...: This file Includes GUI Design
 ; Syntax ........:
 ; Parameters ....: None
@@ -57,13 +57,102 @@ Func ExtLightSpell()
 		$ichkExtLightSpell = 1
 	Else
 		GUICtrlSetState($chkSmartLightSpell, $GUI_ENABLE)
-		GUICtrlSetState($chkSmartZapDB, $GUI_DISABLE)
+		;GUICtrlSetState($chkSmartZapDB, $GUI_DISABLE)
 		;GUICtrlSetState($txtMinDark, $GUI_DISABLE)
 		$ichkExtLightSpell = 0
 	EndIf
 EndFunc   ;==>GUILightSpell
 
-#cs ===>; Android Setting
+; CoCStarts
+Func chkCoCStats()
+	If GUICtrlRead($chkCoCStats) = $GUI_CHECKED Then
+		$ichkCoCStats = 1
+		GUICtrlSetState($txtAPIKey, $GUI_ENABLE)
+	Else
+		$ichkCoCStats = 0
+		GUICtrlSetState($txtAPIKey, $GUI_DISABLE)
+	EndIf
+	IniWrite($config, "Stats", "chkCoCStats", $ichkCoCStats)
+EndFunc   ;==>chkCoCStats
+
+; Collect Treasury
+Func chkCollectTresory()
+	If GUICtrlRead($chkCollectTresory) = $GUI_CHECKED Then
+		For $i = $leurequisertarienTresor To $btnResetDE
+			GUICtrlSetState($i, $GUI_SHOW)
+		Next
+		If GUICtrlRead($chkCollectTresoryGold) = $GUI_UNCHECKED Then
+			GUICtrlSetState($btnResetOR, $GUI_DISABLE)
+			GUICtrlSetState($btnResetEL, $GUI_DISABLE)
+			GUICtrlSetState($btnResetDE, $GUI_DISABLE)
+		EndIf
+		$ichkCollectTresory = 1
+	Else
+		For $i = $leurequisertarienTresor To $btnResetDE
+			GUICtrlSetState($i, $GUI_HIDE)
+		Next
+		$ichkCollectTresory = 0
+	EndIf
+EndFunc   ;==>chkCollectTresory
+
+Func chkCollectTresoryGold()
+	If GUICtrlRead($chkCollectTresoryGold) = $GUI_CHECKED And GUICtrlRead($chkCollectTresory) = $GUI_CHECKED Then
+		GUICtrlSetState($txtTreasuryGold, $GUI_ENABLE)
+		GUICtrlSetState($btnResetOR, $GUI_ENABLE)
+	ElseIf GUICtrlRead($chkCollectTresoryGold) = $GUI_CHECKED And GUICtrlRead($chkCollectTresory) = $GUI_UNCHECKED Then
+		GUICtrlSetState($txtTreasuryGold, $GUI_DISABLE)
+		GUICtrlSetState($btnResetOR, $GUI_DISABLE)
+	ElseIf GUICtrlRead($chkCollectTresoryGold) = $GUI_UNCHECKED And GUICtrlRead($chkCollectTresory) = $GUI_CHECKED Then
+		GUICtrlSetState($txtTreasuryGold, $GUI_DISABLE)
+		GUICtrlSetState($btnResetOR, $GUI_DISABLE)
+	EndIf
+EndFunc   ;==>chkCollectTresoryGold
+
+Func ResetOr()
+	Global $ResetOR = 0
+	GUICtrlSetData($txtTreasuryGold, $ResetOR)
+	$itxtTreasuryGold = GUICtrlRead($txtTreasuryGold)
+EndFunc   ;==>ResetOr
+
+Func chkCollectTresoryElixir()
+	If GUICtrlRead($chkCollectTresoryElixir) = $GUI_CHECKED And GUICtrlRead($chkCollectTresory) = $GUI_CHECKED Then
+		GUICtrlSetState($txtTreasuryElixir, $GUI_ENABLE)
+		GUICtrlSetState($btnResetEL, $GUI_ENABLE)
+	ElseIf GUICtrlRead($chkCollectTresoryElixir) = $GUI_CHECKED And GUICtrlRead($chkCollectTresory) = $GUI_UNCHECKED Then
+		GUICtrlSetState($txtTreasuryElixir, $GUI_DISABLE)
+		GUICtrlSetState($btnResetEL, $GUI_DISABLE)
+	ElseIf GUICtrlRead($chkCollectTresoryElixir) = $GUI_UNCHECKED And GUICtrlRead($chkCollectTresory) = $GUI_CHECKED Then
+		GUICtrlSetState($txtTreasuryElixir, $GUI_DISABLE)
+		GUICtrlSetState($btnResetEL, $GUI_DISABLE)
+	EndIf
+EndFunc   ;==>chkCollectTresoryElixir
+
+Func ResetEL()
+	Global $ResetEL = 0
+	GUICtrlSetData($txtTreasuryElixir, $ResetEL)
+	$itxtTreasuryElixir = GUICtrlRead($txtTreasuryElixir)
+EndFunc   ;==>ResetEL
+
+Func chkCollectTresoryDark()
+	If GUICtrlRead($chkCollectTresoryDark) = $GUI_CHECKED And GUICtrlRead($chkCollectTresory) = $GUI_CHECKED Then
+		GUICtrlSetState($txtTreasuryDark, $GUI_ENABLE)
+		GUICtrlSetState($btnResetDE, $GUI_ENABLE)
+	ElseIf GUICtrlRead($chkCollectTresoryDark) = $GUI_CHECKED And GUICtrlRead($chkCollectTresory) = $GUI_UNCHECKED Then
+		GUICtrlSetState($txtTreasuryDark, $GUI_DISABLE)
+		GUICtrlSetState($btnResetDE, $GUI_DISABLE)
+	ElseIf GUICtrlRead($chkCollectTresoryDark) = $GUI_UNCHECKED And GUICtrlRead($chkCollectTresory) = $GUI_CHECKED Then
+		GUICtrlSetState($txtTreasuryDark, $GUI_DISABLE)
+		GUICtrlSetState($btnResetDE, $GUI_DISABLE)
+	EndIf
+EndFunc   ;==>chkCollectTresoryDark
+
+Func ResetDE()
+	Global $ResetDE = 0
+	GUICtrlSetData($txtTreasuryDark, $ResetDE)
+	$itxtTreasuryDark = GUICtrlRead($txtTreasuryDark)
+EndFunc   ;==>ResetDE
+
+; Android Setting
 Func setupAndroidComboBox()
 	Local $androidString = ""
 	Local $aAndroid = getInstalledEmulators()
@@ -84,12 +173,3 @@ Func txtAndroidInstance()
 	$sAndroidInstance = GUICtrlRead($txtAndroidInstance)
 	modifyAndroid()
 EndFunc   ;==>$txtAndroidInstance
-
-Func chkFastADBClicks()
-	If GUICtrlRead($chkFastADBClicks) = $GUI_CHECKED Then
-		$AndroidAdbClicksEnabled = True
-	Else
-		$AndroidAdbClicksEnabled = False
-	EndIf
-EndFunc   ;==>chkFastADBClicks
-#ce

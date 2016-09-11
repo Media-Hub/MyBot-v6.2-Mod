@@ -120,6 +120,8 @@
 #include "functions\CreateArmy\Train.au3"
 #include "functions\CreateArmy\TrainIt.au3"
 
+#include "functions\CreateArmy\TrainBoosted.au3"
+
 #include "functions\Image Search\ImageSearch.au3"
 #include "functions\Image Search\checkDeadBase.au3"
 #include "functions\Image Search\checkTownhall.au3"
@@ -152,8 +154,6 @@
 #include "functions\Android\getBSPos.au3"
 #include "functions\Android\UniversalCloseWaitOpenCoC.au3"
 #include "functions\Android\AndroidEmbed.au3"
-
-#include "functions\Android\BlueStacks1Shortcuts.au3"
 
 #include "functions\Other\WerFaultClose.au3"
 #include "functions\Other\_NumberFormat.au3"
@@ -198,11 +198,11 @@
 #include "functions\Other\KillProcess.au3"
 #include "functions\Other\LaunchConsole.au3"
 #include "functions\Other\ADB.au3"
+#include "functions\Other\ClickZoneR.au3"
 #include "functions\Other\JSON.au3"
 
 ; Check Connections
 #include "functions\Other\CheckConnection.au3"
-#include "functions\Other\ClickZoneR.au3"
 
 #include "functions\Pixels\_CaptureRegion.au3"
 #include "functions\Pixels\_ColorCheck.au3"
@@ -270,21 +270,23 @@
 #include "functions\Village\ClanHop.au3"
 #include "functions\Village\ProfileSwitch.au3"
 
-; Attack files - Added by LunaEclipse
+; Attack files
 #include "functions\Attack\attackFunctions.au3"
-;#include "functions\Attack\unitInfo.au3"
+
+; Android Settings
+#include "functions\Android\modifyAndroid.au3"
+
+; SmartUpgrade
+#include "functions\MOD\SmartUpgrade\AutoUpgrade.au3"
 
 ; ExtremeZap
 #include "functions\Mod\SmartZap\ExtremeZap.au3"
 
-; SmartZap files - Added by LunaEclipse
+; SmartZap files
 #include "functions\Mod\SmartZap\drillSearch.au3"
 #include "functions\Mod\SmartZap\smartZap.au3"
 
-; Android files - Added by LunaEclipse
-;#include "functions\Android\modifyAndroid.au3"
-
-; DonateStats - Added by Cutidudz
+; DonateStats
 #include "functions\Mod\DonateStats\DonateStats.au3"
 
 ; Check Collector Outside
@@ -296,3 +298,5 @@
 ; Sleep Heroes
 #include "functions\Village\SleepHeroes.au3"
 
+; CoCStarts
+#include "functions\Mod\CoCStarts\CoCStats.com.au3"

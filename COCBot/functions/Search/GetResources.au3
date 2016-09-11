@@ -21,7 +21,7 @@ Func GetResources($bLog = True, $pMatchMode = -1) ;Reads resources
 	Local $iResult = 0
 	Local $i = 0
 	Local $iWaitClouds
-
+	
 	If ( $iTrophyCurrent > 4200 ) Then
 	  $iWaitClouds = 1080 ; Titan Leagle and over
 	Else
@@ -39,7 +39,7 @@ Func GetResources($bLog = True, $pMatchMode = -1) ;Reads resources
 				$iNbrOfOoS += 1
 				UpdateStats()
 				SetLog("Disconnected At Search Clouds", $COLOR_RED)
-				PushMsgToPushBullet("OoSResources")
+				PushMsgToPushBullet ("OoSResources")
 			Else
 				SetLog("Stuck At Search Clouds, Restarting CoC and Bot...", $COLOR_RED)
 				$Is_ClientSyncError = False ; disable fast OOS restart if not simple error and restarting CoC
@@ -87,7 +87,7 @@ Func GetResources($bLog = True, $pMatchMode = -1) ;Reads resources
 			$iNbrOfOoS += 1
 			UpdateStats()
 			SetLog("Connection Lost While Searching", $COLOR_RED)
-			PushMsgToPushBullet("OoSResources")
+			PushMsgToPushBullet ("OoSResources")
 		Else
 			SetLog("Attack Is Disabled Or Slow connection issues, Restarting CoC and Bot...", $COLOR_RED)
 			$Is_ClientSyncError = False ; disable fast OOS restart if not simple error and restarting CoC
@@ -97,7 +97,7 @@ Func GetResources($bLog = True, $pMatchMode = -1) ;Reads resources
 	EndIf
 
 	$SearchCount += 1 ; Counter for number of searches
-
+	
 	;pushbullet searchcount notification every xxx searches so you know bot is still running
     If $searchcount > 0 AND $SearchNotifyCount = 1 AND mod($searchcount, $SearchNotifyCountTXT) = 0 Then
         PushMsgToPushBullet ("CurrentSearchCount")

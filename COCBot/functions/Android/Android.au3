@@ -1339,7 +1339,7 @@ Func AndroidAdbSendShellCommandScript($scriptFile, $variablesArray = Default, $c
 			Next
 			; create sh file
 			If FileWrite($hostPath & $scriptFileSh, $script) = 1 Then
-				SetLog("ADB script file created: " & $hostPath & $scriptFileSh)
+				If $debugSetlog = 1 Then SetLog("ADB script file created: " & $hostPath & $scriptFileSh)
 			Else
 				SetLog("ADB cannot create script file: " & $hostPath & $scriptFileSh, $COLOR_RED)
 				Return SetError(7, 0)

@@ -311,5 +311,5 @@ Func zapDrill($THSpell, $x, $y)
 	Else
 		If $debugSetLog = 1 Then SetLog("No " & $name & " Found")
 	EndIf
-
+	
 EndFunc   ;==>zapDrill

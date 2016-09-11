@@ -724,6 +724,10 @@ Func saveConfig() ;Saves the controls settings to the config
 	; boost barracks gui -> variables -------------------------------------------------
 	$icmbQuantBoostBarracks = GUICtrlRead($cmbQuantBoostBarracks)
 	$icmbBoostBarracks = GUICtrlRead($cmbBoostBarracks)
+	; boost dark barrack
+	$icmbQuantBoostDarkBarracks = GUICtrlRead($cmbQuantBoostDarkBarracks)
+	$icmbBoostDarkBarracks = GUICtrlRead($cmbBoostDarkBarracks)
+
 	$icmbBoostSpellFactory = GUICtrlRead($cmbBoostSpellFactory)
 	$icmbBoostDarkSpellFactory = GUICtrlRead($cmbBoostDarkSpellFactory)
 	$icmbBoostBarbarianKing = GUICtrlRead($cmbBoostBarbarianKing)
@@ -2083,19 +2087,8 @@ Func saveConfig() ;Saves the controls settings to the config
 	EndIf
 	If GUICtrlRead($chkCollect) = $GUI_CHECKED Then
 		IniWriteS($config, "other", "chkCollect", 1)
-		IniWriteS($config, "other","treasuryGold", GUICtrlRead($txtTRGold))
-		IniWriteS($config, "other","treasuryElixir", GUICtrlRead($txtTRElixir))
-		IniWriteS($config, "other","treasuryDark", GUICtrlRead($txtTRDElixir))
 	Else
 		IniWriteS($config, "other", "chkCollect", 0)
-		IniWriteS($config, "other","treasuryGold", GUICtrlRead($txtTRGold))
-		IniWriteS($config, "other","treasuryElixir", GUICtrlRead($txtTRElixir))
-		IniWriteS($config, "other","treasuryDark", GUICtrlRead($txtTRDElixir))
-	EndIf
-	If GUICtrlRead($chkTRFull) = $GUI_CHECKED Then
-		IniWriteS($config, "other", "chkTRFull", 1)
-	Else
-		IniWriteS($config, "other", "chkTRFull", 0)
 	EndIf
 	If GUICtrlRead($chkTombstones) = $GUI_CHECKED Then
 		IniWriteS($config, "other", "chkTombstones", 1)
@@ -2162,6 +2155,13 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWriteS($building, "other", "xBarrack4", $barrackPos[3][0])
 	IniWriteS($building, "other", "yBarrack4", $barrackPos[3][1])
 
+	;--- START Dark Barrack ---
+	IniWriteS($building, "other", "xDarkBarrack1", $DarkbarrackPos[0][0])
+	IniWriteS($building, "other", "yDarkBarrack1", $DarkbarrackPos[0][1])
+
+	IniWriteS($building, "other", "xDarkBarrack2", $DarkbarrackPos[1][0])
+	IniWriteS($building, "other", "yDarkBarrack2", $DarkbarrackPos[1][1])
+	;--- END Dark Barrack ---
 
 	IniWriteS($building, "other", "xspellfactory", $SFPos[0])
 	IniWriteS($building, "other", "yspellfactory", $SFPos[1])
@@ -2498,7 +2498,11 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWriteS($config, "attack", "CSVSpeedDB", $isldSelectedCSVSpeed[$DB])
 	IniWriteS($config, "attack", "CSVSpeedAB", $isldSelectedCSVSpeed[$LB])
 
-	; SmartZap Settings - Added by LunaEclipse
+	; Android Settings
+	IniWrite($config, "Android", "Emulator", GUICtrlRead($cmbAndroid))
+	IniWrite($config, "Android", "Instance", GUICtrlRead($txtAndroidInstance))
+
+	; SmartZap Settings
 	If GUICtrlRead($chkSmartLightSpell) = $GUI_CHECKED Then
 		IniWrite($config, "SmartZap", "UseSmartZap", 1)
 	Else
@@ -2523,17 +2527,6 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWrite($config, "MOD", "ExtLightSpell", "0")
 	EndIf
 	IniWrite($config, "MOD", "MinDE", GUICtrlRead($txtMinDark))
-
-	; Android Settings
-	;IniWrite($config, "Android", "Emulator", GUICtrlRead($cmbAndroid))
-	;IniWrite($config, "Android", "Instance", GUICtrlRead($txtAndroidInstance))
-
-	; Misc Battle Settings
-;	If GUICtrlRead($chkFastADBClicks) = $GUI_CHECKED Then
-;		IniWrite($config, "Fast Clicks", "UseADBFastClicks", 1)
-;	Else
-;		IniWrite($config, "Fast Clicks", "UseADBFastClicks", 0)
-;	EndIf
 
 	; Wait For Spells
 	If GUICtrlRead($chkDBSpellsWait) = $GUI_CHECKED Then
@@ -2575,6 +2568,53 @@ Func saveConfig() ;Saves the controls settings to the config
 		$ichkCloseTakeBreak = 0
 	EndIf
 	IniWriteS($config, "general", "ChkCloseEmuPB", $ichkCloseTakeBreak)
+
+	; SwitchAcc Mode - DEMEN
+	If GUICtrlRead($radActiveProfile) = $GUI_CHECKED Then ; 1 = Active, 2 = Donate, 3 = Idle
+		IniWrite($config, "Switch Account", "Profile Type", 1)
+		IniWrite($profile, "Profile Type", _GUICtrlComboBox_GetCurSel($cmbProfile) + 1, 1)
+	ElseIf GUICtrlRead($radDonateProfile) = $GUI_CHECKED Then
+		IniWrite($config, "Switch Account", "Profile Type", 2)
+		IniWrite($profile, "Profile Type", _GUICtrlComboBox_GetCurSel($cmbProfile) + 1, 2)
+	Else
+		IniWrite($config, "Switch Account", "Profile Type", 3)
+		IniWrite($profile, "Profile Type", _GUICtrlComboBox_GetCurSel($cmbProfile) + 1, 3)
+	EndIf
+
+	IniWrite($config, "Switch Account", "Match Profile Acc", _GUICtrlComboBox_GetCurSel($cmbMatchProfileAcc)) ; 0 = No Acc (idle), 1 = Acc 1, 2 = Acc 2, etc.
+
+	If GUICtrlRead($chkSwitchAcc) = $GUI_CHECKED Then
+		IniWrite($profile, "Switch Account", "Enable", 1)
+	Else
+		IniWrite($profile, "Switch Account", "Enable", 0)
+	EndIf
+
+	IniWrite($profile, "Switch Account", "Total Coc Account", _GUICtrlComboBox_GetCurSel($cmbTotalAccount)) ; 0 = AutoDetect, 1 = 1 Acc, 2 = 2 Acc, etc.
+
+	If GUICtrlRead($radSmartSwitch) = $GUI_CHECKED Then
+		IniWrite($profile, "Switch Account", "Smart Switch", 1)
+	Else
+		IniWrite($profile, "Switch Account", "Smart Switch", 0)
+	EndIf
+
+	If GUICtrlRead($chkUseTrainingClose) = $GUI_CHECKED Then
+		If GUICtrlRead($radCloseCoC) = $GUI_CHECKED Then
+			IniWrite($profile, "Switch Account", "Sleep Combo", 1) ; Sleep Combo = 1 => Close CoC
+		Else
+			IniWrite($profile, "Switch Account", "Sleep Combo", 2) ; Sleep Combo = 2 => Close Android
+		EndIf
+	Else
+		IniWrite($profile, "Switch Account", "Sleep Combo", 0)
+	EndIf
+
+	; Restart Android after long search - DEMEN
+	If GUICtrlRead($ChkRestartAndroid) = $GUI_CHECKED Then
+		IniWrite($config, "Restart Android", "Enable", 1)
+	Else
+		IniWrite($config, "Restart Android", "Enable", 0)
+	EndIf
+	IniWrite($config, "Restart Android", "Restart Android Search Limit", GUICtrlRead($TxtRestartAndroidSearchlimit))
+	IniWrite($config, "Restart Android", "Restart Android Train Error", GUICtrlRead($TxtRestartAndroidTrainError))
 
 	; Donate Stats
 	If GUICtrlRead($chkDStats) = $GUI_CHECKED Then
@@ -2618,6 +2658,35 @@ Func saveConfig() ;Saves the controls settings to the config
 	Else
 		IniWriteS($config, "pushbullet", "AlertBuilderIdle", "0")
 	EndIf
+
+	; Notify Top Gain Loot
+	If GUICtrlRead($chkAlertTopGain) = $GUI_CHECKED Then
+		IniWrite($config, "pushbullet", "AlertTopGain", 1)
+	Else
+		IniWrite($config, "pushbullet", "AlertTopGain", 0)
+	EndIf
+
+	; Notify SmartUpgrade
+	IniWrite($config, "pushbullet", "chkAlertSmartUpgrade", $ichkAlertSmartUpgrade)
+
+	; SmartUpgrade
+	IniWrite($config, "upgrade", "chkSmartUpgrade", $ichkSmartUpgrade)
+	IniWrite($config, "upgrade", "chkIgnoreTH", $ichkIgnoreTH)
+	IniWrite($config, "upgrade", "chkIgnoreKing", $ichkIgnoreKing)
+	IniWrite($config, "upgrade", "chkIgnoreQueen", $ichkIgnoreQueen)
+	IniWrite($config, "upgrade", "chkIgnoreWarden", $ichkIgnoreWarden)
+	IniWrite($config, "upgrade", "chkIgnoreCC", $ichkIgnoreCC)
+	IniWrite($config, "upgrade", "chkIgnoreLab", $ichkIgnoreLab)
+	IniWrite($config, "upgrade", "chkIgnoreBarrack", $ichkIgnoreBarrack)
+	IniWrite($config, "upgrade", "chkIgnoreDBarrack", $ichkIgnoreDBarrack)
+	IniWrite($config, "upgrade", "chkIgnoreFactory", $ichkIgnoreFactory)
+	IniWrite($config, "upgrade", "chkIgnoreDFactory", $ichkIgnoreDFactory)
+	IniWrite($config, "upgrade", "chkIgnoreGColl", $ichkIgnoreGColl)
+	IniWrite($config, "upgrade", "chkIgnoreEColl", $ichkIgnoreEColl)
+	IniWrite($config, "upgrade", "chkIgnoreDColl", $ichkIgnoreDColl)
+	IniWrite($config, "upgrade", "SmartMinGold", GUICtrlRead($SmartMinGold))
+	IniWrite($config, "upgrade", "SmartMinElixir", GUICtrlRead($SmartMinElixir))
+	IniWrite($config, "upgrade", "SmartMinDark", GUICtrlRead($SmartMinDark))
 
 	; Clan Hop Setting
 	If GUICtrlRead($chkClanHop) = $GUI_CHECKED Then
@@ -2691,55 +2760,50 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWrite($config, "profiles", "cmbTrophyMinProfile", _GUICtrlComboBox_GetCurSel($cmbTrophyMinProfile))
 	IniWrite($config, "profiles", "txtMinTrophyAmount", GUICtrlRead($txtMinTrophyAmount))
 
-	; SwitchAcc Mode - DEMEN
-
-	If GUICtrlRead($radActiveProfile) = $GUI_CHECKED Then														; 1 = Active, 2 = Donate, 3 = Idle
-		IniWrite($config, "Switch Account", "Profile Type", 1)
-		IniWrite($profile, "Profile Type", _GUICtrlCombobox_GetCurSel($cmbProfile)+1, 1)
-	 ElseIf GUICtrlRead($radDonateProfile) = $GUI_CHECKED Then
-		IniWrite($config, "Switch Account", "Profile Type", 2)
-		IniWrite($profile, "Profile Type", _GUICtrlCombobox_GetCurSel($cmbProfile)+1, 2)
-	 Else
-		IniWrite($config, "Switch Account", "Profile Type", 3)
-		IniWrite($profile, "Profile Type", _GUICtrlCombobox_GetCurSel($cmbProfile)+1, 3)
-	EndIf
-
-	IniWrite($config, "Switch Account", "Match Profile Acc", _GUICtrlCombobox_GetCurSel($cmbMatchProfileAcc))	 ; 0 = No Acc (idle), 1 = Acc 1, 2 = Acc 2, etc.
-
-	If GUICtrlRead($chkSwitchAcc) = $GUI_CHECKED Then
-		IniWrite($profile, "Switch Account", "Enable", 1)
+	; CoCStarts
+	If GUICtrlRead($chkCoCStats) = $GUI_CHECKED Then
+		IniWrite($config, "Stats", "chkCoCStats", "1")
 	Else
-		IniWrite($profile, "Switch Account", "Enable", 0)
+		IniWrite($config, "Stats", "chkCoCStats", "0")
 	EndIf
+	IniWrite($config, "Stats", "txtAPIKey", GUICtrlRead($txtAPIKey))
 
-	IniWrite($profile, "Switch Account", "Total Coc Account", _GUICtrlCombobox_GetCurSel($cmbTotalAccount))	; 0 = AutoDetect, 1 = 1 Acc, 2 = 2 Acc, etc.
-
-	If GUICtrlRead($radSmartSwitch) = $GUI_CHECKED Then
-	   IniWrite($profile, "Switch Account", "Smart Switch", 1)
+	; Collect Treasury
+	If GUICtrlRead($chkCollectTresory) = $GUI_CHECKED Then
+		IniWrite($config, "other", "CollectTresory", 1)
+		IniWrite($config, "other", "treasuryGold", GUICtrlRead($txtTreasuryGold))
+		IniWrite($config, "other", "treasuryElixir", GUICtrlRead($txtTreasuryElixir))
+		IniWrite($config, "other", "treasuryDark", GUICtrlRead($txtTreasuryDark))
 	Else
-	   IniWrite($profile, "Switch Account", "Smart Switch", 0)
+		IniWrite($config, "other", "CollectTresory", 0)
+		IniWrite($config, "other", "treasuryGold", GUICtrlRead($txtTreasuryGold))
+		IniWrite($config, "other", "treasuryElixir", GUICtrlRead($txtTreasuryElixir))
+		IniWrite($config, "other", "treasuryDark", GUICtrlRead($txtTreasuryDark))
 	EndIf
 
-	If GUICtrlRead($chkUseTrainingClose) = $GUI_CHECKED Then
-		If GUICtrlRead($radCloseCoC) = $GUI_CHECKED Then
-			IniWrite($profile, "Switch Account", "Sleep Combo", 1)		; Sleep Combo = 1 => Close CoC
-		Else
-			IniWrite($profile, "Switch Account", "Sleep Combo", 2)		; Sleep Combo = 2 => Close Android
-		EndIf
+	If GUICtrlRead($chkCollectTresoryGold) = $GUI_CHECKED Then
+		IniWrite($config, "other", "CollectTresoryGold", 1)
 	Else
-		IniWrite($profile, "Switch Account", "Sleep Combo", 0)
+		IniWrite($config, "other", "CollectTresoryGold", 0)
 	EndIf
 
-
-   	; Restart Android after long search - DEMEN
-
-	If GUICtrlRead($ChkRestartAndroid) = $GUI_CHECKED Then
-		IniWrite($config, "Restart Android", "Enable", 1)
+	If GUICtrlRead($chkCollectTresoryElixir) = $GUI_CHECKED Then
+		IniWrite($config, "other", "CollectTresoryElixir", 1)
 	Else
-		IniWrite($config, "Restart Android", "Enable", 0)
+		IniWrite($config, "other", "CollectTresoryElixir", 0)
 	EndIf
-	IniWrite($config, "Restart Android", "Restart Android Search Limit", GUICtrlRead($TxtRestartAndroidSearchlimit))
-	IniWrite($config, "Restart Android", "Restart Android Train Error", GUICtrlRead($TxtRestartAndroidTrainError))
+
+	If GUICtrlRead($chkCollectTresoryDark) = $GUI_CHECKED Then
+		IniWrite($config, "other", "CollectTresoryDark", 1)
+	Else
+		IniWrite($config, "other", "CollectTresoryDark", 0)
+	EndIf
+
+	If GUICtrlRead($chkTRFull) = $GUI_CHECKED Then
+		IniWrite($config, "other", "chkTRFull", 1)
+	Else
+		IniWrite($config, "other", "chkTRFull", 0)
+	EndIf
 
 	If $hFile <> -1 Then FileClose($hFile)
 
