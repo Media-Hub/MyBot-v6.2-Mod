@@ -3014,6 +3014,13 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 		GUICtrlSetState($chkTRFull, $GUI_UNCHECKED)
 	EndIf
 
+	; Upgrade Management - Added by MMHK
+	If $bUpdateNewUpgradesOnly = 1 Then
+		GUICtrlSetState($chkUpdateNewUpgradesOnly, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkUpdateNewUpgradesOnly, $GUI_UNCHECKED)
+	EndIf
+
 	;Apply to switch Attack Standard after THSnipe End ==>
 	If $ichkTSActivateCamps2 = 1 Then
 		GUICtrlSetState($chkTSActivateCamps2, $GUI_CHECKED)

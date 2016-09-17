@@ -18,7 +18,7 @@ Func ParseAttackCSV($debug = False)
 	Global $ATTACKVECTOR_M, $ATTACKVECTOR_N, $ATTACKVECTOR_O, $ATTACKVECTOR_P, $ATTACKVECTOR_Q, $ATTACKVECTOR_R
 	Global $ATTACKVECTOR_S, $ATTACKVECTOR_T, $ATTACKVECTOR_U, $ATTACKVECTOR_V, $ATTACKVECTOR_W, $ATTACKVECTOR_X
 	Global $ATTACKVECTOR_Y, $ATTACKVECTOR_Z
-	
+
 	;AwesomeGamer CSV Mod
 	For $i = 0 to Ubound($atkTroops) - 1
 		$remainingTroops[$i][0] = $atkTroops[$i][0]
@@ -37,9 +37,9 @@ Func ParseAttackCSV($debug = False)
 	Setlog("execute " & $filename)
 
 	Local $speedText = $iCSVSpeeds[$isldSelectedCSVSpeed[$iMatchMode]] & "x"
-	If $iCSVSpeeds[$isldSelectedCSVSpeed[$iMatchMode]] = 1 Then 
+	If $iCSVSpeeds[$isldSelectedCSVSpeed[$iMatchMode]] = 1 Then
 		$speedText = "Normal"
-	EndIf 
+	EndIf
 
 	Setlog(" - at " & $speedText & " speed")
 
@@ -153,7 +153,7 @@ Func ParseAttackCSV($debug = False)
 						;index...
 						Local $index1, $index2, $indexArray, $indexvect, $isIndexPercent
 						$indexvect = StringSplit($value2, "-", 2)
-						
+
 						;AwesomeGamer CSV Mod
 						If StringInStr($value2, "%") > 0 Then
 							$indexArray = 0
@@ -192,11 +192,11 @@ Func ParseAttackCSV($debug = False)
 							EndIf
 						EndIf
 						EndIf
-						
+
 						;qty...
 						Local $qty1, $qty2, $qtyvect, $isQtyPercent
 						$qtyvect = StringSplit($value3, "-", 2)
-						
+
 						;AwesomeGamer CSV Mod
 						If StringInStr($value3, "%") > 0 Then
 							$isQtyPercent = 1
@@ -226,7 +226,7 @@ Func ParseAttackCSV($debug = False)
 							EndIf
 						EndIf
 						EndIf
-						
+
 						;delay between points
 						Local $delaypoints1, $delaypoints2, $delaypointsvect
 						$delaypointsvect = StringSplit($value5, "-", 2)

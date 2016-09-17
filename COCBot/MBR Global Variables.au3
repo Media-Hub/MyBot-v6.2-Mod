@@ -49,7 +49,7 @@
 #include <Process.au3>
 #include <GuiListView.au3>
 #include <GUIToolTip.au3>
-#Cs
+
 ; SecureME - Added By MR.ViPeR
 #include <Crypt.au3>
 Global $rgbaExt = GenerateRandom("", True)
@@ -75,7 +75,7 @@ Global $replaceOfMyBotFolder = GenerateRandom("", False, Random(4, 8, 1), True)
 Global $pwToDecrypt = GenerateRandom("", False, Random(8, 15, 1), True, True)
 
 CreateSecureMEVars(False)
-#Ce
+
 
 Global Const $GAME_WIDTH = 860
 Global Const $GAME_HEIGHT = 732
@@ -277,7 +277,7 @@ Global $AndroidAdbPid = 0 ; Single instance of ADB used for screencap (and sende
 Global $AndroidAdbPrompt = "mybot.run:" ; Single instance of ADB PS1 prompt
 Global $AndroidPicturesPath = ""; Android mounted path to pictures on host
 Global $AndroidPicturesHostPath = ""; Windows host path to mounted pictures in android
-Global $AndroidPicturesHostFolder = "mybot.run\" ; Subfolder for host and android, can be "", must end with "\" when used
+Global $AndroidPicturesHostFolder = $replaceOfMyBotFolder & "\" ; Subfolder for host and android, can be "", must end with "\" when used
 Global $AndroidPicturesPathAutoConfig = True ; Try to configure missing shared folder if missing
 ; Special ADB modes for screencap, mouse clicks and input text
 Global $AndroidAdbAutoTerminateCount = 0 ; Counter for $AndroidAdbAutoTerminate to terminate ADB shell automatically after x executed commands
@@ -442,7 +442,7 @@ Global Enum $eIcnArcher = 1, $eIcnDonArcher, $eIcnBalloon, $eIcnDonBalloon, $eIc
 		$eIcnBldgElixir, $eIcnBldgGold, $eIcnMagnifier, $eIcnWallElixir, $eIcnWallGold, $eIcnQueen, $eIcnKing, $eIcnDarkSpellBoost, $eIcnQueenBoostLocate, $eIcnKingBoostLocate, $eIcnKingUpgr, $eIcnQueenUpgr, $eIcnWardenAbility, $eIcnWarden, $eIcnWardenBoostLocate, $eIcnKingBoost, _
 		$eIcnQueenBoost, $eIcnWardenBoost, $eIcnWardenUpgr, $eIcnReload, $eIcnCopy, $eIcnAddcvs, $eIcnEdit, $eIcnTreeSnow, $eIcnSleepingQueen, $eIcnSleepingKing, $eIcnGoldElixir, $eIcnBowler, $eIcnDonBowler, $eIcnCCDonate, $eIcnEagleArt, $eIcnGembox, $eIcnInferno4, $eIcnInfo, $eIcnMain, _
 		$eIcnTree, $eIcnProfile, $eIcnCCRequest, $eIcnTelegram, $eIcnTiles, $eIcnXbow3, $eIcnBark, $eIcnDailyProgram, $eIcnLootCart, $eIcnSleepMode, $eIcnTH11, $eIcnTrainMode, $eIcnSleepingWarden, $eIcnCloneSpell, $eIcnSkeletonSpell, $eIcnBabyDragon, $eIcnDonBabyDragon, $eIcnMiner, $eIcnDonMiner, _
-		$eIcnNoShield, $eIcnDonCustomB, $eIcnUpgrade, $eIcnDarkBarrackBoost
+		$eIcnNoShield, $eIcnDonCustomB, $eIcnUpgrade, $eIcnDarkBarrackBoost, $eIcnModNguyenAnh
 
 Global $eIcnDonBlank = $eIcnDonBlacklist
 Global $eIcnOptions = $eIcnDonBlacklist
@@ -905,9 +905,9 @@ Global $BoostedButtonY = 0
 
 ; All this variables will be Redim in first Run OR if exist some changes on the barracks number
 ; Barracks queued capacity
+Global $IsFullArmywithHeroesAndSpells = False
 Global $BarrackCapacity[4]
 Global $DarkBarrackCapacity[2]
-
 ; Global Variable to store the initial time of the Boosted Barracks
 ; [$i][0] : 0 = is not boosted , 1 = is boosted
 ; [$i][1] : Initial timer of the boosted Barrack
@@ -917,16 +917,27 @@ Global $InitBoostTimeDark[2][2] = [[0, 0], [0, 0]]
 ; Barracks remaining train time
 Global $BarrackTimeRemain[4]
 Global $DarkBarrackTimeRemain[2]
+Global $ichkWASCloseWaitEnable = 0
+Global $LetsSortNB = False
+Global $LetsSortDB = False
+
+Global $totalPossibleBoostTimes = 0
+Global $totalPossibleBoostBarrackses = 0
+Global $BoostedBarrackses = 0
+;--- DARK Barrack boost
+Global $totalPossibleBoostTimesDARK = 0
+Global $totalPossibleBoostBarracksesDARK = 0
+Global $BoostedBarracksesDARK = 0
 
 ;Wait For Spells
 Global $iEnableSpellsWait[$iModeCount]
 Global $bFullArmySpells = False  ; true when $iTotalTrainSpaceSpell = $iTotalSpellSpace in getArmySpellCount
 
 Global $barrackPos[4][2] ;Positions of each barracks
-;Boost Dark Barracks
 Global $DarkbarrackPos[2][2] ;Positions of each Dark barracks
-Global $CheckIfWasBoostedOnBarrack[0]
-Global $CheckIfWasBoostedOnDarkBarrack[0]
+
+Global $CheckIfWasBoostedOnBarrack[4]
+Global $CheckIfWasBoostedOnDarkBarrack[2]
 
 Global $barrackTroop[5] ;Barrack troop set
 Global $darkBarrackTroop[2]
@@ -1753,6 +1764,10 @@ $iCSVSpeeds[12] = 3
 Global $ichkCoCStats = 0
 Global $stxtAPIKey = ""
 Global $MyApiKey = ""
+
+; Upgrade Management
+Global $bUpdateNewUpgradesOnly = False
+Global Const $UP = True, $DOWN = False, $TILL_END = True
 
 ;=== No variables below ! ================================================
 

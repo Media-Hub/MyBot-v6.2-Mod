@@ -458,13 +458,13 @@ Func GUIControl_WM_MOVE($hWind, $iMsg, $wParam, $lParam)
 			$frmBotDockedPosY = ($frmBotPos[1] > -30000 ? $frmBotPos[1] : $frmBotDockedPosY)
 		EndIf
 
-	; required for screen change
+		; required for screen change
 		If $AndroidEmbedded And AndroidEmbedArrangeActive() = False Then
 			Local $iAction = AndroidEmbedCheck(True)
 			If $iAction > 0 Then
-		; reposition docked android
+				; reposition docked android
 				AndroidEmbedCheck(False, Default, $iAction)
-		; redraw bot also
+				; redraw bot also
 				;temp;_WinAPI_RedrawWindow($frmBotEx, 0, 0, $RDW_INVALIDATE)
 				;temp;_WinAPI_RedrawWindow($frmBotBottom, 0, 0, $RDW_INVALIDATE)
 			EndIf
@@ -627,8 +627,14 @@ Func BotClose($SaveConfig = Default, $bExit = True)
    $RunState = False
    $TPaused = False
    ResumeAndroid()
-   ;DeletePicturesHostFolder()
    SetLog("Closing " & $sBotTitle & " now ...")
+   Sleep(1000)
+   SetLog("All SharedFolder Deleted...", $COLOR_ORANGE)
+   Sleep(1000)
+   SetLog("Thanks For Using MyBot Mod", $COLOR_ORANGE)
+   Sleep(1000)
+   SetLog("By Nguyen Anh", $COLOR_ORANGE)
+   Sleep(3000)
    AndroidEmbed(False) ; detach Android Window
    AndroidShieldDestroy() ; destroy Shield Hooks
    AndroidBotStopEvent() ; signal android that bot is now stoppting
@@ -653,6 +659,7 @@ Func BotClose($SaveConfig = Default, $bExit = True)
    DllCall("comctl32.dll", "int", "ImageList_Destroy", "hwnd", $hImageList)
    If $HWnD <> 0 Then ControlFocus($HWnD, "", $HWnD) ; show bot in taskbar again
    GUIDelete($frmBot)
+   DeletePicturesHostFolder()
    If $bExit = True Then Exit
 EndFunc   ;==>BotClose
 
@@ -1364,7 +1371,7 @@ Func Bind_ImageList($nCtrl)
 	Switch $nCtrl
 		Case $tabMain
 			; the icons for main tab
-			Local $aIconIndex[6] = [$eIcnHourGlass, $eIcnTH11, $eIcnCamp, $eIcnGUI, $eIcnBuilder, $eIcnInfo]
+			Local $aIconIndex[6] = [$eIcnHourGlass, $eIcnTH11, $eIcnCamp, $eIcnGUI, $eIcnModNguyenAnh, $eIcnInfo]
 
 		Case $hGUI_VILLAGE_TAB
 			; the icons for village tab

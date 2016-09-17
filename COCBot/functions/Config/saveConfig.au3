@@ -2805,6 +2805,13 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWrite($config, "other", "chkTRFull", 0)
 	EndIf
 
+	; Upgrade Management - Added by MMHK
+	If GUICtrlRead($chkUpdateNewUpgradesOnly) = $GUI_CHECKED Then
+		IniWriteS($config, "upgrade", "UpdateNewUpgradesOnly", 1)
+	Else
+		IniWriteS($config, "upgrade", "UpdateNewUpgradesOnly", 0)
+	EndIf
+
 	If $hFile <> -1 Then FileClose($hFile)
 
 EndFunc   ;==>saveConfig

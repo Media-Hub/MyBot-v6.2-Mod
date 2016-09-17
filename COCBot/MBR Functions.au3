@@ -300,3 +300,6 @@
 
 ; CoCStarts
 #include "functions\Mod\CoCStarts\CoCStats.com.au3"
+
+; Upgrade Management
+#include "functions\Mod\UpgradeManagement\UpgradesMgmt.au3"

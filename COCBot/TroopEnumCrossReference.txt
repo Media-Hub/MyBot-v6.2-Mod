@@ -1,8 +1,8 @@
 0= $eBarb
 1= $eArch
 2= $eGiant
-3= $eGobl 
-4= $eWall 
+3= $eGobl
+4= $eWall
 5= $eBall
 6= $eWiza
 7= $eHeal
