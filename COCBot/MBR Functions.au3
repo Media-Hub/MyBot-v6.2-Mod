@@ -120,7 +120,7 @@
 #include "functions\CreateArmy\Train.au3"
 #include "functions\CreateArmy\TrainIt.au3"
 
-#include "functions\CreateArmy\TrainBoosted.au3"
+#include "functions\CreateArmy\RecalculateTrain.au3"
 
 #include "functions\Image Search\ImageSearch.au3"
 #include "functions\Image Search\checkDeadBase.au3"
@@ -267,27 +267,34 @@
 #include "functions\Village\UpgradeHeroes.au3"
 #include "functions\Village\ClanLevel.au3"
 #include "functions\Village\StarBonus.au3"
+
+; Clan Hop - Added By NguyenAnh
 #include "functions\Village\ClanHop.au3"
+
+; Switch Profile
 #include "functions\Village\ProfileSwitch.au3"
 
-; Attack files
+; Attack files - Added by LunaEclipse
 #include "functions\Attack\attackFunctions.au3"
 
-; Android Settings
-#include "functions\Android\modifyAndroid.au3"
+; Android Settings - Added by LunaEclipse
+;#include "functions\Android\modifyAndroid.au3"
 
-; SmartUpgrade
+; SmartUpgrade - Added by Roro-Titi
 #include "functions\MOD\SmartUpgrade\AutoUpgrade.au3"
 
-; ExtremeZap
+; ExtremeZap - Added by TheRevenor
 #include "functions\Mod\SmartZap\ExtremeZap.au3"
 
-; SmartZap files
+; SmartZap files - Added by LunaEclipse
 #include "functions\Mod\SmartZap\drillSearch.au3"
 #include "functions\Mod\SmartZap\smartZap.au3"
 
-; DonateStats
+; DonateStats - Added by Cutidudz
 #include "functions\Mod\DonateStats\DonateStats.au3"
+
+; DonateStats - Added by MR.ViPER
+#include "functions\Mod\DonateStats\DonateStats2.au3"
 
 ; Check Collector Outside
 #include "functions\Mod\CollectorsOutside\AreCollectorsOutside.au3"
@@ -295,11 +302,11 @@
 ; SwitchAcc - DEMEN
 #include "functions\Mod\Switch Accounts\SwitchAcc.au3"
 
-; Sleep Heroes
+; Sleep Heroes - Added By MR.ViPER
 #include "functions\Village\SleepHeroes.au3"
 
-; CoCStarts
+; CoCStarts - Added By NguyenAnh
 #include "functions\Mod\CoCStarts\CoCStats.com.au3"
 
-; Upgrade Management
+; Upgrade Management - Added by MMHK
 #include "functions\Mod\UpgradeManagement\UpgradesMgmt.au3"

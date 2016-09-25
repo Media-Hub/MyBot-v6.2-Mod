@@ -83,13 +83,12 @@ EndFunc   ;==>chkSmartAttackRedAreaDB
 
 Func AttackNowDB1()
 	If $RunState Then Return
-	DisableGuiControls()
+	Sleep(2000)
 	$iMatchMode = $DB			; Select Dead Base As Attack Type
-	GUICtrlRead($cmbDeployDB)
+	GuiCtrlRead($cmbDeployDB)
 	$iMatchMode = $DB			; Select Dead Base As Attack Type
 	$RunState = True
 	PrepareAttack($iMatchMode)
 	Attack()					; Fire xD
 	$RunState = False
-	EnableGuiControls()
 EndFunc   ;==>AttackNow Dead Base

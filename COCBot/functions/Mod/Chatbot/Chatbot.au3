@@ -1,6 +1,6 @@
 ; #FUNCTION# ====================================================================================================================
 ; Name ..........: Chat Bot
-; Description ...: Sends chat messages in global, clan chat and new chat
+; Description ...: Sends chat messages in global, clan chat and found new chat
 ; Syntax ........:
 ; Parameters ....:
 ; Return values .:
@@ -72,14 +72,13 @@ Func ChatbotReadSettings()
    If IniRead($chatIni, "global", "scramble", "False") = "True" Then $ChatbotScrambleGlobal   = True
    If IniRead($chatIni, "global", "swlang",   "False") = "True" Then $ChatbotSwitchLang       = True
 
-
    If IniRead($chatIni, "clan", "use",        "False") = "True" Then $ChatbotChatClan         = True
    If IniRead($chatIni, "clan", "responses",  "False") = "True" Then $ChatbotClanUseResponses = True
    If IniRead($chatIni, "clan", "always",     "False") = "True" Then $ChatbotClanAlwaysMsg    = True
    If IniRead($chatIni, "clan", "pushbullet", "False") = "True" Then $ChatbotUsePushbullet    = True
-   If IniRead($chatIni, "clan", "pbsendnew",  "False")  = "True" Then $ChatbotPbSendNew       = True
+   If IniRead($chatIni, "clan", "pbsendnew",  "False") = "True" Then $ChatbotPbSendNew        = True
 
-   $ClanMessages = StringSplit(IniRead($chatIni, "clan", "genericMsg", "Testing on Chat|Hey all|By TheRevenor"), "|", 2)
+   $ClanMessages = StringSplit(IniRead($chatIni, "clan", "genericMsg", "Testing on Chat|Hey all"), "|", 2)
    Local $ClanResponses0 = StringSplit(IniRead($chatIni, "clan", "responseMsg", "keyword:Response|hello:Hi, Welcome to the clan|hey:Hey, how are you?"), "|", 2)
    Local $ClanResponses1[UBound($ClanResponses0)][2];
    For $a = 0 To UBound($ClanResponses0) - 1
@@ -125,9 +124,9 @@ Func ChatGuiCheckboxUpdate()
    IniWrite($chatIni, "clan", "always",     $ChatbotClanAlwaysMsg)
    IniWrite($chatIni, "clan", "pushbullet", $ChatbotUsePushbullet)
    IniWrite($chatIni, "clan", "pbsendnew",  $ChatbotPbSendNew)
-   
+
    ChatGuiCheckboxUpdateAT()
-   
+
 EndFunc
 
 Func ChatGuiCheckboxUpdateAT()
@@ -152,6 +151,7 @@ Func ChatGuiCheckboxUpdateAT()
 		GUICtrlSetState($editGlobalMessages3, $GUI_DISABLE)
 		GUICtrlSetState($editGlobalMessages4, $GUI_DISABLE)
 	EndIf
+
 	If GUICtrlRead($chkClanChat) = $GUI_CHECKED Then
 		GUICtrlSetState($chkGlobalChat, $GUI_DISABLE)
 		GUICtrlSetState($chkChatPushbullet, $GUI_ENABLE)
@@ -167,6 +167,7 @@ Func ChatGuiCheckboxUpdateAT()
 		GUICtrlSetState($chkChatPushbullet, $GUI_UNCHECKED)
 		GUICtrlSetState($chkUseResponses, $GUI_UNCHECKED)
 		GUICtrlSetState($chkUseGeneric, $GUI_UNCHECKED)
+		GUICtrlSetState($chkPbSendNewChats, $GUI_UNCHECKED)
 		GUICtrlSetState($chkUseResponses, $GUI_DISABLE)
 		GUICtrlSetState($chkUseGeneric, $GUI_DISABLE)
 		GUICtrlSetState($chkChatPushbullet, $GUI_DISABLE)
@@ -181,13 +182,13 @@ Func ChatGuiCheckboxDisableAT()
 		GUICtrlSetState($i, $GUI_DISABLE)
 	Next
 EndFunc
+
 Func ChatGuiCheckboxEnableAT()
 	For $i = $chkGlobalChat To $editGeneric ; Save state of all controls on tabs
 		GUICtrlSetState($i, $GUI_ENABLE)
 	Next
 	ChatGuiCheckboxUpdateAT()
 EndFunc
-
 
 Func ChatGuiEditUpdate()
    $glb1 = GUICtrlRead($editGlobalMessages1)
@@ -294,7 +295,7 @@ Func ChatbotIsInterval()
 EndFunc
 
 Func ChatbotIsLastChatNew() ; returns true if the last chat was not by you, false otherwise
-   _CaptureRegion()  
+   _CaptureRegion()
 	If _ColorCheck(_GetPixelColor(26, 312 + $midOffsetY, True), Hex(0xf00810, 6), 20) Then Return True ; detect the new chat
 	Return False
 EndFunc
@@ -356,7 +357,7 @@ Func ChangeLanguageToEN()
    Click(165, 180, 1)  ;English
    If _Sleep(500) Then Return
    Click(513, 426, 1)  ;language
-   If _Sleep(10000) Then Return   
+   If _Sleep(10000) Then Return
 EndFunc
 
 Func ChangeLanguageToRU()
@@ -373,7 +374,6 @@ Func ChangeLanguageToRU()
 EndFunc
 
 ; MAIN SCRIPT ==============================================
-
 Func ChatbotMessage()
 If ($ChatbotChatClan And $FoundChatMessage = 1) Or $ChatbotChatGlobal  Then
 	If $ChatbotChatGlobal Then
@@ -461,6 +461,7 @@ If ($ChatbotChatClan And $FoundChatMessage = 1) Or $ChatbotChatGlobal  Then
 		SetLog(GetTranslated(106, 50, "Chatbot Chat Clan: Done chatting"), $COLOR_GREEN)
 	EndIf
 EndIf
+
 If $ChatbotReadInterval > 0 Then
 	$FoundChatMessage = 1
 Else
@@ -490,7 +491,7 @@ If $ChatbotChatClan And $ChatbotPbSendNew Then
 				$SentMessage = True
 			EndIf
 		EndIf
-		
+
 		If $ChatbotClanUseResponses And Not $SentMessage Then
 			For $a = 0 To UBound($ClanResponses) - 1
 				If StringInStr($ChatMsg, $ClanResponses[$a][0]) Then
@@ -504,7 +505,7 @@ If $ChatbotChatClan And $ChatbotPbSendNew Then
 				EndIf
 			Next
 		EndIf
-		
+
 		$SentClanChat = False
 		; send it via pushbullet if it's new
 		If $ChatbotUsePushbullet And $ChatbotPbSendNew Then
@@ -515,12 +516,11 @@ If $ChatbotChatClan And $ChatbotPbSendNew Then
 	EndIf
 EndIf
 EndFunc ;==>CheckNewChat
-#cs
-----------------------------------------------------------------------------
-   AutoIt Version: 3.6.0
+
+#cs -------------------------------------------------------------------------------
+   AutoIt Version: 3.3.14.2
    This file was made to software MyBot v6.2.2
-   Author:         ChrisDuh
-   Modified:	   TheRevenor(09-14-2016)
-   Script Function: Sends chat messages in global and clan chat
-----------------------------------------------------------------------------
-#ce 
+   Author:          ChrisDuh
+   Modified:	    TheRevenor(09-14-2016)
+   Script Function: Sends chat messages in global and clan chat and found new chat
+#ce -------------------------------------------------------------------------------

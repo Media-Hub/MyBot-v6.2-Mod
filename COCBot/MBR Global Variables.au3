@@ -1665,14 +1665,14 @@ Global $ichkCloseTakeBreak = 0
 Global $FoundChatMessage = 0
 
 ; ExtremeZap
-Global $ichkExtLightSpell = 1
+Global $ichkExtLightSpell = 0
 
 ; Android Settings - Added by LunaEclipse
-Global $sAndroid = "<No Emulators>"
-Global $sAndroidInstance = ""
+;Global $sAndroid = "<No Emulators>"
+;Global $sAndroidInstance = ""
 
 ; SmartZap GUI variables - Added by LunaEclipse
-Global $ichkSmartZap = 1
+Global $ichkSmartZap = 0
 Global $ichkSmartZapDB = 1
 Global $ichkSmartZapSaveHeroes = 1
 Global $itxtMinDE = 250
@@ -1698,6 +1698,7 @@ Global Const $drillLevelSteal[6] = [59, _
 								    343, _
 								    479]
 
+#region Check Collectors Outside
 ; collectors outside filter
 Global $ichkDBMeetCollOutside, $iDBMinCollOutsidePercent, $iCollOutsidePercent ; check later if $iCollOutsidePercent obsolete
 
@@ -1705,6 +1706,7 @@ Global $ichkDBMeetCollOutside, $iDBMinCollOutsidePercent, $iCollOutsidePercent ;
 Global Const $THEllipseWidth = 200, $THEllipseHeigth = 150, $CollectorsEllipseWidth = 130, $CollectorsEllipseHeigth = 97.5
 Global Const $centerX = 430, $centerY = 335 ; check later if $THEllipseWidth, $THEllipseHeigth obsolete
 Global $hBitmapFirst
+#endregion
 
 ; SmartUpgrade
 Global $ichkAlertSmartUpgrade
@@ -1715,6 +1717,7 @@ Global $ichkIgnoreBarrack, $ichkIgnoreDBarrack, $ichkIgnoreFactory, $ichkIgnoreD
 Global $iSmartMinGold, $iSmartMinElixir, $iSmartMinDark
 Global $upgradeAvailable = 0
 Global $SufficentRessources = 0
+Global $CanUpgrade = 0
 Global $upgradeX = 0
 Global $upgradeY = 0
 Global $zerosHere = 0
@@ -1722,7 +1725,8 @@ Global $sBldgText, $sBldgLevel, $aString
 Global $upgradeName[3] = ["", "", ""]
 Global $UpgradeCost
 Global $TypeFound = 0
-Global $SmartMinGold, $SmartMinElixir, $SmartMinDark = 0
+Global $SmartMinGold, $SmartMinElixir, $SmartMinDark
+Global $UpgradeDuration
 
 ; Restart Android
 Global $iRestartAndroidCounter = 1

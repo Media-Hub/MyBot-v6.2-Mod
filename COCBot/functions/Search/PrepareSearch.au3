@@ -44,7 +44,7 @@ Func PrepareSearch() ;Click attack button and find match button, will break shie
 			ClickP($aFindMatchButton, 1, 0, "#0150");Click Find a Match Button
 		Else
 			ClickR($aFindMatchButtonRND, $aFindMatchButton[0], $aFindMatchButton[1], 1, 0)
-		EndIF	
+		EndIf
 	EndIf
 
 

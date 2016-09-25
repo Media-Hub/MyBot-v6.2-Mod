@@ -151,7 +151,7 @@ Func ResetDE()
 	GUICtrlSetData($txtTreasuryDark, $ResetDE)
 	$itxtTreasuryDark = GUICtrlRead($txtTreasuryDark)
 EndFunc   ;==>ResetDE
-
+#cs
 ; Android Setting
 Func setupAndroidComboBox()
 	Local $androidString = ""
@@ -173,3 +173,4 @@ Func txtAndroidInstance()
 	$sAndroidInstance = GUICtrlRead($txtAndroidInstance)
 	modifyAndroid()
 EndFunc   ;==>$txtAndroidInstance
+#ce

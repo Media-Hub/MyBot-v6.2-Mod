@@ -59,9 +59,9 @@ Global $aTabControlsStrategies[3] = [$hGUI_STRATEGIES_TAB, $hGUI_STRATEGIES_TAB_
 Global $aTabControlsBot[4] = [$hGUI_BOT_TAB, $hGUI_BOT_TAB_ITEM1, $hGUI_BOT_TAB_ITEM2, $hGUI_BOT_TAB_ITEM3]
 Global $aTabControlsMOD[5] = [$hGUI_MOD_TAB, $hGUI_MOD_TAB_ITEM1, $hGUI_MOD_TAB_ITEM2, $hGUI_MOD_TAB_ITEM3, $hGUI_MOD_TAB_ITEM4]
 Global $aTabControlsModOptions2[3] = [$hGUI_ModOptions2_TAB, $hGUI_ModOptions2_TAB_ITEM1, $hGUI_ModOptions2_TAB_ITEM2]
-Global $aTabControlsStats[5] = [$hGUI_STATS_TAB, $hGUI_STATS_TAB_ITEM1, $hGUI_STATS_TAB_ITEM2, $hGUI_STATS_TAB_ITEM3, $hGUI_STATS_TAB_ITEM4]
+Global $aTabControlsStats[4] = [$hGUI_STATS_TAB, $hGUI_STATS_TAB_ITEM1, $hGUI_STATS_TAB_ITEM2, $hGUI_STATS_TAB_ITEM3]
 
-Global $aAlwaysEnabledControls[14] = [$chkUpdatingWhenMinimized, $chkHideWhenMinimized, $chkDebugClick, $chkDebugSetlog, $chkDebugOcr, $chkDebugImageSave, $chkdebugBuildingPos, $chkdebugTrain, $chkdebugOCRDonate,$btnTestTrain, $btnTestDonateCC, $btnTestAttackBar, $btnTestClickDrag, $btnTestImage]
+Global $aAlwaysEnabledControls[15] = [$chkUpdatingWhenMinimized, $chkHideWhenMinimized, $chkDebugClick, $chkDebugSetlog, $chkDebugOcr, $chkDebugImageSave, $chkdebugBuildingPos, $chkdebugTrain, $chkdebugOCRDonate,$btnTestTrain, $btnTestDonateCC, $btnTestAttackBar, $btnTestClickDrag, $btnTestImage, $btnEagle]
 
 Global $frmBot_WNDPROC = 0
 
@@ -154,7 +154,7 @@ AtkLogHead()
 #include "GUI\MBR GUI Control Tab Mod Option.au3"
 
 ; Accelerator Key, more responsive than buttons in run-mode
-Local $aAccelKeys[2][2] = [["{ESC}", $btnStop],["{PAUSE}", $btnPause]]
+Local $aAccelKeys[2][2] = [["{ESC}", $btnStop], ["{PAUSE}", $btnPause]]
 Local $aAccelKeys_DockedUnshieledFocus[1][2] = [["{PAUSE}", $btnPause]] ; used in docked mode when android has focus to support ESC for android
 
 Func SetAccelerators($bDockedUnshieledFocus = False)
@@ -430,6 +430,8 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 			btnTestClickDrag()
 		Case $btnTestImage
 			btnTestImage()
+		Case $btnEagle
+			btnEagle()
 	EndSwitch
 
 	$TogglePauseAllowed = $wasAllowed
@@ -628,13 +630,13 @@ Func BotClose($SaveConfig = Default, $bExit = True)
    $TPaused = False
    ResumeAndroid()
    SetLog("Closing " & $sBotTitle & " now ...")
+   Sleep(500)
+   SetLog(" » All SharedFolder Deleted...", $COLOR_ORANGE)
    Sleep(1000)
-   SetLog("All SharedFolder Deleted...", $COLOR_ORANGE)
-   Sleep(1000)
-   SetLog("Thanks For Using MyBot Mod", $COLOR_ORANGE)
-   Sleep(1000)
-   SetLog("By Nguyen Anh", $COLOR_ORANGE)
-   Sleep(3000)
+   SetLog(" » Thanks For Using MyBot Mod", $COLOR_ORANGE)
+   Sleep(800)
+   SetLog(" »» By Nguyen Anh", $COLOR_ORANGE)
+   Sleep(500)
    AndroidEmbed(False) ; detach Android Window
    AndroidShieldDestroy() ; destroy Shield Hooks
    AndroidBotStopEvent() ; signal android that bot is now stoppting
@@ -941,7 +943,7 @@ Func tabMain()
 				GUISetState(@SW_SHOWNOACTIVATE, $hGUI_MOD)
 				tabMOD()
 
-			Case ELSE
+			Case Else
 				GUISetState(@SW_HIDE, $hGUI_LOG)
 				GUISetState(@SW_HIDE, $hGUI_VILLAGE)
 				GUISetState(@SW_HIDE, $hGUI_ATTACK)
@@ -966,7 +968,7 @@ Func tabVillage()
 				GUISetState(@SW_HIDE, $hGUI_DONATE)
 				GUISetState(@SW_HIDE, $hGUI_UPGRADE)
 				GUISetState(@SW_SHOWNOACTIVATE, $hGUI_NOTIFY)
-			Case ELSE
+			Case Else
 				GUISetState(@SW_HIDE, $hGUI_DONATE)
 				GUISetState(@SW_HIDE, $hGUI_UPGRADE)
 				GUISetState(@SW_HIDE, $hGUI_NOTIFY)
@@ -1148,7 +1150,7 @@ Func tabDeadbase()
 
 ;			Case $tabidx = 2 ; End Battle tab
 
-			Case ELSE
+			Case Else
 				GUISetState(@SW_HIDE, $hGUI_DEADBASE_ATTACK_STANDARD)
 				GUISetState(@SW_HIDE, $hGUI_DEADBASE_ATTACK_SCRIPTED)
 				GUISetState(@SW_HIDE, $hGUI_DEADBASE_ATTACK_MILKING)
@@ -1166,7 +1168,7 @@ Func tabActivebase()
 
 ;			Case $tabidx = 2 ; End Battle tab
 
-			Case ELSE
+			Case Else
 				GUISetState(@SW_HIDE, $hGUI_ACTIVEBASE_ATTACK_STANDARD)
 				GUISetState(@SW_HIDE, $hGUI_ACTIVEBASE_ATTACK_SCRIPTED)
 
@@ -1184,7 +1186,7 @@ Func tabTHSnipe()
 
 ;			Case $tabidx = 2 ; End Battle tab
 
-			Case ELSE
+			Case Else
 
 		EndSelect
 
@@ -1201,7 +1203,7 @@ Func dbCheck()
 EndFunc
 
 Func dbCheckAll()
-		If BitAND(GUICtrlRead($chkDBActivateSearches), GUICtrlRead($chkDBActivateTropies), GUICtrlRead($chkDBActivateCamps), GUICtrlRead($chkDBSpellsWait)) = $GUI_UNCHECKED Then
+	If BitAND(GUICtrlRead($chkDBActivateSearches), GUICtrlRead($chkDBActivateTropies), GUICtrlRead($chkDBActivateCamps), GUICtrlRead($chkDBSpellsWait)) = $GUI_UNCHECKED Then
 		GUICtrlSetState($DBcheck, $GUI_UNCHECKED)
 	Else
 		GUICtrlSetState($DBcheck, $GUI_CHECKED)
@@ -1435,7 +1437,7 @@ Func Bind_ImageList($nCtrl)
 
 		Case $hGUI_STATS_TAB
 			; the icons for stats tab
-			Local $aIconIndex[4] = [$eIcnGoldElixir, $eIcnGoldElixir, $eIcnOptions, $eIcnCamp]
+			Local $aIconIndex[3] = [$eIcnGoldElixir, $eIcnOptions, $eIcnCamp]
 
 		Case Else
 			;do nothing

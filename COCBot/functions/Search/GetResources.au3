@@ -21,11 +21,11 @@ Func GetResources($bLog = True, $pMatchMode = -1) ;Reads resources
 	Local $iResult = 0
 	Local $i = 0
 	Local $iWaitClouds
-	
+
 	If ( $iTrophyCurrent > 4200 ) Then
-	  $iWaitClouds = 1080 ; Titan Leagle and over
+		$iWaitClouds = 1080 ; Titan Leagle and over
 	Else
-	  $iWaitClouds = 720
+		$iWaitClouds = 720
 	Endif
 
 	ForceCaptureRegion() ; ensure screenshots are not cached
@@ -97,13 +97,13 @@ Func GetResources($bLog = True, $pMatchMode = -1) ;Reads resources
 	EndIf
 
 	$SearchCount += 1 ; Counter for number of searches
-	
+
 	;pushbullet searchcount notification every xxx searches so you know bot is still running
-    If $searchcount > 0 AND $SearchNotifyCount = 1 AND mod($searchcount, $SearchNotifyCountTXT) = 0 Then
-        PushMsgToPushBullet ("CurrentSearchCount")
-    ElseIf $searchcount = 1 AND $SearchNotifyCount = 1 Then
-        PushMsgToPushBullet ("CurrentSearchCount")
-    EndIf
+	If $searchcount > 0 AND $SearchNotifyCount = 1 AND mod($searchcount, $SearchNotifyCountTXT) = 0 Then
+		PushMsgToPushBullet ("CurrentSearchCount")
+	ElseIf $searchcount = 1 AND $SearchNotifyCount = 1 Then
+		PushMsgToPushBullet ("CurrentSearchCount")
+	EndIf
 
 	;send village stats every xxx attacks
 	If $Villagestatincrement = 1 AND mod($Attackcount, $VillageStatIncrementTXT) = 0 AND $AttackCount <> 0 Then

@@ -2498,10 +2498,10 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWriteS($config, "attack", "CSVSpeedDB", $isldSelectedCSVSpeed[$DB])
 	IniWriteS($config, "attack", "CSVSpeedAB", $isldSelectedCSVSpeed[$LB])
 
-	; Android Settings
+#cs	; Android Settings
 	IniWrite($config, "Android", "Emulator", GUICtrlRead($cmbAndroid))
 	IniWrite($config, "Android", "Instance", GUICtrlRead($txtAndroidInstance))
-
+#ce
 	; SmartZap Settings
 	If GUICtrlRead($chkSmartLightSpell) = $GUI_CHECKED Then
 		IniWrite($config, "SmartZap", "UseSmartZap", 1)
@@ -2513,18 +2513,18 @@ Func saveConfig() ;Saves the controls settings to the config
 	Else
 		IniWrite($config, "SmartZap", "ZapDBOnly", 0)
 	EndIf
-    If GUICtrlRead($chkSmartZapSaveHeroes) = $GUI_CHECKED Then
-        IniWrite($config, "SmartZap", "THSnipeSaveHeroes", 1)
-    Else
-        IniWrite($config, "SmartZap", "THSnipeSaveHeroes", 0)
-    EndIf
+	If GUICtrlRead($chkSmartZapSaveHeroes) = $GUI_CHECKED Then
+		IniWrite($config, "SmartZap", "THSnipeSaveHeroes", 1)
+	Else
+		IniWrite($config, "SmartZap", "THSnipeSaveHeroes", 0)
+	EndIf
 	IniWrite($config, "SmartZap", "MinDE", GUICtrlRead($txtMinDark))
 
 	;ExtremeZap
 	If GUICtrlRead($chkExtLightSpell) = $GUI_CHECKED Then
-		IniWrite($config, "MOD", "ExtLightSpell", "1")
+		IniWrite($config, "MOD", "ExtLightSpell", 1)
 	Else
-		IniWrite($config, "MOD", "ExtLightSpell", "0")
+		IniWrite($config, "MOD", "ExtLightSpell", 0)
 	EndIf
 	IniWrite($config, "MOD", "MinDE", GUICtrlRead($txtMinDark))
 

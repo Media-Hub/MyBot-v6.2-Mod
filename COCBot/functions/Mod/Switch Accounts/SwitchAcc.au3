@@ -391,10 +391,11 @@ Func SwitchCOCAcc()
 			PureClick(480, 200, 1, 0, "Click CONFIRM") ;Click CONFIRM
 			Setlog("OKAY button clicked")
 			Setlog("please wait 10 seconds for loading CoC")
-			If _Sleepstatus(3000) Then Return
+			If _Sleepstatus(1000) Then Return
 			ClickP($aAway, 1, 0, "#0167") ;Click Away
 			If _Sleepstatus(10000) Then Return
 			$bReMatchAcc = False
+			$FirstStart = True
 		Else
 			Setlog("Error in typing CONFIRM or finding OKAY button, reloading CoC", $COLOR_RED)
 			$bReMatchAcc = True

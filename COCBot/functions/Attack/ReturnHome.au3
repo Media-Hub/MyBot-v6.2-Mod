@@ -141,8 +141,8 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 		$AttackCount += 1 ;for periodic village stats per number of attacks
 	EndIf
 	;Delete searchcount messages if necessary
-    If $SearchNotifyCount = 1 And $searchcount >= 1 And isarray($SearchNotifyCountMsgIden) Then
-        _DeleteMessageOfPushBullet ($SearchNotifyCountMsgIden[0])
+	If $SearchNotifyCount = 1 And $searchcount >= 1 And isarray($SearchNotifyCountMsgIden) Then
+		_DeleteMessageOfPushBullet ($SearchNotifyCountMsgIden[0])
 	EndIf
 
 	$i = 0 ; Reset Loop counter

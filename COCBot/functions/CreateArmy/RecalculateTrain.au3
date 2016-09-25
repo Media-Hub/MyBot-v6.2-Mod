@@ -1,7 +1,7 @@
 ; #FUNCTION# ====================================================================================================================
-; Name ..........: TrainBoosted.au3
+; Name ..........: RecalculateTrain.au3
 ; Description ...: Train the troops (Fill the barracks), when is necessary take advantage of a Boosted barrack
-; Syntax ........: TrainNormalTroopsBoosted() , TrainDarkTroopsBoosted()
+; Syntax ........: TrainNormalTroops() , getArmyNormalTroopCount() , TrainDarkTroops() , getArmyDarkTroopCount() , DeleteQueueDarkTroopsOnBoostedBarracks()
 ; Parameters ....:
 ; Return values .: None
 ; Author ........: ProMac (08-2016)
@@ -724,10 +724,10 @@ Func getArmyNormalTroopCount()
 					$CurPekk = -($TroopQ)
 				ElseIf $Troops[0] = $eBabyD Then
 					$TroopQ = $Troops[2]
-					$CurPekk = -($TroopQ)
+					$CurBabyD = -($TroopQ)
 				ElseIf $Troops[0] = $eMine Then
 					$TroopQ = $Troops[2]
-					$CurPekk = -($TroopQ)
+					$CurMine = -($TroopQ)
 				EndIf
 				Local $plural = 0
 				If $TroopQ > 1 Then $plural = 1
@@ -1422,20 +1422,4 @@ Func DeleteQueueDarkTroopsOnBoostedBarracks()
 
 EndFunc   ;==>DeleteQueueDarkTroopsOnBoostedBarracks
 
-Func GoesToFirstDarkBarrack()
-
-	If IsTrainPage() Then
-		; $Trainavailable = [1, 0, 1, 1, 1, 1, 0, 0, 0]
-		If $Trainavailable[5] = 1 Then
-			Click($btnpos[5][0], $btnpos[5][1], 1, $iDelayTrain5, "#0336") ; Click on tab and go to last barrack
-			If _Sleep(1000) Then Return
-		Else
-			Click($btnpos[6][6], $btnpos[5][1], 1, $iDelayTrain5, "#0336") ; Click on tab and go to last barrack
-			If _Sleep(1000) Then Return
-		EndIf
-	Else
-		Setlog(" ERROR YOU ARE NOT IN TRAIN PAGE!!!", $COLOR_RED)
-	EndIf
-
-EndFunc   ;==>GoesToFirstDarkBarrack
 

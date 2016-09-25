@@ -75,25 +75,8 @@ GUISwitch($hGUI_ModOptions)
 			_GUICtrlSetTip(-1, $txtTip)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
-	; Android Setting
-	Local $x = 20, $y = 177
-	$grpHideAndroid = GUICtrlCreateGroup("Android Options", $x - 20, $y - 20, 438, 43)
-		$cmbAndroid = GUICtrlCreateCombo("", $x - 10, $y - 5, 130, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-			$txtTip = "Use this to select the Android Emulator to use with this profile."
-			_GUICtrlSetTip(-1, $txtTip)
-			setupAndroidComboBox()
-			GUICtrlSetState(-1, $GUI_SHOW)
-			GUICtrlSetOnEvent(-1, "cmbAndroid")
-		$lblAndroidInstance = GUICtrlCreateLabel("Instance:", $x + 130, $y - 2 , 60, 21, $SS_RIGHT)
-		$txtAndroidInstance = GUICtrlCreateInput("", $x + 200, $y - 5, 210, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER))
-			$txtTip = "Enter the Instance to use with this profile."
-			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetOnEvent(-1, "txtAndroidInstance")
-			GUICtrlSetState(-1, $GUI_DISABLE)
-	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
 	; CoC Starts
-	Local $x = 20, $y = 210
+	Local $x = 20, $y = 155
 	$grpCoCStats = GUICtrlCreateGroup("", $x - 20, $y, 438, 45)
 		$y += 10
 		$x += -10
@@ -109,7 +92,7 @@ GUISwitch($hGUI_ModOptions)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 	; Collect Treasury
-	Local $x = 226, $y = 155
+	Local $x = 226, $y = 95
 	$grpTreasury = GUICtrlCreateGroup("Collect Treasury", $x - 226, $y + 110, 438, 100)
 	$chkCollectTresory = GUICtrlCreateCheckbox("Enable", $x - 210, $y + 135, -1, -1)
 		$txtTip = "Enable auto collect of treasury."
@@ -173,3 +156,21 @@ GUISwitch($hGUI_ModOptions)
 		GUICtrlSetOnEvent(-1, "ResetDE")
 		GUICtrlSetState(-1, $GUI_HIDE)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
+
+#cs	; Android Setting
+	Local $x = 20, $y = 330
+	$grpHideAndroid = GUICtrlCreateGroup("Android Options", $x - 20, $y - 20, 438, 43)
+		$cmbAndroid = GUICtrlCreateCombo("", $x - 10, $y - 5, 130, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			$txtTip = "Use this to select the Android Emulator to use with this profile."
+			_GUICtrlSetTip(-1, $txtTip)
+			setupAndroidComboBox()
+			GUICtrlSetState(-1, $GUI_SHOW)
+			GUICtrlSetOnEvent(-1, "cmbAndroid")
+		$lblAndroidInstance = GUICtrlCreateLabel("Instance:", $x + 130, $y - 2 , 60, 21, $SS_RIGHT)
+		$txtAndroidInstance = GUICtrlCreateInput("", $x + 200, $y - 5, 210, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER))
+			$txtTip = "Enter the Instance to use with this profile."
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "txtAndroidInstance")
+			GUICtrlSetState(-1, $GUI_DISABLE)
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+#ce

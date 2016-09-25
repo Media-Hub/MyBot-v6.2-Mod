@@ -484,7 +484,7 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		IniReadS($delayActivateW, $config, "attack", "delayActivateW", "9")
 		$delayActivateW *= 1000
 
-		IniReadS($TakeLootSnapShot, $config, "attack", "TakeLootSnapShot", "1")
+		IniReadS($TakeLootSnapShot, $config, "attack", "TakeLootSnapShot", "0")
 		IniReadS($ScreenshotLootInfo, $config, "attack", "ScreenshotLootInfo", "0")
 
 
@@ -1033,12 +1033,12 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		IniReadS($iEnableSpellsWait[$LB], $config, "search", "ChkABSpellsWait", "0")
 		IniReadS($iTotalTrainSpaceSpell, $config, "search", "TotalTrainSpaceSpell", "0")
 
-		; Android Settings
+#cs		; Android Settings
 		$sAndroid = IniRead($config, "Android", "Emulator", "<No Emulators>")
 		$sAndroidInstance = IniRead($config, "Android", "Instance", "")
-
+#ce
 		; SmartZap Settings
-		$ichkSmartZap = IniRead($config, "SmartZap", "UseSmartZap", "1")
+		$ichkSmartZap = IniRead($config, "SmartZap", "UseSmartZap", "0")
 		$ichkSmartZapDB = IniRead($config, "SmartZap", "ZapDBOnly", "1")
 		$ichkSmartZapSaveHeroes = IniRead($config, "SmartZap", "THSnipeSaveHeroes", "1")
 		$itxtMinDE = IniRead($config, "SmartZap", "MinDE", "250")

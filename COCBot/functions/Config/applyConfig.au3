@@ -2565,7 +2565,7 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	_GUICtrlComboBox_SetCurSel($cmbLvl11, $cmbLvl11Fill)
 	_GUICtrlComboBox_SetCurSel($cmbLvl12, $cmbLvl12Fill)
 	GUICtrlSetData($sldCollectorTolerance, $toleranceOffset)
-	;checkCollectors()
+	checkCollectors()
 
 	;Share Attack Settings----------------------------------------
 	GUICtrlSetData($txtShareMinGold, $iShareminGold)
@@ -2594,7 +2594,7 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	LoadABSnipeAttacks() ; recreate combo box values
 	_GUICtrlComboBox_SetCurSel($cmbTHSnipeBeforeLBScript, _GUICtrlComboBox_FindStringExact($cmbTHSnipeBeforeLBScript, $THSnipeBeforeLBScript))
 
-	; Android Settings
+#cs	; Android Settings
 	If _GUICtrlComboBox_FindStringExact($cmbAndroid, String($sAndroid)) <> -1 Then
 		_GUICtrlComboBox_SelectString($cmbAndroid, String($sAndroid))
 	Else
@@ -2602,7 +2602,7 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	EndIf
 	GUICtrlSetData($txtAndroidInstance, $sAndroidInstance)
 	modifyAndroid()
-
+#ce
 	; SmartZap Settings
 	If $ichkSmartZap = 1 Then
 		GUICtrlSetState($chkExtLightSpell, $GUI_DISABLE)
