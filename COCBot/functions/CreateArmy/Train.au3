@@ -1505,7 +1505,7 @@ Func Train() ; Main Train Loop on Normal and Dark Barracks
 						_ArrayMin($BarrackCapacity, 1) + 10 <= _ArrayMax($BarrackCapacity, 1) And _
 						$LetsSortNB = False And _ArrayMax($QuantNormalTroopsInQueue, 1) > 1 Then
 
-					For $i = 0 To $numBarracksAvaiables
+					For $i = 0 To ($numBarracksAvaiables - 1)
 						If $QuantNormalTroopsInQueue[$i] > 1 Then Setlog("Quant queued troops on Barrack " & $i + 1 & " is " & $QuantNormalTroopsInQueue[$i], $COLOR_RED)
 					Next
 
