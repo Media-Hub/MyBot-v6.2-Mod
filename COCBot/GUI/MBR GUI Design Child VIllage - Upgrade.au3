@@ -129,9 +129,9 @@ $hGUI_UPGRADE_TAB_ITEM3 = GUICtrlCreateTabItem(GetTranslated(600,16,"Buildings")
 	$x -= 7
 ; table header
 	$y -= 7
-	
+
 ; Upgrade Management
-			$txtTip = GetTranslated(699,52, "This button will clear or set the entire column of checkboxes")
+			$txtTip = GetTranslated(616,40, "This button will clear or set the entire column of checkboxes")
 		$chkUpgradeAllOrNone = GUICtrlCreateCheckbox("", $x + 4, $y, 13, 13, BitOR($BS_PUSHLIKE, $BS_ICON))
 			GUICtrlSetImage(-1, $pIconLib, $eIcnGoldStar, 0)
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
@@ -142,7 +142,7 @@ $hGUI_UPGRADE_TAB_ITEM3 = GUICtrlCreateTabItem(GetTranslated(600,16,"Buildings")
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
 			GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkUpgradeRepeatAllOrNone")
-	
+
 		$lblUpgradeUp1 = GUICtrlCreateLabel(GetTranslated(616,2,"Unit Name"), $x+71, $y, 70, 18)
 		$lblUpgradeUp2 = GUICtrlCreateLabel(GetTranslated(616,3,"Lvl"), $x+153, $y, 40, 18)
 		$lblUpgradeUp3 = GUICtrlCreateLabel(GetTranslated(616,4,"Type"), $x+173, $y, 50, 18)
@@ -208,22 +208,22 @@ $hGUI_UPGRADE_TAB_ITEM3 = GUICtrlCreateTabItem(GetTranslated(600,16,"Buildings")
 			_GUICtrlSetTip(-1, GetTranslated(616,21, "Save this amount of Dark Elixir after the upgrade completes.") & @CRLF & GetTranslated(616,22, "Set this value higher if you want make war troops."))
 			GUICtrlSetLimit(-1, 6)
 ; Upgrade Management
-		$chkUpdateNewUpgradesOnly = GUICtrlCreateCheckbox(GetTranslated(699, 50, " New Only"), $x + 141 , $y + 18, -1, -1)
-			GUICtrlSetTip(-1,GetTranslated(699, 51, "Update NEW upgrades only for speed"))
+		$chkUpdateNewUpgradesOnly = GUICtrlCreateCheckbox(GetTranslated(616,38, "New Only"), $x + 141 , $y + 18, -1, -1)
+			GUICtrlSetTip(-1, GetTranslated(616,39, "Update NEW upgrades only for speed"))
 			GUICtrlSetOnEvent(-1, "chkUpdateNewUpgradesOnly")
 		$btnTop = GUICtrlCreateButton("T", $x + 209, $y + 18, 23, 18, $BS_CENTER)
-			GUICtrlSetTip(-1, GetTranslated(699, 54, "Push button to move upgrade-box-checked buildings to the TOP of the list"))
+			GUICtrlSetTip(-1, GetTranslated(616,41, "Push button to move upgrade-box-checked buildings to the TOP of the list"))
 			GUICtrlSetOnEvent(-1, "btnTop")
 		$btnBottom = GUICtrlCreateButton("B", $x + 233, $y + 18, 23, 18, $BS_CENTER)
-			GUICtrlSetTip(-1, GetTranslated(699, 60, "Push button to move upgrade-box-checked buildings to the BOTTOM of the list"))
+			GUICtrlSetTip(-1, GetTranslated(616,42, "Push button to move upgrade-box-checked buildings to the BOTTOM of the list"))
 			GUICtrlSetOnEvent(-1, "btnBottom")
 		$btnUp = GUICtrlCreateButton("▲", $x + 257, $y + 18, 23, 18, $BS_CENTER)
-			GUICtrlSetTip(-1, GetTranslated(699, 56, "Push button to move UP upgrade-box-checked buildings a row"))
+			GUICtrlSetTip(-1, GetTranslated(616,43, "Push button to move UP upgrade-box-checked buildings a row"))
 			GUICtrlSetOnEvent(-1, "btnUp")
 		$btnDown = GUICtrlCreateButton("▼", $x + 281, $y + 18, 23, 18, $BS_CENTER)
-			GUICtrlSetTip(-1, GetTranslated(699, 58, "Push button to move DOWN upgrade-box-checked buildings a row"))
+			GUICtrlSetTip(-1, GetTranslated(616,44, "Push button to move DOWN upgrade-box-checked buildings a row"))
 			GUICtrlSetOnEvent(-1, "btnDown")
-	
+
 		GUICtrlCreateGroup("", -99, -99, 1, 1)
 	$y += 2
 ; Locate/reset buttons
@@ -350,18 +350,18 @@ Global $lblWallCost, $cmbWalls, $UseGold, $UseElixir, $UseElixirGold, $txtWallMi
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 GUICtrlCreateTabItem("")
 
-$hGUI_UPGRADE_TAB_ITEM5 = GUICtrlCreateTabItem("SmartUpgrade")
+$hGUI_UPGRADE_TAB_ITEM5 = GUICtrlCreateTabItem(GetTranslated(600,52, "SmartUpgrade"))
 
 Local $x = 25, $y = 45
 
-$SmartUpgrade = GUICtrlCreateGroup("SmartUpgrade", $x - 20, $y - 20, 430, 335)
+$SmartUpgrade = GUICtrlCreateGroup(GetTranslated(652,1, "SmartUpgrade"), $x - 20, $y - 20, 430, 335)
 
-$chkSmartUpgrade = GUICtrlCreateCheckbox("Enable SmartUpgrade", $x - 5, $y, -1, -1)
+$chkSmartUpgrade = GUICtrlCreateCheckbox(GetTranslated(652,2, "Enable SmartUpgrade"), $x - 5, $y, -1, -1)
 	$txtTip = GetTranslated(614,3, "Check box to enable automatically starting Upgrades from builders menu")
 	_GUICtrlSetTip(-1, $txtTip)
 	GUICtrlSetOnEvent(-1, "chkSmartUpgrade")
 
-$IgnoreUpgrades = GUICtrlCreateGroup("Upgrades to ignore", $x - 15, $y + 30, 420, 155)
+$IgnoreUpgrades = GUICtrlCreateGroup(GetTranslated(652,3, "Upgrades to ignore"), $x - 15, $y + 30, 420, 155)
 
 Local $x = 15, $y = 45
 
@@ -427,7 +427,7 @@ Local $x = 15, $y = 45
 	GUICtrlCreateLabel("Dark to save", 360, 40, 65, 17)
 	GUICtrlCreateLabel("... after launching upgrade", 296, 60, 128, 17)
 	$SmartUpgradeLog = GUICtrlCreateEdit("", 10, 232, 420, 124, BitOR($GUI_SS_DEFAULT_EDIT,$ES_READONLY))
-	GUICtrlSetData(-1, "                                        ----- SMART UPGRADE LOG -----")
+	GUICtrlSetData(-1, GetTranslated(652,4, "                                        ----- SMART UPGRADE LOG -----"))
 
 GUICtrlCreateGroup("", -99, -99, 1, 1)
 GUICtrlCreateTabItem("")

@@ -188,34 +188,34 @@ $txtPBTimeForcedExit = GUICtrlCreateInput("16", $x + 130, $y, 30, 16, BitOR($GUI
 	GUICtrlSetState(-1, $GUI_DISABLE)
 $lblPBTimeForcedExit1 = GUICtrlCreateLabel( GetTranslated(603,9, -1), $x+162, $y+1, 27, 15)
 $y += 20
-$lblSleepHeroes = GuiCtrlCreateLabel("Put Heroes To Sleep:",$x-10, $y+3)
-	$txtTip = "You're able to Put Heroes To Sleep Before Closing CoC Due To Personal Break Logoff"
+$lblSleepHeroes = GuiCtrlCreateLabel(GetTranslated(636,107, "Put Heroes To Sleep:"),$x-10, $y+3)
+	$txtTip = GetTranslated(636,108, "You're able to Put Heroes To Sleep Before Closing CoC Due To Personal Break Logoff")
 	_GUICtrlSetTip(-1, $txtTip)
 	;-Barbarian King
 $IMGchkSleepBK = GUICtrlCreateIcon($pIconLib, $eIcnKing, $x+55 , $y+20, 24, 24)
-	$txtTip = "Barbarian King"
+	$txtTip = GetTranslated(636,109, "Barbarian King")
 	_GUICtrlSetTip(-1, $txtTip)
 $chkPBSleepBK = GUICtrlCreateCheckbox("",$x+60,$y+46,17, 17)
-	$txtTip = "Sleep Barbarian King Before Closing CoC Due To Personal Breake Logoff"
+	$txtTip = GetTranslated(636,110, "Sleep Barbarian King Before Closing CoC Due To Personal Breake Logoff")
 	_GUICtrlSetTip(-1, $txtTip)
 	;-Archer Queen
 	$IMGchkSleepAQ = GUICtrlCreateIcon($pIconLib, $eIcnQueen, $x+84 , $y+20, 24, 24)
-	$txtTip = "Archer Queen"
+	$txtTip = GetTranslated(636,111, "Archer Queen")
 	_GUICtrlSetTip(-1, $txtTip)
 $chkPBSleepAQ = GUICtrlCreateCheckbox("",$x+89,$y+46,17, 17)
-	$txtTip = "Sleep Archer Queen Before Closing CoC Due To Personal Breake Logoff"
+	$txtTip = GetTranslated(636,112, "Sleep Archer Queen Before Closing CoC Due To Personal Breake Logoff")
 	_GUICtrlSetTip(-1, $txtTip)
 	;-Grand Warden
 	$IMGchkSleepGW = GUICtrlCreateIcon($pIconLib, $eIcnWarden, $x+113 , $y+20, 24, 24)
-	$txtTip = "Grand Warden"
+	$txtTip = GetTranslated(636,113, "Grand Warden")
 	_GUICtrlSetTip(-1, $txtTip)
 $chkPBSleepGW = GUICtrlCreateCheckbox("",$x+118,$y+46,17, 17)
-	$txtTip = "Sleep Grand Warden Before Closing CoC Due To Personal Breake Logoff"
+	$txtTip = GetTranslated(636,114, "Sleep Grand Warden Before Closing CoC Due To Personal Breake Logoff")
 	_GUICtrlSetTip(-1, $txtTip)
 $y +=45
 $y +=24
-$chkCloseTakeBreak = GUICtrlCreateCheckbox("Close Emulator When TakeBreak", $x-5, $y-5, -1, -1)
-	$txtTip = "This forces bot to Close Emulator only one time prior to normal start of PB"
+$chkCloseTakeBreak = GUICtrlCreateCheckbox(GetTranslated(636,115, "Close Emulator When TakeBreak"), $x-5, $y-5, -1, -1)
+	$txtTip = GetTranslated(636,116, "This forces bot to Close Emulator only one time prior to normal start of PB")
 	_GUICtrlSetTip(-1, $txtTip)
 	GUICtrlSetOnEvent(-1, "chkClosePBEmu")
 	GUICtrlSetState(-1, $GUI_DISABLE)

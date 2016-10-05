@@ -37,8 +37,6 @@ Func cmbProfile()
 
 EndFunc   ;==>cmbProfile
 
-; Actions While Training (SleepMode, HibernateMode, SwitchAcc) - DEMEN
-
 Func radProfileType()
 	If GUICtrlRead($radIdleProfile) = $GUI_CHECKED Then
 	   _GUICtrlComboBox_SetCurSel($cmbMatchProfileAcc, 0)
@@ -182,8 +180,7 @@ Func chkRestartAndroid()
 	EndIf
 EndFunc   ;==>chkRestartAndroid
 
-; ============= SwitchAcc Mode ============= - DEMEN
-#cs
+#Cs
 Func btnAddConfirm()
 	Switch @GUI_CtrlId
 		Case $btnAdd
@@ -297,7 +294,7 @@ Func btnRenameConfirm()
 			SetLog("If you are seeing this log message there is something wrong.", $COLOR_RED)
 	EndSwitch
 EndFunc   ;==>btnRenameConfirm
-#ce
+#Ce
 Func cmbBotCond()
 	If _GUICtrlComboBox_GetCurSel($cmbBotCond) = 15 Then
 		If _GUICtrlComboBox_GetCurSel($cmbHoursStop) = 0 Then _GUICtrlComboBox_SetCurSel($cmbHoursStop, 1)

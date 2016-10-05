@@ -152,14 +152,14 @@ Local $txtFull = GetTranslated(626,30, "Full")
 			GUICtrlSetState($sldCollectorTolerance, $GUI_HIDE)
 		EndIf
 	$y += 25 ; Check Collectors Outside
-		$chkDBMeetCollOutside = GUICtrlCreateCheckbox("Collectors outside", $x, $y, -1, -1)
-			$txtTip = "Search for bases that has their collectors outside."
+		$chkDBMeetCollOutside = GUICtrlCreateCheckbox(GetTranslated(626,32,"Collectors outside"), $x, $y, -1, -1)
+			$txtTip = GetTranslated(626,33,"Search for bases that has their collectors outside.")
 			GUICtrlSetOnEvent(-1, "chkDBMeetCollOutside")
 			GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
 			GUICtrlCreateLabel("Min: ", $x + 120, $y + 4, -1, -1)
 		$txtDBMinCollOutsidePercent = GUICtrlCreateInput("50", $x + 143, $y, 31, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
-			$txtTip = "Set the Min. % of collectors outside to search for on a village to attack."
+			$txtTip = GetTranslated(626,34,"Set the Min. % of collectors outside to search for on a village to attack.")
 			GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetState(-1, $GUI_DISABLE)
 			GUICtrlSetLimit(-1, 3)
@@ -168,7 +168,7 @@ Local $txtFull = GetTranslated(626,30, "Full")
 			GUICtrlSetTip(-1, $txtTip)
 
 	$y += 25
-		$lblCollectorWarning = GUICtrlCreateLabel("Warning: no collecters are selected. The bot will never find a dead base.", $x, $y, 255, 30)
+		$lblCollectorWarning = GUICtrlCreateLabel(GetTranslated(626,35,"Warning: no collecters are selected. The bot will never find a dead base."), $x, $y, 255, 30)
 			GUICtrlSetFont(-1, 10, $FW_BOLD)
 			GUICtrlSetColor(-1, $COLOR_RED)
 			GUICtrlSetState(-1, $GUI_HIDE)

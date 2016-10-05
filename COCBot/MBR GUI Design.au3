@@ -92,7 +92,7 @@ SplashStep(GetTranslated(500, 27, "Loading Attack tab..."))
 #include "GUI\MBR GUI Design Child Attack.au3"
 SplashStep(GetTranslated(500, 28, "Loading Bot tab..."))
 #include "GUI\MBR GUI Design Child Bot.au3"
-SplashStep("Loading Mods tab...")
+SplashStep(GetTranslated(500, 37, "Loading Mods tab..."))
 #include "GUI\MBR GUI Design Child Mod.au3"
 ;GUISetState()
 GUISwitch($frmBotEx)
@@ -102,7 +102,7 @@ $tabGeneral = GUICtrlCreateTabItem(GetTranslated(600,1, "Log"))
 $tabVillage = GUICtrlCreateTabItem(GetTranslated(600,2, "Village")) ; Village
 $tabAttack = GUICtrlCreateTabItem(GetTranslated(600,3,"Attack Plan"))
 $tabBot = GUICtrlCreateTabItem(GetTranslated(600,4,"Bot"))
-$tabMOD = GUICtrlCreateTabItem("Mods")
+$tabMOD = GUICtrlCreateTabItem(GetTranslated(600,53,"Mods"))
 
 ;~ -------------------------------------------------------------
 ;~ About Us Tab

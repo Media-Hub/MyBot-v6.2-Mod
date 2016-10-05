@@ -1655,6 +1655,9 @@ Global $iLimitDStats = 5000
 Global $iChkDontRemove, $chkDontRemove
 Global $iChkBarrackSpell, $chkBarrackSpell
 
+; Deleted Wrong Troops - Added by TheRevenor
+Global $ichkDeleteTroops
+
 ; Check Connections
 Global $ichkConnection = 1
 

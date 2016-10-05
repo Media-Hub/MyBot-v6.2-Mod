@@ -25,12 +25,12 @@ $hGUI_MOD = GUICreate("", $_GUI_MAIN_WIDTH - 20, $_GUI_MAIN_HEIGHT - 255, $_GUI_
 GUISwitch($hGUI_MOD)
 
 $hGUI_MOD_TAB = GUICtrlCreateTab(0, 0, $_GUI_MAIN_WIDTH - 20, $_GUI_MAIN_HEIGHT - 255, BitOR($TCS_MULTILINE, $TCS_RIGHTJUSTIFY))
-$hGUI_MOD_TAB_ITEM1 = GUICtrlCreateTabItem("Mod Options")
+$hGUI_MOD_TAB_ITEM1 = GUICtrlCreateTabItem(GetTranslated(600,54, "Mod Options"))
 ; this tab will be empty because it is only used to display a child GUI
-$hGUI_MOD_TAB_ITEM2 = GUICtrlCreateTabItem("Switch Profile && Multi Options")
+$hGUI_MOD_TAB_ITEM2 = GUICtrlCreateTabItem(GetTranslated(600,55, "Switch Profile && Multi Options"))
 ; this tab will be empty because it is only used to display a child GUI
-$hGUI_MOD_TAB_ITEM3 = GUICtrlCreateTabItem("Chat Bot")
+$hGUI_MOD_TAB_ITEM3 = GUICtrlCreateTabItem(GetTranslated(600,56, "Chat Bot"))
 ; this tab will be empty because it is only used to display a child GUI
-$hGUI_MOD_TAB_ITEM4 = GUICtrlCreateTabItem("Donate Stats")
+$hGUI_MOD_TAB_ITEM4 = GUICtrlCreateTabItem(GetTranslated(600,57, "Donate Stats"))
 ; this tab will be empty because it is only used to display a child GUI
 GUICtrlCreateTabItem("")

@@ -132,7 +132,7 @@ Func getArmySpellCount($bOpenArmyWindow = False, $bCloseArmyWindow = False, $tes
 
 	; $bFullArmySpells is a Booleans not a Numeric number <> 0 or 1 | USe on IsSearchModeActive
 	; To use on Spells()
-	If $iTotalSpellSpace >= $iTotalTrainSpaceSpell then
+	If $iTotalSpellSpace >= $iTotalTrainSpaceSpell Then
 		$bFullArmySpells = True
 	Else
 		$bFullArmySpells = False

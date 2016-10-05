@@ -1154,6 +1154,9 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 			$bUpdateNewUpgradesOnly = False
 		EndIf
 
+		; Deleted Wrong Troops - Added by TheRevenor
+		$ichkDeleteTroops = IniRead($config, "Mod", "DeletedTroops", "0")
+
 	Else
 		Return False
 	EndIf

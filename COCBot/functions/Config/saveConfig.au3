@@ -2812,6 +2812,13 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWriteS($config, "upgrade", "UpdateNewUpgradesOnly", 0)
 	EndIf
 
+	; Deleted Wrong Troops - Added by TheRevenor
+	If GUICtrlRead($chkDeleteTroops) = $GUI_CHECKED Then
+		IniWrite($config, "Mod", "DeletedTroops", 1)
+	Else
+		IniWrite($config, "Mod", "DeletedTroops", 0)
+	EndIf
+
 	If $hFile <> -1 Then FileClose($hFile)
 
 EndFunc   ;==>saveConfig

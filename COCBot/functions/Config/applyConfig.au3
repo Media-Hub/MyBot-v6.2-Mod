@@ -3021,6 +3021,13 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 		GUICtrlSetState($chkUpdateNewUpgradesOnly, $GUI_UNCHECKED)
 	EndIf
 
+	; Deleted Wrong Troops - Added by TheRevenor
+	If $ichkDeleteTroops = 1 Then
+		GUICtrlSetState($chkDeleteTroops, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkDeleteTroops, $GUI_UNCHECKED)
+	EndIf
+
 	;Apply to switch Attack Standard after THSnipe End ==>
 	If $ichkTSActivateCamps2 = 1 Then
 		GUICtrlSetState($chkTSActivateCamps2, $GUI_CHECKED)

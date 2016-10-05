@@ -110,7 +110,7 @@ Local $x = 25, $y = 45
 	$y += 22
 	$x = 10
 	$x = 10
-	    $chkABSpellsWait = GUICtrlCreateCheckbox("Wait for Spells to be Ready", $x, $y, -1, -1)
+	    $chkABSpellsWait = GUICtrlCreateCheckbox(GetTranslated(625,11, -1), $x, $y, -1, -1)
 			$txtTip = GetTranslated(625,100, -1) & @CRLF & _
 			GetTranslated(625,101, -1)
  			_GUICtrlSetTip(-1, $txtTip)

@@ -94,33 +94,33 @@ Func UpdateStats()
 	EndIf
 
 	If Number($iGoldLast) > Number($topgoldloot) Then
-        $topgoldloot = $iGoldLast
-        GUICtrlSetData($lbltopgoldloot,_NumberFormat($topgoldloot))
+		$topgoldloot = $iGoldLast
+		GUICtrlSetData($lbltopgoldloot,_NumberFormat($topgoldloot))
 		If $topgoldloot > 0 And $pAlertTopGain  = 1 Then
 			_PushToPushBullet("New Top Gold Gain: " & _NumberFormat($topgoldloot) & " on profile " & $sCurrProfile)
 		EndIf
-    EndIf
-    If Number($iElixirLast) > Number($topelixirloot) Then
-        $topelixirloot = $iElixirLast
-        GUICtrlSetData($lbltopelixirloot,_NumberFormat($topelixirloot))
+	EndIf
+	If Number($iElixirLast) > Number($topelixirloot) Then
+		$topelixirloot = $iElixirLast
+		GUICtrlSetData($lbltopelixirloot,_NumberFormat($topelixirloot))
 		If $topelixirloot > 0 And $pAlertTopGain  = 1 Then
 			_PushToPushBullet("New Top Elixir Gain: " & _NumberFormat($topelixirloot) & " on profile " & $sCurrProfile)
 		EndIf
-    EndIf
-    If Number($iDarkLast) > Number($topdarkloot) Then
+	EndIf
+	If Number($iDarkLast) > Number($topdarkloot) Then
 		$topdarkloot = $idarklast
-        GUICtrlSetData($lbltopdarkloot,_NumberFormat($topdarkloot))
+		GUICtrlSetData($lbltopdarkloot,_NumberFormat($topdarkloot))
 		If $topdarkloot > 0 And $pAlertTopGain  = 1 Then
 			_PushToPushBullet("New Top Dark Elixir Gain: " & _NumberFormat($topdarkloot) & " on profile " & $sCurrProfile)
 		EndIf
-    EndIf
+	EndIf
 	If Number($iTrophyLast) > Number($topTrophyloot) Then
-        $topTrophyloot = $iTrophylast
-        GUICtrlSetData($lbltopTrophyloot,_NumberFormat($topTrophyloot))
+		$topTrophyloot = $iTrophylast
+		GUICtrlSetData($lbltopTrophyloot,_NumberFormat($topTrophyloot))
 		If $topTrophyloot > 0 And $pAlertTopGain  = 1 Then
 			_PushToPushBullet("New Top Trophy Gain: " & _NumberFormat($toptrophyloot) & " on profile " & $sCurrProfile)
 		EndIf
-    EndIf
+	EndIf
 
 	If $ResetStats = 1 Then
 		GUICtrlSetData($lblResultGoldStart, _NumberFormat($iGoldCurrent, True))
@@ -464,33 +464,33 @@ Func UpdateStats()
 	EndIf
 
 	If Number($iGoldLast) > Number($topgoldloot) Then
-        $topgoldloot = $iGoldLast
-        GUICtrlSetData($lbltopgoldloot,_NumberFormat($topgoldloot))
+		$topgoldloot = $iGoldLast
+		GUICtrlSetData($lbltopgoldloot,_NumberFormat($topgoldloot))
 		If $topgoldloot > 0 And $pAlertTopGain  = 1 Then
 			_PushToPushBullet("New Top Gold Gain: " & _NumberFormat($topgoldloot) & " on profile " & $sCurrProfile)
 		EndIf
-    EndIf
-    If Number($iElixirLast) > Number($topelixirloot) Then
-        $topelixirloot = $iElixirLast
-        GUICtrlSetData($lbltopelixirloot,_NumberFormat($topelixirloot))
+	EndIf
+	If Number($iElixirLast) > Number($topelixirloot) Then
+		$topelixirloot = $iElixirLast
+		GUICtrlSetData($lbltopelixirloot,_NumberFormat($topelixirloot))
 		If $topelixirloot > 0 And $pAlertTopGain  = 1 Then
 			_PushToPushBullet("New Top Elixir Gain: " & _NumberFormat($topelixirloot) & " on profile " & $sCurrProfile)
 		EndIf
-    EndIf
-    If Number($iDarkLast) > Number($topdarkloot) Then
+	EndIf
+	If Number($iDarkLast) > Number($topdarkloot) Then
 		$topdarkloot = $idarklast
-        GUICtrlSetData($lbltopdarkloot,_NumberFormat($topdarkloot))
+		GUICtrlSetData($lbltopdarkloot,_NumberFormat($topdarkloot))
 		If $topdarkloot > 0 And $pAlertTopGain  = 1 Then
 			_PushToPushBullet("New Top Dark Elixir Gain: " & _NumberFormat($topdarkloot) & " on profile " & $sCurrProfile)
 		EndIf
-    EndIf
+	EndIf
 	If Number($iTrophyLast) > Number($topTrophyloot) Then
-        $topTrophyloot = $iTrophylast
-        GUICtrlSetData($lbltopTrophyloot,_NumberFormat($topTrophyloot))
+		$topTrophyloot = $iTrophylast
+		GUICtrlSetData($lbltopTrophyloot,_NumberFormat($topTrophyloot))
 		If $topTrophyloot > 0 And $pAlertTopGain  = 1 Then
 			_PushToPushBullet("New Top Trophy Gain: " & _NumberFormat($toptrophyloot) & " on profile " & $sCurrProfile)
 		EndIf
-    EndIf
+	EndIf
 
 EndFunc   ;==>UpdateStats
 

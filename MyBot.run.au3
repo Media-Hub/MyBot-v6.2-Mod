@@ -37,14 +37,14 @@ Local $hBotLaunchTime = TimerInit()
 
 Global $sGitHubModOwner = "NguyenAnhHD"
 Global $sGitHubModRepo = "MyBot-v6.2-Mod"
-Global $sGitHubModLatestReleaseTag = "v4.2.4.1"
+Global $sGitHubModLatestReleaseTag = "v4.2.5"
 Global $sModSupportUrl = "http://clashofclans.vn/threads/update-26-08-mybot-6-2-1-mod-v4-1-4-2.8075"
 
 $sBotVersion = "v6.2.2 Mod" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it it also use on Checkversion()
 $sBotTitle = "My Bot " & $sBotVersion & " By Nguyen Anh " & $sGitHubModLatestReleaseTag & "_S " ;~ Don't use any non file name supported characters like \ / : * ? " < > |
 $sModversion = $sGitHubModLatestReleaseTag
 
-Global $sBotTitleDefault = $sBotTitle
+;Global $sBotTitleDefault = $sBotTitle
 
 #include "COCBot\functions\Config\DelayTimes.au3"
 #include "COCBot\MBR Global Variables.au3"
@@ -319,6 +319,7 @@ Func runBot() ;Bot that runs everything in order
 			IsWaitingForConnection()
 			DonateCC()
 			If _Sleep($iDelayRunBot3) Then Return
+			If $ichkDeleteTroops = 1 Then DeleteTroopsInArmyOverview()
 			If IsSearchAttackEnabled() Then  ; if attack is disabled skip reporting, requesting, donating, training, and boosting
 			   Local $aRndFuncList[6] = ['ReplayShare', 'ReportNotify', 'BoostBarracks', 'BoostSpellFactories', 'BoostHeroes', 'RequestCC']
 			   While 1
@@ -429,7 +430,7 @@ Func Idle() ;Sequence that runs until Full Army
 	Local $TimeIdle = 0 ;In Seconds
 	If $debugSetlog = 1 Then SetLog("Func Idle ", $COLOR_PURPLE)
 
-	While $IsFullArmywithHeroesAndSpells = False
+	While $fullArmy = False Or $bFullArmyHero = False Or $bFullArmySpells = False
 		checkAndroidTimeLag()
 
 		If $RequestScreenshot = 1 Then PushMsgToPushBullet("RequestScreenshot")
@@ -443,9 +444,6 @@ Func Idle() ;Sequence that runs until Full Army
 		While $iReHere < 7
 			$iReHere += 1
 			DonateCC(True)
-			If $CommandStop = 3 then
-				If _Sleep(Random(10000,15000,1)) Then ExitLoop
-			EndIf
 			If _Sleep($iDelayIdle2) Then ExitLoop
 			If $iReHere = 6 Then
 				CheckNewChat()
@@ -457,13 +455,13 @@ Func Idle() ;Sequence that runs until Full Army
 		If _Sleep($iDelayIdle1) Then ExitLoop
 		checkMainScreen(False) ; required here due to many possible exits
 		If ($CommandStop = 3 Or $CommandStop = 0) Then
-			getArmyCapacity(True, False)  ; use true parameter to open train overview window
-			CheckOverviewFullArmy(False, False)
+			getArmyCapacity(True, False)
+			CheckOverviewFullArmy(False, False)  ; use true parameter to open train overview window
 			getArmyTroopCount(False, False)
 			getArmyHeroCount(False, False)
 			getArmySpellCount(False, True) ; use true parameter to close train overview window
 			If _Sleep($iDelayIdle1) Then Return
-			If ($fullArmy = False Or $bFullArmySpells = False) And $bTrainEnabled = True Then
+			If $fullArmy = False And $bTrainEnabled = True Then
 				SetLog("Army Camp and Barracks are not full, Training Continues...", $COLOR_ORANGE)
 				$CommandStop = 0
 			EndIf
@@ -499,19 +497,19 @@ Func Idle() ;Sequence that runs until Full Army
 				If _Sleep($iDelayIdle1) Then ExitLoop
 				checkMainScreen(False)
 		EndIf
-		If $debugsetlog = 1 Then Setlog("IDLE| $CommandStop		: " & $CommandStop)
-		If $debugsetlog = 1 Then Setlog("IDLE| $bTrainEnabled	: " & $bTrainEnabled)
-		If $debugsetlog = 1 Then Setlog("IDLE| $fullArmy			: " & $fullArmy)
-		If $debugsetlog = 1 Then Setlog("IDLE| $bFullArmySpells	: " & $bFullArmySpells)
+		If $debugsetlog = 1 Then Setlog("IDLE| $CommandStop : " & $CommandStop)
+		If $debugsetlog = 1 Then Setlog("IDLE| $bTrainEnabled : " & $bTrainEnabled)
+		If $debugsetlog = 1 Then Setlog("IDLE| $fullArmy 	: " & $fullArmy)
+		If $debugsetlog = 1 Then Setlog("IDLE| $bFullArmySpells : " & $bFullArmySpells)
 		If _Sleep($iDelayIdle1) Then Return
 		If $CommandStop = 0 And $bTrainEnabled = True Then
-			If $fullArmy = False or $bFullArmySpells = False Then
+			If $fullArmy = False Or $bFullArmySpells = False Then
 				Train()
 					If $Restart = True Then ExitLoop
 					If _Sleep($iDelayIdle1) Then ExitLoop
 					checkMainScreen(False)
 			EndIf
-			If $fullArmy and $bFullArmySpells Then
+			If $fullArmy And $bFullArmySpells Then
 				SetLog("Army Camp and Barracks are full, stop Training...", $COLOR_ORANGE)
 				$CommandStop = 3
 			EndIf
@@ -630,12 +628,12 @@ Func QuickAttack()
    EndIf
    $iTrophyCurrent = getTrophyMainScreen($aTrophies[0], $aTrophies[1])
    If ($iChkTrophyRange = 1 and Number($iTrophyCurrent) > Number($iTxtMaxTrophy))  then
-	  If $debugSetlog = 1 Then Setlog("No quickly re-attack, need to drop tropies",$COLOR_PURPLE )
+	  If $debugSetlog = 1 Then Setlog("No quickly re-attack, need to drop tropies",$COLOR_PURPLE)
 	  return False ;need to drop tropies
    EndIf
    If $iAtkAlgorithm[$DB] = 2  and IsSearchModeActive($DB) Then
 	  If Int($CurCamp) >=  $TotalCamp * $iEnableAfterArmyCamps[$DB]/100 and $iEnableSearchCamps[$DB]  = 1   Then
-		 If $debugSetlog = 1 Then Setlog("Milking: Quickly re-attack " &  Int($CurCamp) & " >= " & $TotalCamp & " * " & $iEnableAfterArmyCamps[$DB] & "/100 " & "= " &   $TotalCamp * $iEnableAfterArmyCamps[$DB]/100 ,$COLOR_PURPLE )
+		 If $debugSetlog = 1 Then Setlog("Milking: Quickly re-attack " &  Int($CurCamp) & " >= " & $TotalCamp & " * " & $iEnableAfterArmyCamps[$DB] & "/100 " & "= " &   $TotalCamp * $iEnableAfterArmyCamps[$DB]/100 ,$COLOR_PURPLE)
 		 return true ;milking attack OK!
 	  Else
 		 If $debugSetlog = 1 Then Setlog("Milking: No Quickly re-attack:  cur. "  & Int($CurCamp) & "  need " & $TotalCamp * $iEnableAfterArmyCamps[$DB]/100 & " firststart = " &  ($quicklyfirststart)  ,$COLOR_PURPLE)
@@ -644,7 +642,7 @@ Func QuickAttack()
    EndIf
    If IsSearchModeActive($TS) Then
 	  If Int($CurCamp) >=  $TotalCamp * $iEnableAfterArmyCamps[$TS]/100 and $iEnableSearchCamps[$TS]  = 1  Then
-		 If $debugSetlog = 1 Then Setlog("THSnipe: Quickly re-attack " &  Int($CurCamp) & " >= " & $TotalCamp & " * " & $iEnableAfterArmyCamps[$TS] & "/100 " & "= " &   $TotalCamp * $iEnableAfterArmyCamps[$TS]/100 ,$COLOR_PURPLE )
+		 If $debugSetlog = 1 Then Setlog("THSnipe: Quickly re-attack " &  Int($CurCamp) & " >= " & $TotalCamp & " * " & $iEnableAfterArmyCamps[$TS] & "/100 " & "= " &   $TotalCamp * $iEnableAfterArmyCamps[$TS]/100 ,$COLOR_PURPLE)
 		 return True ;ts snipe attack OK!
 	  Else
 		 If $debugSetlog = 1 Then Setlog("THSnipe: No Quickly re-attack:  cur. "  & Int($CurCamp) & "  need " & $TotalCamp * $iEnableAfterArmyCamps[$TS]/100 & " firststart = " &  ($quicklyfirststart)  ,$COLOR_PURPLE)

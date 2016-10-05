@@ -115,7 +115,7 @@ Local $x = 25, $y = 45
       $IMGchkDBHasteSpellWait = GUICtrlCreateIcon($pIconLib, $eIcnHasteSpell, $x+161, $y, 22, 22)
 	$y += 22
 	$x = 10
-		$chkDBSpellsWait = GUICtrlCreateCheckbox("Wait for Spells to be Ready", $x, $y, -1, -1)
+		$chkDBSpellsWait = GUICtrlCreateCheckbox(GetTranslated(625,11,"Wait for Spells to be Ready"), $x, $y, -1, -1)
 			$txtTip = GetTranslated(625,100, "Stop searching for this attack type when Spells are not ready") & @CRLF & _
 			GetTranslated(625,101, "Warning: Do not enable unless you have spell factory or bot will not attack!")
  			_GUICtrlSetTip(-1, $txtTip)

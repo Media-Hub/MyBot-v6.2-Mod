@@ -27,7 +27,7 @@ Local $x = 25, $y = 20
 			GUICtrlSetState(-1, $GUI_HIDE)
 			_GUICtrlSetTip(-1, $txtTip)
 		$y +=15
-		$cmbScriptNameAB=GUICtrlCreateCombo("", $x , $y, 185, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbScriptNameAB = GUICtrlCreateCombo("", $x , $y, 185, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			$txtTip = GetTranslated(607,4, -1)
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
@@ -57,17 +57,17 @@ Local $x = 25, $y = 20
 		; CSV Deployment Speed Mod
 		$y += 134
 		;;;; Attack Now (CSV) By MR.ViPeR ;;;;
-		$btnAttNow = GUICtrlCreateButton("Attack Now", $x + 71, $y - 30, 88, 25)
-				_GUICtrlSetTip(-1, "Attack Now Button (Useful for CSV Testing)")
+		$btnAttNow = GUICtrlCreateButton(GetTranslated(607,9, -1), $x + 71, $y - 30, 88, 25)
+				_GUICtrlSetTip(-1, GetTranslated(607,10, -1))
 				GUISetState(@SW_SHOW)
 				GUICtrlSetOnEvent(-1, "AttackNowAB")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
-		$grpScriptSpeedAB = GUICtrlCreateGroup("CSV Deployment Speed", $x, $y, 230, 50)
-			$lbltxtSelectedSpeedAB = GUICtrlCreateLabel("Normal speed", $x + 15, $y + 20, 75, 25)
-				_GUICtrlSetTip(-1, "Increase or decrease the speed at which the CSV attack script deploys troops and waves.")
+		$grpScriptSpeedAB = GUICtrlCreateGroup(GetTranslated(607,11, -1), $x, $y, 230, 50)
+			$lbltxtSelectedSpeedAB = GUICtrlCreateLabel(GetTranslated(607,12, -1), $x + 15, $y + 20, 75, 25)
+				_GUICtrlSetTip(-1, GetTranslated(607,13, -1))
 			$sldSelectedSpeedAB = GUICtrlCreateSlider($x + 98, $y + 20, 125, 25, BitOR($TBS_TOOLTIPS, $TBS_AUTOTICKS))
-				_GUICtrlSetTip(-1, "Increase or decrease the speed at which the CSV attack script deploys troops and waves.")
+				_GUICtrlSetTip(-1, GetTranslated(607,13, -1))
 				_GUICtrlSlider_SetTipSide(-1, $TBTS_BOTTOM)
 				_GUICtrlSlider_SetTicFreq(-1, 1)
 				GUICtrlSetLimit(-1, 12, 0) ; change max/min value
