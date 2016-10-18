@@ -7,7 +7,7 @@
 ;				 : $bCloseArmyWindow = Bool value, true if train overview window needs to be closed
 ; Return values .: None
 ; Author ........: Separated from checkArmyCamp()
-; Modified ......: MonkeyHunter (06-2016)
+; Modified ......: MonkeyHunter (06-2016), MR.ViPER (16-10-2016)
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2016
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......:
@@ -19,19 +19,19 @@ Func getArmyHeroCount($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 
 	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SETLOG("Begin getArmyTHeroCount:", $COLOR_PURPLE)
 
-	If $bOpenArmyWindow = False And IsTrainPage() = False Then ; check for train page
+	If $bOpenArmyWindow = False And ISArmyWindow() = False Then ; check for train page
 		SetError(1)
 		Return ; not open, not requested to be open - error.
 	ElseIf $bOpenArmyWindow = True Then
-		If openArmyOverview() = False Then
+		If OpenArmyWindow() = False Then
 			SetError(2)
 			Return ; not open, requested to be open - error.
 		EndIf
 		If _Sleep($iDelaycheckArmyCamp5) Then Return
 	EndIf
 
-	If $iTownHallLevel < 7 Then Return
-	
+	If $iTownHallLevel < 7 then return
+
 	$iHeroAvailable = $HERO_NOHERO ; Reset hero available data
 	$bFullArmyHero = False
 	Local $debugArmyHeroCount = 0 ; local debug flag
@@ -42,7 +42,7 @@ Func getArmyHeroCount($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 	Local $sMessage = ""
 
 	For $i = 0 To UBound($HeroSlots) - 1
-		$sResult = getHeroStatus($HeroSlots[$i][0], $HeroSlots[$i][1]) ; OCR slot for information
+		$sResult = ArmyHeroStatus($i) ; OCR slot for information
 		If $sResult <> "" Then ; we found something, figure out what?
 			Select
 				Case StringInStr($sResult, "king", $STR_NOCASESENSEBASIC)

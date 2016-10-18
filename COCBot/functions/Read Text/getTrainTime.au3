@@ -17,15 +17,15 @@
 Func getRemainingTrainTime($bTroops = True, $bSpells = True)
 
 	; Lets open the ArmyOverView Window (this function will check if we are on Main Page and wait for the window open returning True or False)
-	If openArmyOverview() Then
+	If OpenArmyWindow() Then
 
 		Local $aRemainTrainTroopTimer = 0
 		Local $aRemainTrainSpellsTimer = 0
 		Local $ResultTroopsHour, $ResultTroopsMinutes
 		Local $ResultSpellsHour, $ResultTroopsMinutes
 
-		Local $ResultTroops = getRemainTrainTimer(680, 176)
-		Local $ResultSpells = getRemainTrainTimer(360, 423)
+		Local $ResultTroops = getRemainTrainTimer(745, 165)
+		Local $ResultSpells = getRemainTrainTimer(495, 313)
 
 		If $bTroops = True Then
 			If StringInStr($ResultTroops, "h") > 1 Then

@@ -19,11 +19,11 @@ Func LoadElixirImage()
 	Local $x
 	Local $path = @ScriptDir & "\images\ELIXIR\"
 	Local $useimages
-	If $iDetectedImageType = 0 Then;all, exclude snow
+	If $iDetectedImageType = 0 Then ;all, exclude snow
 		$useimages = "*T*.bmp|*SNOW*.bmp"
-	ElseIf $iDetectedImageType = 1 Then;all,exclude normal
+	ElseIf $iDetectedImageType = 1 Then ;all,exclude normal
 		$useimages = "*T*.bmp|*NORM*.bmp"
-	Else;all
+	Else ;all
 		$useimages = "*T*.bmp"
 	EndIf
 	For $t = 0 To $maxElixirLevel
@@ -65,11 +65,11 @@ Func LoadElixirImage75Percent()
 	Local $x
 	Local $path = @ScriptDir & "\images\ELIXIR75PERCENT\"
 	Local $useimages
-	If $iDetectedImageType = 0 Then;exclude snow
+	If $iDetectedImageType = 0 Then ;exclude snow
 		$useimages = "*T*.bmp|*SNOW*.bmp"
-	ElseIf $iDetectedImageType = 1 Then;exclude normal
+	ElseIf $iDetectedImageType = 1 Then ;exclude normal
 		$useimages = "*T*.bmp|*NORM*.bmp"
-	Else;include all
+	Else ;include all
 		$useimages = "*T*.bmp"
 	EndIf
 	For $t = 0 To $maxElixirLevel
@@ -109,11 +109,11 @@ Func LoadElixirImage50Percent()
 	Local $x
 	Local $path = @ScriptDir & "\images\ELIXIR50PERCENT\"
 	Local $useimages
-	If $iDetectedImageType = 0 Then;exclude snow
+	If $iDetectedImageType = 0 Then ;exclude snow
 		$useimages = "*T*.bmp|*SNOW*.bmp"
-	ElseIf $iDetectedImageType = 1 Then;exclude normal
+	ElseIf $iDetectedImageType = 1 Then ;exclude normal
 		$useimages = "*T*.bmp|*NORM*.bmp"
-	Else;include all
+	Else ;include all
 		$useimages = "*T*.bmp"
 	EndIf
 	For $t = 0 To $maxElixirLevel
@@ -157,7 +157,7 @@ EndFunc   ;==>checkDeadBase
 ;checkDeadBase Variables:-------------===========================
 Global $AdjustTolerance = 0
 Global $Tolerance[5][11] = [[55, 55, 55, 80, 70, 70, 75, 80, 0, 75, 65], [55, 55, 55, 80, 80, 70, 75, 80, 0, 75, 65], [55, 55, 55, 80, 80, 70, 75, 80, 0, 75, 65], [55, 55, 55, 80, 80, 60, 75, 75, 0, 75, 60], [55, 55, 55, 80, 80, 70, 75, 80, 0, 75, 65]]
-Global $ZC = 0, $ZombieCount = 0;, $E
+Global $ZC = 0, $ZombieCount = 0 ;, $E
 Global $ZombieFileSets = 3 ;Variant Image to use organized as per Folder
 Global $ZSExclude = 0 ;Set to 0 to include Elixir Lvl 6, 1 to include lvl 7 and so on..
 Global $Lx[4] = [0, 400, 0, 400]
@@ -269,6 +269,9 @@ Func ZombieSearch2($limit = 0, $tolerancefix = 0)
 	Local $ElixirLocationx, $ElixirLocationy
 	Local $ZombieFound = False
 
+	Local $LogCase = $debugBuildingPos
+	If $LogCase = 0 Then $LogCase = 2
+
 	; calculate max number of files into folders
 	Local $Tolerance
 	Local $max100 = 0, $max75 = 0, $max50 = 0
@@ -303,18 +306,18 @@ Func ZombieSearch2($limit = 0, $tolerancefix = 0)
 				Else
 					$Tolerance = Number(StringMid(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), ".bmp") - StringInStr(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), "T") - 1))
 				EndIf
-				ConsoleWrite("Examine image 50% n." & $i)
-				ConsoleWrite(" for ElixirImage " & $t & "_50percent")
-				ConsoleWrite(" - image name: " & Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"))
-				ConsoleWrite(" - tolerance: <" & StringMid(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), ".BMP") - StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") - 1) & ">")
-				ConsoleWrite(" - tolerancecalc: " & $Tolerance)
-				ConsoleWrite(@CRLF)
+				LogItInCase("Examine image 50% n." & $i, $LogCase)
+				LogItInCase(" for ElixirImage " & $t & "_50percent", $LogCase)
+				LogItInCase(" - image name: " & Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), $LogCase)
+				LogItInCase(" - tolerance: <" & StringMid(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), ".BMP") - StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") - 1) & ">", $LogCase)
+				LogItInCase(" - tolerancecalc: " & $Tolerance, $LogCase)
+				LogItInCase(@CRLF, $LogCase)
 				$ElixirLocation = _ImageSearch(@ScriptDir & "\images\ELIXIR50PERCENT\" & $t + 6 & "\" & Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), 1, $ElixirLocationx, $ElixirLocationy, $Tolerance + ($DevMode = 1 ? Number($toleranceoffset) : 0)) ; Getting Elixir Location
-				ConsoleWrite("Imagesearch return: ")
-				ConsoleWrite("- ElixirLocation : " & $ElixirLocation)
-				ConsoleWrite("- ElixirLocationx : " & $ElixirLocationx)
-				ConsoleWrite("- TElixirLocationy : " & $ElixirLocationy)
-				ConsoleWrite(@CRLF)
+				LogItInCase("Imagesearch return: ", $LogCase)
+				LogItInCase("- ElixirLocation : " & $ElixirLocation, $LogCase)
+				LogItInCase("- ElixirLocationx : " & $ElixirLocationx, $LogCase)
+				LogItInCase("- TElixirLocationy : " & $ElixirLocationy, $LogCase)
+				LogItInCase(@CRLF, $LogCase)
 
 				If $ElixirLocation = 1 Then
 
@@ -356,18 +359,18 @@ Func ZombieSearch2($limit = 0, $tolerancefix = 0)
 						$Tolerance = Number(StringMid(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), ".bmp") - StringInStr(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), "T") - 1))
 					EndIf
 
-					ConsoleWrite("Examine image 75% n." & $i)
-					ConsoleWrite(" for ElixirImage " & $t & "_75percent")
-					ConsoleWrite(" - image name: " & Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"))
-					ConsoleWrite(" - tolerance: <" & StringMid(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), ".BMP") - StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") - 1) & ">")
-					ConsoleWrite(" - tolerancecalc: " & $Tolerance)
-					ConsoleWrite(@CRLF)
+					LogItInCase("Examine image 75% n." & $i, $LogCase)
+					LogItInCase(" for ElixirImage " & $t & "_75percent", $LogCase)
+					LogItInCase(" - image name: " & Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), $LogCase)
+					LogItInCase(" - tolerance: <" & StringMid(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), ".BMP") - StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") - 1) & ">", $LogCase)
+					LogItInCase(" - tolerancecalc: " & $Tolerance, $LogCase)
+					LogItInCase(@CRLF, $LogCase)
 					$ElixirLocation = _ImageSearch(@ScriptDir & "\images\ELIXIR75PERCENT\" & $t + 6 & "\" & Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), 1, $ElixirLocationx, $ElixirLocationy, $Tolerance + ($DevMode = 1 ? Number($toleranceoffset) : 0)) ; Getting Elixir Location
-					ConsoleWrite("Imagesearch return: ")
-					ConsoleWrite("- ElixirLocation : " & $ElixirLocation)
-					ConsoleWrite("- ElixirLocationx : " & $ElixirLocationx)
-					ConsoleWrite("- TElixirLocationy : " & $ElixirLocationy)
-					ConsoleWrite(@CRLF)
+					LogItInCase("Imagesearch return: ", $LogCase)
+					LogItInCase("- ElixirLocation : " & $ElixirLocation, $LogCase)
+					LogItInCase("- ElixirLocationx : " & $ElixirLocationx, $LogCase)
+					LogItInCase("- TElixirLocationy : " & $ElixirLocationy, $LogCase)
+					LogItInCase(@CRLF, $LogCase)
 
 					If $ElixirLocation = 1 Then
 
@@ -410,18 +413,18 @@ Func ZombieSearch2($limit = 0, $tolerancefix = 0)
 					Else
 						$Tolerance = Number(StringMid(Execute("$ElixirImages" & $t & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), ".bmp") - StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") - 1))
 					EndIf
-					ConsoleWrite("Examine image 100% n." & $i)
-					ConsoleWrite(" for ElixirImage " & $t)
-					ConsoleWrite(" - image name: " & Execute("$ElixirImages" & $t & "[" & $i & "]"))
-					ConsoleWrite(" - tolerance: <" & StringMid(Execute("$ElixirImages" & $t & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), ".BMP") - StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") - 1) & ">")
-					ConsoleWrite(" - tolerancecalc: " & $Tolerance)
-					ConsoleWrite(@CRLF)
+					LogItInCase("Examine image 100% n." & $i, $LogCase)
+					LogItInCase(" for ElixirImage " & $t, $LogCase)
+					LogItInCase(" - image name: " & Execute("$ElixirImages" & $t & "[" & $i & "]"), $LogCase)
+					LogItInCase(" - tolerance: <" & StringMid(Execute("$ElixirImages" & $t & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), ".BMP") - StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") - 1) & ">", $LogCase)
+					LogItInCase(" - tolerancecalc: " & $Tolerance, $LogCase)
+					LogItInCase(@CRLF, $LogCase)
 					$ElixirLocation = _ImageSearch(@ScriptDir & "\images\ELIXIR\" & $t + 6 & "\" & Execute("$ElixirImages" & $t & "[" & $i & "]"), 1, $ElixirLocationx, $ElixirLocationy, $Tolerance + ($DevMode = 1 ? Number($toleranceoffset) : 0)) ; Getting Elixir Location
-					ConsoleWrite("Imagesearch return: ")
-					ConsoleWrite("- ElixirLocation : " & $ElixirLocation)
-					ConsoleWrite("- ElixirLocationx : " & $ElixirLocationx)
-					ConsoleWrite("- TElixirLocationy : " & $ElixirLocationy)
-					ConsoleWrite(@CRLF)
+					LogItInCase("Imagesearch return: ", $LogCase)
+					LogItInCase("- ElixirLocation : " & $ElixirLocation, $LogCase)
+					LogItInCase("- ElixirLocationx : " & $ElixirLocationx, $LogCase)
+					LogItInCase("- TElixirLocationy : " & $ElixirLocationy, $LogCase)
+					LogItInCase(@CRLF, $LogCase)
 
 					If $ElixirLocation = 1 Then
 
@@ -462,13 +465,13 @@ Func ZombieSearch2($limit = 0, $tolerancefix = 0)
 		EndIf
 		If $debugBuildingPos = 1 And ($limit <> 0 Or $tolerancefix <> 0) Then Setlog("#*# ZombieSearch2: limit= " & $limit & ", tolerancefix=" & $tolerancefix, $COLOR_TEAL)
 		If $debugImageSave = 1 Then DebugImageSave("ZombieSearch2_NoDeadBaseFound_", True)
-	    If $debugsetlog=1 then Setlog("Collectors NO match, dead base not found",$color_purple)
+		If $debugsetlog = 1 Then Setlog("Collectors NO match, dead base not found", $color_purple)
 		Return False
 	Else
 		If $debugBuildingPos = 1 Then
 			Setlog(" FOUND = " & $ZombieFound, $COLOR_TEAL)
 		EndIf
-	    If $debugsetlog=1 then Setlog("Collectors match, dead base found",$color_purple)
+		If $debugsetlog = 1 Then Setlog("Collectors match, dead base found", $color_purple)
 		Return True
 	EndIf
 
@@ -508,3 +511,21 @@ Func SaveStatChkDeadBase()
 	EndIf
 	FileClose($hFile)
 EndFunc   ;==>SaveStatChkDeadBase
+
+Func LogItInCase($String, $Case)
+	Switch $Case
+		Case 1
+			If $String = @CRLF Or $String = @CR Or $String = @LF Then
+				SetLog("=========================")
+				Return True
+			EndIf
+			SetLog($String)
+			Return True
+		Case 2
+			ConsoleWrite($String)
+			Return True
+		Case Else
+			Return False
+	EndSwitch
+	Return False
+EndFunc   ;==>LogItInCase

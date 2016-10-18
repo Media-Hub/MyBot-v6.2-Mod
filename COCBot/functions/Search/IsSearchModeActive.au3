@@ -27,8 +27,8 @@ Func IsSearchModeActive($iMatchMode, $nocheckHeroes = False)
 	Local $checkSpells = ($bFullArmySpells And $iEnableSpellsWait[$iMatchMode] = 1) Or $iEnableSpellsWait[$iMatchMode] = 0
 	Local $totalSpellsToBrew = 0
 	;--- To Brew
-	$totalSpellsToBrew += $iPoisonSpellComp + $iEarthSpellComp + $iHasteSpellComp + $iSkeletonSpellComp + _
-	$iLightningSpellComp + $iRageSpellComp + $iHealSpellComp + $iJumpSpellComp + $iFreezeSpellComp + $iCloneSpellComp
+	$totalSpellsToBrew += $PSpellComp + $ESpellComp + $HaSpellComp + $SkSpellComp + _
+	$LSpellComp + $RSpellComp + $HSpellComp + $JSpellComp + $FSpellComp + $CSpellComp
 	;---
 	If GetCurTotalSpell() = $totalSpellsToBrew And $iEnableSpellsWait[$iMatchMode] = 1 Then
 		$checkSpells = True

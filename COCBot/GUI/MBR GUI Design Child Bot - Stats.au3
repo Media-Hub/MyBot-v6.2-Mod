@@ -135,53 +135,53 @@ $hGUI_STATS_TAB_ITEM1 = GUICtrlCreateTabItem(GetTranslated(600,38,"Gain"))
 
 
 	$x = $xStart
-	$y = $yStart + 113
+	$y = $yStart + 118
 
 	$grpLastAttack1 = GUICtrlCreateGroup(GetTranslated(632,102,"Last Attack"), $x - 20, $y - 15, 270, 115)
 	$x = $xStart + 10
-	$y = $yStart + 113 +20
-		$grpLastAttack = GUICtrlCreateGroup(GetTranslated(632, 11, "Gain"), $x - 20, $y - 15, 85, 90)
-			$lblLastAttackTemp = GUICtrlCreateLabel(GetTranslated(632, 3, "Report") & @CRLF & GetTranslated(632, 4, "will appear") & @CRLF & GetTranslated(632, 97, "here after") & @CRLF & GetTranslated(632, 98, "each attack."), $x - 15, $y + 5, 100, 65, BitOR($SS_LEFT, $BS_MULTILINE))
-				GUICtrlCreateIcon($pIconLib, $eIcnGold, $x + 45, $y, 16, 16)
-				$lblGoldLastAttack = GUICtrlCreateLabel("", $x - 15, $y + 2, 55, 17, $SS_RIGHT)
-				$txtTip = GetTranslated(632, 12, "The amount of Gold you gained on the last attack.")
-				_GUICtrlSetTip(-1, $txtTip)
-			$y += 17
-			GUICtrlCreateIcon($pIconLib, $eIcnElixir, $x + 45, $y, 16, 16)
-				$lblElixirLastAttack = GUICtrlCreateLabel("", $x - 15, $y + 2, 55, 17, $SS_RIGHT)
-				$txtTip = GetTranslated(632, 13, "The amount of Elixir you gained on the last attack.")
-				_GUICtrlSetTip(-1, $txtTip)
-			$y += 17
-			$picDarkLastAttack = GUICtrlCreateIcon($pIconLib, $eIcnDark, $x + 45, $y, 16, 16)
-				$lblDarkLastAttack = GUICtrlCreateLabel("", $x - 15, $y + 2, 55, 17, $SS_RIGHT)
-				$txtTip = GetTranslated(632,14, "The amount of Dark Elixir you gained on the last attack.")
-				_GUICtrlSetTip(-1, $txtTip)
-			$y += 17
-			GUICtrlCreateIcon($pIconLib, $eIcnTrophy, $x + 45, $y, 16, 16)
-				$lblTrophyLastAttack = GUICtrlCreateLabel("", $x - 15, $y + 2, 55, 17, $SS_RIGHT)
-				$txtTip = GetTranslated(632,15, "The amount of Trophies you gained or lost on the last attack.")
-				_GUICtrlSetTip(-1, $txtTip)
-		GUICtrlCreateGroup("", -99, -99, 1, 1)
+	$y = $yStart + 118 +20
+	   $grpLastAttack = GUICtrlCreateGroup(GetTranslated(632, 11, "Gain"), $x - 20, $y - 15, 85, 90)
+		   $lblLastAttackTemp = GUICtrlCreateLabel(GetTranslated(632, 3, "Report") & @CRLF & GetTranslated(632, 4, "will appear") & @CRLF & GetTranslated(632, 97, "here after") & @CRLF & GetTranslated(632, 98, "each attack."), $x - 15, $y + 5, 100, 65, BitOR($SS_LEFT, $BS_MULTILINE))
+			   GUICtrlCreateIcon($pIconLib, $eIcnGold, $x + 45, $y, 16, 16)
+			   $lblGoldLastAttack = GUICtrlCreateLabel("", $x - 15, $y + 2, 55, 17, $SS_RIGHT)
+			   $txtTip = GetTranslated(632, 12, "The amount of Gold you gained on the last attack.")
+			   _GUICtrlSetTip(-1, $txtTip)
+		   $y += 17
+		   GUICtrlCreateIcon($pIconLib, $eIcnElixir, $x + 45, $y, 16, 16)
+			   $lblElixirLastAttack = GUICtrlCreateLabel("", $x - 15, $y + 2, 55, 17, $SS_RIGHT)
+			   $txtTip = GetTranslated(632, 13, "The amount of Elixir you gained on the last attack.")
+			   _GUICtrlSetTip(-1, $txtTip)
+		   $y += 17
+		   $picDarkLastAttack = GUICtrlCreateIcon($pIconLib, $eIcnDark, $x + 45, $y, 16, 16)
+			   $lblDarkLastAttack = GUICtrlCreateLabel("", $x - 15, $y + 2, 55, 17, $SS_RIGHT)
+			   $txtTip = GetTranslated(632,14, "The amount of Dark Elixir you gained on the last attack.")
+			   _GUICtrlSetTip(-1, $txtTip)
+		   $y += 17
+		   GUICtrlCreateIcon($pIconLib, $eIcnTrophy, $x + 45, $y, 16, 16)
+			   $lblTrophyLastAttack = GUICtrlCreateLabel("", $x - 15, $y + 2, 55, 17, $SS_RIGHT)
+			   $txtTip = GetTranslated(632,15, "The amount of Trophies you gained or lost on the last attack.")
+			   _GUICtrlSetTip(-1, $txtTip)
+	   GUICtrlCreateGroup("", -99, -99, 1, 1)
 
-		$x = $xStart +10 + 90
-		$y = $yStart + 113 +20
-		$grpLastAttackBonus = GUICtrlCreateGroup(GetTranslated(632,16, "League Bonus"), $x - 20, $y - 15, 85, 90)
-			$lblLastAttackBonusTemp = GUICtrlCreateLabel(GetTranslated(632,3, "Report") & @CRLF & GetTranslated(632,99, "will update") & @CRLF & GetTranslated(632,97, "here after") & @CRLF & GetTranslated(632,98, "each attack."), $x - 15, $y + 5, 100, 65, BitOR($SS_LEFT, $BS_MULTILINE))
-				GUICtrlCreateIcon($pIconLib, $eIcnGold, $x + 45, $y, 16, 16)
-				$lblGoldBonusLastAttack = GUICtrlCreateLabel("", $x - 15, $y + 2, 55, 17, $SS_RIGHT)
-				$txtTip = GetTranslated(632,17, "The amount of Bonus Gold you gained on the last attack.")
-				_GUICtrlSetTip(-1, $txtTip)
-			$y += 17
-				GUICtrlCreateIcon($pIconLib, $eIcnElixir, $x + 45, $y, 16, 16)
-				$lblElixirBonusLastAttack = GUICtrlCreateLabel("", $x - 15, $y + 2, 55, 17, $SS_RIGHT)
-				$txtTip = GetTranslated(632,18, "The amount of Bonus Elixir you gained on the last attack.")
-				_GUICtrlSetTip(-1, $txtTip)
-			$y += 17
-				$picDarkBonusLastAttack = GUICtrlCreateIcon($pIconLib, $eIcnDark, $x + 45, $y, 16, 16)
-				$lblDarkBonusLastAttack = GUICtrlCreateLabel("", $x - 15, $y + 2, 55, 17, $SS_RIGHT)
-				$txtTip = GetTranslated(632,19, "The amount of Bonus Dark Elixir you gained on the last attack.")
-				_GUICtrlSetTip(-1, $txtTip)
-		GUICtrlCreateGroup("", -99, -99, 1, 1)
+	   $x = $xStart +10 + 90
+	   $y = $yStart + 118 +20
+	   $grpLastAttackBonus = GUICtrlCreateGroup(GetTranslated(632,16, "League Bonus"), $x - 20, $y - 15, 85, 90)
+		   $lblLastAttackBonusTemp = GUICtrlCreateLabel(GetTranslated(632,3, "Report") & @CRLF & GetTranslated(632,99, "will update") & @CRLF & GetTranslated(632,97, "here after") & @CRLF & GetTranslated(632,98, "each attack."), $x - 15, $y + 5, 100, 65, BitOR($SS_LEFT, $BS_MULTILINE))
+			   GUICtrlCreateIcon($pIconLib, $eIcnGold, $x + 45, $y, 16, 16)
+			   $lblGoldBonusLastAttack = GUICtrlCreateLabel("", $x - 15, $y + 2, 55, 17, $SS_RIGHT)
+			   $txtTip = GetTranslated(632,17, "The amount of Bonus Gold you gained on the last attack.")
+			   _GUICtrlSetTip(-1, $txtTip)
+		   $y += 17
+			   GUICtrlCreateIcon($pIconLib, $eIcnElixir, $x + 45, $y, 16, 16)
+			   $lblElixirBonusLastAttack = GUICtrlCreateLabel("", $x - 15, $y + 2, 55, 17, $SS_RIGHT)
+			   $txtTip = GetTranslated(632,18, "The amount of Bonus Elixir you gained on the last attack.")
+			   _GUICtrlSetTip(-1, $txtTip)
+		   $y += 17
+			   $picDarkBonusLastAttack = GUICtrlCreateIcon($pIconLib, $eIcnDark, $x + 45, $y, 16, 16)
+			   $lblDarkBonusLastAttack = GUICtrlCreateLabel("", $x - 15, $y + 2, 55, 17, $SS_RIGHT)
+			   $txtTip = GetTranslated(632,19, "The amount of Bonus Dark Elixir you gained on the last attack.")
+			   _GUICtrlSetTip(-1, $txtTip)
+	   GUICtrlCreateGroup("", -99, -99, 1, 1)
 		$x = 3
 		$y += 63
 			$grpMods = GUICtrlCreateGroup(GetTranslated(632,103, "Stats Top Loot"), $x +2, $y -16, 428, 75)
@@ -219,8 +219,8 @@ $hGUI_STATS_TAB_ITEM1 = GUICtrlCreateTabItem(GetTranslated(600,38,"Gain"))
 			_GUICtrlSetTip(-1, $txtTip)
 		GUICtrlCreateGroup("", -99, -99, 1, 1)
 
-		$x = $xStart +10 + 165
-		$y = $yStart + 113 +20
+	   $x = $xStart +10 + 165
+	   $y = $yStart + 118 +20
 		;Display League in Stats ==>
 		$grpLeague = GUICtrlCreateGroup(GetTranslated(632,106, "League"), $x - 5, $y - 15, 70, 90)
 			$y += 1
@@ -672,7 +672,7 @@ $hGUI_STATS_TAB_ITEM3 = GUICtrlCreateTabItem(GetTranslated(600,40,"Attacks"))
 			GUICtrlCreateIcon($pIconLib, $eIcnDrill, $x + 73, $y - 4, 16, 16)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
-	; MOD Smart Zap
+#cs	; MOD Smart Zap
 	$x = $xStart
 	$y = $yStart + 270
 	$grpStatsSZ = GUICtrlCreateGroup("SmZap && ExZap", $x - 20, $y - 20, 111, 55)
@@ -692,7 +692,151 @@ $hGUI_STATS_TAB_ITEM3 = GUICtrlCreateTabItem(GetTranslated(600,40,"Attacks"))
 			$txtTip = "Number of dark elixir zapped during the attack with lightning."
 			_GUICtrlSetTip(-1, $txtTip)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
+#ce
 ;--> TAB Attacks
+
+;TAB Donation Stats
+$hGUI_STATS_TAB_ITEM4 = GUICtrlCreateTabItem("Donate Stats")
+	Local $xStart = 25, $yStart = 45
+	$x = $xStart
+	$y = $yStart
+	$grpStatsETroops = GUICtrlCreateGroup("Elixir Troops", $x - 20, $y - 20, 425, 130)
+	;Barbarian
+		GUICtrlCreateIcon($pIconLib, $eIcnBarbarian, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eBarb, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Archer
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnArcher, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eArch, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Giant
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnGiant, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eGiant, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Goblin
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnGoblin, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eGobl, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Wall Breaker
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnWallBreaker, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eWall, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Balloon
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnBalloon, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eBall, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+
+	;2nd ROW
+	$x = $xStart
+	$y += 35
+	;Wizard
+		GUICtrlCreateIcon($pIconLib, $eIcnWizard, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eWiza, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Healer
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnHealer, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eHeal, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Dragon
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnDragon, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eDrag, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Pekka
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnPekka, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $ePekk, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Baby Dragon
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnBabyDragon, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eBabyD, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Miner
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnMiner, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eMine, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+
+	;3rd ROW
+	$x = $xStart
+	$y += 42
+
+	;Total Label
+	$x += 32 + 27 + 10 + 32 + 27 + 126
+		$lblTotalDonated = GUICtrlCreateLabel("Total Donated: 0", $x, $y + 10, 150, 16)
+			GUICtrlSetFont(-1,10, 800) ; bold
+			GUICtrlSetBkColor (-1, 0xbfdfff)
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+
+	$x = $xStart
+	$y = $yStart + 130
+	$grpStatsDTroops = GUICtrlCreateGroup("Dark Elixir Troops", $x - 20, $y - 20, 425, 100)
+	;Minion
+		GUICtrlCreateIcon($pIconLib, $eIcnMinion, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eMini, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Hog Rider
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnHogRider, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eHogs, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Valkyrie
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnValkyrie, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eValk, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Golem
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnGolem, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eGole, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Witch
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnWitch, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eWitc, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Lava Hound
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnLavaHound, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eLava, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;2nd ROW
+	$x = $xStart
+	$y += 35
+	;Bowler
+		GUICtrlCreateIcon($pIconLib, $eIcnBowler, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eBowl, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+
+	$y += 12
+	;Total Donation
+	$x += 32 + 27 + 10 + 32 + 27 + 126
+		$lblTotalDonatedDark = GUICtrlCreateLabel("Total Donated: 0", $x, $y + 10, 150, 16)
+			GUICtrlSetFont(-1,10, 800) ; bold
+			GUICtrlSetBkColor (-1, 0xbfdfff)
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+
+	$x = $xStart
+	$y = $yStart + 130 + 100
+	$grpStatsDTroops = GUICtrlCreateGroup("Dark Spells", $x - 20, $y - 20, 425, 70)
+	;Poison
+		GUICtrlCreateIcon($pIconLib, $eIcnPoisonSpell, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $ePSpell, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;EarthQuake
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnEarthQuakeSpell, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eESpell, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Haste
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnHasteSpell, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eHaSpell, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+	;Skeleton
+	$x += 32 + 27 + 10
+		GUICtrlCreateIcon($pIconLib, $eIcnSkeletonSpell, $x - 5, $y, 32, 32)
+			Assign("lblDonated" & $eSkSpell, GUICtrlCreateLabel("0", $x + 32, $y + 8, 27, 16), 2)
+
+	$y += 11
+	;Total Donation
+	$x += 32 + 22
+		$lblTotalDonatedSpell = GUICtrlCreateLabel("Total Donated: 0", $x - 7, $y + 16, 150, 16)
+			GUICtrlSetFont(-1,10, 800) ; bold
+			GUICtrlSetBkColor (-1, 0xbfdfff)
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+
+	$y -= 6
+	$x += 15
+	;Reset Donation Stats
+	GUICtrlCreateButton("Reset Don. Stats", $x + 20, $y + 48, 110,30)
+		GUICtrlSetOnEvent(-1, "ResetDonateStats")
+;--> TAB Donation Stats
+
 GUICtrlCreateTabItem("")
 ;GUISetState()

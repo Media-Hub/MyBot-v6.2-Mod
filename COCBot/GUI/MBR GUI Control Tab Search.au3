@@ -68,6 +68,12 @@ Func chkDBWeakBase()
 		GUICtrlSetState($cmbWeakWizTower[$DB], $GUI_DISABLE)
 	EndIf
 
+	If GUICtrlRead($chkMaxAirDefense[$DB]) = $GUI_CHECKED Then
+		GUICtrlSetState($cmbWeakAirDefense[$DB], $GUI_ENABLE)
+	Else
+		GUICtrlSetState($cmbWeakAirDefense[$DB], $GUI_DISABLE)
+	EndIf
+
 	If GUICtrlRead($chkMaxXBow[$DB]) = $GUI_CHECKED Then
 		GUICtrlSetState($cmbWeakXBow[$DB], $GUI_ENABLE)
 	Else
@@ -140,6 +146,12 @@ Func chkABWeakBase()
 		GUICtrlSetState($cmbWeakWizTower[$LB], $GUI_ENABLE)
 	Else
 		GUICtrlSetState($cmbWeakWizTower[$LB], $GUI_DISABLE)
+	EndIf
+
+	If GUICtrlRead($chkMaxAirDefense[$LB]) = $GUI_CHECKED Then
+		GUICtrlSetState($cmbWeakAirDefense[$LB], $GUI_ENABLE)
+	Else
+		GUICtrlSetState($cmbWeakAirDefense[$LB], $GUI_DISABLE)
 	EndIf
 
 	If GUICtrlRead($chkMaxXBow[$LB]) = $GUI_CHECKED Then
@@ -234,14 +246,12 @@ Func chkDBActivateCamps()
 	If GUICtrlRead($chkDBActivateCamps) = $GUI_CHECKED Then
 		GUICtrlSetState($lblDBArmyCamps, $GUI_ENABLE)
 		GUICtrlSetState($txtDBArmyCamps, $GUI_ENABLE)
-		GUICtrlSetState($txtDBArmyCampsPerc, $GUI_ENABLE)
 		;_GUI_Value_STATE("SHOW", $groupSearchDB)
 		;cmbDBGoldElixir()
 		;_GUI_Value_STATE("SHOW", $groupHerosDB)
 	Else
 		GUICtrlSetState($lblDBArmyCamps, $GUI_DISABLE)
 		GUICtrlSetState($txtDBArmyCamps, $GUI_DISABLE)
-		GUICtrlSetState($txtDBArmyCampsPerc, $GUI_DISABLE)
 		;_GUI_Value_STATE("HIDE", $groupSearchDB)
 		;_GUI_Value_STATE("HIDE", $groupHerosDB)
 	EndIf

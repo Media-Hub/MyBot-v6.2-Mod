@@ -12,7 +12,6 @@
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: No
 ; ===============================================================================================================================
-
 Func cmbProfile()
 	saveConfig()
 
@@ -27,9 +26,6 @@ Func cmbProfile()
 	readConfig()
 	applyConfig()
 	saveConfig()
-
-	;DonateStats ============================
-	InitDonateStats()
 
 	SetLog("Profile " & $sCurrProfile & " loaded from " & $config, $COLOR_GREEN)
 
@@ -179,8 +175,7 @@ Func chkRestartAndroid()
 		Next
 	EndIf
 EndFunc   ;==>chkRestartAndroid
-
-#Cs
+#cs
 Func btnAddConfirm()
 	Switch @GUI_CtrlId
 		Case $btnAdd
@@ -294,7 +289,7 @@ Func btnRenameConfirm()
 			SetLog("If you are seeing this log message there is something wrong.", $COLOR_RED)
 	EndSwitch
 EndFunc   ;==>btnRenameConfirm
-#Ce
+#ce
 Func cmbBotCond()
 	If _GUICtrlComboBox_GetCurSel($cmbBotCond) = 15 Then
 		If _GUICtrlComboBox_GetCurSel($cmbHoursStop) = 0 Then _GUICtrlComboBox_SetCurSel($cmbHoursStop, 1)
@@ -391,7 +386,7 @@ Func btnLocateTownHall()
 	_ExtMsgBoxSet(1 + 64, $SS_CENTER, 0x004080, 0xFFFF00, 12, "Comic Sans MS", 600)
 	Local $stext = @CRLF & GetTranslated(640, 72, "If you locating your TH because you upgraded,") & @CRLF & _
 			GetTranslated(640, 73, "then you must restart bot!!!") & @CRLF & @CRLF & _
-			GetTranslated(640, 74, "Click OK to restart bot") & ", " & @CRLF & @CRLF & GetTranslated(640, 65, "Or Click Cancel to exit") & @CRLF
+			GetTranslated(640, 74, "Click OK to restart bot") & " ," & @CRLF & @CRLF & GetTranslated(640, 65, "Or Click Cancel to exit") & @CRLF
 	Local $MsgBox = _ExtMsgBox(0, GetTranslated(640, 1, "Ok|Cancel"), GetTranslated(640, 76, "Close Bot Please!"), $stext, 120, $frmBot)
 	If $DebugSetlog = 1 Then Setlog("$MsgBox= " & $MsgBox, $COLOR_PURPLE)
 	If $MsgBox = 1 Then

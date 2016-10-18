@@ -57,4 +57,3 @@ DROP  |I          |1          |1          |Rspell     |1          |0          |5
       |VECTOR_____|INDEX______|QTY_X_VECT_|TROOPNAME__|DELAY_DROP_|DELAYCHANGE|SLEEPAFTER_|___________| ,,,,,
 DROP  |A          |1          |6          |Arch       |1          |100        |300        |           | ,,,,,
 WAIT  |200-250    |           |           |           |           |           |           |           |,,,,,
-RECALC|           |           |           |           |           |           |           |           | 

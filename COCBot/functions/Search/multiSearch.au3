@@ -5,7 +5,7 @@
 ; Parameters ....: None
 ; Return values .: An array of values of detected defense levels and information
 ; Author ........: LunaEclipse(April 2016)
-; Modified ......:
+; Modified ......: MR.ViPER (October-2016)
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......:
@@ -98,7 +98,7 @@ Func returnPropertyValue($key, $property)
 	Local $aValue = DllCall($hImgLib, "str", "GetProperty", "str", $key, "str", $property)
 
 	Return $aValue[0]
-EndFunc   ;==>getProperty
+EndFunc   ;==>returnPropertyValue
 
 Func updateResultsRow(ByRef $aResult, $redLines = "")
 	; Create the local variable to do the counting
@@ -108,7 +108,7 @@ Func updateResultsRow(ByRef $aResult, $redLines = "")
 		; Loop through the results to get the total number of objects found
 		If UBound($aResult) > 1 Then
 			For $j = 1 To UBound($aResult) - 1
-				$numberFound +=	Number($aResult[$j][4])
+				$numberFound += Number($aResult[$j][4])
 			Next
 		EndIf
 
@@ -179,6 +179,98 @@ Func multiMatches($directory, $maxReturnPoints = 0, $fullCocAreas = "DCD", $redL
 	Return $aResult
 EndFunc   ;==>multiMatches
 
+Func multiMatches2($directory, $maxReturnPoints = 0, $fullCocAreas = "DCD", $redLines = "", $statFile = "", $minLevel = 0, $maxLevel = 1000)
+	; Setup arrays, including default return values for $return
+	Local $aResult[1][6] = [["", 0, 0, "Seconds", "", ""]], $aCoordArray[0][0], $aCoords, $aCoordsSplit, $aValue
+
+	; Capture the screen for comparison
+	_CaptureRegion2()
+	; Perform the search
+
+	$res = DllCall($hImgLib, "str", "SearchMultipleTilesBetweenLevels", "handle", $hHBitmap2, "str", $directory, "str", $fullCocAreas, "Int", $maxReturnPoints, "str", $redLines, "Int", $minLevel, "Int", $maxLevel)
+
+	Local $strPositions = ""
+	If $res[0] <> "" Then
+		; Get the keys for the dictionary item.
+		Local $aKeys = StringSplit($res[0], "|", $STR_NOCOUNT)
+		; Loop through the array
+		For $i = 0 To UBound($aKeys) - 1
+			; Get the coords property
+			$aValue = returnPropertyValue($aKeys[$i], "objectpoints")
+			$strPositions &= $aValue & "|"
+		Next
+	EndIf
+
+	If StringRight($strPositions, 1) = "|" Then $strPositions = StringLeft($strPositions, StringLen($strPositions) - 1)
+	Return $strPositions
+EndFunc   ;==>multiMatches2
+
+Func multiMatchesPixelOnly($directory, $maxReturnPoints = 0, $fullCocAreas = "DCD", $redLines = "", $statFile = "", $minLevel = 0, $maxLevel = 1000)
+	; Setup arrays, including default return values for $return
+	Local $Result = ""
+
+	; Capture the screen for comparison
+	_CaptureRegion2()
+
+	; Perform the search
+	$res = DllCall($hImgLib, "str", "SearchMultipleTilesBetweenLevels", "handle", $hHBitmap2, "str", $directory, "str", $fullCocAreas, "Int", $maxReturnPoints, "str", $redLines, "Int", $minLevel, "Int", $maxLevel)
+
+	If $res[0] <> "" Then
+		; Get the keys for the dictionary item.
+		Local $aKeys = StringSplit($res[0], "|", $STR_NOCOUNT)
+
+		; Loop through the array
+		For $i = 0 To UBound($aKeys) - 1
+			$Result &= returnPropertyValue($aKeys[$i], "objectpoints") & "|"
+		Next
+	EndIf
+
+	If StringRight($Result, 1) = "|" Then $Result = StringLeft($Result, (StringLen($Result) - 1))
+	Return $Result
+EndFunc   ;==>multiMatchesPixelOnly
+
+Func SearchWalls($directory, $minLevel = 0, $maxLevel = 11, $maxReturnPoints = 0, $fullCocAreas = "ECD", $redLines = "ECD", $statFile = "")
+	Local $DebugIt = False
+	; Setup arrays, including default return values for $return
+	Local $aResult[1][4]
+	Local $i
+	; Capture the screen for comparison
+	_CaptureRegion2()
+
+	; Perform the search
+	$res = DllCall($hImgLib, "str", "SearchMultipleTilesBetweenLevels", "handle", $hHBitmap2, "str", $directory, "str", $fullCocAreas, "Int", $maxReturnPoints, "str", $redLines, "Int", $minLevel, "Int", $maxLevel)
+	If $res[0] <> "" Then
+		; Get the keys for the dictionary item.
+		Local $aKeys = StringSplit($res[0], "|", $STR_NOCOUNT)
+
+		; Redimension the result array to allow for the new entries
+		ReDim $aResult[UBound($aKeys) + 1][6]
+
+		; Loop through the array
+		For $i = 0 To UBound($aKeys) - 1
+			; Get the property values
+			$aResult[$i][1] = returnPropertyValue($aKeys[$i], "objectlevel")
+			$aResult[$i][2] = returnPropertyValue($aKeys[$i], "totalobjects")
+			$aResult[$i][3] = returnPropertyValue($aKeys[$i], "filename")
+			If $DebugIt = True Then
+				SetLog("Found x" & $aResult[$i][2] & " Level #" & $aResult[$i][1] & " Walls By '" & $aResult[$i][3] & "' Image")
+			EndIf
+
+			; Get the coords property
+			$aValue = returnPropertyValue($aKeys[$i], "objectpoints")
+			$aValue = StringReplace($aValue, ",", "-")
+
+			$aResult[$i][0] = $aValue
+		Next
+	EndIf
+
+	; Updated the results row of the array, no need to assign to a variable, because the array is passed ByRef,
+	; so the function updates the array that is passed as a parameter.
+	updateMultiSearchStats($aResult, $statFile)
+	If $i = 1 Then _ArrayDelete($aResult, 1)
+	Return $aResult
+EndFunc   ;==>SearchWalls
+
 Func returnMultipleMatchesOwnVillage($directory, $maxReturnPoints = 0, $statFile = "", $minLevel = 0, $maxLevel = 1000)
 	; This is simple, just do a multiMatch search, but pass "ECD" for the redlines and full coc area
 	; so whole village is checked because obstacles can appear on the outer grass area
@@ -201,6 +293,13 @@ Func returnAllMatches($directory, $redLines = "", $statFile = "", $minLevel = 0,
 
 	Return $aResult
 EndFunc   ;==>returnAllMatches
+
+Func returnAllMatchesDefense($directory, $statFile = "", $minLevel = 0, $maxLevel = 1000)
+	; This is simple, just do a multiMatches search with 0 for the Max return points parameter
+	Local $aResult = multiMatches2($directory, 0, "DCD", $redLinesDefense[0], $statFile, $minLevel, $maxLevel)
+
+	Return $aResult
+EndFunc   ;==>returnAllMatchesDefense
 
 Func returnHighestLevelSingleMatch($directory, $redLines = "", $statFile = "", $minLevel = 0, $maxLevel = 1000)
 	; Setup default return coords of 0,0

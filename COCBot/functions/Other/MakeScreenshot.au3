@@ -35,7 +35,7 @@ Func MakeScreenshot($TargetDir, $type = "jpg")
 				Setlog("Screenshot warning: Locate the Clan Castle to hide the clanname!", $COLOR_RED)
 			EndIf
 			_GDIPlus_GraphicsFillRect($hGraphic, 0, 0, 250, 50, $hBrush) ;draw filled rectangle on the image to hide the user IGN
-			If $aCCPos[0] <> -1 Then _GDIPlus_GraphicsFillRect($hGraphic, $aCCPos[0] - 33, $aCCPos[1] - 2, 66, 18, $hBrush) ;draw filled rectangle on the image to hide the user CC if position is known
+			If $aCCPos[0] <> -1 Then _GDIPlus_GraphicsFillRect($hGraphic, $aCCPos[0] - $IsCCAutoLocated[2], $aCCPos[1] - $IsCCAutoLocated[3], 66, 18, $hBrush) ;draw filled rectangle on the image to hide the user CC if position is known
 		EndIf
 		Local $Date = @YEAR & "-" & @MON & "-" & @MDAY
 		Local $Time = @HOUR & "." & @MIN & "." & @SEC

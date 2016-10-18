@@ -36,9 +36,6 @@ Func CheckBaseQuick()
 		EndIf
 
 		Collect() ; Empty Collectors
-		If $ClosedDueToPB = True Then
-			ToggleGuard()
-		EndIf
 		If _Sleep($iDelayRunBot1) Then Return
 
 	Else

@@ -44,6 +44,17 @@ Func ReArm()
 
 	ClickP($aAway, 1, 0, "#0224") ; Click away
 	If _Sleep($iDelayReArm4) Then Return
+
+	; Just in case of ZoomOut limitation
+	_CaptureRegion2()
+	Local $PixelTHHere = GetLocationItem("getLocationTownHall", True)
+	If UBound($PixelTHHere) > 0 Then
+		$pixel = $PixelTHHere[0]
+		$TownHallPos[0] = $pixel[0]
+		$TownHallPos[1] = $pixel[1]
+		If $debugSetlog = 1 Then SetLog("ImgLoc# Townhall: (" & $TownHallPos[0] & "," & $TownHallPos[1] & ")", $COLOR_RED)
+	EndIf
+
 	If IsMainPage() Then Click($TownHallPos[0], $TownHallPos[1] + 5, 1, 0, "#0225")
 
 	If _Sleep($iDelayReArm2) Then Return

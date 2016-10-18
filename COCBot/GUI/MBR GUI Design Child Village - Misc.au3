@@ -28,7 +28,7 @@ Local $x = 15, $y = 45
 			GUICtrlSetOnEvent(-1, "chkBotStop")
 		$cmbBotCommand = GUICtrlCreateCombo("", $x + 20, $y - 3, 95, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetData(-1, GetTranslated(610,3, "Halt Attack") & "|" & GetTranslated(610,4, "Stop Bot") & "|" & GetTranslated(610,5, "Close Bot") & "|" & GetTranslated(610,6, "Close CoC+Bot") & "|" & GetTranslated(610,7, "Shutdown PC") & "|" & GetTranslated(610,8, "Sleep PC") & "|" & GetTranslated(610,9, "Reboot PC") & "|" & GetTranslated(610,76, "Restart Android"), GetTranslated(610,3, -1))
+			GUICtrlSetData(-1, GetTranslated(610,3, "Halt Attack") & "|" & GetTranslated(610,4, "Stop Bot") & "|" & GetTranslated(610,5, "Close Bot") & "|" & GetTranslated(610,6, "Close CoC+Bot") & "|" & GetTranslated(610,7, "Shutdown PC") & "|" & GetTranslated(610,8, "Sleep PC") & "|" & GetTranslated(610,9, "Reboot PC"), GetTranslated(610,3, -1))
 			GUICtrlSetState (-1, $GUI_DISABLE)
 		$lblBotCond = GUICtrlCreateLabel(GetTranslated(610,10, "When..."), $x + 128, $y, 45, 17)
 		$cmbBotCond = GUICtrlCreateCombo("", $x + 175, $y - 3, 160, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))

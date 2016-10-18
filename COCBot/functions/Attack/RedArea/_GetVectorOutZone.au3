@@ -1,3 +1,4 @@
+
 ; #FUNCTION# ====================================================================================================================
 ; Name ..........: _GetVectorOutZone
 ; Description ...:
@@ -17,31 +18,31 @@ Func _GetVectorOutZone($eVectorType)
 	Local $vectorOutZone[0]
 
 	If ($eVectorType = $eVectorLeftTop) Then
-		$xMin = 33
-		$yMin = 325
-		$xMax = 430
-		$yMax = 29
+		$xMin = 2
+		$yMin = 349
+		$xMax = 440
+		$yMax = 30
 		$xStep = 4
 		$yStep = -3
 	ElseIf ($eVectorType = $eVectorRightTop) Then
-		$xMin = 430
-		$yMin = 29
-		$xMax = 834
-		$yMax = 325
+		$xMin = 440
+		$yMin = 30
+		$xMax = 857
+		$yMax = 349
 		$xStep = 4
 		$yStep = 3
 	ElseIf ($eVectorType = $eVectorLeftBottom) Then
-		$xMin = 39
-		$yMin = 338
-		$xMax = 430
+		$xMin = 2
+		$yMin = 349
+		$xMax = 440
 		$yMax = 630
 		$xStep = 4
 		$yStep = 3
 	Else
-		$xMin = 430
+		$xMin = 440
 		$yMin = 630
-		$xMax = 834
-		$yMax = 325
+		$xMax = 857
+		$yMax = 349
 		$xStep = 4
 		$yStep = -3
 	EndIf
@@ -51,8 +52,8 @@ Func _GetVectorOutZone($eVectorType)
 
 	For $y = $yMin To $yMax Step $yStep
 		$x += $xStep
-		$pixel[0] = $x
-		$pixel[1] = $y
+		$pixel[0] = Floor($x)
+		$pixel[1] = Ceiling($y)
 		ReDim $vectorOutZone[UBound($vectorOutZone) + 1]
 		$vectorOutZone[UBound($vectorOutZone) - 1] = $pixel
 	Next

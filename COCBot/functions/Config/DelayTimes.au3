@@ -142,7 +142,7 @@ Global Const $iDelaycheckMainScreen2 = 20000
 
 ;checkObstacles
 Global Const $iDelaycheckObstacles1 = 1000
-Global Const $iDelaycheckObstacles2 = 2000
+Global Const $iDelaycheckObstacles2 = 2000 + 1700
 Global Const $iDelaycheckObstacles3 = 5000
 Global Const $iDelaycheckObstacles4 = 120000 ; 2 minutes
 Global Const $iDelaycheckObstacles5 = 500 ; click

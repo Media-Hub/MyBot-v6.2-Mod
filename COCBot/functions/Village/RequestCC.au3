@@ -51,6 +51,7 @@ Func RequestCC()
 	WEnd
 	If $icount > 5 And $DebugSetLog = 1 Then Setlog("RequestCC warning 1", $COLOR_PURPLE)
 
+	
 	$color = _GetPixelColor($aRequestTroopsAO[0], $aRequestTroopsAO[1], True)
 	If _ColorCheck($color, Hex($aRequestTroopsAO[2], 6), $aRequestTroopsAO[5]) Then
 		;can make a request
@@ -66,7 +67,30 @@ Func RequestCC()
 		;no button request found
 		SetLog("Cannot detect button request troops.")
 	EndIf
-
+#CS
+	
+	Local $directory = @ScriptDir & "\images\Other\CCButton"
+	$SearchButton = SearchArmy($directory, 645, 528, 800, 610, "")
+	If StringLen($SearchButton[0][0]) > 3 Then
+		Local $BtnStatus = StringRegExp($SearchButton[0][0], "(?iU)(?:Req)(\w++)", 3)
+		If IsArray($BtnStatus) Then $BtnStatus = $BtnStatus[0]
+		Select
+			Case $BtnStatus = "Can"
+				;can make a request
+				Local $x = _makerequest()
+			Case $BtnStatus = "Ed"
+				;request has allready been made
+				SetLog("Request has already been made")
+			Case $BtnStatus = "Filled"
+				;clan full or not in clan
+				SetLog("Your Clan Castle is already full or you are not in a clan.")
+				$canRequestCC = False
+			Case Else
+				;no button request found
+				SetLog("Cannot detect button request troops.")
+		EndSelect
+	EndIf
+#CE
 	;exit from army overview
 	If _Sleep($iDelayRequestCC1) Then Return
 	ClickP($aAway, 2, 0, "#0335")

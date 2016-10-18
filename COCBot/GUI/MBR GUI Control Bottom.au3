@@ -283,8 +283,6 @@ Func GetFont()
 	Setlog($sText, $COLOR_PURPLE)
 EndFunc   ;==>GetFont
 
-
-
 Func btnAnalyzeVillage()
 	$debugBuildingPos = 1
 	$debugDeadBaseImage = 1
@@ -539,6 +537,15 @@ Func btnTestButtons()
 
 EndFunc   ;==>btnTestButtons
 
+Func btnDBCheck()
+	SetLog("Func btnDBCheck", $COLOR_PURPLE)
+	Local $oDebugBuildingPos = $debugBuildingPos
+	$debugBuildingPos = 1
+	checkDeadBase()
+	$debugBuildingPos = $oDebugBuildingPos
+	SetLog("EndFunc btnDBCheck", $COLOR_PURPLE)
+EndFunc
+
 Func ButtonBoost()
 
 	$RunState = True
@@ -593,12 +600,12 @@ Func btnEagle()
 	Local $colorVariation = 40
 	Local $xSkip = 1
 	Local $ySkip = 5
+
 	$hTimer = TimerInit()
 
 	Local $directory = @ScriptDir & "\images\WeakBase\Eagle"
 	Local $return = returnHighestLevelSingleMatch($directory)
 	Local $NotdetectedEagle = True
-
 	Setlog(" »» Ubound ROW $return: " & UBound($return, $UBOUND_ROWS))
 	Setlog(" »» Ubound COLUMNS $return: " & UBound($return, $UBOUND_COLUMNS))
 	Setlog(" »» Ubound DIMENSIONS $return: " & UBound($return, $UBOUND_DIMENSIONS))
@@ -610,8 +617,8 @@ Func btnEagle()
 		Setlog(" »» Build: " & $return[1])
 		Setlog(" »» Level: " & $return[2])
 		Local $EaglePosition = $return[5]
- 		Setlog(" »» $EaglePosition[0] X: " & $EaglePosition[0][0])
- 		Setlog(" »» $EaglePosition[1] Y: " & $EaglePosition[0][1])
+		Setlog(" »» $EaglePosition[0] X: " & $EaglePosition[0][0])
+		Setlog(" »» $EaglePosition[1] Y: " & $EaglePosition[0][1])
 		Setlog(" »» Ubound ROW $EaglePosition: " & UBound($EaglePosition, $UBOUND_ROWS))
 		Setlog(" »» Ubound COLUMNS $EaglePosition: " & UBound($EaglePosition, $UBOUND_COLUMNS))
 		Setlog(" »» Ubound DIMENSIONS $EaglePosition: " & UBound($EaglePosition, $UBOUND_DIMENSIONS))
@@ -688,6 +695,90 @@ Func btnEagle()
 
 EndFunc   ;==>btnEagle
 
+Func btnDropRSpell()
+	$oldDebugSetlog = $DebugSetlog
+	$oldRunState = $RunState
+	Local $debugDropSCommand
+	Local $oldDropSDebug = $debugDropSCommand
+
+	$debugDropSCommand = 1
+	$DebugSetlog = 1
+	$iMatchMode = $LB ; Select Live Base As Attack Type
+	$iAtkAlgorithm[$LB] = 1 ; Select Scripted Attack
+	$scmbABScriptName = "Test DropS Command" ; Select Scripted Attack File From The Combo Box, Cos it wasn't refreshing until pressing Start button
+	$iMatchMode = 1 ; Select Live Base As Attack Type
+	$RunState = True
+	PrepareAttack($iMatchMode)
+	Attack() ; Fire xD
+	$RunState = $oldRunState
+	$DebugSetlog = $oldDebugSetlog
+	$debugDropSCommand = $oldDropSDebug
+EndFunc   ;==>btnDropRSpell
+
+Func btnTestAD()
+	$hTimer = TimerInit()
+	Local $directory = @ScriptDir & "\images\WeakBase\ADefense"
+	Local $return = returnAllMatches($directory)
+	Setlog(" »» Air Defense located in " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds")
+	_ArrayDisplay($return)
+EndFunc ;==>btnTestAD
+
+Func btnPosCheck()
+	Local $oRunState = $RunState
+	$RunState = True
+
+	Local $ToCheck = "IsMainGrayed"
+	Select
+		Case $ToCheck = "IsPostDefenseSummaryPage"
+			$Result = IsPostDefenseSummaryPage()
+			SetLog("=============", $COLOR_TEAL)
+			SetLog("#*# Func btnPosCheck", $COLOR_TEAL)
+			SetLog("To Check = " & $ToCheck, $COLOR_TEAL)
+			SetLog("Result = " & $Result, $COLOR_TEAL)
+		Case $ToCheck = "NoCloudsAttack"
+			$Result = _CheckPixel($aNoCloudsAttack, $bCapturePixel)
+			SetLog("=============", $COLOR_TEAL)
+			SetLog("#*# Func btnPosCheck", $COLOR_TEAL)
+			SetLog("To Check = " & $ToCheck, $COLOR_TEAL)
+			SetLog("Result = " & $Result, $COLOR_TEAL)
+			;If $Result = False Then SetLog("Cur Color = " & _GetPixelColor($aNoCloudsAttack[0], $aNoCloudsAttack[1], True), $COLOR_TEAL)
+		Case $ToCheck = "SurrenderButton"
+			$Result = _CheckPixel($aSurrenderButton, $bCapturePixel)
+			SetLog("=============", $COLOR_TEAL)
+			SetLog("#*# Func btnPosCheck", $COLOR_TEAL)
+			SetLog("To Check = " & $ToCheck, $COLOR_TEAL)
+			SetLog("Result = " & $Result, $COLOR_TEAL)
+			If $Result = False Then SetLog("Cur Color = " & _GetPixelColor($aSurrenderButton[0], $aSurrenderButton[1], True), $COLOR_TEAL)
+		Case $ToCheck = "IsMain"
+			$Result = _CheckPixel($aIsMain, $bCapturePixel)
+			SetLog("=============", $COLOR_TEAL)
+			SetLog("#*# Func btnPosCheck", $COLOR_TEAL)
+			SetLog("To Check = " & $ToCheck, $COLOR_TEAL)
+			SetLog("Result = " & $Result, $COLOR_TEAL)
+			If $Result = False Then SetLog("Cur Color = " & _GetPixelColor($aIsMain[0], $aIsMain[1], True), $COLOR_TEAL)
+		Case $ToCheck = "RequestCC"
+			$Result = _GetPixelColor($aRequestTroopsAO[0], $aRequestTroopsAO[1], True)
+			$CCheck1 = _ColorCheck($Result, Hex($aRequestTroopsAO[2], 6), $aRequestTroopsAO[5])
+			$CCheck2 = _ColorCheck($Result, Hex($aRequestTroopsAO[3], 6), $aRequestTroopsAO[5])
+			$CCheck3 = _ColorCheck($Result, Hex($aRequestTroopsAO[4], 6), $aRequestTroopsAO[5])
+			SetLog("=============", $COLOR_TEAL)
+			SetLog("#*# Func btnPosCheck", $COLOR_TEAL)
+			SetLog("To Check = " & $ToCheck, $COLOR_TEAL)
+			SetLog("Can Request = " & $CCheck1, $COLOR_TEAL)
+			SetLog("Already Made = " & $CCheck2, $COLOR_TEAL)
+			SetLog("Army Full / No Clan = " & $CCheck3, $COLOR_TEAL)
+		Case $ToCheck = "IsMainGrayed"
+			$Result = _CheckPixel($aIsMainGrayed, $bCapturePixel)
+			SetLog("=============", $COLOR_TEAL)
+			SetLog("#*# Func btnPosCheck", $COLOR_TEAL)
+			SetLog("To Check = " & $ToCheck, $COLOR_TEAL)
+			SetLog("Result = " & $Result, $COLOR_TEAL)
+			If $Result = False Then SetLog("Cur Color = " & _GetPixelColor($aIsMainGrayed[0], $aIsMainGrayed[1], True), $COLOR_TEAL)
+	EndSelect
+
+	$RunState = $oRunState
+EndFunc
+
 Func arrows()
 	getArmyHeroCount()
 EndFunc   ;==>arrows
@@ -710,7 +801,7 @@ Func ToggleGuiControls($Enable, $OptimizedRedraw = True)
 	$GUIControl_Disabled = True
 	For $i = $FirstControlToHide To $LastControlToHide
 		If IsTab($i) Or IsAlwaysEnabledControl($i) Then ContinueLoop
-		If $PushBulletEnabled Or $TelegramEnabled And $i = $btnDeletePBmessages Then ContinueLoop ; exclude the DeleteAllMesages button when PushBullet is enabled
+		If $PushBulletEnabled And $i = $btnDeletePBmessages Then ContinueLoop ; exclude the DeleteAllMesages button when PushBullet is enabled
 		If $i = $btnMakeScreenshot Then ContinueLoop ; exclude
 		If $i = $divider Then ContinueLoop ; exclude divider
 		If $Enable = False Then
@@ -724,7 +815,7 @@ Func ToggleGuiControls($Enable, $OptimizedRedraw = True)
 	Next
 	For $i = $FirstControlToHideMOD To $LastControlToHideMOD ; Save state of all controls on tabs
 		If IsTab($i) Or IsAlwaysEnabledControl($i) Then ContinueLoop
-		If $PushBulletEnabled Or $TelegramEnabled And $i = $btnDeletePBmessages Then ContinueLoop ; exclude the DeleteAllMesages button when PushBullet is enabled
+		If $PushBulletEnabled And $i = $btnDeletePBmessages Then ContinueLoop ; exclude the DeleteAllMesages button when PushBullet is enabled
 		If $i = $btnMakeScreenshot Then ContinueLoop ; exclude
 		If $i = $divider Then ContinueLoop ; exclude divider
 		If $Enable = False Then

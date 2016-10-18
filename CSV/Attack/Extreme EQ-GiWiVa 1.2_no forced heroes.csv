@@ -94,5 +94,3 @@ DROP  |H          |10         |1          |Hspell     |1          |0          |2
 
       |VECTOR_____|INDEX______|QTY_X_VECT_|TROOPNAME__|DELAY_DROP_|DELAYCHANGE|SLEEPAFTER_|___________|
 DROP  |H          |10         |1          |Haspell    |1          |0          |5000-8000  |           |
-
-RECALC|           |           |           |           |           |           |           |           |

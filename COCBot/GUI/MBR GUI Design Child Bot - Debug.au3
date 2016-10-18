@@ -50,6 +50,14 @@ $grpDebug = GUICtrlCreateGroup(GetTranslated(636,34, "Debug"), $x - 20, $y - 20,
 		GUICtrlSetState(-1, $GUI_DISABLE)
 		GUICtrlSetState(-1, $GUI_HIDE)
 
+	$y += 45
+
+	$btnDBCheck = GUICtrlCreateButton("DeadBase Check", $x  , $y , 140, 30)
+
+	$y += 35
+
+	$btnPosCheck = GUICtrlCreateButton("Position Check", $x  , $y , 140, 30)
+
 Local $x = 295
 $y = 45
 	$btnTestTrain = GUICtrlCreateButton(GetTranslated(636,88, "Test Train"), $x  , $y , 140, 30)
@@ -72,11 +80,24 @@ $y = 45
 
 	$y += 35
 
-	$btnEagle = GUICtrlCreateButton(GetTranslated(636,104, "Test Eagle"), $x  , $y , 140, 30)
+	$btnEagle = GUICtrlCreateButton(GetTranslated(636,104, "Test Eagle"), $x  , $y , 140, 25)
 
-	$y += 35
+	$y += 30
 
-	$btnEQDeploy = GUICtrlCreateButton(GetTranslated(636,106, "EQ Deploy"), $x  , $y , 140, 30)
+	$btnDropS = GUICtrlCreateButton("Test DropS CSV Comm.", $x  , $y , 140, 25)
+
+	$y += 30
+
+	$btnTestAD = GUICtrlCreateButton("Test Air Defense", $x  , $y , 140, 25)
+	;GUICtrlSetOnEvent($btnEagle, "btnEagle")
+
+	$y += 30
+
+	$btnImageFolder = GUICtrlCreateButton(GetTranslated(636,105, "Test Folder"), $x  , $y , 140, 25)
+
+	$y += 30
+
+	$btnEQDeploy = GUICtrlCreateButton(GetTranslated(636,106, "Army Over View"), $x  , $y , 140, 25)
 
 GUICtrlCreateGroup("", -99, -99, 1, 1)
 

@@ -134,7 +134,6 @@ Func chkDisposeWindows()
 	EndIf
 EndFunc   ;==>chkDisposeWindows
 
-
 Func chkTotalCampForced()
 	If GUICtrlRead($chkTotalCampForced) = $GUI_CHECKED Then
 		GUICtrlSetState($txtTotalCampForced, $GUI_ENABLE)
@@ -147,15 +146,9 @@ Func chkSinglePBTForced()
 	If GUICtrlRead($chkSinglePBTForced) = $GUI_CHECKED Then
 		GUICtrlSetState($txtSinglePBTimeForced, $GUI_ENABLE)
 		GUICtrlSetState($txtPBTimeForcedExit, $GUI_ENABLE)
-		For $i = $lblSleepHeroes To $chkCloseTakeBreak
-			GUICtrlSetState($i, $GUI_ENABLE)
-		Next
 	Else
 		GUICtrlSetState($txtSinglePBTimeForced, $GUI_DISABLE)
 		GUICtrlSetState($txtPBTimeForcedExit, $GUI_DISABLE)
-		For $i = $lblSleepHeroes To $chkCloseTakeBreak
-			GUICtrlSetState($i, $GUI_DISABLE)
-		Next
 	EndIf
 	txtSinglePBTimeForced()
 EndFunc   ;==>chkSinglePBTForced
@@ -178,14 +171,6 @@ Func txtSinglePBTimeForced()
 			GUICtrlSetBkColor($txtPBTimeForcedExit, $COLOR_MONEYGREEN)
 	EndSwitch
 EndFunc   ;==>txtSinglePBTimeForced
-
-Func chkClosePBEmu()
-If GUICtrlRead($chkCloseTakeBreak) = $GUI_CHECKED Then
-		$ichkCloseTakeBreak = 1
-	Else
-		$ichkCloseTakeBreak = 0
-	EndIf
-EndFunc  ;==>chkClosePBEmu
 
 Func chkDebugClick()
 	If GUICtrlRead($chkDebugClick) = $GUI_CHECKED Then
@@ -256,12 +241,12 @@ Func btnTestTrain()
 	_GUICtrlTab_ClickTab($tabMain, 0)
 	$debugOcr = 1
 	$RunState = True
- 	ForceCaptureRegion()
+	ForceCaptureRegion()
 	DebugImageSave("train_")
 	SetLog(_PadStringCenter(" Test Train begin (" & $sBotVersion & ")", 54, "="), $COLOR_BLUE)
-	getArmyTroopCount(False,False,True)
-	getArmySpellCount(False,False,True)
-	getArmyHeroCount(False,False)
+	getArmyTroopCount(False, False, True)
+	getArmySpellCount(False, False, True)
+	getArmyHeroCount(False, False)
 	SetLog(_PadStringCenter(" Test Train end ", 54, "="), $COLOR_BLUE)
 	Run("Explorer.exe " & $LibDir & "\debug\ocr\")
 	Run("Explorer.exe " & $dirTempDebug & "train_")
@@ -269,7 +254,7 @@ Func btnTestTrain()
 
 	$debugOcr = $currentOCR
 	$RunState = $currentRunState
-EndFunc ;==>btnTestTrain
+EndFunc   ;==>btnTestTrain
 
 Func btnTestDonateCC()
 	Local $currentOCR = $debugOcr
@@ -315,8 +300,8 @@ Func btnTestAttackBar()
 
 	$debugOcr = 1
 	$RunState = True
- 	ForceCaptureRegion()
-	SetLog(_PadStringCenter(" Test Attack Bar begin (" & $sBotVersion &  ")", 54, "="), $COLOR_BLUE)
+	ForceCaptureRegion()
+	SetLog(_PadStringCenter(" Test Attack Bar begin (" & $sBotVersion & ")", 54, "="), $COLOR_BLUE)
 
 	$DonationWindowY = 0
 
@@ -324,20 +309,20 @@ Func btnTestAttackBar()
 	Local $result = DllCall($hFuncLib, "str", "searchIdentifyTroop", "ptr", $hHBitmap2)
 	Setlog("DLL Troopsbar list: " & $result[0], $COLOR_PURPLE)
 	Local $aTroopDataList = StringSplit($result[0], "|")
- 	Local $aTemp[12][3]
- 	If $result[0] <> "" Then
- 		For $i = 1 To $aTroopDataList[0]
- 			Local $troopData = StringSplit($aTroopDataList[$i], "#", $STR_NOCOUNT)
+	Local $aTemp[12][3]
+	If $result[0] <> "" Then
+		For $i = 1 To $aTroopDataList[0]
+			Local $troopData = StringSplit($aTroopDataList[$i], "#", $STR_NOCOUNT)
 ;~ 				$aTemp[Number($troopData[1])][0] = $troopData[0]
 ;~ 				$aTemp[Number($troopData[1])][1] = Number($troopData[2])
 ;~ 				Setlog("-" & NameOfTroop( $aTemp[$i][0]) & " pos  " & $aTemp[$i][0] & " qty " & $aTemp[$i][2])
 			If $troopData[0] = 17 Or $troopData[0] = 18 Or $troopData[0] = 19 Or $troopData[0] = 20 Then $troopData[2] = 1
 			Setlog("position: " & $troopData[1] & " | troop code: " & $troopData[0] & " troop name:" & NameOfTroop($troopData[0]) & " | qty: " & $troopData[2])
 		Next
- 	EndIf
+	EndIf
 
 	;make snapshot start
-		_CaptureRegion(0, 630, $DEFAULT_WIDTH)
+	_CaptureRegion(0, 630, $DEFAULT_WIDTH)
 	Local $savefolder = $dirTempDebug
 	$savefolder = $dirTempDebug & "Test_Attack_Bar\"
 	DirCreate($savefolder)
@@ -354,7 +339,6 @@ Func btnTestAttackBar()
 	$debugOcr = $currentOCR
 	$RunState = $currentRunState
 EndFunc   ;==>btnTestAttackBar
-
 
 Func btnTestClickDrag()
 
@@ -416,3 +400,48 @@ Func btnTestImage()
 	$RunState = $currentRunState
 
 EndFunc   ;==>btnTestImage
+
+Func btnTestImageFolder()
+
+	$RunState = True
+	Local Const $sMessage = "Select a folder with images"
+	Local $dirTempDebug = $sProfilePath & "\" & $sCurrProfile & "\Temp\Debug\"
+
+    ; Display an open dialog to select a file.
+    Local $directory = FileSelectFolder($sMessage, "")
+    If @error Then
+        ; Display the error message.
+        MsgBox($MB_SYSTEMMODAL, "", "No folder was selected.")
+    Else
+        ; Display the selected folder.
+        MsgBox($MB_SYSTEMMODAL, "", "You chose the following folder:" & @CRLF & $directory)
+		Setlog("» folder: " & $directory)
+    EndIf
+
+	ForceCaptureRegion()
+	Local $subDirectory = "DebugImage"
+
+	$hTimer = TimerInit()
+	local $Res = multiMatches($directory, 20,"DCD", "", "", 0, 1000)
+	Setlog("» Detection in " & Round(TimerDiff($hTimer)/1000,2) & "'s")
+
+	If UBound($Res) > 1 then
+		For $i = 1 to UBound($Res) - 1
+			$aCorrdenates = $Res[$i][5]
+			Setlog($i & " filename :" & $Res[$i][0])
+			Setlog($i & " totalobjects :" & $Res[$i][4])
+			If IsArray($aCorrdenates) then
+				For $x = 0 to UBound($aCorrdenates) - 1
+					Setlog($x + 1 & " Coord :" & $aCorrdenates[$x][0] & "|" & $aCorrdenates[$x][1])
+				Next
+			EndIf
+		Next
+
+	captureDebugImage($Res, $subDirectory)
+	$Res = ""
+	$directory = ""
+	Run("Explorer.exe " & $dirTempDebug & $subDirectory )
+	$subDirectory = ""
+	EndIf
+	$RunState = False
+EndFunc

@@ -129,28 +129,14 @@ $hGUI_UPGRADE_TAB_ITEM3 = GUICtrlCreateTabItem(GetTranslated(600,16,"Buildings")
 	$x -= 7
 ; table header
 	$y -= 7
-
-; Upgrade Management
-			$txtTip = GetTranslated(616,40, "This button will clear or set the entire column of checkboxes")
-		$chkUpgradeAllOrNone = GUICtrlCreateCheckbox("", $x + 4, $y, 13, 13, BitOR($BS_PUSHLIKE, $BS_ICON))
-			GUICtrlSetImage(-1, $pIconLib, $eIcnGoldStar, 0)
-			GUICtrlSetState(-1, $GUI_UNCHECKED)
-			GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetOnEvent(-1, "chkUpgradeAllOrNone")
-		$chkUpgradeRepeatAllOrNone = GUICtrlCreateCheckbox("", $x + 394, $y, 13, 13, BitOR($BS_PUSHLIKE, $BS_ICON))
-			GUICtrlSetImage(-1, $pIconLib, $eIcnGoldStar, 0)
-			GUICtrlSetState(-1, $GUI_UNCHECKED)
-			GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetOnEvent(-1, "chkUpgradeRepeatAllOrNone")
-
 		$lblUpgradeUp1 = GUICtrlCreateLabel(GetTranslated(616,2,"Unit Name"), $x+71, $y, 70, 18)
 		$lblUpgradeUp2 = GUICtrlCreateLabel(GetTranslated(616,3,"Lvl"), $x+153, $y, 40, 18)
 		$lblUpgradeUp3 = GUICtrlCreateLabel(GetTranslated(616,4,"Type"), $x+173, $y, 50, 18)
 		$lblUpgradeUp4 = GUICtrlCreateLabel(GetTranslated(616,5,"Cost"), $x+219, $y, 50, 18)
 		$lblUpgradeUp5 = GUICtrlCreateLabel(GetTranslated(616,6,"Time"), $x+270, $y, 50, 18)
-		;$lblUpgradeUp6 = GUICtrlCreateLabel(GetTranslated(616,7,"Rep."), $x+392, $y, 50, 18)
+		$lblUpgradeUp6 = GUICtrlCreateLabel(GetTranslated(616,7,"Rep."), $x+392, $y, 50, 18)
 		$lblUpgradeUp7 = GUICtrlCreateLabel(GetTranslated(616,37,"Estimate End"), $x+314, $y, 70, 18)
-	$y += 13
+	$y+=13
 
 ; Create upgrade GUI slots 0 to $iUpgradeSlots
 ; Can add more slots with $iUpgradeSlots value in Global variables file, 6 is minimum and max limit is 15 before GUI is too long.
@@ -201,38 +187,21 @@ $hGUI_UPGRADE_TAB_ITEM3 = GUICtrlCreateTabItem(GetTranslated(600,16,"Buildings")
 			_GUICtrlSetTip(-1, GetTranslated(616,18, "Save this much Elixir after the upgrade completes") & @CRLF & GetTranslated(616,19, "Set this value as needed to save for making troops or wall upgrades."))
 			GUICtrlSetLimit(-1, 7)
 	$x -= 15
-	$y -= 18
+	$y -= 8
 		GUICtrlCreateIcon ($pIconLib, $eIcnDark, $x + 140, $y, 15, 15)
 		$UpgrMinDark = GUICtrlCreateLabel(GetTranslated(616,20, "Min. Dark") & ":", $x + 160, $y + 3, -1, -1)
 		$txtUpgrMinDark= GUICtrlCreateInput("3000", $x + 210, $y, 61, 17, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
 			_GUICtrlSetTip(-1, GetTranslated(616,21, "Save this amount of Dark Elixir after the upgrade completes.") & @CRLF & GetTranslated(616,22, "Set this value higher if you want make war troops."))
 			GUICtrlSetLimit(-1, 6)
-; Upgrade Management
-		$chkUpdateNewUpgradesOnly = GUICtrlCreateCheckbox(GetTranslated(616,38, "New Only"), $x + 141 , $y + 18, -1, -1)
-			GUICtrlSetTip(-1, GetTranslated(616,39, "Update NEW upgrades only for speed"))
-			GUICtrlSetOnEvent(-1, "chkUpdateNewUpgradesOnly")
-		$btnTop = GUICtrlCreateButton("T", $x + 209, $y + 18, 23, 18, $BS_CENTER)
-			GUICtrlSetTip(-1, GetTranslated(616,41, "Push button to move upgrade-box-checked buildings to the TOP of the list"))
-			GUICtrlSetOnEvent(-1, "btnTop")
-		$btnBottom = GUICtrlCreateButton("B", $x + 233, $y + 18, 23, 18, $BS_CENTER)
-			GUICtrlSetTip(-1, GetTranslated(616,42, "Push button to move upgrade-box-checked buildings to the BOTTOM of the list"))
-			GUICtrlSetOnEvent(-1, "btnBottom")
-		$btnUp = GUICtrlCreateButton("▲", $x + 257, $y + 18, 23, 18, $BS_CENTER)
-			GUICtrlSetTip(-1, GetTranslated(616,43, "Push button to move UP upgrade-box-checked buildings a row"))
-			GUICtrlSetOnEvent(-1, "btnUp")
-		$btnDown = GUICtrlCreateButton("▼", $x + 281, $y + 18, 23, 18, $BS_CENTER)
-			GUICtrlSetTip(-1, GetTranslated(616,44, "Push button to move DOWN upgrade-box-checked buildings a row"))
-			GUICtrlSetOnEvent(-1, "btnDown")
-
 		GUICtrlCreateGroup("", -99, -99, 1, 1)
-	$y += 2
+	$y -= 8
 ; Locate/reset buttons
-		$btnLocateUpgrade = GUICtrlCreateButton(GetTranslated(616,8, "Locate Upgrades"), $x + 305, $y - 4, 120, 18, BitOR($BS_MULTILINE, $BS_VCENTER))
+		$btnLocateUpgrade = GUICtrlCreateButton(GetTranslated(616,8, "Locate Upgrades"), $x + 290, $y - 4, 120, 18, BitOR($BS_MULTILINE, $BS_VCENTER))
 			$txtTip = GetTranslated(616,9, "Push button to locate and record information on building/Hero upgrades") & @CRLF & _
 						GetTranslated(616,10, "Any upgrades with repeat enabled are skipped and can not be located again")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "btnLocateUpgrades")
-		$btnResetUpgrade = GUICtrlCreateButton(GetTranslated(616,11, "Reset Upgrades"), $x + 305, $y + 16, 120, 18, BitOR($BS_MULTILINE, $BS_VCENTER))
+		$btnResetUpgrade = GUICtrlCreateButton(GetTranslated(616,11, "Reset Upgrades"), $x + 290, $y + 16, 120, 18, BitOR($BS_MULTILINE, $BS_VCENTER))
 			$txtTip = GetTranslated(616,12, "Push button to reset & remove upgrade information") & @CRLF & _
 						GetTranslated(616,13, "If repeat box is checked, data will not be reset")
 			_GUICtrlSetTip(-1, $txtTip)
@@ -248,7 +217,7 @@ Global $sldMaxNbWall
 Global $lblWallCost, $cmbWalls, $UseGold, $UseElixir, $UseElixirGold, $txtWallMinGold, $txtWallMinElixir
 
 	Local $x = 25, $y = 45
-		$grpWalls = GUICtrlCreateGroup(GetTranslated(617,1, "Walls"), $x - 20, $y - 20, 430, 120)
+		$grpWalls = GUICtrlCreateGroup(GetTranslated(617,1, "Walls"), $x - 20, $y - 20, 430, 150)
 		GUICtrlCreateIcon ($pIconLib, $eIcnWall, $x - 12, $y - 6, 24, 24)
 		$chkWalls = GUICtrlCreateCheckbox(GetTranslated(617,2, "Auto Wall Upgrade"), $x + 18, $y-2, -1, -1)
 			_GUICtrlSetTip(-1, GetTranslated(617,3, "Check this to upgrade Walls if there are enough resources."))
@@ -260,10 +229,11 @@ Global $lblWallCost, $cmbWalls, $UseGold, $UseElixir, $UseElixirGold, $txtWallMi
 			_GUICtrlSetTip(-1, GetTranslated(617,4, "No. of Positions to test and find walls. Higher is better but slower."))
 			_GUICtrlSlider_SetTipSide(-1, $TBTS_BOTTOM)
 			_GUICtrlSlider_SetTicFreq(-1, 1)
+			GUICtrlSetState(-1, $GUI_HIDE)
 			GUICtrlSetLimit(-1, 8, 1)
 			GUICtrlSetData(-1, 4)
 			;GUICtrlSetOnEvent(-1, "SlidemaxNbWall")
-		$btnFindWalls = GUICtrlCreateButton(GetTranslated(617,5, "TEST"), $x + 150, $y +26 , 45, -1)
+		$btnFindWalls = GUICtrlCreateButton(GetTranslated(617,5, "TEST"), $x + 150, $y , 45, -1)
 			$txtTip = GetTranslated(617,6, "Click here to test the Wall Detection.")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "btnWalls")
@@ -285,6 +255,12 @@ Global $lblWallCost, $cmbWalls, $UseGold, $UseElixir, $UseElixirGold, $txtWallMi
 			GUICtrlSetState(-1, $GUI_ENABLE)
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
 			GUICtrlSetOnEvent(-1, "chkSaveWallBldr")
+		$chkUpgradeContinually = GUICtrlCreateCheckbox("Upgrade Continually", $x+18, $y + 92, -1, -1)
+			$TxtTip = "Check this to Upgrade Walls Continually Until Reaching The Minimum Number Of Resources"
+			_GUICtrlSetTip(-1, $TxtTip)
+			GUICtrlSetState(-1, $GUI_ENABLE)
+			GUICtrlSetState(-1, $GUI_UNCHECKED)
+			GUICtrlSetOnEvent(-1, "chkUpgradeContinually")
 		$x += 225
 		$lblWalls = GUICtrlCreateLabel(GetTranslated(617,18, "Search for Walls level") & ":", $x, $y+2, -1, -1)
 		$cmbWalls = GUICtrlCreateCombo("", $x + 110, $y, 61, 21, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL), $WS_EX_RIGHT)
@@ -311,7 +287,7 @@ Global $lblWallCost, $cmbWalls, $UseGold, $UseElixir, $UseElixirGold, $txtWallMi
 			GUICtrlSetState(-1, $GUI_DISABLE)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
-	Local $x = 25, $y = 170
+	Local $x = 25, $y = 200
 	$grpUpgrWalls = GUICtrlCreateGroup(Gettranslated(617,29, "Walls counter"), $x - 20, $y - 20, 430, 60)
 		; Load PNG image
 		;_GDIPlus_StartUp()
@@ -348,88 +324,6 @@ Global $lblWallCost, $cmbWalls, $UseGold, $UseElixir, $UseElixirGold, $txtWallMi
 			_GUICtrlSetTip(-1, GetTranslated(617,30, "Input number of Walls level")&" 11 "&GetTranslated(617,31, "you have."))
 		$Wall11ST = GUICtrlCreateIcon(@ScriptDir & "\Images\Walls\11.ico",-1, $x+27, $y-2, 24, 24)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-GUICtrlCreateTabItem("")
-
-$hGUI_UPGRADE_TAB_ITEM5 = GUICtrlCreateTabItem(GetTranslated(600,52, "SmartUpgrade"))
-
-Local $x = 25, $y = 45
-
-$SmartUpgrade = GUICtrlCreateGroup(GetTranslated(652,1, "SmartUpgrade"), $x - 20, $y - 20, 430, 335)
-
-$chkSmartUpgrade = GUICtrlCreateCheckbox(GetTranslated(652,2, "Enable SmartUpgrade"), $x - 5, $y, -1, -1)
-	$txtTip = GetTranslated(614,3, "Check box to enable automatically starting Upgrades from builders menu")
-	_GUICtrlSetTip(-1, $txtTip)
-	GUICtrlSetOnEvent(-1, "chkSmartUpgrade")
-
-$IgnoreUpgrades = GUICtrlCreateGroup(GetTranslated(652,3, "Upgrades to ignore"), $x - 15, $y + 30, 420, 155)
-
-Local $x = 15, $y = 45
-
-	$iconIgnoreTH = GUICtrlCreateIcon($pIconLib, $eIcnTH11, $x + 5, $y + 50, 40, 40)
-	$chkIgnoreTH = GUICtrlCreateCheckbox("", $x + 20, $y + 90, 17, 17)
-	GUICtrlSetOnEvent(-1, "chkIgnoreTH")
-
-	$iconIgnoreKing = GUICtrlCreateIcon($pIconLib, $eIcnKing, $x + 95, $y + 50, 40, 40)
-	$chkIgnoreKing = GUICtrlCreateCheckbox("", $x + 110, $y + 90, 17, 17)
-	GUICtrlSetOnEvent(-1, "chkIgnoreKing")
-
-	$iconIgnoreQueen = GUICtrlCreateIcon($pIconLib, $eIcnQueen, $x + 140, $y + 50, 40, 40)
-	$chkIgnoreQueen = GUICtrlCreateCheckbox("", $x + 155, $y + 90, 17, 17)
-	GUICtrlSetOnEvent(-1, "chkIgnoreQueen")
-
-	$iconIgnoreWarden = GUICtrlCreateIcon($pIconLib, $eIcnWarden, $x + 185, $y + 50, 40, 40)
-	$chkIgnoreWarden = GUICtrlCreateCheckbox("", $x + 200, $y + 90, 17, 17)
-	GUICtrlSetOnEvent(-1, "chkIgnoreWarden")
-
-	$iconIgnoreCC = GUICtrlCreateIcon($pIconLib, $eIcnCC, $x + 275, $y + 50, 40, 40)
-	$chkIgnoreCC = GUICtrlCreateCheckbox("", $x + 290, $y + 90, 17, 17)
-	GUICtrlSetOnEvent(-1, "chkIgnoreCC")
-
-	$iconIgnoreLab = GUICtrlCreateIcon($pIconLib, $eIcnLaboratory, $x + 365, $y + 50, 40, 40)
-	$chkIgnoreLab = GUICtrlCreateCheckbox("", $x + 380, $y + 90, 17, 17)
-	GUICtrlSetOnEvent(-1, "chkIgnoreLab")
-
-	$iconIgnoreBarrack = GUICtrlCreateIcon($pIconLib, $eIcnBarrack, $x + 5, $y + 120, 40, 40)
-	$chkIgnoreBarrack = GUICtrlCreateCheckbox("", $x + 20, $y + 160, 17, 17)
-	GUICtrlSetOnEvent(-1, "chkIgnoreBarrack")
-
-	$iconIgnoreDBarrack = GUICtrlCreateIcon($pIconLib, $eIcnDarkBarrack, $x + 50, $y + 120, 40, 40)
-	$chkIgnoreDBarrack = GUICtrlCreateCheckbox("", $x + 65, $y + 160, 17, 17)
-	GUICtrlSetOnEvent(-1, "chkIgnoreDBarrack")
-
-	$iconIgnoreFactory = GUICtrlCreateIcon($pIconLib, $eIcnSpellFactory, $x + 140, $y + 120, 40, 40)
-	$chkIgnoreFactory = GUICtrlCreateCheckbox("", $x + 155, $y + 160, 17, 17)
-	GUICtrlSetOnEvent(-1, "chkIgnoreFactory")
-
-	$iconIgnoreDFactory = GUICtrlCreateIcon($pIconLib, $eIcnDarkSpellFactory, $x + 185, $y + 120, 40, 40)
-	$chkIgnoreDFactory = GUICtrlCreateCheckbox("", $x + 200, $y + 160, 17, 17)
-	GUICtrlSetOnEvent(-1, "chkIgnoreDFactory")
-
-	$iconIgnoreGColl = GUICtrlCreateIcon($pIconLib, $eIcnMine, $x + 275, $y + 120, 40, 40)
-	$chkIgnoreGColl = GUICtrlCreateCheckbox("", $x + 290, $y + 160, 17, 17)
-	GUICtrlSetOnEvent(-1, "chkIgnoreGColl")
-
-	$iconIgnoreEColl = GUICtrlCreateIcon($pIconLib, $eIcnCollector, $x + 320, $y + 120, 40, 40)
-	$chkIgnoreEColl = GUICtrlCreateCheckbox("", $x + 335, $y + 160, 17, 17)
-	GUICtrlSetOnEvent(-1, "chkIgnoreEColl")
-
-	$iconIgnoreDColl = GUICtrlCreateIcon($pIconLib, $eIcnDrill, $x + 365, $y + 120, 40, 40)
-	$chkIgnoreDColl = GUICtrlCreateCheckbox("", $x + 380, $y + 160, 17, 17)
-	GUICtrlSetOnEvent(-1, "chkIgnoreDColl")
-
-	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
-	$SmartMinGold = GUICtrlCreateInput("200000", 162, 37, 57, 17, BitOR($GUI_SS_DEFAULT_INPUT,$ES_CENTER,$ES_NUMBER))
-	GUICtrlCreateLabel("Gold to save", 224, 40, 64, 17)
-	$SmartMinElixir = GUICtrlCreateInput("200000", 162, 57, 57, 17, BitOR($GUI_SS_DEFAULT_INPUT,$ES_CENTER,$ES_NUMBER))
-	GUICtrlCreateLabel("Elixir to save", 224, 60, 63, 17)
-	$SmartMinDark = GUICtrlCreateInput("1500", 290, 37, 65, 17, BitOR($GUI_SS_DEFAULT_INPUT,$ES_CENTER,$ES_NUMBER))
-	GUICtrlCreateLabel("Dark to save", 360, 40, 65, 17)
-	GUICtrlCreateLabel("... after launching upgrade", 296, 60, 128, 17)
-	$SmartUpgradeLog = GUICtrlCreateEdit("", 10, 232, 420, 124, BitOR($GUI_SS_DEFAULT_EDIT,$ES_READONLY))
-	GUICtrlSetData(-1, GetTranslated(652,4, "                                        ----- SMART UPGRADE LOG -----"))
-
-GUICtrlCreateGroup("", -99, -99, 1, 1)
 GUICtrlCreateTabItem("")
 
 ;GUISetState()

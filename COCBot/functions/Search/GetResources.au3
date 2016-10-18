@@ -20,26 +20,19 @@ Func GetResources($bLog = True, $pMatchMode = -1) ;Reads resources
 	$searchTrophy = ""
 	Local $iResult = 0
 	Local $i = 0
-	Local $iWaitClouds
-
-	If ( $iTrophyCurrent > 4200 ) Then
-		$iWaitClouds = 1080 ; Titan Leagle and over
-	Else
-		$iWaitClouds = 720
-	Endif
 
 	ForceCaptureRegion() ; ensure screenshots are not cached
-	While _CheckPixel($aNoCloudsAttack, $bCapturePixel) = False ; wait for clouds to be gone
+	While _CheckPixel($aNoCloudsAttack, $bCapturePixel) = True ; wait for clouds to be gone
 		If _Sleep($iDelayGetResources1) Then Return
 		$i += 1
-		If $i >= $iWaitClouds Or isProblemAffect(True) Then ; Wait then restart bot and CoC [720 = 3min] [1080 = 0:04:30]
+		If $i >= 720 Or isProblemAffect(True) Then ; Wait 3 min then restart bot and CoC
 			$Is_ClientSyncError = True
 			checkMainScreen()
 			If $Restart Then
 				$iNbrOfOoS += 1
 				UpdateStats()
 				SetLog("Disconnected At Search Clouds", $COLOR_RED)
-				PushMsgToPushBullet ("OoSResources")
+				PushMsg("OoSResources")
 			Else
 				SetLog("Stuck At Search Clouds, Restarting CoC and Bot...", $COLOR_RED)
 				$Is_ClientSyncError = False ; disable fast OOS restart if not simple error and restarting CoC
@@ -87,7 +80,7 @@ Func GetResources($bLog = True, $pMatchMode = -1) ;Reads resources
 			$iNbrOfOoS += 1
 			UpdateStats()
 			SetLog("Connection Lost While Searching", $COLOR_RED)
-			PushMsgToPushBullet ("OoSResources")
+			PushMsg("OoSResources")
 		Else
 			SetLog("Attack Is Disabled Or Slow connection issues, Restarting CoC and Bot...", $COLOR_RED)
 			$Is_ClientSyncError = False ; disable fast OOS restart if not simple error and restarting CoC
@@ -97,20 +90,6 @@ Func GetResources($bLog = True, $pMatchMode = -1) ;Reads resources
 	EndIf
 
 	$SearchCount += 1 ; Counter for number of searches
-
-	;pushbullet searchcount notification every xxx searches so you know bot is still running
-	If $searchcount > 0 AND $SearchNotifyCount = 1 AND mod($searchcount, $SearchNotifyCountTXT) = 0 Then
-		PushMsgToPushBullet ("CurrentSearchCount")
-	ElseIf $searchcount = 1 AND $SearchNotifyCount = 1 Then
-		PushMsgToPushBullet ("CurrentSearchCount")
-	EndIf
-
-	;send village stats every xxx attacks
-	If $Villagestatincrement = 1 AND mod($Attackcount, $VillageStatIncrementTXT) = 0 AND $AttackCount <> 0 Then
-		PushMsgToPushBullet ("AttackCountStats")
-		$attackcount = 0
-	EndIf
-	If $PersonalBreakNotified = True Then $PersonalBreakNotified = False
 
 	ResumeAndroid()
 

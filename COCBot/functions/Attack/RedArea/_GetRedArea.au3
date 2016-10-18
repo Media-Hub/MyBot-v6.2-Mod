@@ -37,14 +37,15 @@ Func _GetRedArea()
 	Else ; Normal getRedArea
 		;Local $result = DllCall($hFuncLib, "str", "getRedArea", "ptr", $hHBitmap2, "int", $xSkip, "int", $ySkip, "int", $colorVariation)
 		Local $result[1]
-		Local $hTimer = TimerInit()
 		$result[0] = GetImgLoc2MBR()
 		If $debugSetlog Then Setlog("Debug: Redline chosen")
-		;Setlog(" »» NEW REDlines Imgloc: " & $result[0])
-		Setlog("> NEW REDlines Imgloc in  " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds", $COLOR_BLUE)
 	EndIf
 
 	Local $listPixelBySide = StringSplit($result[0], "#")
+
+	$listPixelBySide[2] &= "|213-512|218-516|222-520|227-524|231-528|236-532|240-536|245-540|249-544|254-548|258-552|263-556|267-560|272-564|276-568|281-572|285-576|290-580|294-584|299-588|303-592|308-596|312-600|317-604|321-608|326-612|330-616|335-620|339-624|344-628"
+	$listPixelBySide[3] &= "|496-629|501-625|506-621|511-617|516-613|521-609|526-605|531-601|536-597|541-593|546-589|551-585|556-581|561-577|566-573|571-569|576-565|581-561|586-557|591-553|596-549|601-545|606-541|611-537|616-533|621-529|626-525|631-521|636-517|641-513"
+
 	$PixelTopLeft = GetPixelSide($listPixelBySide, 1)
 	$PixelBottomLeft = GetPixelSide($listPixelBySide, 2)
 	$PixelBottomRight = GetPixelSide($listPixelBySide, 3)
@@ -124,19 +125,19 @@ Func _GetRedArea()
 		debugRedArea("PixelTopLeftFurther " & UBound($PixelTopLeftFurther))
 	EndIf
 
-	If UBound($PixelTopLeft) < 10 Then
+	If UBound($PixelTopLeft) < 30 Then
 		$PixelTopLeft = _GetVectorOutZone($eVectorLeftTop)
 		$PixelTopLeftFurther = $PixelTopLeft
 	EndIf
-	If UBound($PixelBottomLeft) < 10 Then
+	If UBound($PixelBottomLeft) < 30 Then
 		$PixelBottomLeft = _GetVectorOutZone($eVectorLeftBottom)
 		$PixelBottomLeftFurther = $PixelBottomLeft
 	EndIf
-	If UBound($PixelTopRight) < 10 Then
+	If UBound($PixelTopRight) < 30 Then
 		$PixelTopRight = _GetVectorOutZone($eVectorRightTop)
 		$PixelTopRightFurther = $PixelTopRight
 	EndIf
-	If UBound($PixelBottomRight) < 10 Then
+	If UBound($PixelBottomRight) < 30 Then
 		$PixelBottomRight = _GetVectorOutZone($eVectorRightBottom)
 		$PixelBottomRightFurther = $PixelBottomRight
 	EndIf
@@ -148,21 +149,23 @@ EndFunc   ;==>_GetRedArea
 
 Func GetImgLoc2MBR()
 
-	Local $SingleCocDiamond = "ECD"
+	Local $directory = @ScriptDir & "\images\WeakBase\Eagle"
+	Local $return = returnHighestLevelSingleMatch($directory)
+	If IsRedLineOld() = True Then
+		If $debugDropSCommand = 1 Then SetLog("RedLine For Defense Being Updated...", $color_purple)
+		$redLinesDefense[0] = DllCall($hImgLib, "str", "GetProperty", "str", "redline", "str", "")[0]
+		$redLinesDefense[1] = TimerInit()
+	EndIf
 
-	_CaptureRegion2()
-	Local $return = DllCall($pImgLib, "str", "SearchRedLines", "handle", $hHBitmap2, "str", $SingleCocDiamond)
-
-	Local $AllPoints = StringSplit($return[0], "|", $STR_NOCOUNT)
-	If $debugRedArea = 1 then Setlog("RedLines Detection String: " & $return[0])
-	Setlog("RedLines Detection Points: " & UBound($AllPoints))
+	Local $AllPoints = StringSplit($return[6], "|", $STR_NOCOUNT)
 	Local $EachPoint[UBound($AllPoints)][2]
 	Local $_PixelTopLeft, $_PixelBottomLeft, $_PixelBottomRight, $_PixelTopRight
 
-	For $i = 0 To UBound($AllPoints) -1
+	For $i = 0 To UBound($AllPoints) - 1
 		Local $temp = StringSplit($AllPoints[$i], ",", $STR_NOCOUNT)
 		$EachPoint[$i][0] = Number($temp[0])
 		$EachPoint[$i][1] = Number($temp[1])
+		; Setlog(" $EachPoint[0]: " & $EachPoint[$i][0] & " | $EachPoint[1]: " & $EachPoint[$i][1])
 	Next
 
 	_ArraySort($EachPoint, 0, 0, 0, 0)
@@ -190,8 +193,20 @@ Func GetImgLoc2MBR()
 
 	Local $NewRedLineString = $_PixelTopLeft & "#" & $_PixelBottomLeft & "#" & $_PixelBottomRight & "#" & $_PixelTopRight
 
-	If $debugRedArea = 1 then Setlog(" »» NEW REDlines Imgloc: " & $NewRedLineString)
+	;Setlog(" »» NEW REDlines Imgloc: " & $NewRedLineString)
 
 	Return $NewRedLineString
 
 EndFunc   ;==>GetImgLoc2MBR
+
+Func IsRedLineOld()
+	If $redLinesDefense[0] <= 0 Or $redLinesDefense[1] = 0 Then Return True
+	Local $tDiff = TimerDiff($redLinesDefense[1])
+	If Int($tDiff, 1) <= 240000 Then Return False
+	Return True
+EndFunc   ;==>IsRedLineOld
+
+Func ResetRedLine()
+	$redLinesDefense[0] = -1
+	$redLinesDefense[1] = 0
+EndFunc   ;==>ResetRedLine

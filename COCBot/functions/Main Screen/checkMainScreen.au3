@@ -20,24 +20,24 @@ Func checkMainScreen($Check = True) ;Checks if in main screen
 		SetLog("Trying to locate Main Screen")
 	Else
 		;If $debugsetlog = 1 Then SetLog("checkMainScreen start quiet mode", $COLOR_PURPLE)
-    EndIf
+	EndIf
 	If CheckAndroidRunning(False) = False Then Return
 	getBSPos() ; Update $HWnd and Android Window Positions
 	#cs
-	If $ichkBackground = 0 And $NoFocusTampering = False And $AndroidEmbedded = False Then
-	    Local $hTimer = TimerInit(), $hWndActive = -1
+		If $ichkBackground = 0 And $NoFocusTampering = False And $AndroidEmbedded = False Then
+		Local $hTimer = TimerInit(), $hWndActive = -1
 		Local $activeHWnD = WinGetHandle("")
 		While TimerDiff($hTimer) < 1000 And $hWndActive <> $HWnD And Not _Sleep(100)
-		   getBSPos() ; update $HWnD
-		   $hWndActive = WinActivate($HWnD) ; ensure bot has window focus
+		getBSPos() ; update $HWnD
+		$hWndActive = WinActivate($HWnD) ; ensure bot has window focus
 		WEnd
 		If $hWndActive <> $HWnD Then
-		   ; something wrong with window, restart Android
-		   RebootAndroid()
-		   Return
-	    EndIf
+		; something wrong with window, restart Android
+		RebootAndroid()
+		Return
+		EndIf
 		WinActivate($activeHWnD) ; restore current active window
-    EndIf
+		EndIf
 	#ce
 	WinGetAndroidHandle()
 	If $ichkBackground = 0 And $HWnD <> 0 Then
@@ -50,16 +50,16 @@ Func checkMainScreen($Check = True) ;Checks if in main screen
 		WinGetAndroidHandle()
 		If _Sleep($iDelaycheckMainScreen1) Then Return
 		$Result = checkObstacles()
-		If $debugsetlog = 1 Then Setlog("CheckObstacles Result = "&$Result, $COLOR_PURPLE)
+		If $debugsetlog = 1 Then Setlog("CheckObstacles Result = " & $Result, $COLOR_PURPLE)
 
 		If ($Result = False And $MinorObstacle = True) Then
 			$MinorObstacle = False
 		ElseIf ($Result = False And $MinorObstacle = False) Then
-			 RestartAndroidCoC() ; Need to try to restart CoC
+			RestartAndroidCoC() ; Need to try to restart CoC
 		Else
 			$Restart = True
 		EndIf
-		waitMainScreen()  ; Due to differeneces in PC speed, let waitMainScreen test for CoC restart
+		waitMainScreen() ; Due to differeneces in PC speed, let waitMainScreen test for CoC restart
 		If Not $RunState Then Return
 		If @extended Then Return SetError(1, 1, -1)
 		If @error Then $iCount += 1
@@ -78,22 +78,20 @@ Func checkMainScreen($Check = True) ;Checks if in main screen
 		;If $debugsetlog = 1 Then SetLog("checkMainScreen exit quiet mode", $COLOR_PURPLE)
 	EndIf
 
-    ;After checkscreen dispose windows
+	;After checkscreen dispose windows
 	DisposeWindows()
 EndFunc   ;==>checkMainScreen
 
 Func IsWaitingForConnection()
-	If _GetPixelColor(427, 369, True) = "D06800" Then
-		If _GetPixelColor(427, 362, True) = "FF8800" Then
-			If _GetPixelColor(427, 362, True) = "FF8800" Then
-				If _GetPixelColor(432, 369, True) = "B45A00" Then
-					If _GetPixelColor(429, 365, True) = "F17900" Then
-						If _GetPixelColor(426, 362, True) = "804000" Then
-							If _GetPixelColor(433, 369, True) = "331A00" Then
-								SetLog("CoC is Waiting for Connection...", $COLOR_RED)
-								CloseCoC(True)
-								Return True
-							EndIf
+	If _ColorCheck(_GetPixelColor(430, 365, True), Hex(0xEF7800, 6), 20) Then
+		If _ColorCheck(_GetPixelColor(427, 362, True), Hex(0xFF8800, 6), 20) Then
+			If _ColorCheck(_GetPixelColor(432, 369, True), Hex(0xB75C00, 6), 20) Then
+				If _ColorCheck(_GetPixelColor(429, 365, True), Hex(0xEF7800, 6), 20) Then
+					If _ColorCheck(_GetPixelColor(426, 362, True), Hex(0x7F4000, 6), 20) Then
+						If _ColorCheck(_GetPixelColor(433, 369, True), Hex(0x3F2000, 6), 20) Then
+							SetLog("CoC is Waiting for Connection...", $COLOR_RED)
+							CloseCoC(True)
+							Return True
 						EndIf
 					EndIf
 				EndIf

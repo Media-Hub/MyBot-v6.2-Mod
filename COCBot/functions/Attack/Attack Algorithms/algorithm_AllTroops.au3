@@ -38,7 +38,7 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 		EndIf
 	EndIf
 
-	If $iMatchMode = $TS Then; Return ;Exit attacking if trophy hunting and not bullymode
+#cs	If $iMatchMode = $TS Then; Return ;Exit attacking if trophy hunting and not bullymode
 		If ($THusedKing = 1 Or $THusedQueen = 1) And ($ichkSmartZapSaveHeroes = 1 Or $ichkSmartZap = 0 Or $ichkExtLightSpell = 0) Then
 			Setlog("Wait few sec before close attack.")
 			If _Sleep(Random(0, 2, 1) * 1000) Then Return ;wait 0-2 second before exit if king and queen are not dropped
@@ -52,8 +52,23 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 			Return
 		EndIf
 	EndIf
+#ce
+	If $iMatchMode = $TS Then; Return ;Exit attacking if trophy hunting and not bullymode
+		If ($THusedKing = 0 And $THusedQueen = 0) Then
+			Setlog("Wait few sec before close attack.")
+			If _Sleep(Random(0, 2, 1) * 1000) Then Return ;wait 0-2 second before exit if king and queen are not dropped
+		Else
+			SetLog("King and/or Queen dropped, close attack.")
+		EndIf
 
-
+		;Apply to switch Attack Standard after THSnipe End  ==>
+		If CompareResources($DB) And $iAtkAlgorithm[$DB] = 0 And $ichkTSActivateCamps2 = 1 And Int($CurCamp / $TotalCamp * 100) >= Int($iEnableAfterArmyCamps2) then
+			$iMatchMode = $DB
+		Else
+			CloseBattle()
+			Return
+		EndIf
+	EndIf
 
 	;############################################# LSpell Attack ############################################################
 	; DropLSpell()
@@ -159,7 +174,6 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 						[$eWiza,  $nbSides, 1, 1, 2], _
 						[$eMini,  $nbSides, 1, 1, 0], _
 						[$eGobl,  $nbSides, 1, 1, 0]]
-
 	Else
 		If $debugSetlog = 1 Then SetLog("listdeploy standard for attack", $COLOR_PURPLE)
 		Switch $icmbStandardAlgorithm[$iMatchMode]

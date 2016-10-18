@@ -15,10 +15,12 @@
 
 Func IsTrainPage($writelogs = True)
 	Local $i = 0
+	Local $_aIsTrainPgChk1 = [816, 136, 0xc40608, 15]
+	Local $_aIsTrainPgChk2 = [843, 183, 0xe8e8e0, 15]
 
 	While $i < 30
 		;If $DebugSetlog = 1 Then SetLog( "TrainPage:(" & _GetPixelColor($aIsTrainPgChk1, $bCapturePixel) & ",Expected:E0070A)(" & _GetPixelColor($aIsTrainPgChk2, $bCapturePixel) & ",Expected:F18439)", $COLOR_ORANGE)
-		If _CheckPixel($aIsTrainPgChk1, $bCapturePixel) And _CheckPixel($aIsTrainPgChk2, $bCapturePixel) Then ExitLoop
+		If _CheckPixel($_aIsTrainPgChk1, $bCapturePixel) And _CheckPixel($_aIsTrainPgChk2, $bCapturePixel) Then ExitLoop
 		If _Sleep($iDelayIsTrainPage1) Then ExitLoop
 		$i += 1
 	WEnd
@@ -214,11 +216,10 @@ EndFunc   ;==>IsReturnHomeBattlePage
 Func IsPostDefenseSummaryPage()
 	;check for loot lost summary screen after base defense when log on and base is being attacked.
 	Local $result
-	Local $GoldSpot = _GetPixelColor(330, 201 + $midOffsetY, $bCapturePixel) ; Gold Emblem
+	Local $GoldSpot = _GetPixelColor(334, 209 + $midOffsetY, $bCapturePixel) ; Gold Emblem
 	Local $ElixirSpot = _GetPixelColor(334, 233 + $midOffsetY, $bCapturePixel) ; Elixir Emblem
 	; If $DebugSetlog = 1 then SetLog("$GoldSpot= " & $GoldSpot & "|0xF6E851=Y, $ElixirSpot= " & $ElixirSpot & "|0xE835E8=Y", $COLOR_PURPLE)
-
-	$result = _ColorCheck($GoldSpot, Hex(0xF6E851, 6), 20) And _ColorCheck($ElixirSpot, Hex(0xE835E8, 6), 20)
+	$result = _ColorCheck($GoldSpot, Hex(0xE8C138, 6), 20) And _ColorCheck($ElixirSpot, Hex(0xE83CE8, 6), 20)
 
 	If $result Then
 		If $DebugSetlog = 1 Or $DebugClick = 1 Then SetLog("**Post Defense Page visible**", $COLOR_ORANGE)

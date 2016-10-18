@@ -80,7 +80,7 @@ Func UpgradeHeroes()
 			Return
 		EndIf
 		WardenUpgrade()
-	EndIf
+	EndIF
 
 EndFunc   ;==>UpgradeHeroes
 

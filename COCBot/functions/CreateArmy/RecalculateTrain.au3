@@ -259,18 +259,18 @@ Func TrainNormalTroops()
 	; [3] is the quantity to make - > this will be filled with $CurTroop[$i]
 
 	Local $TroopsToMake[12][5] = [ _
-			["Pekk",  900, 25, 0, 75], _
-			["Drag",  900, 20, 0, 60], _
+			["Pekk", 900, 25, 0, 75], _
+			["Drag", 900, 20, 0, 60], _
 			["BabyD", 600, 10, 0, 80], _
-			["Heal",  600, 14, 0, 45], _
-			["Mine",  300,  5, 0, 85], _
-			["Ball",  300,  5, 0, 45], _
-			["Wiza",  300,  4, 0, 50], _
-			["Giant", 120,  5, 0, 30], _
-			["Wall",   60,  2, 0, 40], _
-			["Gobl",   30,  1, 0, 35], _
-			["Arch",   25,  1, 0, 25], _
-			["Barb",   20,  1, 0, 20]]
+			["Heal", 600, 14, 0, 45], _
+			["Mine", 300, 5, 0, 85], _
+			["Ball", 300, 5, 0, 45], _
+			["Wiza", 300, 4, 0, 50], _
+			["Giant", 120, 5, 0, 30], _
+			["Wall", 60, 2, 0, 40], _
+			["Gobl", 30, 1, 0, 35], _
+			["Arch", 25, 1, 0, 25], _
+			["Barb", 20, 1, 0, 20]]
 
 
 	; Fill the $TroopsToMake[$x][3] with the quantity to make with the existent $Cur[troopName] Global variable
@@ -604,15 +604,28 @@ Func TrainNormalTroops()
 			$BarrackTimeRemain[$BarrackToTrain] = 0
 		EndIf
 
+		Local $BarrackLogTxt = "", $BarrackTXT = "", $MaxCapTXT = "", $ArmyTXT = "", $QuantTXT = "", $TTTXT = ""
 		If $InitBoostTime[$BarrackToTrain][1] > 0 Then
-			SetLog(" »» NB[" & $BarrackToTrain + 1 & "] Max Cap: " & $BarrackStatusTrain[2] & " | " & $BarrackStatusTrain[0] & "/" & $BarrackStatusTrain[1] & " | Q: " & $QuantNormalTroopsInQueue[$BarrackToTrain] & " | Total Time: " & $BarrackStatusTrain[3] & " [B]", $COLOR_BLUE)
+			$BarrackTXT = String("» NB[" & $BarrackToTrain + 1 & "][B]")
 		Else
-			SetLog(" » NB[" & $BarrackToTrain + 1 & "] Max Cap: " & $BarrackStatusTrain[2] & " | " & $BarrackStatusTrain[0] & "/" & $BarrackStatusTrain[1] & " | Q: " & $QuantNormalTroopsInQueue[$BarrackToTrain] & " | Total Time: " & $BarrackStatusTrain[3], $COLOR_BLUE)
+			$BarrackTXT = String("» NB[" & $BarrackToTrain + 1 & "][-]")
 		EndIf
+		$MaxCapTXT = String("Max Cap: " & $BarrackStatusTrain[2])
+		$ArmyTXT = String($BarrackStatusTrain[0] & "/" & $BarrackStatusTrain[1])
+		$QuantTXT = String("Q: " & $QuantNormalTroopsInQueue[$BarrackToTrain])
+		$TTTXT = String("Total Time: " & $BarrackStatusTrain[3])
+
+		$BarrackLogTxt &= StringFormat("%-11s", $BarrackTXT) & "|"
+		$BarrackLogTxt &= StringFormat("%-12s", $MaxCapTXT) & "|"
+		$BarrackLogTxt &= StringFormat("%-8s", $ArmyTXT) & "|"
+		$BarrackLogTxt &= StringFormat("%-6s", $QuantTXT) & "|"
+		$BarrackLogTxt &= StringFormat("%-20s", $TTTXT) & "|"
+
+		SetLog($BarrackLogTxt, $COLOR_BLUE)
 
 		If $brrNum >= $numBarracksAvaiables Then
 			; Just in case of OCR fail on troopSecond :
-			If $BarrackStatusTrain[0] = $BarrackStatusTrain[1] Or _  ; In case of Regular Train loop example : 200/200
+			If $BarrackStatusTrain[0] = $BarrackStatusTrain[1] Or _ ; In case of Regular Train loop example : 200/200
 					$BarrackStatusTrain[0] * 2 = $BarrackStatusTrain[1] Then ; in case of train before Attack , example : 400/200
 				For $i = 0 To UBound($TroopName) - 1
 					If $debugsetlogTrain = 1 Then SetLog("Reset the $Cur" & $TroopName[$i], $COLOR_PURPLE)
@@ -740,7 +753,7 @@ EndFunc   ;==>getArmyNormalTroopCount
 
 Func TrainDarkTroops()
 
-	SetLog("Func TrainDarkTroopsBoosted ", $COLOR_PURPLE) ; If $debugsetlogTrain = 1 Then
+	If $debugsetlogTrain= 1 then SetLog("Func TrainDarkTroopsBoosted ", $COLOR_PURPLE) ; If $debugsetlogTrain = 1 Then
 
 	Local $anotherTroops
 	Local $tempCounter = 0
@@ -749,7 +762,7 @@ Func TrainDarkTroops()
 	Local $tempElixirSpent = 0
 	Local $tempDElixirSpent = 0
 	Local $tmpNumber
-	Local $QuantDarkTroopsInQueue[2] = [0,0]
+	Local $QuantDarkTroopsInQueue[2] = [0, 0]
 
 	Local $numDarkBarracksAvailable = $numDarkBarracksAvaiables
 	Local $BarrackDarkTotalStatus[$numDarkBarracksAvailable][5]
@@ -852,13 +865,13 @@ Func TrainDarkTroops()
 	If IsTrainPage() Then GoesToFirstDarkBarrack()
 
 	Local $DtroopsToMake[7][5] = [ _
-			["Lava", 900, 30, 0,  90], _
-			["Gole", 900, 30, 0,  70], _
-			["Witc", 600, 12, 0,  80], _
-			["Bowl", 300,  6, 0, 100], _
-			["Valk", 300,  8, 0,  60], _
-			["Hogs", 120,  5, 0,  50], _
-			["Mini",  45,  2, 0,  40]]
+			["Lava", 900, 30, 0, 90], _
+			["Gole", 900, 30, 0, 70], _
+			["Witc", 600, 12, 0, 80], _
+			["Bowl", 300, 6, 0, 100], _
+			["Valk", 300, 8, 0, 60], _
+			["Hogs", 120, 5, 0, 50], _
+			["Mini", 45, 2, 0, 40]]
 
 	For $i = 0 To UBound($TroopDarkName) - 1 ; Dark troops
 		If Eval("Cur" & $TroopDarkName[$i]) > 0 Then
@@ -1078,7 +1091,7 @@ Func TrainDarkTroops()
 				If _Sleep($iDelayTrain1) Then Return
 				If $debugsetlogTrain = 1 And $tmpNumber <> 0 Then SetLog("ASSIGN $TroopFirst" & $TroopDarkName[$i] & ": " & $tmpNumber, $COLOR_PURPLE)
 				Assign(("troopFirst" & $TroopDarkName[$i]), $tmpNumber)
-				If IsNumber(Eval("troopFirst" & $TroopDarkName[$i])) = 0 and Eval($TroopDarkName[$i] & "EBarrack" & $BarrackToTrain) > 0 Then
+				If IsNumber(Eval("troopFirst" & $TroopDarkName[$i])) = 0 And Eval($TroopDarkName[$i] & "EBarrack" & $BarrackToTrain) > 0 Then
 					If _Sleep($iDelayTrain1) Then Return ; just a delay | ocr
 					$tmpNumber = Number(getBarracksTroopQuantity(174 + 107 * $positionTroop, $heightTroop)) ; read troop quantity
 					If $debugsetlogTrain = 1 Then SetLog("ASSIGN $TroopFirst" & $TroopDarkName[$i] & ": " & $tmpNumber, $COLOR_PURPLE)
@@ -1158,6 +1171,7 @@ Func TrainDarkTroops()
 				If Eval("Cur" & $TroopDarkName[$i]) = 0 Then Setlog(" » The " & NameOfTroop(Eval("e" & $TroopDarkName[$i]), 1) & " are all done!", $COLOR_GREEN)
 			EndIf
 		Next
+
 		Local $TroopCapacityAfterTraining = getBarrackArmy(520, 275)
 		Local $TotalTime = getBarracksTotalTime(632, 202)
 
@@ -1177,23 +1191,36 @@ Func TrainDarkTroops()
 			$DarkBarrackTimeRemain[$brrDarkNum - 1] = 0
 		EndIf
 
+		Local $BarrackLogTxt = "", $BarrackTXT = "", $MaxCapTXT = "", $ArmyTXT = "", $QuantTXT = "", $TTTXT = ""
 		If $InitBoostTimeDark[$BarrackToTrain][1] > 0 Then
-			SetLog(" »» DB[" & $brrDarkNum & "] Max Cap: " & $BarrackStatusTrain[2] & " | " & $BarrackStatusTrain[0] & "/" & $BarrackStatusTrain[1] & " | Q: " & $QuantDarkTroopsInQueue[$BarrackToTrain] & " | Total Time: " & $BarrackStatusTrain[3] & " [B]", $COLOR_BLUE)
+			$BarrackTXT = String("» DB[" & $BarrackToTrain + 1 & "][B]")
 		Else
-			SetLog(" » DB[" & $brrDarkNum & "] Max Cap: " & $BarrackStatusTrain[2] & " | " & $BarrackStatusTrain[0] & "/" & $BarrackStatusTrain[1] & " | Q: " & $QuantDarkTroopsInQueue[$BarrackToTrain] & " | Total Time: " & $BarrackStatusTrain[3], $COLOR_BLUE)
+			$BarrackTXT = String("» DB[" & $BarrackToTrain + 1 & "][-]")
 		EndIf
+		$MaxCapTXT = String("Max Cap: " & $BarrackStatusTrain[2])
+		$ArmyTXT = String($BarrackStatusTrain[0] & "/" & $BarrackStatusTrain[1])
+		$QuantTXT = String("Q: " & $QuantDarkTroopsInQueue[$BarrackToTrain])
+		$TTTXT = String("Total Time: " & $BarrackStatusTrain[3])
+
+		$BarrackLogTxt &= StringFormat("%-11s", $BarrackTXT) & "|"
+		$BarrackLogTxt &= StringFormat("%-12s", $MaxCapTXT) & "|"
+		$BarrackLogTxt &= StringFormat("%-8s", $ArmyTXT) & "|"
+		$BarrackLogTxt &= StringFormat("%-6s", $QuantTXT) & "|"
+		$BarrackLogTxt &= StringFormat("%-20s", $TTTXT) & "|"
+
+		SetLog($BarrackLogTxt, $COLOR_BLUE)
 
 		; Just in case of some OCR fail , Or Train Click
 		If $brrDarkNum >= $numDarkBarracksAvaiables Then
 			; Just in case of OCR fail on troopSecond :
-			If $BarrackStatusTrain[0] = $BarrackStatusTrain[1] Or _  ; In case of Regular Train loop example : 200/200
-				$BarrackStatusTrain[0] * 2 = $BarrackStatusTrain[1] Then ; in case of train before Attack , example : 400/200
+			If $BarrackStatusTrain[0] = $BarrackStatusTrain[1] Or _ ; In case of Regular Train loop example : 200/200
+					$BarrackStatusTrain[0] * 2 = $BarrackStatusTrain[1] Then ; in case of train before Attack , example : 400/200
 				For $i = 0 To UBound($TroopName) - 1
 					If $debugsetlogTrain = 1 Then SetLog("Reset the $Don|$Cur" & $TroopName[$i], $COLOR_PURPLE)
 					Assign("Cur" & $TroopName[$i], 0)
 					Assign("Don" & $TroopName[$i], 0)
 				Next
-				For $i = 0 to UBound($TroopDarkName) -1
+				For $i = 0 To UBound($TroopDarkName) - 1
 					If $debugsetlogTrain = 1 Then SetLog("Reset the $Don|$Cur" & $TroopDarkName[$i], $COLOR_PURPLE)
 					Assign("Cur" & $TroopDarkName[$i], 0)
 					Assign("Don" & $TroopDarkName[$i], 0)

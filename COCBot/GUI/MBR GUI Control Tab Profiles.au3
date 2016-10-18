@@ -76,8 +76,6 @@ Func btnAddConfirm()
 			; IceCube (Misc v1.0)
 			If GUICtrlGetState($btnRecycle) <> $GUI_ENABLE Then GUICtrlSetState($btnRecycle, $GUI_ENABLE)
 			; IceCube (Misc v1.0)
-			;DonateStats =============================
-			InitDonateStats()
 		Case Else
 			SetLog("If you are seeing this log message there is something wrong.", $COLOR_RED)
 	EndSwitch

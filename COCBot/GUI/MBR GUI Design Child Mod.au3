@@ -19,8 +19,6 @@ $hGUI_MOD = GUICreate("", $_GUI_MAIN_WIDTH - 20, $_GUI_MAIN_HEIGHT - 255, $_GUI_
 
 #include "MBR GUI Design Child Mod - Options.au3"
 #include "MBR GUI Design Child Mod - Options2.au3"
-#include "MBR GUI Design Child Mod - ChatBot.au3"
-#include "MBR GUI Design Child Mod - DonateStats.au3"
 
 GUISwitch($hGUI_MOD)
 
@@ -28,9 +26,5 @@ $hGUI_MOD_TAB = GUICtrlCreateTab(0, 0, $_GUI_MAIN_WIDTH - 20, $_GUI_MAIN_HEIGHT 
 $hGUI_MOD_TAB_ITEM1 = GUICtrlCreateTabItem(GetTranslated(600,54, "Mod Options"))
 ; this tab will be empty because it is only used to display a child GUI
 $hGUI_MOD_TAB_ITEM2 = GUICtrlCreateTabItem(GetTranslated(600,55, "Switch Profile && Multi Options"))
-; this tab will be empty because it is only used to display a child GUI
-$hGUI_MOD_TAB_ITEM3 = GUICtrlCreateTabItem(GetTranslated(600,56, "Chat Bot"))
-; this tab will be empty because it is only used to display a child GUI
-$hGUI_MOD_TAB_ITEM4 = GUICtrlCreateTabItem(GetTranslated(600,57, "Donate Stats"))
 ; this tab will be empty because it is only used to display a child GUI
 GUICtrlCreateTabItem("")

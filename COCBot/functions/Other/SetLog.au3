@@ -87,7 +87,7 @@ Func _ColorConvert($nColor);RGB to BGR or BGR to RGB
 			BitShift(BitAND($nColor, 0x00FF0000), 16))
 EndFunc   ;==>_ColorConvert
 
-Func SetAtkLog($String1, $String2 = "", $Color = $COLOR_BLACK, $Font = "Lucida Console", $FontSize = 7.4) ;Sets the text for the log
+Func SetAtkLog($String1, $String2 = "", $Color = $COLOR_BLACK, $Font = "Lucida Console", $FontSize = 7.5) ;Sets the text for the log
 	If $hAttackLogFileHandle = "" Then CreateAttackLogFile()
 	;string1 see in video, string1&string2 put in file
 	_GUICtrlRichEdit_SetFont($txtAtkLog, $FontSize, $Font)

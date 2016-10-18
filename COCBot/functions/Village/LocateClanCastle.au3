@@ -25,9 +25,9 @@ Func LocateClanCastle()
 
 	While 1
 		_ExtMsgBoxSet(1 + 64, $SS_CENTER, 0x004080, 0xFFFF00, 12, "Comic Sans MS", 500)
-		$stext = $sErrorText & @CRLF & GetTranslated(640,32,"Click OK then click on your Clan Castle") & @CRLF & @CRLF & _
-				GetTranslated(640,26,"Do not move mouse quickly after clicking location") & @CRLF & @CRLF & GetTranslated(640,27,"Make sure the building name is visible for me!") & @CRLF
-		$MsgBox = _ExtMsgBox(0, GetTranslated(640,1,"Ok|Cancel"), GetTranslated(640,33,"Locate Clan Castle"), $stext, 15, $frmBot)
+		$stext = $sErrorText & @CRLF & GetTranslated(640, 32, "Click OK then click on your Clan Castle") & @CRLF & @CRLF & _
+				GetTranslated(640, 26, "Do not move mouse quickly after clicking location") & @CRLF & @CRLF & GetTranslated(640, 27, "Make sure the building name is visible for me!") & @CRLF
+		$MsgBox = _ExtMsgBox(0, GetTranslated(640, 1, "Ok|Cancel"), GetTranslated(640, 33, "Locate Clan Castle"), $stext, 15, $frmBot)
 		If $MsgBox = 1 Then
 			WinGetAndroidHandle()
 			ClickP($aAway, 1, 0, "#0373")
@@ -116,3 +116,76 @@ Func LocateClanCastle()
 	ClickP($aAway, 1, 200, "#0327")
 
 EndFunc   ;==>LocateClanCastle
+
+Func AutoLocateClanCastle()
+	Local $PixelCCHere = GetLocationCC()
+	If UBound($PixelCCHere) > 0 Then
+		For $i = 0 To (UBound($PixelCCHere) - 1)
+			ClickP($aAway, 1, 0, "#0224") ; Click away
+			If _Sleep($iDelayReArm4) Then Return
+			$pixel = $PixelCCHere[$i]
+			Click($pixel[0], $pixel[1])
+			If _Sleep($iDelayReArm4) Then Return
+			$VerifyResult = VerifyItsCC()
+			If Not $VerifyResult = False Then
+				$aCCPos[0] = $pixel[0]
+				$aCCPos[1] = $pixel[1]
+				SetLog("Clan Castle: " & "(" & $aCCPos[0] & "," & $aCCPos[1] & ")", $COLOR_PURPLE)
+				SetLog("Your Clan Castle is at level: " & $VerifyResult, $COLOR_GREEN)
+				$IsCCAutoLocated[0] = 1
+				$IsCCAutoLocated[1] = $VerifyResult
+				SetClanNameOffset($IsCCAutoLocated[1])
+				If _Sleep($iDelayReArm1) Then Return
+				ClickP($aAway, 1, 0, "#0224") ; Click away
+				If _Sleep($iDelayReArm1) Then Return
+				ExitLoop
+			Else
+				ContinueLoop
+			EndIf
+		Next
+	Else
+		$IsCCAutoLocated[0] = 0
+		$IsCCAutoLocated[1] = 0
+		$IsCCAutoLocated[2] = 33
+		$IsCCAutoLocated[3] = 2
+		SetLog("Failed To Detect Clan Castle...", $COLOR_ORANGE)
+	EndIf
+EndFunc   ;==>AutoLocateClanCastle
+
+Func VerifyItsCC()
+	$sInfo = BuildingInfo(242, 520 + $bottomOffsetY) ; 860x780
+	If $sInfo[0] > 1 Or $sInfo[0] = "" Then
+		If StringInStr($sInfo[1], "Clan") = 1 Then
+			If $sInfo[2] = "Broken" Then
+				SetLog("You did not rebuild your Clan Castle yet.", $COLOR_ORANGE)
+			EndIf
+			Return $sInfo[2]
+		EndIf
+		Return False
+	EndIf
+	Return False
+EndFunc   ;==>VerifyItsCC
+
+Func SetClanNameOffset($CCLevel)
+	; Created a Case For Each Level, Due To Images Can be In Different Parts of Clan Castle!
+	; But All Current Images are From Same Part Of Clan Castle, So Offsets will be Same
+	; BUT you Should Change Offsets if You Changed Images
+	Select
+		Case $CCLevel = 3
+			$IsCCAutoLocated[2] = 33
+			$IsCCAutoLocated[3] = 16
+		Case $CCLevel = 4
+			$IsCCAutoLocated[2] = 33
+			$IsCCAutoLocated[3] = 16
+		Case $CCLevel = 5
+			$IsCCAutoLocated[2] = 33
+			$IsCCAutoLocated[3] = 16
+		Case $CCLevel = 6
+			$IsCCAutoLocated[2] = 33
+			$IsCCAutoLocated[3] = 16
+		Case Else
+			$IsCCAutoLocated[2] = 33
+			$IsCCAutoLocated[3] = 16
+			Return False
+	EndSelect
+EndFunc   ;==>SetClanNameOffset

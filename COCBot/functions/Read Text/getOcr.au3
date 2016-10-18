@@ -20,7 +20,7 @@ Func getGoldVillageSearch($x_start, $y_start) ;48, 69 -> Gets complete value of 
 EndFunc   ;==>getGoldVillageSearch
 
 Func getRemainTrainTimer($x_start, $y_start) ;
-	Return getOcrAndCapture("coc-RemainTrain", $x_start, $y_start, 70, 12, True)
+	Return getOcrAndCapture("coc-RemainTrain", $x_start, $y_start, 90, 18, True)
 EndFunc   ;==>getRemainTrainTimer
 
 Func getElixirVillageSearch($x_start, $y_start) ;48, 69+29 -> Gets complete value of Elixir xxx,xxx, top left,  Getresources.au3
@@ -112,7 +112,7 @@ Func getTroopCountBig($x_start, $y_start) ;  -> Gets troop amount on Attack Scre
 EndFunc   ;==>getTroopCountBig
 
 Func getArmyTroopQuantity($x_start, $y_start) ;  -> Gets troop amount on army camp or new windows
-	Return getOcrAndCapture("coc-train-quant", $x_start, $y_start, 45, 12, True)
+	Return getOcrAndCapture("coc-train-quant", $x_start, $y_start, 40, 20, True)
 EndFunc   ;==>getArmyTroopQuantity
 
 Func getArmyTroopKind($x_start, $y_start) ;  -> Gets kind of troop on army camp or new windows
@@ -120,7 +120,7 @@ Func getArmyTroopKind($x_start, $y_start) ;  -> Gets kind of troop on army camp 
 EndFunc   ;==>getArmyTroopKind
 
 Func getArmyCampCap($x_start, $y_start) ;  -> Gets army camp capacity --> train.au3, and used to read CC request time remaining
-	Return getOcrAndCapture("coc-army", $x_start, $y_start, 66, 14, True)
+	Return getOcrAndCapture("coc-ms", $x_start, $y_start, 82, 16, True)
 EndFunc   ;==>getArmyCampCap
 
 Func getCastleDonateCap($x_start, $y_start) ;  -> Gets clan castle capacity,  --> donatecc.au3
@@ -128,7 +128,7 @@ Func getCastleDonateCap($x_start, $y_start) ;  -> Gets clan castle capacity,  --
 EndFunc   ;==>getCastleDonateCap
 
 Func getBarracksTroopQuantity($x_start, $y_start) ;  -> Gets quantity of troops in training --> train.au3
-	Local $result = getOcrAndCapture("coc-train", $x_start, $y_start, 45, 16, True)
+	Local $result = getOcrAndCapture("coc-train", $x_start, $y_start, 45, 18, True)
 
 	If $result <> "" Or $result <> " " Then
 
@@ -229,12 +229,20 @@ Func getRemainTLaboratory($x_start, $y_start) ; read actual time remaining in La
 EndFunc   ;==>getRemainTLaboratory
 
 Func getRemainTHero($x_start, $y_start) ; Get time remaining for hero to be ready for attack from train window, BK:443,504 AQ:504,504 GW:565:504
-	Return getOcrAndCapture("coc-remainhero", $x_start, $y_start, 28, 12, True)
+	Return getOcrAndCapture("coc-remainhero", $x_start, $y_start, 38, 12, True)
 EndFunc   ;==>getRemainTHero
 
 Func getHeroStatus($x_start, $y_start) ; Get status/type_of_Hero from Hero Slots in training overview window, Slot1:464,446 Slot2:526,446 Slot3:588:446
 	Return getOcrAndCapture("coc-herostatus", $x_start, $y_start, 20, 20)
 EndFunc   ;==>getHeroStatus
+
+Func getBarracksNewTroopQuantity($x_start, $y_start) ;  -> Gets quantity of troops in army Window
+	Return getOcrAndCapture("coc-newarmy", $x_start, $y_start, 45, 18, True)
+EndFunc   ;==>getBarracksNewTroopQuantity
+
+Func getArmyCapacityOnTrainTroops($x_start, $y_start) ;  -> Gets quantity of troops in army Window
+	Return getOcrAndCapture("coc-NewCapacity", $x_start, $y_start, 67, 14, True)
+EndFunc   ;==>getArmyCapacityOnTrainTroops
 
 
 Func getOcrAndCapture($language, $x_start, $y_start, $width, $height, $removeSpace = False)

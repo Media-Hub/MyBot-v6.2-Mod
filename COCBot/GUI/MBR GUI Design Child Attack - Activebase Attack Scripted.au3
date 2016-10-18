@@ -13,7 +13,7 @@
 ; Example .......: No
 ; ===============================================================================================================================
 
-Global $cmbScriptNameAB, $lblNotesScriptAB, $sldSelectedSpeedAB, $lbltxtSelectedSpeedAB
+Global $cmbScriptNameAB, $lblNotesScriptAB
 
 $hGUI_ACTIVEBASE_ATTACK_SCRIPTED = GUICreate("", $_GUI_MAIN_WIDTH - 195, $_GUI_MAIN_HEIGHT - 344, 150, 25, BitOR($WS_CHILD, $WS_TABSTOP), -1, $hGUI_ACTIVEBASE)
 ;GUISetBkColor($COLOR_WHITE, $hGUI_ACTIVEBASE_ATTACK_SCRIPTED)
@@ -27,7 +27,7 @@ Local $x = 25, $y = 20
 			GUICtrlSetState(-1, $GUI_HIDE)
 			_GUICtrlSetTip(-1, $txtTip)
 		$y +=15
-		$cmbScriptNameAB = GUICtrlCreateCombo("", $x , $y, 185, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbScriptNameAB=GUICtrlCreateCombo("", $x , $y, 185, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			$txtTip = GetTranslated(607,4, -1)
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
@@ -81,6 +81,6 @@ Local $x = 25, $y = 20
 ;----- populate list of script and assign the default value if no exist profile -----------
 UpdateComboScriptNameAB()
 Local $tempindex = _GUICtrlComboBox_FindStringExact($cmbScriptNameAB, $scmbABScriptName)
-If $tempindex = -1 Then $tempindex = 0
+If $tempindex = -1 Then 	$tempindex = 0
 _GUICtrlComboBox_SetCurSel($cmbScriptNameAB, $tempindex)
 ;------------------------------------------------------------------------------------------

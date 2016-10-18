@@ -110,7 +110,7 @@ Local $x = 25, $y = 45
 	$y += 22
 	$x = 10
 	$x = 10
-	    $chkABSpellsWait = GUICtrlCreateCheckbox(GetTranslated(625,11, -1), $x, $y, -1, -1)
+	    $chkABSpellsWait = GUICtrlCreateCheckbox("Wait for Spells to be Ready", $x, $y, -1, -1)
 			$txtTip = GetTranslated(625,100, -1) & @CRLF & _
 			GetTranslated(625,101, -1)
  			_GUICtrlSetTip(-1, $txtTip)
@@ -188,66 +188,85 @@ Local $x = 220, $y = 45
 			$txtTip = GetTranslated(625,35, -1)
 			_GUICtrlSetTip(-1, $txtTip)
 		$y += 24
-		$chkMaxMortar[$LB] = GUICtrlCreateCheckbox(GetTranslated(625,54, -1), $x, $y, -1, -1)
+		GUICtrlCreateGroup("Weak base | max defenses", $x, $y, 215, 100)
+		$x += 5
+		$y += 20
+		$xStarColumn = $x
+		$yStartColumn = $y
+		$chkMaxMortar[$LB] = GUICtrlCreateCheckbox("", $x, $y, 17, 17)
 			$txtTip = GetTranslated(625,59, -1)
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkABWeakBase")
-		$cmbWeakMortar[$LB] = GUICtrlCreateCombo("", $x + 85, $y, 50, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbWeakMortar[$LB] = GUICtrlCreateCombo("", $x + 19, $y, 50, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			$txtTip = GetTranslated(625,38, -1)
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetData(-1, "-|Lvl 1|Lvl 2|Lvl 3|Lvl 4|Lvl 5|Lvl 6|Lvl 7|Lvl 8", "Lvl 5")
 			GUICtrlSetState(-1, $GUI_DISABLE)
-		$picABWeakMortar = GUICtrlCreateIcon($pIconLib, $eIcnMortar, $x + 140, $y - 2, 24, 24)
+		$picABWeakMortar = GUICtrlCreateIcon($pIconLib, $eIcnMortar, $x + 75, $y - 2, 24, 24)
 			_GUICtrlSetTip(-1, $txtTip)
 		$y +=24
-		$chkMaxWizTower[$LB] = GUICtrlCreateCheckbox(GetTranslated(625,55, -1), $x, $y, -1, -1)
+		$chkMaxWizTower[$LB] = GUICtrlCreateCheckbox("", $x, $y, 17, 17)
 			$txtTip = GetTranslated(625,60, -1)
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkABWeakBase")
-		$cmbWeakWizTower[$LB] = GUICtrlCreateCombo("", $x + 85, $y, 50, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbWeakWizTower[$LB] = GUICtrlCreateCombo("", $x + 19, $y, 50, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			$txtTip = GetTranslated(625,39, -1)
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetData(-1, "-|Lvl 1|Lvl 2|Lvl 3|Lvl 4|Lvl 5|Lvl 6|Lvl 7|Lvl 8|Lvl 9", "Lvl 4")
 			GUICtrlSetState(-1, $GUI_DISABLE)
-		$picABWeakWizTower = GUICtrlCreateIcon($pIconLib, $eIcnWizTower, $x + 140, $y - 2, 24, 24)
+		$picABWeakWizTower = GUICtrlCreateIcon($pIconLib, $eIcnWizTower, $x + 75, $y - 2, 24, 24)
 			_GUICtrlSetTip(-1, $txtTip)
-		$y +=24
-		$chkMaxXBow[$LB] = GUICtrlCreateCheckbox(GetTranslated(625,56, -1), $x, $y, -1, -1)
+		$y += 24
+		$chkMaxAirDefense[$LB] = GUICtrlCreateCheckbox("", $x, $y, 17, 17)
+			$txtTip = "Search for a base that has Air Defense below this level"
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "chkABWeakBase")
+		$cmbWeakAirDefense[$LB] = GUICtrlCreateCombo("", $x + 19, $y, 50, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			$txtTip = "Set the Max. level of the Air Defense to search for on a village to attack."
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetData(-1, "-|Lvl 1|Lvl 2|Lvl 3|Lvl 4|Lvl 5|Lvl 6|Lvl 7|Lvl 8", "Lvl 7")
+			GUICtrlSetState(-1, $GUI_DISABLE)
+		$picABWeakAirDefense = GUICtrlCreateIcon($pIconLib, $eIcnAirDefense, $x + 75, $y - 2, 24, 24)
+			_GUICtrlSetTip(-1, $txtTip)
+		$x = $xStarColumn + 104
+		$y = $yStartColumn
+		$chkMaxXBow[$LB] = GUICtrlCreateCheckbox("", $x, $y, 17, 17)
 			$txtTip = GetTranslated(625,61, -1)
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkABWeakBase")
-		$cmbWeakXBow[$LB] = GUICtrlCreateCombo("", $x + 85, $y, 50, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbWeakXBow[$LB] = GUICtrlCreateCombo("", $x + 19, $y, 50, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			$txtTip = GetTranslated(625,51, -1)
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetData(-1, "-|Lvl 1|Lvl 2|Lvl 3|Lvl 4", "Lvl 2")
 			GUICtrlSetState(-1, $GUI_DISABLE)
-		$picABWeakXBow = GUICtrlCreateIcon($pIconLib, $eIcnXBow3, $x + 140, $y - 2, 24, 24)
+		$picABWeakXBow = GUICtrlCreateIcon($pIconLib, $eIcnXBow3, $x + 75, $y - 2, 24, 24)
 			_GUICtrlSetTip(-1, $txtTip)
 		$y +=24
-		$chkMaxInferno[$LB] = GUICtrlCreateCheckbox(GetTranslated(625,57, -1), $x, $y, -1, -1)
+		$chkMaxInferno[$LB] = GUICtrlCreateCheckbox("", $x, $y, 17, 17)
 			$txtTip = GetTranslated(625,62, -1)
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkABWeakBase")
-		$cmbWeakInferno[$LB] = GUICtrlCreateCombo("", $x + 85, $y, 50, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbWeakInferno[$LB] = GUICtrlCreateCombo("", $x + 19, $y, 50, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			$txtTip = GetTranslated(625,52, -1)
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetData(-1, "-|Lvl 1|Lvl 2|Lvl 3", "Lvl 2")
 			GUICtrlSetState(-1, $GUI_DISABLE)
-		$picABWeakInferno = GUICtrlCreateIcon($pIconLib, $eIcnInferno4, $x + 140, $y - 2, 24, 24)
+		$picABWeakInferno = GUICtrlCreateIcon($pIconLib, $eIcnInferno4, $x + 75, $y - 2, 24, 24)
 			_GUICtrlSetTip(-1, $txtTip)
 		$y +=24
-		$chkMaxEagle[$LB] = GUICtrlCreateCheckbox(GetTranslated(625,58, -1), $x, $y, -1, -1)
+		$chkMaxEagle[$LB] = GUICtrlCreateCheckbox("", $x, $y, 17, 17)
 			$txtTip = GetTranslated(625,63, -1)
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkABWeakBase")
-		$cmbWeakEagle[$LB] = GUICtrlCreateCombo("", $x + 85, $y, 50, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbWeakEagle[$LB] = GUICtrlCreateCombo("", $x + 19, $y, 50, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			$txtTip = GetTranslated(625,53, -1)
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetData(-1, "-|Lvl 1|Lvl 2", "Lvl 1")
 			GUICtrlSetState(-1, $GUI_DISABLE)
-		$picABWeakEagle = GUICtrlCreateIcon($pIconLib, $eIcnEagleArt, $x + 140, $y - 2, 24, 24)
+		$picABWeakEagle = GUICtrlCreateIcon($pIconLib, $eIcnEagleArt, $x + 75, $y - 2, 24, 24)
 			_GUICtrlSetTip(-1, $txtTip)
-		$y += 24
+		$y += 44
+		$x = $xStarColumn
 		$chkABMeetOne = GUICtrlCreateCheckbox(GetTranslated(625,40, -1), $x, $y, -1, -1)
 			$txtTip = GetTranslated(625,41, -1)
 			_GUICtrlSetTip(-1, $txtTip)

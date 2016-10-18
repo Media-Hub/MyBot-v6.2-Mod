@@ -42,6 +42,23 @@
    Pause/Break Key = Pause/Resume bot
    ESC = Stop bot
 
+﻿* **V6.2.1 ProMac/MR.ViPeR/ezeck0001/TheRevenor**
+ * Fix the Dark Spells creation
+ * Fix Heroes Activation and exist more than 11 slots
+ * Fix spells detection on Army OverView
+ * Fix the Force Side on CSV Attacks
+ * Fix some minor issues on Donation Quantities ( slower click )
+ * New Train System , Balanced Time, Troops and donated troops
+ * Barbarians , Archers and goblins are in units not in %
+ * New Boost Dark Barracks
+ * New Troops Presets
+ * New Donate Stats TAB
+ * Scroll Donate Window inverted
+ * Waiting for Heroes | Spells don't Delete army and make it again
+ * Updated the Castle detection on Attack bar
+ * SecureME, clean androiod shared folders and random folders'files name
+ * Add check for wifi signal option and if disconnected Restart CoC
+   
 * **V6.2.1**
  * Fix GUI display of clone/skeleton spells for TH level where they are not available
  * Fix old training bug (@Promac submitted)

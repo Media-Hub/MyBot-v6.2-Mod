@@ -42,6 +42,7 @@
 #include "functions\Attack\AttackCSV\CheckCSVValues.au3"
 #include "functions\Attack\AttackCSV\DebugAttackCSV.au3"
 #include "functions\Attack\AttackCSV\DropTroopFromINI.au3"
+#include "functions\Attack\AttackCSV\DropSpellFromINIOnDefense.au3"
 #include "functions\Attack\AttackCSV\GetListPixel3.au3"
 #include "functions\Attack\AttackCSV\IsInsideDiamondRedArea.au3"
 #include "functions\Attack\AttackCSV\Line2Points.au3"
@@ -107,6 +108,7 @@
 #include "functions\CreateArmy\getArmyCCStatus.au3"
 #include "functions\CreateArmy\getArmyHeroCount.au3"
 #include "functions\CreateArmy\getArmyHeroTime.au3"
+#include "functions\CreateArmy\getArmyHeroStatus.au3"
 #include "functions\CreateArmy\getArmySpellCapacity.au3"
 #include "functions\CreateArmy\getArmySpellCount.au3"
 #include "functions\CreateArmy\getArmySpellTime.au3"
@@ -119,9 +121,7 @@
 #include "functions\CreateArmy\TrainClick.au3"
 #include "functions\CreateArmy\Train.au3"
 #include "functions\CreateArmy\TrainIt.au3"
-
 #include "functions\CreateArmy\RecalculateTrain.au3"
-#include "functions\Image Search\TestEQDeploy.au3"
 
 #include "functions\Image Search\ImageSearch.au3"
 #include "functions\Image Search\checkDeadBase.au3"
@@ -129,6 +129,7 @@
 #include "functions\Image Search\checkWall.au3"
 #include "functions\Image Search\CheckTombs.au3"
 #include "functions\Image Search\THSearch.au3"
+#include "functions\Image Search\TestEQDeploy.au3"
 
 #include "functions\Main Screen\checkMainScreen.au3"
 #include "functions\Main Screen\checkObstacles.au3"
@@ -199,11 +200,7 @@
 #include "functions\Other\KillProcess.au3"
 #include "functions\Other\LaunchConsole.au3"
 #include "functions\Other\ADB.au3"
-#include "functions\Other\ClickZoneR.au3"
 #include "functions\Other\JSON.au3"
-
-; Check Connections
-#include "functions\Other\CheckConnection.au3"
 
 #include "functions\Pixels\_CaptureRegion.au3"
 #include "functions\Pixels\_ColorCheck.au3"
@@ -268,21 +265,17 @@
 #include "functions\Village\UpgradeHeroes.au3"
 #include "functions\Village\ClanLevel.au3"
 #include "functions\Village\StarBonus.au3"
-
-; Clan Hop - Added By NguyenAnh
-#include "functions\Village\ClanHop.au3"
+#include "functions\Other\ClickZoneR.au3"
+#include "functions\Village\DonateStats.au3"
 
 ; Switch Profile
 #include "functions\Village\ProfileSwitch.au3"
 
+; SwitchAcc - DEMEN
+#include "functions\Mod\Switch Accounts\SwitchAcc.au3"
+#cs
 ; Attack files - Added by LunaEclipse
 #include "functions\Attack\attackFunctions.au3"
-
-; Android Settings - Added by LunaEclipse
-;#include "functions\Android\modifyAndroid.au3"
-
-; SmartUpgrade - Added by Roro-Titi
-#include "functions\MOD\SmartUpgrade\AutoUpgrade.au3"
 
 ; ExtremeZap - Added by TheRevenor
 #include "functions\Mod\SmartZap\ExtremeZap.au3"
@@ -290,27 +283,4 @@
 ; SmartZap files - Added by LunaEclipse
 #include "functions\Mod\SmartZap\drillSearch.au3"
 #include "functions\Mod\SmartZap\smartZap.au3"
-
-; DonateStats - Added by Cutidudz
-#include "functions\Mod\DonateStats\DonateStats.au3"
-
-; DonateStats - Added by MR.ViPER
-#include "functions\Mod\DonateStats\DonateStats2.au3"
-
-; Check Collector Outside
-#include "functions\Mod\CollectorsOutside\AreCollectorsOutside.au3"
-
-; SwitchAcc - DEMEN
-#include "functions\Mod\Switch Accounts\SwitchAcc.au3"
-
-; Sleep Heroes - Added By MR.ViPER
-#include "functions\Village\SleepHeroes.au3"
-
-; CoCStarts - Added By NguyenAnh
-#include "functions\Mod\CoCStarts\CoCStats.com.au3"
-
-; Upgrade Management - Added by MMHK
-#include "functions\Mod\UpgradeManagement\UpgradesMgmt.au3"
-
-; DeleteTroopsInArmyOverview - Added by TheRevenor
-#include "functions\Mod\DeletedTroops\DeleteTroopsInArmyOverview.au3"
+#ce

@@ -5,7 +5,7 @@
 ; Parameters ....:
 ; Return values .: None
 ; Author ........: ProMac (2015), HungLe (2015)
-; Modified ......: Sardo 2015-08, KnowJack (Aug 2105), MonkeyHunter(06-2016)
+; Modified ......: Sardo 2015-08, KnowJack (Aug 2105), MonkeyHunter(06-2016), MR.ViPER (4-10-2016)
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2016
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......: checkwall.au3
@@ -16,52 +16,66 @@
 Func UpgradeWall()
 
 	If $ichkWalls = 1 Then
+		Local $Flag = 1 ; 0 = Should Stop Checking, 1 = Can Check for upgrading walls...
 		SetLog("Checking Upgrade Walls", $COLOR_BLUE)
-		If SkipWallUpgrade() Then Return
-		If $iFreeBuilderCount > 0 Then
-			ClickP($aAway, 1, 0, "#0313") ; click away
-			Local $MinWallGold = Number($iGoldCurrent - $WallCost) > Number($itxtWallMinGold) ; Check if enough Gold
-			Local $MinWallElixir = Number($iElixirCurrent - $WallCost) > Number($itxtWallMinElixir) ; Check if enough Elixir
+		Do
+			checkMainScreen(False)
+			VillageReport(True, True)
+			If SkipWallUpgrade() Then Return
+			If $iFreeBuilderCount > 0 Then
+				ClickP($aAway, 1, 0, "#0313") ; click away
+				Local $MinWallGold = Number($iGoldCurrent - $WallCost) > Number($itxtWallMinGold) ; Check if enough Gold
+				Local $MinWallElixir = Number($iElixirCurrent - $WallCost) > Number($itxtWallMinElixir) ; Check if enough Elixir
 
-			Switch $iUseStorage
-				Case 0
-					If $MinWallGold Then
-						SetLog("Upgrading Wall using Gold", $COLOR_GREEN)
-						If CheckWall() Then UpgradeWallGold()
-					Else
-						SetLog("Gold is below minimum, Skipping Upgrade", $COLOR_RED)
-					EndIf
-				Case 1
-					If $MinWallElixir Then
-						Setlog("Upgrading Wall using Elixir", $COLOR_GREEN)
-						If CheckWall() Then UpgradeWallElixir()
-					Else
-						Setlog("Elixir is below minimum, Skipping Upgrade", $COLOR_RED)
-					EndIf
-				Case 2
-					If $MinWallElixir Then
-						SetLog("Upgrading Wall using Elixir", $COLOR_GREEN)
-						If CheckWall() And Not UpgradeWallElixir() Then
-							SetLog("Upgrade with Elixir failed, attempt to upgrade using Gold", $COLOR_RED)
-							UpgradeWallGold()
-						EndIf
-					Else
-						SetLog("Elixir is below minimum, attempt to upgrade using Gold", $COLOR_RED)
+				Switch $iUseStorage
+					Case 0
 						If $MinWallGold Then
+							SetLog("Upgrading Wall using Gold", $COLOR_GREEN)
+							$Flag = 1
 							If CheckWall() Then UpgradeWallGold()
 						Else
-							Setlog("Gold is below minimum, Skipping Upgrade", $COLOR_RED)
+							SetLog("Gold is below minimum, Skipping Upgrade", $COLOR_RED)
+							$Flag = 0
 						EndIf
-					EndIf
-			EndSwitch
+					Case 1
+						If $MinWallElixir Then
+							Setlog("Upgrading Wall using Elixir", $COLOR_GREEN)
+							$Flag = 1
+							If CheckWall() Then UpgradeWallElixir()
+						Else
+							Setlog("Elixir is below minimum, Skipping Upgrade", $COLOR_RED)
+							$Flag = 0
+						EndIf
+					Case 2
+						If $MinWallElixir Then
+							SetLog("Upgrading Wall using Elixir", $COLOR_GREEN)
+							$Flag = 1
+							If CheckWall() And Not UpgradeWallElixir() Then
+								SetLog("Upgrade with Elixir failed, attempt to upgrade using Gold", $COLOR_RED)
+								$Flag = 1
+								UpgradeWallGold()
+							EndIf
+						Else
+							SetLog("Elixir is below minimum, attempt to upgrade using Gold", $COLOR_RED)
+							If $MinWallGold Then
+								$Flag = 1
+								If CheckWall() Then UpgradeWallGold()
+							Else
+								Setlog("Gold is below minimum, Skipping Upgrade", $COLOR_RED)
+								$Flag = 0
+							EndIf
+						EndIf
+				EndSwitch
 
-			ClickP($aAway, 1, 0, "#0314") ; click away
-			If _Sleep(100) Then Return
+				ClickP($aAway, 1, 0, "#0314") ; click away
+				If _Sleep(100) Then Return
 
-			Click(820, 40, 1, 0, "#0315") ; Close Builder/Shop if open by accident
-		Else
-			SetLog("No free builder, Upgrade Walls skipped..", $COLOR_RED)
-		EndIf
+				Click(820, 40, 1, 0, "#0315") ; Close Builder/Shop if open by accident
+			Else
+				SetLog("No free builder, Upgrade Walls skipped..", $COLOR_RED)
+			EndIf
+			If $ichkUpgradeContinually = 0 Then $Flag = 0
+		Until $Flag = 0
 	EndIf
 	If _Sleep($iDelayUpgradeWall1) Then Return
 	checkMainScreen(False) ; Check for errors during function
@@ -92,7 +106,7 @@ Func UpgradeWallGold()
 			Click(440, 480 + $midOffsetY, 1, 0, "#0317")
 			If _Sleep($iDelayUpgradeWallGold3) Then Return
 			SetLog("Upgrade complete", $COLOR_GREEN)
-			PushMsgToPushBullet("UpgradeWithGold")
+			PushMsg("UpgradeWithGold")
 			$iNbrOfWallsUppedGold += 1
 			$iNbrOfWallsUpped += 1
 			$iCostGoldWall += $WallCost
@@ -101,7 +115,7 @@ Func UpgradeWallGold()
 		EndIf
 	Else
 		Setlog("No Upgrade Gold Button", $COLOR_RED)
-		PushMsgToPushBullet("NowUpgradeGoldButton")
+		Pushmsg("NowUpgradeGoldButton")
 		Return False
 	EndIf
 
@@ -126,7 +140,7 @@ Func UpgradeWallElixir()
 			Click(440, 480 + $midOffsetY, 1, 0, "#0318")
 			If _Sleep($iDelayUpgradeWallElixir3) Then Return
 			SetLog("Upgrade complete", $COLOR_GREEN)
-			PushMsgToPushBullet("UpgradeWithElixir")
+			PushMsg("UpgradeWithElixir")
 			$iNbrOfWallsUppedElixir += 1
 			$iNbrOfWallsUpped += 1
 			$iCostElixirWall += $WallCost
@@ -135,7 +149,7 @@ Func UpgradeWallElixir()
 		EndIf
 	Else
 		Setlog("No Upgrade Elixir Button", $COLOR_RED)
-		PushMsgToPushBullet("NowUpgradeElixirButton")
+		Pushmsg("NowUpgradeElixirButton")
 		Return False
 	EndIf
 
@@ -147,7 +161,7 @@ Func SkipWallUpgrade() ; Dynamic Upgrades
 	checkMainScreen(False)
 	If $Restart = True Then Return
 	; $iUseStorage = IniRead($config, "other", "use-storage", "0") ; Reset Variable to User Selection
-	InireadS($iUseStorage,$config, "upgrade", "use-storage", "0")
+	InireadS($iUseStorage, $config, "upgrade", "use-storage", "0")
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 	;;;;;;;;;;;;;;;;;;;;##### Verify Builders available For Building Upgrades, If builder is available then buildings upgrade have priority #####;;;;;;;;;;;;;;;;;;;;

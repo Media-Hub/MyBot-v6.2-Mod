@@ -29,18 +29,12 @@ $grpLanguages = GUICtrlCreateGroup(GetTranslated(636,83, "GUI Language"), $x - 2
 GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 $y += 54
-$grpOnLoadBot = GUICtrlCreateGroup(GetTranslated(636,2, "When Bot Loads"), $x - 20, $y - 20, 210, 140)
+$grpOnLoadBot = GUICtrlCreateGroup(GetTranslated(636,2, "When Bot Loads"), $x - 20, $y - 20, 210, 120)
 	$y -= 4
     $chkDisableSplash = GUICtrlCreateCheckbox(GetTranslated(636,100, "Disable Splash Screen"), $x, $y, -1, -1)
         $txtTip = GetTranslated(636,101, "Disables the splash screen on startup.")
         GUICtrlSetTip(-1, $txtTip)
         GUICtrlSetState(-1, $GUI_UNCHECKED)
-	$y += 20
-	$chkConnection = GUICtrlCreateCheckbox("Check Internet Connection", $x, $y, -1, -1)
-		$txtTip = "Check if your Internet Connection Lost Will Close Emulator" & @CRLF & _
-				"     AND IF YOUR INTERNET RECONNECTED, WILL BE BACK START EMULATOR"
-		_GUICtrlSetTip(-1, $txtTip)
-		GUICtrlSetState(-1, $GUI_CHECKED)
     $y += 20
 	$chkVersion = GUICtrlCreateCheckbox(GetTranslated(636,3, "Check for Updates"), $x, $y, -1, -1)
 		$txtTip = GetTranslated(636,4, "Check if you are running the latest version of the bot.")
@@ -167,7 +161,7 @@ $grpTimeWakeUp = GUICtrlCreateGroup(GetTranslated(636,85, "Remote Device"), $x -
 GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 $y+= 51
-$grpOtherExpert = GUICtrlCreateGroup(GetTranslated(636,45, "Other Options"), $x - 20, $y - 20, 225, 170)
+$grpOtherExpert = GUICtrlCreateGroup(GetTranslated(636,45, "Other Options"), $x - 20, $y - 20, 225, 90)
 $chkSinglePBTForced = GUICtrlCreateCheckbox(GetTranslated(636,61, "Force Single PB logoff"), $x-5, $y, -1, -1)
 	GUICtrlSetOnEvent(-1, "chkSinglePBTForced")
 	_GUICtrlSetTip(-1, GetTranslated(636,62, "This forces bot to exit CoC only one time prior to normal start of PB"))
@@ -187,36 +181,4 @@ $txtPBTimeForcedExit = GUICtrlCreateInput("16", $x + 130, $y, 30, 16, BitOR($GUI
 	GUICtrlSetLimit(-1, 3)
 	GUICtrlSetState(-1, $GUI_DISABLE)
 $lblPBTimeForcedExit1 = GUICtrlCreateLabel( GetTranslated(603,9, -1), $x+162, $y+1, 27, 15)
-$y += 20
-$lblSleepHeroes = GuiCtrlCreateLabel(GetTranslated(636,107, "Put Heroes To Sleep:"),$x-10, $y+3)
-	$txtTip = GetTranslated(636,108, "You're able to Put Heroes To Sleep Before Closing CoC Due To Personal Break Logoff")
-	_GUICtrlSetTip(-1, $txtTip)
-	;-Barbarian King
-$IMGchkSleepBK = GUICtrlCreateIcon($pIconLib, $eIcnKing, $x+55 , $y+20, 24, 24)
-	$txtTip = GetTranslated(636,109, "Barbarian King")
-	_GUICtrlSetTip(-1, $txtTip)
-$chkPBSleepBK = GUICtrlCreateCheckbox("",$x+60,$y+46,17, 17)
-	$txtTip = GetTranslated(636,110, "Sleep Barbarian King Before Closing CoC Due To Personal Breake Logoff")
-	_GUICtrlSetTip(-1, $txtTip)
-	;-Archer Queen
-	$IMGchkSleepAQ = GUICtrlCreateIcon($pIconLib, $eIcnQueen, $x+84 , $y+20, 24, 24)
-	$txtTip = GetTranslated(636,111, "Archer Queen")
-	_GUICtrlSetTip(-1, $txtTip)
-$chkPBSleepAQ = GUICtrlCreateCheckbox("",$x+89,$y+46,17, 17)
-	$txtTip = GetTranslated(636,112, "Sleep Archer Queen Before Closing CoC Due To Personal Breake Logoff")
-	_GUICtrlSetTip(-1, $txtTip)
-	;-Grand Warden
-	$IMGchkSleepGW = GUICtrlCreateIcon($pIconLib, $eIcnWarden, $x+113 , $y+20, 24, 24)
-	$txtTip = GetTranslated(636,113, "Grand Warden")
-	_GUICtrlSetTip(-1, $txtTip)
-$chkPBSleepGW = GUICtrlCreateCheckbox("",$x+118,$y+46,17, 17)
-	$txtTip = GetTranslated(636,114, "Sleep Grand Warden Before Closing CoC Due To Personal Breake Logoff")
-	_GUICtrlSetTip(-1, $txtTip)
-$y +=45
-$y +=24
-$chkCloseTakeBreak = GUICtrlCreateCheckbox(GetTranslated(636,115, "Close Emulator When TakeBreak"), $x-5, $y-5, -1, -1)
-	$txtTip = GetTranslated(636,116, "This forces bot to Close Emulator only one time prior to normal start of PB")
-	_GUICtrlSetTip(-1, $txtTip)
-	GUICtrlSetOnEvent(-1, "chkClosePBEmu")
-	GUICtrlSetState(-1, $GUI_DISABLE)
 GUICtrlCreateGroup("", -99, -99, 1, 1)

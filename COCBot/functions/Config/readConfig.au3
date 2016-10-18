@@ -29,6 +29,10 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 
 		IniReadS($aCCPos[0], $building, "other", "xCCPos", "0")
 		IniReadS($aCCPos[1], $building, "other", "yCCPos", "0")
+		IniReadS($IsCCAutoLocated[0], $building, "other", "CCAutoDetected", "0")
+		IniReadS($IsCCAutoLocated[1], $building, "other", "CCLevel", "0")
+		IniReadS($IsCCAutoLocated[2], $building, "other", "OffsetxCCPos", "33")
+		IniReadS($IsCCAutoLocated[3], $building, "other", "OffsetyCCPos", "2")
 
 		IniReadS($barrackPos[0][0], $building, "other", "xBarrack1", "0")
 		IniReadS($barrackPos[0][1], $building, "other", "yBarrack1", "0")
@@ -42,12 +46,12 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		IniReadS($barrackPos[3][0], $building, "other", "xBarrack4", "0")
 		IniReadS($barrackPos[3][1], $building, "other", "yBarrack4", "0")
 
-		; Boost Dark Barrack
 		IniReadS($DarkbarrackPos[0][0], $building, "other", "xDarkBarrack1", "0")
 		IniReadS($DarkbarrackPos[0][1], $building, "other", "yDarkBarrack1", "0")
 
 		IniReadS($DarkbarrackPos[1][0], $building, "other", "xDarkBarrack2", "0")
 		IniReadS($DarkbarrackPos[1][1], $building, "other", "yDarkBarrack2", "0")
+
 
 		IniReadS($ArmyPos[0], $building, "other", "xArmy", "0")
 		IniReadS($ArmyPos[0], $building, "other", "yArmy", "0")
@@ -159,6 +163,7 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		IniReadS($itxtUpgrMinDark, $config, "upgrade", "minupgrdark", "2000")
 		IniReadS($ichkWalls, $config, "upgrade", "auto-wall", "0")
 		IniReadS($iSaveWallBldr, $config, "upgrade", "savebldr", "0")
+		IniReadS($ichkUpgradeContinually, $config, "upgrade", "upgradewallcontinually", "0")
 		IniReadS($iUseStorage, $config, "upgrade", "use-storage", "0")
 		IniReadS($icmbWalls, $config, "upgrade", "walllvl", "6")
 		IniReadS($iMaxNbWall, $config, "upgrade", "MaxNbWall", "8")
@@ -229,25 +234,27 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 
 		;Army training - Spells Creation  -----------------------------------------------------
 		Local $tempQtaSpell
-		IniReadS($iLightningSpellComp, $config, "Spells", "LightningSpell", "0")
-		IniReadS($iRageSpellComp, $config, "Spells", "RageSpell", "0")
-		IniReadS($iHealSpellComp, $config, "Spells", "HealSpell", "0")
-		IniReadS($iJumpSpellComp, $config, "Spells", "JumpSpell", "0")
-		IniReadS($iFreezeSpellComp, $config, "Spells", "FreezeSpell", "0")
-		IniReadS($iCloneSpellComp, $config, "Spells", "CloneSpell", "0", "Int")
-		IniReadS($iPoisonSpellComp, $config, "Spells", "PoisonSpell", "0")
-		IniReadS($iHasteSpellComp, $config, "Spells", "HasteSpell", "0")
-		IniReadS($iEarthSpellComp, $config, "Spells", "EarthSpell", "0")
-		IniReadS($iSkeletonSpellComp, $config, "Spells", "SkeletonSpell", "0", "Int")
+		IniReadS($LSpellComp, $config, "Spells", "LightningSpell", "0")
+		IniReadS($RSpellComp, $config, "Spells", "RageSpell", "0")
+		IniReadS($HSpellComp, $config, "Spells", "HealSpell", "0")
+		IniReadS($JSpellComp, $config, "Spells", "JumpSpell", "0")
+		IniReadS($FSpellComp, $config, "Spells", "FreezeSpell", "0")
+		IniReadS($CSpellComp, $config, "Spells", "CloneSpell", "0", "Int")
+		IniReadS($PSpellComp, $config, "Spells", "PoisonSpell", "0")
+		IniReadS($HaSpellComp, $config, "Spells", "HasteSpell", "0")
+		IniReadS($ESpellComp, $config, "Spells", "EarthSpell", "0")
+		IniReadS($SkSpellComp, $config, "Spells", "SkeletonSpell", "0", "Int")
 		IniReadS($iTotalCountSpell, $config, "Spells", "SpellFactory", "0")
-		$iLightningSpellComp = Int($iLightningSpellComp)
-		$iRageSpellComp = Int($iRageSpellComp)
-		$iHealSpellComp = Int($iHealSpellComp)
-		$iJumpSpellComp = Int($iJumpSpellComp)
-		$iFreezeSpellComp = Int($iFreezeSpellComp)
-		$iPoisonSpellComp = Int($iPoisonSpellComp)
-		$iHasteSpellComp = Int($iHasteSpellComp)
-		$iEarthSpellComp = Int($iEarthSpellComp)
+		$LSpellComp = Int($LSpellComp)
+		$RSpellComp = Int($RSpellComp)
+		$HSpellComp = Int($HSpellComp)
+		$JSpellComp = Int($JSpellComp)
+		$FSpellComp = Int($FSpellComp)
+		$CSpellComp = Int($CSpellComp)
+		$PSpellComp = Int($PSpellComp)
+		$HaSpellComp = Int($HaSpellComp)
+		$ESpellComp = Int($ESpellComp)
+		$SkSpellComp = Int($SkSpellComp)
 		$iTotalCountSpell = Int($iTotalCountSpell)
 
 		;======================================================================================================================
@@ -275,11 +282,13 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 
 		IniReadS($iCmbWeakMortar[$DB], $config, "search", "DBWeakMortar", "5")
 		IniReadS($iCmbWeakWizTower[$DB], $config, "search", "DBWeakWizTower", "4")
+		IniReadS($iCmbWeakAirDefense[$DB], $config, "search", "DBWeakAirDefense", "7")
 		IniReadS($iCmbWeakXBow[$DB], $config, "search", "DBWeakXBow", "4")
 		IniReadS($iCmbWeakInferno[$DB], $config, "search", "DBWeakInferno", "1")
 		IniReadS($iCmbWeakEagle[$DB], $config, "search", "DBWeakEagle", "2")
 		IniReadS($iChkMaxMortar[$DB], $config, "search", "DBCheckMortar", "0")
 		IniReadS($iChkMaxWizTower[$DB], $config, "search", "DBCheckWizTower", "0")
+		IniReadS($iChkMaxAirDefense[$DB], $config, "search", "DBCheckAirDefense", "0")
 		IniReadS($iChkMaxXBow[$DB], $config, "search", "DBCheckXBow", "0")
 		IniReadS($iChkMaxInferno[$DB], $config, "search", "DBCheckInferno", "0")
 		IniReadS($iChkMaxEagle[$DB], $config, "search", "DBCheckEagle", "0")
@@ -307,11 +316,13 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 
 		IniReadS($iCmbWeakMortar[$LB], $config, "search", "ABWeakMortar", "5")
 		IniReadS($iCmbWeakWizTower[$LB], $config, "search", "ABWeakWizTower", "4")
+		IniReadS($iCmbWeakAirDefense[$LB], $config, "search", "ABWeakAirDefense", "7")
 		IniReadS($iCmbWeakXBow[$LB], $config, "search", "ABWeakXBow", "4")
 		IniReadS($iCmbWeakInferno[$LB], $config, "search", "ABWeakInferno", "1")
 		IniReadS($iCmbWeakEagle[$LB], $config, "search", "ABWeakEagle", "2")
 		IniReadS($iChkMaxMortar[$LB], $config, "search", "ABCheckMortar", "0")
 		IniReadS($iChkMaxWizTower[$LB], $config, "search", "ABCheckWizTower", "0")
+		IniReadS($iChkMaxAirDefense[$LB], $config, "search", "ABCheckAirDefense", "0")
 		IniReadS($iChkMaxXBow[$LB], $config, "search", "ABCheckXBow", "0")
 		IniReadS($iChkMaxInferno[$LB], $config, "search", "ABCheckInferno", "0")
 		IniReadS($iChkMaxEagle[$LB], $config, "search", "ABCheckEagle", "0")
@@ -644,17 +655,6 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		IniReadS($iWAOffsetX, $config, "other", "WAOffsetX", "0")
 		IniReadS($iWAOffsetY, $config, "other", "WAOffsetY", "0")
 
-		; Telegram Notify - Added by CDudz
-		IniReadS($TelegramEnabled, $config, "pushbullet", "PBEnabled2", "0")
-		IniReadS($TelegramToken, $config, "pushbullet", "AccountToken2", "")
-		IniReadS($ichkAlertBuilderIdle, $config, "pushbullet", "AlertBuilderIdle", "0")
-
-		; Notify Top Gain Loot - Added by TheRevenor
-		$pAlertTopGain = IniRead($config, "pushbullet", "AlertTopGain", "0")
-
-		; Notify SmartUpgrade - Added by Roro-Titi
-		$ichkAlertSmartUpgrade = IniRead($config, "pushbullet", "chkAlertSmartUpgrade", "0")
-
 		;PushBullet Settings ---------------------------------------------
 		IniReadS($PushBulletToken, $config, "pushbullet", "AccountToken", "")
 		IniReadS($iOrigPushBullet, $config, "pushbullet", "OrigPushBullet", $sCurrProfile)
@@ -684,16 +684,6 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		IniReadS($iDeleteTempDays, $config, "deletefiles", "DeleteTempDays", "2")
 		IniReadS($ichkDeleteLoots, $config, "deletefiles", "DeleteLoots", "1")
 		IniReadS($iDeleteLootsDays, $config, "deletefiles", "DeleteLootsDays", "2")
-
-		; Pushbullet Stuff
-		$VillageStatIncrement = IniRead($config, "pushbullet", "VillageStatIncrement", "0")
-		$VillageStatIncrementTXT = IniRead($config, "pushbullet", "VillageStatIncrementTXT", "5")
-		$SearchNotifyCount = IniRead($config, "pushbullet", "SearchNotifyCount", "0")
-		$SearchNotifyCountTXT = IniRead($config, "pushbullet", "SearchNotifyCountTXT", "25")
-
-		; psychic octopus max logout time
-		$TrainLogoutMaxTime = IniRead($config, "TrainLogout", "TrainLogoutMaxTime", "0")
-		$TrainLogoutMaxTimeTXT = IniRead($config, "TrainLogout", "TrainLogoutMaxTimeTXT", "20")
 
 		$DebugClick = BitOR($DebugClick, IniRead($config, "debug", "debugsetclick", "0"))
 		If $DevMode = 1 Then
@@ -772,9 +762,6 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		$ichkSinglePBTForced = IniRead($config, "other", "chkSinglePBTForced", "0")
 		$iValueSinglePBTimeForced = IniRead($config, "other", "ValueSinglePBTimeForced", "18")
 		$iValuePBTimeForcedExit = IniRead($config, "other", "ValuePBTimeForcedExit", "15")
-		$ichkPBSleepBK = IniRead($config, "other", "chkPBSleepBK", "0")
-		$ichkPBSleepAQ = IniRead($config, "other", "chkPBSleepAQ", "0")
-		$ichkPBSleepGW = IniRead($config, "other", "chkPBSleepGW", "0")
 
 		$ichkLanguage = IniRead($config, "General", "ChkLanguage", "1")
 		$ichkDisableSplash = IniRead($config, "General", "ChkDisableSplash", $ichkDisableSplash)
@@ -1024,85 +1011,16 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		IniReadS($iEnableAfterArmyCamps2, $config, "search", "TSEnableAfterArmyCamps2", "100")
 		;==>Apply to switch Attack Standard after THSnipe End
 
-		; CSV Deployment Speed Mod
-		IniReadS($isldSelectedCSVSpeed[$DB], $config, "attack", "CSVSpeedDB", 3)
-		IniReadS($isldSelectedCSVSpeed[$LB], $config, "attack", "CSVSpeedAB", 3)
-
 		;Wait For Spells
 		IniReadS($iEnableSpellsWait[$DB], $config, "search", "ChkDBSpellsWait", "0")
 		IniReadS($iEnableSpellsWait[$LB], $config, "search", "ChkABSpellsWait", "0")
 		IniReadS($iTotalTrainSpaceSpell, $config, "search", "TotalTrainSpaceSpell", "0")
 
-#cs		; Android Settings
-		$sAndroid = IniRead($config, "Android", "Emulator", "<No Emulators>")
-		$sAndroidInstance = IniRead($config, "Android", "Instance", "")
-#ce
-		; SmartZap Settings
-		$ichkSmartZap = IniRead($config, "SmartZap", "UseSmartZap", "0")
-		$ichkSmartZapDB = IniRead($config, "SmartZap", "ZapDBOnly", "1")
-		$ichkSmartZapSaveHeroes = IniRead($config, "SmartZap", "THSnipeSaveHeroes", "1")
-		$itxtMinDE = IniRead($config, "SmartZap", "MinDE", "250")
+		;Train Radio/QuickTrain
 
-		; ExtremeZap
-		$ichkExtLightSpell = IniRead($config, "MOD", "ExtLightSpell", "0")
-		$itxtMinDE = IniRead($config, "MOD", "MinDE", "250")
-
-		; Check Collectors Outside
-		$ichkDBMeetCollOutside = IniRead($config, "search", "DBMeetCollOutside", "0")
-		$iDBMinCollOutsidePercent = IniRead($config, "search", "DBMinCollOutsidePercent", "50")
-
-		; Check Connections
-		$ichkConnection = IniRead($config, "general", "ChkConnect", "1")
-
-		; ChatBot
-		$ichkchatdelay = IniRead($config, "global", "chdelay", "0")
-
-		; Close TakeBrake
-		$ichkCloseTakeBreak = IniRead($config, "general", "ChkCloseEmuPB", "0")
-
-		; SwitchAcc Mode - DEMEN
-		$ichkSwitchAcc = IniRead($profile, "Switch Account", "Enable", "0")
-		$icmbTotalCoCAcc = IniRead($profile, "Switch Account", "Total Coc Account", "0")	; 0 = AutoDetect
-		$ichkSmartSwitch = IniRead($profile, "Switch Account", "Smart Switch", "1")
-		$ichkCloseTraining = Number(IniRead($profile, "Switch Account", "Sleep Combo", "0"))	; Sleep Combo, 1 = Close CoC, 2 = Close Android, 0 = No sleep
-
-		$ProfileType = IniRead($config, "Switch Account", "Profile Type", "")
-		$MatchProfileAcc = IniRead($config, "Switch Account", "Match Profile Acc", "")
-
-		; Restart Android after long search - DEMEN
-		$iChkRestartAndroid = IniRead($config, "Restart Android", "Enable", "1")
-		$iRestartAndroidSearchLimit = IniRead($config, "Restart Android", "Restart Android Search Limit", "200")
-		$iRestartAndroidTrainError= IniRead($config, "Restart Android", "Restart Android Train Error", "10")
-
-		; Donate Stats
-		$ichkDStats = IniRead($config, "donate", "chkDStats", "1")
-		$ichkLimitDStats = IniRead($config, "stats", "chkLimitDStats", "0")
-
-		; Don't Barack Mode
-		$iChkDontRemove = IniRead($config, "troop", "DontRemove", "0")
-		$iChkBarrackSpell = IniRead($config, "Spells", "BarrackSpell", "0")
-
-		; SmartUpgrade
-		$ichkSmartUpgrade = IniRead($config, "upgrade", "chkSmartUpgrade", "0")
-		$ichkIgnoreTH = IniRead($config, "upgrade", "chkIgnoreTH", "0")
-		$ichkIgnoreKing = IniRead($config, "upgrade", "chkIgnoreKing", "0")
-		$ichkIgnoreQueen = IniRead($config, "upgrade", "chkIgnoreQueen", "0")
-		$ichkIgnoreWarden = IniRead($config, "upgrade", "chkIgnoreWarden", "0")
-		$ichkIgnoreCC = IniRead($config, "upgrade", "chkIgnoreCC", "0")
-		$ichkIgnoreLab = IniRead($config, "upgrade", "chkIgnoreLab", "0")
-		$ichkIgnoreBarrack = IniRead($config, "upgrade", "chkIgnoreBarrack", "0")
-		$ichkIgnoreDBarrack = IniRead($config, "upgrade", "chkIgnoreDBarrack", "0")
-		$ichkIgnoreFactory = IniRead($config, "upgrade", "chkIgnoreFactory", "0")
-		$ichkIgnoreDFactory = IniRead($config, "upgrade", "chkIgnoreDFactory", "0")
-		$ichkIgnoreGColl = IniRead($config, "upgrade", "chkIgnoreGColl", "0")
-		$ichkIgnoreEColl = IniRead($config, "upgrade", "chkIgnoreEColl", "0")
-		$ichkIgnoreDColl = IniRead($config, "upgrade", "chkIgnoreDColl", "0")
-		$iSmartMinGold = IniRead($config, "upgrade", "SmartMinGold", "0")
-		$iSmartMinElixir = IniRead($config, "upgrade", "SmartMinElixir", "0")
-		$iSmartMinDark = IniRead($config, "upgrade", "SmartMinDark", "0")
-
-		; Clan Hop Setting
-		$ichkClanHop = IniRead($config, "Others", "ClanHop", "0")
+		IniReadS($iRadio_Army1, $config, "troop", "QuickTrain1", "1")
+		IniReadS($iRadio_Army2, $config, "troop", "QuickTrain2", "0")
+		IniReadS($iRadio_Army3, $config, "troop", "QuickTrain3", "0")
 
 		; Profile Switch
 		$ichkGoldSwitchMax = IniRead($config, "profiles", "chkGoldSwitchMax", "0")
@@ -1133,29 +1051,33 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		$icmbTrophyMinProfile = IniRead($config, "profiles", "cmbTrophyMinProfile", "0")
 		$itxtMinTrophyAmount = IniRead($config, "profiles", "txtMinTrophyAmount", "1000")
 
-		; CoCStarts
-		$ichkCoCStats = IniRead($config, "Stats", "chkCoCStats", "0")
-		$MyApiKey = IniRead($config, "Stats", "txtAPIKey", "")
+		; SwitchAcc Mode - DEMEN
+		$ichkSwitchAcc = IniRead($profile, "Switch Account", "Enable", "0")
+		$icmbTotalCoCAcc = IniRead($profile, "Switch Account", "Total Coc Account", "0")	; 0 = AutoDetect
+		$ichkSmartSwitch = IniRead($profile, "Switch Account", "Smart Switch", "1")
+		$ichkCloseTraining = Number(IniRead($profile, "Switch Account", "Sleep Combo", "0"))	; Sleep Combo, 1 = Close CoC, 2 = Close Android, 0 = No sleep
 
-		; Collect Treasury
-		$ichkCollectTresory = IniRead($config, "other", "CollectTresory", "0")
-		$itxtTreasuryGold = IniRead($config, "other", "treasuryGold", "0")
-		$itxtTreasuryElixir = IniRead($config, "other", "treasuryElixir", "0")
-		$itxtTreasuryDark = IniRead($config, "other", "treasuryDark", "0")
-		$ichkCollectTresoryGold = IniRead($config, "other", "CollectTresoryGold", "0")
-		$ichkCollectTresoryElixir = IniRead($config, "other", "CollectTresoryElixir", "0")
-		$ichkCollectTresoryDark = IniRead($config, "other", "CollectTresoryDark", "0")
-		$ichkTRFull = IniRead($config, "other", "chkTRFull", "0")
+		$ProfileType = IniRead($config, "Switch Account", "Profile Type", "")
+		$MatchProfileAcc = IniRead($config, "Switch Account", "Match Profile Acc", "")
 
-		; Upgrade Management - Added by MMHK
-		If IniRead($config, "upgrade", "UpdateNewUpgradesOnly", "0") = 1 Then
-			$bUpdateNewUpgradesOnly = True
-		Else
-			$bUpdateNewUpgradesOnly = False
-		EndIf
+		; Restart Android after long search - DEMEN
+		$iChkRestartAndroid = IniRead($config, "Restart Android", "Enable", "1")
+		$iRestartAndroidSearchLimit = IniRead($config, "Restart Android", "Restart Android Search Limit", "200")
+		$iRestartAndroidTrainError= IniRead($config, "Restart Android", "Restart Android Train Error", "10")
 
-		; Deleted Wrong Troops - Added by TheRevenor
-		$ichkDeleteTroops = IniRead($config, "Mod", "DeletedTroops", "0")
+#cs		; SmartZap Settings
+		$ichkSmartZap = IniRead($config, "SmartZap", "UseSmartZap", "0")
+		$ichkSmartZapDB = IniRead($config, "SmartZap", "ZapDBOnly", "1")
+		$ichkSmartZapSaveHeroes = IniRead($config, "SmartZap", "THSnipeSaveHeroes", "1")
+		$itxtMinDE = IniRead($config, "SmartZap", "MinDE", "250")
+
+		; ExtremeZap
+		$ichkExtLightSpell = IniRead($config, "MOD", "ExtLightSpell", "0")
+		$itxtMinDE = IniRead($config, "MOD", "MinDE", "250")
+#ce
+		; CSV Deployment Speed Mod
+		IniReadS($isldSelectedCSVSpeed[$DB], $config, "attack", "CSVSpeedDB", 3)
+		IniReadS($isldSelectedCSVSpeed[$LB], $config, "attack", "CSVSpeedAB", 3)
 
 	Else
 		Return False

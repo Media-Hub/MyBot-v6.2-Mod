@@ -31,12 +31,12 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 				If _Sleep($iDelayReturnHome1) Then Return
 			WEnd
 
-			; Check to see if we should zap the DE Drills - Added by LunaEclipse
+#cs			; Check to see if we should zap the DE Drills - Added by LunaEclipse
 			If IsAttackPage() Then
 				smartZap()
 				ExtremeZap()
 			EndIf
-
+#ce
 			;If Heroes were not activated: Hero Ability activation before End of Battle to restore health
 			If ($checkKPower = True Or $checkQPower = True) And $iActivateKQCondition = "Auto" Then
 				;_CaptureRegion()
@@ -65,17 +65,17 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 	$checkWPower = False
 
 	;reset barracks upon return when TH sniping w/custom army
-	If $iTScheck = 1 and $iMatchMode = $TS And $icmbTroopComp <> 8 Then $FirstStart = True
+	If $iTScheck = 1 And $iMatchMode = $TS And $icmbTroopComp <> 8 Then $FirstStart = True
 
 	SetLog("Returning Home", $COLOR_BLUE)
 	If $RunState = False Then Return
 
 	; ---- CLICK SURRENDER BUTTON ----
-	If Not (IsReturnHomeBattlePage(True, False)) Then  ; check if battle is already over
+	If Not (IsReturnHomeBattlePage(True, False)) Then ; check if battle is already over
 		$i = 0 ; Reset Loop counter
 		While 1 ; dynamic wait loop for surrender button to appear
-			If _CheckPixel($aSurrenderButton, $bCapturePixel) Then  ;is surrender button is visible?
-				If IsAttackPage() Then  ; verify still on attack page, and battle has not ended magically before clicking
+			If _CheckPixel($aSurrenderButton, $bCapturePixel) Then ;is surrender button is visible?
+				If IsAttackPage() Then ; verify still on attack page, and battle has not ended magically before clicking
 					ClickP($aSurrenderButton, 1, 0, "#0099") ;Click Surrender
 					$j = 0
 					While 1 ; dynamic wait for Okay button
@@ -134,15 +134,10 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 		_GDIPlus_ImageSaveToFile($hBitmap_Scaled, $dirLoots & $LootFileName)
 		_GDIPlus_ImageDispose($hBitmap_Scaled)
 	EndIf
-
+	ResetRedLine()
 	;push images if requested..
 	If $GoldChangeCheck = True Then
-		PushMsgToPushBullet ("LastRaid")
-		$AttackCount += 1 ;for periodic village stats per number of attacks
-	EndIf
-	;Delete searchcount messages if necessary
-	If $SearchNotifyCount = 1 And $searchcount >= 1 And isarray($SearchNotifyCountMsgIden) Then
-		_DeleteMessageOfPushBullet ($SearchNotifyCountMsgIden[0])
+		PushMsg("LastRaid")
 	EndIf
 
 	$i = 0 ; Reset Loop counter
@@ -176,5 +171,3 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 		EndIf
 	WEnd
 EndFunc   ;==>ReturnHome
-
-

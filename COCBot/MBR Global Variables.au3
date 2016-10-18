@@ -50,7 +50,6 @@
 #include <GuiListView.au3>
 #include <GUIToolTip.au3>
 
-; SecureME - Added By MR.ViPeR
 #include <Crypt.au3>
 Global $rgbaExt = GenerateRandom("", True)
 Global $shExt = GenerateRandom("", True)
@@ -442,7 +441,7 @@ Global Enum $eIcnArcher = 1, $eIcnDonArcher, $eIcnBalloon, $eIcnDonBalloon, $eIc
 		$eIcnBldgElixir, $eIcnBldgGold, $eIcnMagnifier, $eIcnWallElixir, $eIcnWallGold, $eIcnQueen, $eIcnKing, $eIcnDarkSpellBoost, $eIcnQueenBoostLocate, $eIcnKingBoostLocate, $eIcnKingUpgr, $eIcnQueenUpgr, $eIcnWardenAbility, $eIcnWarden, $eIcnWardenBoostLocate, $eIcnKingBoost, _
 		$eIcnQueenBoost, $eIcnWardenBoost, $eIcnWardenUpgr, $eIcnReload, $eIcnCopy, $eIcnAddcvs, $eIcnEdit, $eIcnTreeSnow, $eIcnSleepingQueen, $eIcnSleepingKing, $eIcnGoldElixir, $eIcnBowler, $eIcnDonBowler, $eIcnCCDonate, $eIcnEagleArt, $eIcnGembox, $eIcnInferno4, $eIcnInfo, $eIcnMain, _
 		$eIcnTree, $eIcnProfile, $eIcnCCRequest, $eIcnTelegram, $eIcnTiles, $eIcnXbow3, $eIcnBark, $eIcnDailyProgram, $eIcnLootCart, $eIcnSleepMode, $eIcnTH11, $eIcnTrainMode, $eIcnSleepingWarden, $eIcnCloneSpell, $eIcnSkeletonSpell, $eIcnBabyDragon, $eIcnDonBabyDragon, $eIcnMiner, $eIcnDonMiner, _
-		$eIcnNoShield, $eIcnDonCustomB, $eIcnUpgrade, $eIcnDarkBarrackBoost, $eIcnModNguyenAnh
+		$eIcnNoShield, $eIcnDonCustomB, $eIcnDarkBarrackBoost, $eIcnAirDefense = 150, $eIcnModNguyenAnh
 
 Global $eIcnDonBlank = $eIcnDonBlacklist
 Global $eIcnOptions = $eIcnDonBlacklist
@@ -463,7 +462,6 @@ Global $AlertSearch = True
 Global $iChkAttackNow, $iAttackNowDelay, $bBtnAttackNowPressed = False
 Global $PushBulletToken = ""
 Global $TelegramToken = ""
-Global $TelegramEnabled
 
 Global $iGUIMasterWidth = 470
 Global $iGUIMasterHeight = 650
@@ -486,8 +484,6 @@ $sModeText[$MA] = "Milking Attack"
 Global $iAtkAlgorithm[$iModeCount]
 
 ;PushBullet---------------------------------------------------------------
-Global $TroopSpellStats[0][2] = [[]]
-Global $iLastAtkTime ; loot hour:mins last raid Added by CDudz Modified by CDudz
 Global $PBRemoteControlInterval = 60000 ; 60 secs
 Global $PBDeleteOldPushesInterval = 1800000 ; 30 mins
 Global $iOrigPushBullet
@@ -509,24 +505,6 @@ Global $icmbHoursPushBullet
 Global $chkDeleteAllPBPushes
 Global $ichkAlertPBCampFull
 Global $ichkAlertPBCampFullTest = 0
-
-;Info Notify - Added By TheRevenor
-Global $pAlertTopGain
-Global $ichkAlertBuilderIdle
-Global $RequestScreenshotHD = 0
-Global $RequestBuilderInfo = 0
-Global $iReportIdleBuilder = 0
-Global $RequestShieldInfo = 0
-
-;Pushbullet Stuff
-Global $StartTime = @HOUR & ":" & @MIN &", " & @MON & "/" & @MDAY
-Global $Attackcount = 0
-Global $VillageStatIncrement
-Global $VillageStatIncrementTXT
-Global $SearchNotifyCount
-Global $SearchNotifyCountTXT
-Global $SearchNotifyCountMsgIden
-Global $PersonalBreakNotified = False
 
 Global $sLogFName
 Global $sAttackLogFName
@@ -584,10 +562,10 @@ Global $Is_ClientSyncError = False ;If true means while searching Client Out Of 
 Global $searchGold, $searchElixir, $searchDark, $searchTrophy, $searchTH ;Resources of bases when searching
 Global $SearchGold2 = 0, $SearchElixir2 = 0, $iStuck = 0, $iNext = 0
 Global $iMinGold[$iModeCount], $iMinElixir[$iModeCount], $iMinGoldPlusElixir[$iModeCount], $iMinDark[$iModeCount], $iMinTrophy[$iModeCount], $iMaxTH[$iModeCount], $iEnableAfterCount[$iModeCount], $iEnableBeforeCount[$iModeCount]
-Global $ChkMaxMortar[$iModeCount], $ChkMaxWizTower[$iModeCount], $ChkMaxXBow[$iModeCount], $ChkMaxInferno[$iModeCount], $ChkMaxEagle[$iModeCount]
-Global $iChkMaxMortar[$iModeCount], $iChkMaxWizTower[$iModeCount], $iChkMaxXBow[$iModeCount], $iChkMaxInferno[$iModeCount], $iChkMaxEagle[$iModeCount]
-Global $CmbWeakMortar[$iModeCount], $CmbWeakWizTower[$iModeCount], $CmbWeakXBow[$iModeCount], $CmbWeakInferno[$iModeCount], $cmbWeakEagle[$iModeCount]
-Global $iCmbWeakMortar[$iModeCount], $iCmbWeakWizTower[$iModeCount], $iCmbWeakXBow[$iModeCount], $iCmbWeakInferno[$iModeCount], $iCmbWeakEagle[$iModeCount]
+Global $ChkMaxMortar[$iModeCount], $ChkMaxWizTower[$iModeCount], $chkMaxAirDefense[$iModeCount], $ChkMaxXBow[$iModeCount], $ChkMaxInferno[$iModeCount], $ChkMaxEagle[$iModeCount]
+Global $iChkMaxMortar[$iModeCount], $iChkMaxWizTower[$iModeCount], $iChkMaxAirDefense[$iModeCount], $iChkMaxXBow[$iModeCount], $iChkMaxInferno[$iModeCount], $iChkMaxEagle[$iModeCount]
+Global $CmbWeakMortar[$iModeCount], $CmbWeakWizTower[$iModeCount], $CmbWeakAirDefense[$iModeCount], $CmbWeakXBow[$iModeCount], $CmbWeakInferno[$iModeCount], $cmbWeakEagle[$iModeCount]
+Global $iCmbWeakMortar[$iModeCount], $iCmbWeakWizTower[$iModeCount], $iCmbWeakAirDefense[$iModeCount], $iCmbWeakXBow[$iModeCount], $iCmbWeakInferno[$iModeCount], $iCmbWeakEagle[$iModeCount]
 Global $iEnableAfterTropies[$iModeCount], $iEnableBeforeTropies[$iModeCount], $iEnableAfterArmyCamps[$iModeCount] ; Search conditions
 Global $iAimGold[$iModeCount], $iAimElixir[$iModeCount], $iAimGoldPlusElixir[$iModeCount], $iAimDark[$iModeCount], $iAimTrophy[$iModeCount], $iAimTHtext[$iModeCount] ; Aiming Resource values
 Global $iEnableSearchSearches[$iModeCount], $iEnableSearchTropies[$iModeCount], $iEnableSearchCamps[$iModeCount]
@@ -678,6 +656,7 @@ Global $WallCosts[7] = [30000, 75000, 200000, 500000, 1000000, 3000000, 4000000]
 Global $WallX = 0, $WallY = 0
 Global $Wall[8]
 Global $iMaxNbWall = 4
+Global $ichkUpgradeContinually
 
 ;Attack Settings
 ; Old coordinates
@@ -688,10 +667,10 @@ Global $iMaxNbWall = 4
 	Global $BottomRight[5][2] = [[523, 537], [595, 484], [654, 440], [715, 393], [779, 344]]
 #ce
 ; New coordinates by Cru34
-Global $TopLeft[5][2] = [[83, 306], [174, 238], [240, 188], [303, 142], [390, 76]]
-Global $TopRight[5][2] = [[466, 66], [556, 134], [622, 184], [684, 231], [775, 300]]
-Global $BottomLeft[5][2] = [[81, 363], [174, 434], [235, 481], [299, 530], [390, 600]]
-Global $BottomRight[5][2] = [[466, 590], [554, 523], [615, 477], [678, 430], [765, 364]]
+Global $TopLeft[5][2] = [[56, 307], [165, 236], [236, 185], [300, 137], [390, 71]]
+Global $TopRight[5][2] = [[458, 72], [543, 136], [609, 187], [684, 244], [779, 300]]
+Global $BottomLeft[5][2] = [[56, 418], [165, 495], [236, 547], [300, 592], [315, 629]]
+Global $BottomRight[5][2] = [[505, 629], [561, 592], [620, 547], [680, 495], [780, 418]]
 Global $eThing[1] = [101]
 Global $Edges[4] = [$BottomRight, $TopLeft, $BottomLeft, $TopRight]
 
@@ -810,7 +789,6 @@ Global $boostsEnabled = 1 ; is this function enabled
 Global $icmbQuantBoostBarracks
 Global $icmbBoostBarracks = 0
 
-;Boost Dark Barracks
 Global $icmbQuantBoostDarkBarracks
 Global $icmbBoostDarkBarracks = 0
 
@@ -834,6 +812,7 @@ Global $WardenAltarPos[2] = [-1, -1] ; position Grand Warden Altar
 
 ;Donate Settings
 Global $aCCPos[2] = [-1, -1] ;Position of clan castle
+Global $IsCCAutoLocated[4] = [0, 0, 33, 2] ;A Flag to know if CC Auto Located! [0] = 0 OR 1, [1] = Clan Castle LEVEL, [2] = Offset X, [3] = Offset Y
 Global $LastDonateBtn1 = -1, $LastDonateBtn2 = -1
 Global $DonatePixel
 Global $iClanLevel
@@ -889,9 +868,14 @@ Global $CurMini = 0, $CurHogs = 0, $CurValk = 0, $CurGole = 0, $CurWitc = 0, $Cu
 Global $T[1] = [97]
 Global $ArmyComp
 
+Global $QueuedBarb = 0, $QueuedArch = 0, $QueuedGiant = 0, $QueuedGobl = 0, $QueuedWall = 0, $QueuedBall = 0, $QueuedWiza = 0, $QueuedHeal = 0, $QueuedDrag = 0, $QueuedPekk = 0, $QueuedBabyD = 0, $QueuedMine = 0
+Global $QueuedMini = 0, $QueuedHogs = 0, $QueuedValk = 0, $QueuedGole = 0, $QueuedWitc = 0, $QueuedLava = 0, $QueuedBowl = 0
+
+
 ;Spell Settings
 Global $DonPois = 0, $DonEart = 0, $DonHast = 0, $DonSkel
-Global $iLightningSpellComp = 0, $iHealSpellComp = 0, $iRageSpellComp = 0, $iJumpSpellComp = 0, $iFreezeSpellComp = 0,$iCloneSpellComp = 0, $iPoisonSpellComp = 0, $iEarthSpellComp = 0, $iHasteSpellComp = 0, $iSkeletonSpellComp = 0
+;Global $iLightningSpellComp = 0, $iHealSpellComp = 0, $iRageSpellComp = 0, $iJumpSpellComp = 0, $iFreezeSpellComp = 0,$iCloneSpellComp = 0, $iPoisonSpellComp = 0, $iEarthSpellComp = 0, $iHasteSpellComp = 0, $iSkeletonSpellComp = 0
+Global $LSpellComp = 0, $HSpellComp = 0, $RSpellComp = 0, $JSpellComp = 0, $FSpellComp = 0, $CSpellComp = 0, $PSpellComp = 0, $ESpellComp = 0, $HaSpellComp = 0, $SkSpellComp = 0
 Global $CurTotalSpell = False ; True when spell count haa been read
 Global $CurLightningSpell = 0, $CurHealSpell = 0, $CurRageSpell = 0, $CurJumpSpell = 0, $CurFreezeSpell = 0, $CurCloneSpell = 0, $CurPoisonSpell = 0, $CurHasteSpell = 0, $CurEarthSpell = 0, $CurSkeletonSpell = 0
 Global $iTotalCountSpell = 0
@@ -899,41 +883,15 @@ Global $iTotalTrainSpaceSpell = 0
 Global $TotalSFactory = 0
 Global $CurSFactory = 0
 
-; New Train System
-; Variables used on new train system | Boosted Barracks | Balanced train donated troops
-Global $BoostedButtonX = 0
-Global $BoostedButtonY = 0
-
-; All this variables will be Redim in first Run OR if exist some changes on the barracks number
-; Barracks queued capacity
-Global $IsFullArmywithHeroesAndSpells = False
-Global $BarrackCapacity[4]
-Global $DarkBarrackCapacity[2]
-; Global Variable to store the initial time of the Boosted Barracks
-; [$i][0] : 0 = is not boosted , 1 = is boosted
-; [$i][1] : Initial timer of the boosted Barrack
-Global $InitBoostTime[4][2] = [[0, 0], [0, 0], [0, 0], [0, 0]]
-Global $InitBoostTimeDark[2][2] = [[0, 0], [0, 0]]
-
-; Barracks remaining train time
-Global $BarrackTimeRemain[4]
-Global $DarkBarrackTimeRemain[2]
-Global $ichkWASCloseWaitEnable = 0
-Global $ichkWASCloseWaitEnable2 = 0
-Global $LetsSortNB = False
-Global $LetsSortDB = False
-
-Global $totalPossibleBoostTimes = 0
-Global $totalPossibleBoostBarrackses = 0
-Global $BoostedBarrackses = 0
-;--- DARK Barrack boost
-Global $totalPossibleBoostTimesDARK = 0
-Global $totalPossibleBoostBarracksesDARK = 0
-Global $BoostedBarracksesDARK = 0
+; Global Variables for the Spells , current Spells done , existen on army
+Global $CurLSpell = 0, $CurHSpell = 0, $CurRSpell = 0, $CurJSpell = 0, $CurFSpell = 0, $CurCSpell = 0, $CurPSpell = 0, $CurESpell = 0, $CurHaSpell = 0, $CurSkSpelll = 0
+Global $QueuedLSpell = 0, $QueuedHSpell = 0, $QueuedRSpell = 0, $QueuedJSpell = 0, $QueuedFSpell = 0, $QueuedCSpell = 0, $QueuedPSpell = 0, $QueueESpell = 0, $QueuedHaSpell = 0, $QueuedSkSpell = 0
 
 ;Wait For Spells
 Global $iEnableSpellsWait[$iModeCount]
 Global $bFullArmySpells = False  ; true when $iTotalTrainSpaceSpell = $iTotalSpellSpace in getArmySpellCount
+
+Global $bFullCastle = False
 
 Global $barrackPos[4][2] ;Positions of each barracks
 Global $DarkbarrackPos[2][2] ;Positions of each Dark barracks
@@ -1067,7 +1025,7 @@ Global $TroopDarkNamePosition[UBound($TroopGroupDark, 1)]
 Global $TroopDarkHeight[UBound($TroopGroupDark, 1)]
 SetDefaultTroopGroupDark(False)
 
-Global $SpellGroup[4][3] = [["PSpell", 0, 1], ["ESpell", 1, 1], ["HaSpell", 2, 1], ["SkSpell", 3, 1]]
+Global $SpellGroup[10][3] = [["LSpell", 0, 2], ["HSpell", 1, 2], ["RSpell", 2, 2], ["JSpell", 3, 2], ["FSpell", 4, 2], ["CSpell", 5, 2], ["PSpell", 6, 1], ["ESpell", 7, 1], ["HaSpell", 8, 1], ["SkSpell", 9, 1]]
 Global $SpellName[UBound($SpellGroup, 1)]
 Global $SpellNamePosition[UBound($SpellGroup, 1)]
 Global $SpellHeight[UBound($SpellGroup, 1)]
@@ -1110,7 +1068,7 @@ Global $isCCDropped = False
 Global $isHeroesDropped = False
 Global $DeployCCPosition[2] = [-1, -1]
 Global $DeployHeroesPosition[2] = [-1, -1]
-Global $btnStart
+
 
 ;Debug CLick
 Global $debugClick = 0
@@ -1252,14 +1210,11 @@ Global $iValueTotalCampForced = 200
 Global $ichkSinglePBTForced = 0
 Global $iValueSinglePBTimeForced = 18
 Global $iValuePBTimeForcedExit = 15
-Global $ClosedDueToPB = False
-Global $ichkPBSleepBK = 0
-Global $ichkPBSleepAQ = 0
-Global $ichkPBSleepGW = 0
 Global $bWaitShield = False
 Global $bGForcePBTUpdate = False
 
 Global $iMakeScreenshotNow = False
+
 
 Global $lastversion = "" ;latest version from GIT
 Global $lastModversion = "" ;latest version from GIT
@@ -1566,7 +1521,7 @@ Global $THSnipeBeforeDBTiles = 0 , $THSnipeBeforeLBTiles = 0
 Global $THSnipeBeforeDBScript = 0 , $THSnipeBeforeLBScript = 0
 
 ; Close game while train
-Global $ichkCloseWaitTrain = 0, $ichkCloseWaitSpell, $ichkCloseWaitHero, $ibtnCloseWaitStop = 0, $ibtnCloseWaitStopRandom, $ibtnCloseWaitExact, $ibtnCloseWaitRandom, $icmbCloseWaitRdmPercent, $ichkCloseWaitEnable = 0
+Global $ichkCloseWaitTrain = 0, $ichkCloseWaitSpell, $ichkCloseWaitHero, $ibtnCloseWaitStop = 0, $ibtnCloseWaitStopRandom, $ibtnCloseWaitExact, $ibtnCloseWaitRandom, $icmbCloseWaitRdmPercent, $ichkCloseWaitEnable = 1
 Global $aTimeTrain[3] = [0, 0, 0] ; [Troop remaining time], [Spells remaining time], [Hero remaining time - when possible]
 Global $iCCRemainTime = 0  ; Time remaining until can request CC again
 
@@ -1597,20 +1552,60 @@ Global $ichkTSActivateCamps2, $iEnableAfterArmyCamps2
 ;==> Apply to switch Attack Standard after THSnipe End
 
 Global $iShouldRearm = True
-;================================== New Variables =========================================
 
-; Clan Hop Setting
-Global $ichkClanHop
+; Variables used on new train system | Boosted Barracks | Balanced train donated troops
+Global $BoostedButtonX = 0
+Global $BoostedButtonY = 0
+
+; All this variables will be Redim in first Run OR if exist some changes on the barracks number
+; Barracks queued capacity
+Global $IsFullArmywithHeroesAndSpells = False
+Global $BarrackCapacity[4]
+Global $DarkBarrackCapacity[2]
+; Global Variable to store the initial time of the Boosted Barracks
+; [$i][0] : 0 = is not boosted , 1 = is boosted
+; [$i][1] : Initial timer of the boosted Barrack
+Global $InitBoostTime[4][2] = [[0, 0], [0, 0], [0, 0], [0, 0]]
+Global $InitBoostTimeDark[2][2] = [[0, 0], [0, 0]]
+
+; Barracks remaining train time
+Global $BarrackTimeRemain[4]
+Global $DarkBarrackTimeRemain[2]
+Global $ichkWASCloseWaitEnable = 0
+Global $LetsSortNB = False
+Global $LetsSortDB = False
+
+Global $totalPossibleBoostTimes = 0
+Global $totalPossibleBoostBarrackses = 0
+Global $BoostedBarrackses = 0
+;--- DARK Barrack boost
+Global $totalPossibleBoostTimesDARK = 0
+Global $totalPossibleBoostBarracksesDARK = 0
+Global $BoostedBarracksesDARK = 0
+
+Global $LastRedLines = ""
+
+Global $Form1, $btnValidateLevels, $btnCalcTotals
+
+Global $PixelEaglePos[2] = [-2, -2] ; -2 Means Not Changed still/First value,  -1 Means Changed But Reseted
+Global $PixelInfernoPos[2] = [-2, -2] ; -2 Means Not Changed still/First value,  -1 Means Changed But Reseted
+Global $PixelADefensePos[2] = [-2, -2] ; -2 Means Not Changed still/First value,  -1 Means Changed But Reseted
+;--- For Mode 2
+Global $AllPixelEaglePos[1][3] = [[-2, -2, -2]] ; -2 Means Not Changed still/First value,  -1 Means Changed But Reseted		    | [0]=X	[1]=Y	[2]=PixelColor
+Global $AllPixelInfernoPos[1][3] = [[-2, -2, -2]] ; -2 Means Not Changed still/First value,  -1 Means Changed But Reseted		| [0]=X	[1]=Y	[2]=PixelColor
+Global $AllPixelADefensePos[1][3] = [[-2, -2, -2]] ; -2 Means Not Changed still/First value,  -1 Means Changed But Reseted		| [0]=X	[1]=Y	[2]=PixelColor
+;---
+Global $redLinesDefense[2] = [-2, 0] ; -2 Means Not Changed still/First value,  -1 Means Changed But Reseted
+
+;QuickTrain Radio Buttons
+
+Global 	$iRadio_Army1, $iRadio_Army2, $iRadio_Army3
 
 ; Profile Switch
 Global $ichkGoldSwitchMax, $itxtMaxGoldAmount, $icmbGoldMaxProfile, $ichkGoldSwitchMin, $itxtMinGoldAmount, $icmbGoldMinProfile
 Global $ichkElixirSwitchMax, $itxtMaxElixirAmount, $icmbElixirMaxProfile, $ichkElixirSwitchMin, $itxtMinElixirAmount, $icmbElixirMinProfile
 Global $ichkDESwitchMax, $itxtMaxDEAmount, $icmbDEMaxProfile, $ichkDESwitchMin, $itxtMinDEAmount, $icmbDEMinProfile
 Global $ichkTrophySwitchMax, $itxtMaxTrophyAmount, $icmbTrophyMaxProfile, $ichkTrophySwitchMin, $itxtMinTrophyAmount, $icmbTrophyMinProfile
-
-; Collect Treasury
-Global $ichkTrap, $iChkCollect, $ichkTombstones, $ichkCleanYard, $itxtTreasuryGold, $itxtTreasuryElixir, $itxtTreasuryDark, $ichkCollectTresory, $chkCollectTresory
-Global $chkCollectTresoryGold, $ichkCollectTresoryGold, $chkCollectTresoryElixir, $ichkCollectTresoryElixir, $chkCollectTresoryDark, $ichkCollectTresoryDark, $ichkTRFull
 
 ;SwitchAcc - DEMEN
 Global $profile = $sProfilePath & "\Profile.ini"
@@ -1649,32 +1644,11 @@ Global $iRestartAndroidSearchLimit
 Global $iRestartAndroidTrainError
 Global $iTrainWindowErrorCounter = 0
 
-; Donate Stats
-Global $ichkLimitDStats = 0
-Global $iLimitDStats = 5000
-
-; Don't Barack Mode
-Global $iChkDontRemove, $chkDontRemove
-Global $iChkBarrackSpell, $chkBarrackSpell
-
-; Deleted Wrong Troops - Added by TheRevenor
-Global $ichkDeleteTroops
-
-; Check Connections
-Global $ichkConnection = 1
-
-; Close Emulator TakeBreak
-Global $ichkCloseTakeBreak = 0
-
-; ChatBot
-Global $FoundChatMessage = 0
-
+; Restart Android
+Global $iRestartAndroidCounter = 1
+#cs
 ; ExtremeZap
 Global $ichkExtLightSpell = 0
-
-; Android Settings - Added by LunaEclipse
-;Global $sAndroid = "<No Emulators>"
-;Global $sAndroidInstance = ""
 
 ; SmartZap GUI variables - Added by LunaEclipse
 Global $ichkSmartZap = 0
@@ -1702,46 +1676,9 @@ Global Const $drillLevelSteal[6] = [59, _
 								    251, _
 								    343, _
 								    479]
-
-#region Check Collectors Outside
-; collectors outside filter
-Global $ichkDBMeetCollOutside, $iDBMinCollOutsidePercent, $iCollOutsidePercent ; check later if $iCollOutsidePercent obsolete
-
-; constants
-Global Const $THEllipseWidth = 200, $THEllipseHeigth = 150, $CollectorsEllipseWidth = 130, $CollectorsEllipseHeigth = 97.5
-Global Const $centerX = 430, $centerY = 335 ; check later if $THEllipseWidth, $THEllipseHeigth obsolete
-Global $hBitmapFirst
-#endregion
-
-; SmartUpgrade
-Global $ichkAlertSmartUpgrade
-Global Const $COLOR_DEEPPINK = 0xFF1493
-Global $ichkSmartUpgrade
-Global $ichkIgnoreTH, $ichkIgnoreKing, $ichkIgnoreQueen, $ichkIgnoreWarden, $ichkIgnoreCC, $ichkIgnoreLab
-Global $ichkIgnoreBarrack, $ichkIgnoreDBarrack, $ichkIgnoreFactory, $ichkIgnoreDFactory, $ichkIgnoreGColl, $ichkIgnoreEColl, $ichkIgnoreDColl
-Global $iSmartMinGold, $iSmartMinElixir, $iSmartMinDark
-Global $upgradeAvailable = 0
-Global $SufficentRessources = 0
-Global $CanUpgrade = 0
-Global $upgradeX = 0
-Global $upgradeY = 0
-Global $zerosHere = 0
-Global $sBldgText, $sBldgLevel, $aString
-Global $upgradeName[3] = ["", "", ""]
-Global $UpgradeCost
-Global $TypeFound = 0
-Global $SmartMinGold, $SmartMinElixir, $SmartMinDark
-Global $UpgradeDuration
-
-; Restart Android
-Global $iRestartAndroidCounter = 1
-
-; AwesomeGamer CSV Mod
-Global $attackcsv_use_red_line = 1
-Global $TroopDropNumber = 0
-Global $remainingTroops[12][2]
-
+#ce
 ; Stats Top Loot
+Global $pAlertTopGain
 Global $myHourlyStatsGold = ""
 Global $myHourlyStatsElixir = ""
 Global $myHourlyStatsDark = ""
@@ -1750,6 +1687,11 @@ Global $topgoldloot = 0
 Global $topelixirloot = 0
 Global $topdarkloot = 0
 Global $topTrophyloot = 0
+
+; AwesomeGamer CSV Mod
+Global $attackcsv_use_red_line = 1
+Global $TroopDropNumber = 0
+Global $remainingTroops[12][2]
 
 ; CSV Deployment Speed Mod
 Global $isldSelectedCSVSpeed[$iModeCount], $iCSVSpeeds[13]
@@ -1768,15 +1710,6 @@ $iCSVSpeeds[9] = 2.25
 $iCSVSpeeds[10] = 2.5
 $iCSVSpeeds[11] = 2.75
 $iCSVSpeeds[12] = 3
-
-; CoCStats
-Global $ichkCoCStats = 0
-Global $stxtAPIKey = ""
-Global $MyApiKey = ""
-
-; Upgrade Management
-Global $bUpdateNewUpgradesOnly = False
-Global Const $UP = True, $DOWN = False, $TILL_END = True
 
 ;=== No variables below ! ================================================
 

@@ -31,7 +31,7 @@ Global $iOldTotalGoldGain[$iModeCount + 1], $iOldTotalElixirGain[$iModeCount + 1
 Global $iOldNbrOfDetectedMines[$iModeCount + 1], $iOldNbrOfDetectedCollectors[$iModeCount + 1], $iOldNbrOfDetectedDrills[$iModeCount + 1] ; number of mines, collectors, drills detected for DB, LB, TB
 
 ; Smart Zap Totals - Added by LunaEclipse
-Global $iOldsmartZapGain = 0, $iOldNumLTSpellsUsed = 0
+;Global $iOldsmartZapGain = 0, $iOldNumLTSpellsUsed = 0
 
 Func UpdateStats()
 	If $FirstRun = 1 Then
@@ -335,7 +335,7 @@ Func UpdateStats()
 		GUICtrlSetData($lblDElixirFromDrills, _NumberFormat($iDElixirFromDrills, True))
 		$iOldDElixirFromDrills = $iDElixirFromDrills
 	EndIf
-
+#cs
 	; SmartZap DE Gain - Added by LunaEclipse
 	If $iOldSmartZapGain <> $smartZapGain Then
 		GUICtrlSetData($lblSmartZap, _NumberFormat($smartZapGain, True))
@@ -349,7 +349,7 @@ Func UpdateStats()
 		GUICtrlSetData($lblLightningUsedStat, _NumberFormat($numLSpellsUsed, True))
 		$iOldNumLTSpellsUsed = $numLSpellsUsed
  	EndIf
-
+#ce
 	$iAttackedCount = 0
 
 	For $i = 0 To $iModeCount
@@ -551,9 +551,9 @@ Func ResetStats()
 	$iElixirFromCollectors = 0
 	$iDElixirFromDrills = 0
 	; Reset SmartZap stats - Added by LunaEclipse
-	$smartZapGain = 0
-	$ExtremeZapGain = 0
-	$numLSpellsUsed = 0
+	;$smartZapGain = 0
+	;$ExtremeZapGain = 0
+	;$numLSpellsUsed = 0
 	For $i = 0 To $iModeCount
 		$iAttackedVillageCount[$i] = 0
 		$iTotalGoldGain[$i] = 0

@@ -8,7 +8,7 @@
 ;					  : $bCloseArmyWindow = Bool value, true if train overview window needs to be closed
 ; Return values .: MonkeyHunter (05/06-2016)
 ; Author ........:
-; Modified ......:
+; Modified ......: MR.ViPER (16-10-2016)
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2016
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......:
@@ -27,26 +27,26 @@ Func getArmyHeroTime($HeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = Fa
 		Return
 	EndIf
 
-	If $bOpenArmyWindow = False And IsTrainPage() = False Then ; check for train page and open window if needed
+	If $bOpenArmyWindow = False And ISArmyWindow() = False Then ; check for train page and open window if needed
 		SetError(2)
 		Return ; not open, not requested to be open - error.
 	ElseIf $bOpenArmyWindow = True Then
-		If openArmyOverview() = False Then
+		If OpenArmyWindow() = False Then
 			SetError(3)
 			Return ; not open, requested to be open - error.
 		EndIf
 		If _Sleep($iDelaycheckArmyCamp5) Then Return
 	EndIf
 
-	If $iTownHallLevel < 7 Then Return
-	
+	If $iTownHallLevel < 7 then return
+
 	Local $iRemainTrainHeroTimer = 0
 	Local $sResult
 	Local $iResultHeroes[3] = ["", "", ""] ; array to hold all remaining regen time read via OCR
 	Local Const $HeroSlots[3][2] = [[464, 446], [526, 446], [588, 446]] ; Location of hero status check tile
 
 	; Constant Array with OCR find location: [X pos, Y Pos, Text Name, Global enum value]
-	Local Const $aHeroRemainData[3][4] = [[443, 504, "King", $eKing], [504, 504, "Queen", $eQueen], [565, 504, "Warden", $eWarden]]
+	Local Const $aHeroRemainData[3][4] = [[620, 414, "King", $eKing], [695, 414, "Queen", $eQueen], [775, 414, "Warden", $eWarden]]
 
 	For $index = 0 To UBound($aHeroRemainData) - 1 ;cycle through all 3 slots and hero types
 
@@ -54,7 +54,8 @@ Func getArmyHeroTime($HeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = Fa
 		If StringInStr($HeroType, "all", $STR_NOCASESENSEBASIC) = 0 And $HeroType <> $aHeroRemainData[$index][3] Then ContinueLoop
 
 		; Check if slot has healing hero
-		$sResult = getHeroStatus($HeroSlots[$index][0], $HeroSlots[$index][1]) ; OCR slot for status information
+		;$sResult = getHeroStatus($HeroSlots[$index][0], $HeroSlots[$index][1]) ; OCR slot for status information
+		$sResult = ArmyHeroStatus($index + 1) ; OCR slot for status information
 		If $sResult <> "" Then ; we found something
 			If StringInStr($sResult, "heal", $STR_NOCASESENSEBASIC) = 0 Then
 				If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then
@@ -72,10 +73,10 @@ Func getArmyHeroTime($HeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = Fa
 
 		If $sResult <> "" Then
 			Select
-				Case StringInStr($sResult, "m", $STR_NOCASESENSEBASIC) ; find minutes?
+				Case StringInStr($sResult, "m", $STR_NOCASESENSEBASIC) >= 1 ; find minutes?
 					$sResultHeroTime = StringTrimRight($sResult, 1) ; removing the "m"
 					$iResultHeroes[$index] = Number($sResultHeroTime)
-				Case StringInStr($sResult, "s", $STR_NOCASESENSEBASIC) ; find seconds?
+				Case StringInStr($sResult, "s", $STR_NOCASESENSEBASIC) >= 1 ; find seconds?
 					$sResultHeroTime = StringTrimRight($sResult, 1) ; removing the "s"
 					$iResultHeroes[$index] = Number($sResultHeroTime) / 60 ; convert to minute
 				Case Else
@@ -120,30 +121,23 @@ Func getArmyHeroTime($HeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = Fa
 
 EndFunc   ;==>getArmyHeroTime
 
-Func ReadHeroesRecoverTime()	; get hero regen time remaining if enabled
+Func ReadHeroesRecoverTime($aHeroResult)	; get hero regen time remaining if enabled
     Local $aResult, $iActiveHero
-	Local $aHeroResult[3]
 	$aTimeTrain[2] = 0
 
+	If $iTownHallLevel < 7 Then Return
+
 	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("ReadHeroesRecoverTime", $COLOR_PURPLE)
-	For $j = 0 To UBound($aResult) - 1
-		$aHeroResult[$j] = 0 ; reset old values
-	Next
-	If _Sleep($iDelayRespond) Then Return
-		$aHeroResult = getArmyHeroTime("all")
-	If @error Then
-		Setlog("getArmyHeroTime return error, exit Check Heroes wait time!", $COLOR_RED)
-		Return ; if error, then quit smartwait
-	EndIf
+
 	Setlog(" » Getting Heroes Recover Time: ")
 	If $aHeroResult[0] > 0 Then
-	SetLog(" »» King: " & StringFormat("%.2f",$aHeroResult[0]) & " M", $COLOR_BLUE)
+	SetLog(" »» King: " & StringFormat("%.2f", $aHeroResult[0]) & " minute", $COLOR_BLUE)
 	EndIf
 	If $aHeroResult[1] > 0 Then
-	SetLog(" »» Queen: " & StringFormat("%.2f",$aHeroResult[1]) & " M", $COLOR_BLUE)
+	SetLog(" »» Queen: " & StringFormat("%.2f", $aHeroResult[1]) & " minute", $COLOR_BLUE)
 	EndIf
 	If $aHeroResult[2] > 0 Then
-	SetLog(" »» Warden: " & StringFormat("%.2f",$aHeroResult[2]) & " M", $COLOR_BLUE)
+	SetLog(" »» Warden: " & StringFormat("%.2f", $aHeroResult[2]) & " minute", $COLOR_BLUE)
 	EndIf
 	If $aHeroResult[0] = 0 And $aHeroResult[1] = 0 And $aHeroResult[2] = 0 Then
 	SetLog(" » No Heroes Waiting Time..", $COLOR_GREEN)
@@ -178,31 +172,25 @@ Func ReadHeroesRecoverTime()	; get hero regen time remaining if enabled
 		If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("getArmyHeroTime return all zero hero wait times", $COLOR_PURPLE)
 	EndIf
 
-	If $ichkCloseWaitEnable = 1 Then
-		If $aHeroResult[0] > 0 Or $aHeroResult[1] > 0 Or $aHeroResult[2] > 0 Then
-			Setlog("Heroes Wait Time: " & StringFormat("%.2f", $aTimeTrain[2]) & " minute(s)", $COLOR_BLUE)
-		EndIf
-		If $aTimeTrain[2] > 1 Then
-			ClickP($aAway, 1, 0, "#0000") ;Click Away
-			WaitnOpenCoC($aTimeTrain[2] * 1000 * 60)
-		EndIf
+	If $aHeroResult[0] > 0 Or $aHeroResult[1] > 0 Or $aHeroResult[2] > 0 Then
+		Setlog("Heroes Wait Time: " & StringFormat("%.2f", $aTimeTrain[2]) & " minute(s)", $COLOR_BLUE)
 	EndIf
  EndFunc ; ReadHeroesRecoverTime
- 
-Func GetReadTimeHeroesAndSpell()
+
+ Func GetReadTimeHeroesAndSpell()
 	If IsMainPage() = False Then checkMainScreen()
 	getArmyTroopTime(True, False)
-   
+
 	If IsWaitforSpellsActive() Then
 		getArmySpellTime()
 	Else
 		$aTimeTrain[1] = 0
 	EndIf
-	If IsWaitforHeroesActive() Then
-		ReadHeroesRecoverTime()
-	Else
-		$aTimeTrain[2] = 0
-	EndIf
+;~ 	If IsWaitforHeroesActive() Then
+;~ 		ReadHeroesRecoverTime()
+;~ 	Else
+;~ 		$aTimeTrain[2] = 0
+;~ 	EndIf
 
    ClickP($aAway, 1, 0, "#0000") ;Click Away
-EndFunc ; GetReadTimeHeroesAndSpell
+ EndFunc ; GetReadTimeHeroesAndSpell

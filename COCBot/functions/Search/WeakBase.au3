@@ -5,7 +5,7 @@
 ; Parameters ....: None
 ; Return values .: An array of values of detected defense levels and information
 ; Author ........: LunaEclipse(April 2016)
-; Modified ......:
+; Modified ......: MR.ViPER (22-9-2016, Air Defense check)
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......:
@@ -14,11 +14,11 @@
 ; ===============================================================================================================================
 
 ; Enum for Weak Base Defense Types
-Global Enum $eWeakEagle = 1, $eWeakInferno, $eWeakXBow, $eWeakWizard, $eWeakMortar
+Global Enum $eWeakEagle = 1, $eWeakInferno, $eWeakXBow, $eWeakWizard, $eWeakMortar, $eWeakAirDefense = 6
 
 ; Weak Base Defense Building Information
-Global $weakDefenseNames[6] = ["None", "Eagle Artillery", "Inferno Tower", "XBow", "Wizard Tower", "Mortar"]
-Global $weakDefenseMaxLevels[6] = [0, 2, 4, 4, 9, 9]
+Global $weakDefenseNames[7] = ["None", "Eagle Artillery", "Inferno Tower", "XBow", "Wizard Tower", "Mortar", "Air Defense"]
+Global $weakDefenseMaxLevels[7] = [0, 2, 4, 4, 9, 9, 8]
 
 Func createWeakBaseStats()
 	; Get the directory file contents as keys for the stats file
@@ -103,6 +103,7 @@ Func displayWeakBaseLog($aResult, $showLog = False)
 		SetLog("Highest X-Bow: " & $aResult[3][0] & " - Level: " & $aResult[3][2], $COLOR_BLUE)
 		SetLog("Highest Wizard Tower: " & $aResult[4][0] & " - Level: " & $aResult[4][2], $COLOR_BLUE)
 		SetLog("Highest Mortar: " & $aResult[5][0] & " - Level: " & $aResult[5][2], $COLOR_BLUE)
+		SetLog("Highest Air Defense: " & $aResult[6][0] & " - Level: " & $aResult[6][2], $COLOR_BLUE)
 		SetLog("Time taken: " & $aResult[0][2] & " " & $aResult[0][3], $COLOR_BLUE)
 		SetLog("================ Weak Base Detection Stop =================", $COLOR_BLUE)
 	EndIf
@@ -117,6 +118,7 @@ Func getTHDefenseMax($levelTownHall, $defenseType)
 	Local $mortarLevels[$maxTH] = [0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	Local $wizardLevels[$maxTH] = [0, 0, 0, 0, 2, 3, 4, 6, 7, 8, 9]
 	Local $xbowLevels[$maxTH] = [0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 4]
+	Local $adefenseLevels[$maxTH] = [0, 0, 0, 2, 3, 4, 5, 6, 7, 8, 8]
 
 	; If something went wrong with TH search and returned 0, set to max TH level
 	If $levelTownHall = 0 Then $levelTownHall = $maxTH
@@ -135,6 +137,8 @@ Func getTHDefenseMax($levelTownHall, $defenseType)
 				$result = $wizardLevels[$levelTownHall - 1]
 			Case $eWeakMortar
 				$result = $mortarLevels[$levelTownHall - 1]
+			Case $eWeakAirDefense
+				$result = $adefenseLevels[$levelTownHall - 1]
 			Case Else
 				; Should never reach here unless there is a problem with the code
 		EndSwitch
@@ -184,11 +188,12 @@ Func getIsWeak($aResults, $searchType)
 			And $aResults[$eWeakInferno][2] <= Number($iCmbWeakInferno[$searchType]) _
 			And $aResults[$eWeakXBow][2] <= Number($iCmbWeakXBow[$searchType]) _
 			And $aResults[$eWeakWizard][2] <= Number($iCmbWeakWizTower[$searchType]) _
-			And $aResults[$eWeakMortar][2] <= Number($iCmbWeakMortar[$searchType])
+			And $aResults[$eWeakMortar][2] <= Number($iCmbWeakMortar[$searchType]) _
+			And $aResults[$eWeakAirDefense][2] <= Number($iCmbWeakAirDefense[$searchType])
 EndFunc   ;==>getIsWeak
 
 Func IsWeakBaseActive($type)
-	Return $iChkMaxEagle[$type] Or $iChkMaxInferno[$type] Or $iChkMaxXBow[$type] Or $iChkMaxWizTower[$type] Or $iChkMaxMortar[$type]
+	Return $iChkMaxEagle[$type] Or $iChkMaxInferno[$type] Or $iChkMaxXBow[$type] Or $iChkMaxWizTower[$type] Or $iChkMaxMortar[$type] Or $iChkMaxAirDefense[$type]
 EndFunc   ;==>IsWeakBaseActive
 
 Func defenseSearch(ByRef $aResult, $directory, $townHallLevel, $settingArray, $defenseType, ByRef $performSearch, $guiEnabledArray)
@@ -231,14 +236,15 @@ Func weakBaseCheck($townHallLevel = 11, $redlines = "")
 	; Setup default return coords of 0,0
 	Local $defaultCoords[1][2] = [[0, 0]]
 	; Setup Empty Results in case to avoid errors, levels are set to max level of each type
-	Local $aResult[6][6] = [[$redlines, 0, 0, "Seconds", "", ""], _
+	Local $aResult[7][6] = [[$redlines, 0, 0, "Seconds", "", ""], _
 			["Skipped", "Skipped", 2, 0, 0, $defaultCoords], _
 			["Skipped", "Skipped", 4, 0, 0, $defaultCoords], _
 			["Skipped", "Skipped", 4, 0, 0, $defaultCoords], _
 			["Skipped", "Skipped", 9, 0, 0, $defaultCoords], _
-			["Skipped", "Skipped", 9, 0, 0, $defaultCoords]]
+			["Skipped", "Skipped", 9, 0, 0, $defaultCoords], _
+			["Skipped", "Skipped", 8, 0, 0, $defaultCoords]]
 
-	Local $aEagleResults, $aInfernoResults, $aMortarResults, $aWizardTowerResults, $aXBowResults
+	Local $aEagleResults, $aInfernoResults, $aMortarResults, $aWizardTowerResults, $aXBowResults, $aAirDefenseResults
 	Local $performSearch = True
 	; Start the timer for overall weak base search
 	Local $hWeakTimer = TimerInit()
@@ -249,6 +255,7 @@ Func weakBaseCheck($townHallLevel = 11, $redlines = "")
 	$aXBowResults = defenseSearch($aResult, @ScriptDir & "\images\WeakBase\Xbow", $townHallLevel, $iCmbWeakXBow, $eWeakXBow, $performSearch, $iChkMaxXBow)
 	$aWizardTowerResults = defenseSearch($aResult, @ScriptDir & "\images\WeakBase\WTower", $townHallLevel, $iCmbWeakWizTower, $eWeakWizard, $performSearch, $iChkMaxWizTower)
 	$aMortarResults = defenseSearch($aResult, @ScriptDir & "\images\WeakBase\Mortars", $townHallLevel, $iCmbWeakMortar, $eWeakMortar, $performSearch, $iChkMaxMortar)
+	$aAirDefenseResults = defenseSearch($aResult, @ScriptDir & "\images\WeakBase\ADefense", $townHallLevel, $iCmbWeakAirDefense, $eWeakAirDefense, $performSearch, $iChkMaxAirDefense)
 
 	; Fill the array that will be returned with the various results, only store the results if its a valid array
 	For $i = 1 To UBound($aResult) - 1
@@ -264,6 +271,8 @@ Func weakBaseCheck($townHallLevel = 11, $redlines = "")
 					If IsArray($aWizardTowerResults) Then $aResult[$i][$j] = $aWizardTowerResults[$j]
 				Case $eWeakMortar
 					If IsArray($aMortarResults) Then $aResult[$i][$j] = $aMortarResults[$j]
+				Case $eWeakAirDefense
+					If IsArray($aAirDefenseResults) Then $aResult[$i][$j] = $aAirDefenseResults[$j]
 				Case Else
 					; This should never happen unless there is a problem with the code.
 			EndSwitch
@@ -304,6 +313,9 @@ Func IsWeakBase($townHallLevel = 11, $redlines = "")
 	ElseIf $debugImageSave = 1 And Number($aResult[5][4]) = 0 Then
 		; Mortars not detected, so lets log the picture for manual inspection
 		captureDebugImage($aResult, "WeakBase_Detection_Mortar_NotDetected")
+	ElseIf $debugImageSave = 1 And Number($aResult[6][4]) = 0 Then
+		; Air Defenses not detected, so lets log the picture for manual inspection
+		captureDebugImage($aResult, "WeakBase_Detection_ADefense_NotDetected")
 	ElseIf $debugImageSave = 1 Then
 		; Debug option is set, so take a debug picture
 		captureDebugImage($aResult, "WeakBase_Detection")

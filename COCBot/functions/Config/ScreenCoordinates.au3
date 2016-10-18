@@ -12,10 +12,12 @@
 ; ===============================================================================================================================
 ;                                 x    y     color  tolerance
 Global $aIsReloadError[4] = [457, 301 + $midOffsetY, 0x33B5E5, 10] ; Pixel Search Check point For All Reload Button errors, except break ending
-Global $aIsMain[4] = [284, 28, 0x41B1CD, 20] ; Main Screen, Builder Left Eye
+
+Global $aIsMain[4] = [283, 29, 0x4693bd, 20] ; Main Screen, Builder Left Eye
+
 Global $aIsDPI125[4] = [355, 35, 0x399CB8, 15] ; Main Screen, Builder Left Eye, DPI set to 125%
 Global $aIsDPI150[4] = [426, 42, 0x348FAA, 15] ; Main Screen, Builder Left Eye, DPI set to 150%
-Global $aIsMainGrayed[4] = [284, 28, 0x215B69, 15] ; Main Screen Grayed, Builder Left Eye
+Global $aIsMainGrayed[4] = [283, 29, 0x244A5F, 15] ; Main Screen Grayed, Builder Left Eye
 Global $aTopLeftClient[4] = [1, 1, 0x000000, 0] ; TopLeftClient: Tolerance not needed
 Global $aTopMiddleClient[4] = [475, 1, 0x000000, 0] ; TopMiddleClient: Tolerance not needed
 Global $aTopRightClient[4] = [850, 1, 0x000000, 0] ; TopRightClient: Tolerance not needed
@@ -36,7 +38,7 @@ Global $aHaveShield[4] = [455, 19, 0xF0F8FB, 15] ; Main Screen, Silver pixel top
 Global $aHavePerGuard[4] = [455, 19, 0x12120E, 15] ; Main Screen, black pixel in sword outline top center of shield
 Global $aShieldInfoButton[4] = [472, 11, 0x6DB0D3, 10] ; Main Screen, Blue pixel upper part of "i"
 Global $aIsShieldInfo[4] = [645, 195, 0xE00408, 20] ; Main Screen, Shield Info window, red pixel right of X
-Global $aSurrenderButton[4] = [70, 545 + $bottomOffsetY, 0xC00000, 40] ; Surrender Button, Attack Screen
+Global $aSurrenderButton[4] = [70, 546 + $bottomOffsetY, 0xC00000, 20] ; Surrender Button, Attack Screen
 Global $aConfirmSurrender[4] = [500, 415 + $midOffsetY, 0x60AC10, 20] ; Confirm Surrender Button, Attack Screen, green color on button?
 Global $aCancelFight[4] = [822, 48, 0xD80408, 20] ; Cancel Fight Scene
 Global $aCancelFight2[4] = [830, 59, 0xD80408, 20] ; Cancel Fight Scene 2nd pixel
@@ -59,15 +61,16 @@ Global $aLanguageCheck2[4] = [329, 9, 0x060706, 20] ; Main Screen Test Language 
 Global $aLanguageCheck3[4] = [348, 12, 0x040403, 20] ; Main Screen Test Language for word 'Builders'
 Global $aLanguageCheck4[4] = [354, 11, 0x090908, 20] ; Main Screen Test Language for word 'Builders'
 Global $aTrophies[2] = [65, 74] ; Main Screen, Trophies
-Global $aNoCloudsAttack[4] = [774, 1, 0x000000, 20] ; Attack Screen: No More Clouds
+Global $aNoCloudsAttack[4] = [757, 1, 0xFDFEFF, 30] ; Attack Screen: No More Clouds, Will be TRUE IF Clouds are Available
+;Global $aNoCloudsAttack[4] = [757, 1, 0x2E281D, 30] ; Attack Screen: No More Clouds, Will Be TRUE IF No Clouds are Available
 Global $aMessageButton[2] = [38, 143] ; Main Screen, Message Button
 Global $aArmyTrainButton[2] = [40, 525 + $bottomOffsetY] ; Main Screen, Army Train Button
 Global $aWonOneStar[4] = [714, 538 + $bottomOffsetY, 0xC0C8C0, 20] ; Center of 1st Star for winning attack on enemy
 Global $aWonTwoStar[4] = [739, 538 + $bottomOffsetY, 0xC0C8C0, 20] ; Center of 2nd Star for winning attack on enemy
 Global $aWonThreeStar[4] = [763, 538 + $bottomOffsetY, 0xC0C8C0, 20] ; Center of 3rd Star for winning attack on enemy
-Global $aArmyOverviewTest[4] = [150, 554 + $midOffsetY, 0xBC2BD1, 20] ; Color purple of army overview  bottom left
-Global $aCancRequestCCBtn[4] = [340, 245, 0xCC4010, 20] ; Red button Cancel in window request CC
-Global $aSendRequestCCBtn[2] = [524, 245] ; Green button Send in window request CC
+Global $aArmyOverviewTest[4] = [530, 463 + $midOffsetY, 0x878782, 20] ; Color purple of army overview  bottom left
+Global $aCancRequestCCBtn[4] = [340, 250, 0xCC4010, 20] ; Red button Cancel in window request CC
+Global $aSendRequestCCBtn[2] = [524, 250] ; Green button Send in window request CC
 Global $atxtRequestCCBtn[2] = [430, 140] ; textbox in window request CC
 Global $aIsDarkElixirFull[4] = [709, 134, 0x1A0026, 10] ; Main Screen DE Resource bar is full
 Global $aIsGoldFull[4] = [660, 33, 0xD4B100, 6] ; Main Screen Gold Resource bar is Full
@@ -113,35 +116,36 @@ Global $aWonThreeStarAtkRprt[4] = [534, 180 + $midOffsetY, 0xC8CAC7, 30] ; Cente
 	;Global $DropTrophiesStartPoint = [34, 310]
 #ce
 ;	pixel color: location information								BS 850MB (Reg GFX), BS 500MB (Med GFX) : location
-Global $TrainBarb[4] = [166, 310 + $midOffsetY, 0xFFB620, 40] ; FFB620, FFB620
-Global $TrainArch[4] = [245, 315 + $midOffsetY, 0x882852, 40] ; 882857, 882852
-Global $TrainGiant[4]= [370, 310 + $midOffsetY, 0xFFCE94, 40] ; FFCE94, FFCE94
-Global $TrainGobl[4] = [482, 310 + $midOffsetY, 0xA9F36B, 40] ; A9F36A, A9F36B
-Global $TrainWall[4] = [557, 310 + $midOffsetY, 0x786C8A, 40] ; 7B6E8F, 786C8A
-Global $TrainBall[4] = [682, 310 + $midOffsetY, 0x7C1C10, 40] ; 781C10, 7C1C10
+Global Const $TrainBarb[4]  = [ 72, 363 + $midOffsetY, 0xffc024, 40] ; FFB620, FFB620
+Global Const $TrainArch[4]  = [ 72, 466 + $midOffsetY, 0xd8406f, 40] ; 882857, 882852
+Global Const $TrainGiant[4] = [173, 363 + $midOffsetY, 0xffb270, 40] ; FFCE94, FFCE94
+Global Const $TrainGobl[4]  = [173, 466 + $midOffsetY, 0x98ec60, 40] ; A9F36A, A9F36B
+Global Const $TrainWall[4]  = [267, 363 + $midOffsetY, 0x77a7ce, 40] ; 7B6E8F, 786C8A
+Global Const $TrainBall[4]  = [367, 466 + $midOffsetY, 0x7f1c10, 40] ; 781C10, 7C1C10
 
-Global $TrainWiza[4] = [183, 446 + $midOffsetY, 0xE3937C, 40] ; E19179, E3937C
-Global $TrainHeal[4] = [263, 459 + $midOffsetY, 0xD67244, 40] ; D67244, D67244
-Global $TrainDrag[4] = [383, 459 + $midOffsetY, 0x493153, 40] ; 473254, 493153
-Global $TrainPekk[4] = [474, 459 + $midOffsetY, 0x395671, 40] ; 385470, 395671
-Global $TrainBabyD[4] = [557, 436 + $midOffsetY, 0x88D464, 40] ; 88D464, 88D461, middle of snout
-Global $TrainMine[4] = [663, 425 + $midOffsetY, 0x1A1815, 40] ; 1A1815, 1B1814, right eye brow under hat
+Global Const $TrainWiza[4]  = [365, 363 + $midOffsetY, 0xffd5c1, 40] ; E19179, E3937C
+Global Const $TrainHeal[4]  = [365, 466 + $midOffsetY, 0xf8f8e0, 40] ; D67244, D67244
+Global Const $TrainDrag[4]  = [465, 363 + $midOffsetY, 0x786da0, 40] ; 473254, 493153
+Global Const $TrainPekk[4]  = [465, 466 + $midOffsetY, 0x4c7091, 40] ; 385470, 395671
+Global Const $TrainBabyD[4] = [561, 436 + $midOffsetY, 0xb4df7d, 40] ; 88D464, 88D461, middle of snout
+Global Const $TrainMine[4]  = [561, 466 + $midOffsetY, 0x4d5555, 40] ; 1A1815, 1B1814, right eye brow under hat
 
 ;Global $TrainMini[4] = [220, 310 + $midOffsetY, 0x182340, 40] ; 15203A, 172039, Dark blue botton of horn
-Global $TrainMini[4] = [216, 309 + $midOffsetY, 0x182240, 40] ; Dark blue botton of horn
-Global $TrainHogs[4] = [305, 318 + $midOffsetY, 0x3A2620, 40] ; 3A2620, 3B2720, brown above right ear
-Global $TrainValk[4] = [415, 315 + $midOffsetY, 0xFF6E18, 40] ; FF6E18, FF6D18, orange right hair curl above eye
-Global $TrainGole[4] = [546, 310 + $midOffsetY, 0xDEC3A8, 40] ; E1C8AD, E3C8AC, top of head
-Global $TrainWitc[4] = [646, 324 + $midOffsetY, 0x3D3C65, 40] ; 403C68, 403D68, middle of purple hood
-
-Global $TrainLava[4] = [220, 459 + $midOffsetY, 0x4F4F40, 40] ; 4C4C3C, 4B4C3C, center of brown nose
-Global $TrainBowl[4] = [311, 448 + $midOffsetY, 0x6060E8, 40] ; 6060E7, 6060E5 ,purple on cheek
+Global Const $TrainMini[4] = [499, 363 + $midOffsetY, 0x31548a, 40] ; Dark blue botton of horn
+Global Const $TrainHogs[4] = [499, 466 + $midOffsetY, 0x181a12, 40] ; 3A2620, 3B2720, brown above right ear
+Global Const $TrainValk[4] = [577, 363 + $midOffsetY, 0xff6814, 40] ; FF6E18, FF6D18, orange right hair curl above eye
+Global Const $TrainGole[4] = [577, 466 + $midOffsetY, 0xdbbca0, 40] ; E1C8AD, E3C8AC, top of head
+Global Const $TrainWitc[4] = [680, 363 + $midOffsetY, 0x585494, 40] ; 403C68, 403D68, middle of purple hood
+Global Const $TrainLava[4] = [680, 466 + $midOffsetY, 0x4b4a40, 40] ; 4C4C3C, 4B4C3C, center of brown nose
+Global Const $TrainBowl[4] = [791, 363 + $midOffsetY, 0xb2adf9, 40] ; 6060E7, 6060E5 ,purple on cheek
 
 
 Global $NextBtn[4] = [780, 546 + $bottomOffsetY, 0xD34300, 20] ;  Next Button
 ; Someone asking troops : Color 0xD0E978 in x = 121
 
-Global $aRequestTroopsAO[6] = [679, 389, 0x80C21F, 0x000000, 0x9C9C9C, 20] ; Button Request Troops in Army Overview  (x,y,can request, request allready made, army full/no clan, toll)
+;Global $aRequestTroopsAO[6] = [720, 560, 0x9B9EA0, 0xB0D958, 0x9E9E9E, 1] ; Button Request Troops in Army Overview  (x,y,can request, request allready made, army full/no clan, toll)
+;Global $aRequestTroopsAO[6] = [744, 568, 0x609498, 0xFCFDFB, 0x858585, 20] ; Button Request Troops in Army Overview  (x,y,can request, request allready made, army full/no clan, toll)
+Global $aRequestTroopsAO[6] = [680, 574, 0x70BC20, 0x000000, 0x989898, 20] ; Button Request Troops in Army Overview  (x,y,can request, request allready made, army full/no clan, toll) Working
 
 Global Const $FullBarb[4] = [198, 375 + $midOffsetY, 0x6D6D6D, 45] ; Location of Elixir check pixel with normal color and Barrack Full color
 Global Const $FullArch[4] = [308, 375 + $midOffsetY, 0x7F7F7F, 45]

@@ -20,14 +20,7 @@ Func BotCommand()
 		$bTrainEnabled = True
 		$bDonationEnabled = True
 
-		If $FirstStart = True Then $iRestartAndroidCounter = 1
-		If $icmbBotCond = 15 And $icmbHoursStop <> 0 Then
-			If $icmbBotCommand = 7 Then
-				$TimeToStop = $icmbHoursStop * 3600000 * $iRestartAndroidCounter
-			Else
-				$TimeToStop = $icmbHoursStop * 3600000 ; 3600000 = 1 Hours
-			EndIf
-		EndIf
+		If $icmbBotCond = 15 And $icmbHoursStop <> 0 Then $TimeToStop = $icmbHoursStop * 3600000 ; 3600000 = 1 Hours
 
 		Local $iTrophyCurrent = getTrophyMainScreen($aTrophies[0], $aTrophies[1])
 		Local $TrophyMax = Number($iTrophyCurrent) > Number($itxtMaxTrophy)
@@ -104,8 +97,6 @@ Func BotCommand()
 			EndIf
 			Switch $icmbBotCommand
 				Case 0
-					CheckNewChat()
-					ChatbotMessage()
 					If $bDonationEnabled = False Then
 						SetLog("Halt Attack, Stay Online/Collect...", $COLOR_BLUE)
 					ElseIf $bTrainEnabled = False Then

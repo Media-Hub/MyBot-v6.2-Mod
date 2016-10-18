@@ -27,12 +27,12 @@ Func BotDetectFirstTime()
 			Collect()
 		EndIf
 		_CaptureRegion2()
-		Local $PixelTHHere = GetLocationItem("getLocationTownHall")
+		Local $PixelTHHere = GetLocationItem("getLocationTownHall", True)
 		If UBound($PixelTHHere) > 0 Then
 			$pixel = $PixelTHHere[0]
 			$TownHallPos[0] = $pixel[0]
 			$TownHallPos[1] = $pixel[1]
-			If $debugSetlog = 1 Then SetLog("DLLc# Townhall: (" & $TownHallPos[0] & "," & $TownHallPos[1] & ")", $COLOR_RED)
+			If $debugSetlog = 1 Then SetLog("ImgLoc# Townhall: (" & $TownHallPos[0] & "," & $TownHallPos[1] & ")", $COLOR_RED)
 		EndIf
 		If $TownHallPos[1] = "" Or $TownHallPos[1] = -1 Then
 			checkTownhallADV2()
@@ -52,12 +52,17 @@ Func BotDetectFirstTime()
 		Setlog("Proceed with caution as errors may occur.", $COLOR_RED)
 	EndIf
 
+	If _Sleep($iDelayBotDetectFirstTime1) Then Return
+
+	;AutoLocateClanCastle()
+
 	;If _Sleep($iDelayBotDetectFirstTime1) Then Return
 	;ClanLevel()
 	If _Sleep($iDelayBotDetectFirstTime1) Then Return
 	CheckImageType()
 	If _Sleep($iDelayBotDetectFirstTime1) Then Return
 
+	#CS		Not Needed anymore after OCT Update
 	If $icmbQuantBoostBarracks > 0 Then
 		If _Sleep($iDelayBotDetectFirstTime3) Then Return
 		For $i = 0 To $icmbQuantBoostBarracks - 1 ; verify if all barracks haves a valid position
@@ -105,6 +110,7 @@ Func BotDetectFirstTime()
 			SaveConfig()
 		EndIf
 	EndIf
+	#CE
 
 	If GUICtrlRead($chkScreenshotHideName) = $GUI_CHECKED Or $ichkScreenshotHideName = 1 Then
 		If _Sleep($iDelayBotDetectFirstTime3) Then Return

@@ -98,7 +98,6 @@ DROP  |H          |10         |1          |Haspell    |1          |0          |5
 
       |VECTOR_____|INDEX______|QTY_X_VECT_|TROOPNAME__|DELAY_DROP_|DELAYCHANGE|SLEEPAFTER_|___________| 
 DROP  |A          |1          |1          |Queen      |1          |0          |9000-16000 |           |
-RECALC|           |           |           |           |           |           |           |           |
 
 
 

@@ -15,11 +15,13 @@
 ; ===============================================================================================================================
 ;
 Func checkObstacles() ;Checks if something is in the way for mainscreen
+	Local $DebugIt = False
 	Local $x, $y, $result
 	$MinorObstacle = False
 
 	If WinGetAndroidHandle() = 0 Then
 		; Android not available
+		If $DebugIt Then SetLog("#cOb# Android not available...", $COLOR_BLUE)
 		Return True
 	EndIf
 
@@ -34,9 +36,9 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 	$Message = _PixelSearch($aIsReloadError[0], $aIsReloadError[1], $aIsReloadError[0] + 3, $aIsReloadError[1] + 11, Hex($aIsReloadError[2], 6), $aIsReloadError[3])
 	If IsArray($Message) Then
 		_CaptureRegion()
-		If $debugsetlog = 1 Then SetLog("(Inactive=" & _GetPixelColor($aIsInactive[0], $aIsInactive[1]) & ")(DC=" & _GetPixelColor($aIsConnectLost[0], $aIsConnectLost[1]) & ")(OoS=" & _GetPixelColor($aIsCheckOOS[0], $aIsCheckOOS[1]) & ")", $COLOR_PURPLE)
-		If $debugsetlog = 1 Then SetLog("(Maintenance=" & _GetPixelColor($aIsMaintenance[0], $aIsMaintenance[1]) & ")(RateCoC=" & ")", $COLOR_PURPLE)
-		If $debugsetlog = 1 Then SetLog("33B5E5=>true, 282828=>false", $COLOR_PURPLE)
+		If $debugsetlog = 1 OR $DebugIt Then SetLog("(Inactive=" & _GetPixelColor($aIsInactive[0], $aIsInactive[1]) & ")(DC=" & _GetPixelColor($aIsConnectLost[0], $aIsConnectLost[1]) & ")(OoS=" & _GetPixelColor($aIsCheckOOS[0], $aIsCheckOOS[1]) & ")", $COLOR_PURPLE)
+		If $debugsetlog = 1 OR $DebugIt Then SetLog("(Maintenance=" & _GetPixelColor($aIsMaintenance[0], $aIsMaintenance[1]) & ")(RateCoC=" & ")", $COLOR_PURPLE)
+		If $debugsetlog = 1 OR $DebugIt Then SetLog("33B5E5=>true, 282828=>false", $COLOR_PURPLE)
 		;;;;;;;##### 1- Another device #####;;;;;;;
 		$result = getOcrMaintenanceTime(184, 325 + $midOffsetY) ; OCR text to find Another device message
 		If StringInStr($result, "device", $STR_NOCASESENSEBASIC) Or _
@@ -44,13 +46,13 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 			;_ImageSearchArea($device, 0, 237, 321 + $midOffsetY, 293, 346 + $midOffsetY, $x, $y, 80) Then
 			If $sTimeWakeUp > 3600 Then
 				SetLog("Another Device has connected, waiting " & Floor(Floor($sTimeWakeUp / 60) / 60) & " hours " & Floor(Mod(Floor($sTimeWakeUp / 60), 60)) & " minutes " & Floor(Mod($sTimeWakeUp, 60)) & " seconds", $COLOR_RED)
-				PushMsgToPushBullet("AnotherDevice3600")
+				PushMsg("AnotherDevice3600")
 			ElseIf $sTimeWakeUp > 60 Then
 				SetLog("Another Device has connected, waiting " & Floor(Mod(Floor($sTimeWakeUp / 60), 60)) & " minutes " & Floor(Mod($sTimeWakeUp, 60)) & " seconds", $COLOR_RED)
-				PushMsgToPushBullet("AnotherDevice60")
+				PushMsg("AnotherDevice60")
 			Else
 				SetLog("Another Device has connected, waiting " & Floor(Mod($sTimeWakeUp, 60)) & " seconds", $COLOR_RED)
-				PushMsgToPushBullet("AnotherDevice")
+				PushMsg("AnotherDevice")
 			EndIf
 			If _SleepStatus($sTimeWakeUp * 1000) Then Return ; Wait as long as user setting in GUI, default 120 seconds
 			checkObstacles_ReloadCoC($aReloadButton, "#0127")
@@ -63,7 +65,7 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 		;If _ImageSearchArea($break, 0, 165, 257 + $midOffsetY, 335, 295 + $midOffsetY, $x, $y, 100) Then ; used for all 3 different break messages
 		If _ImageSearchAreaImgLoc($break, 0, 165, 257 + $midOffsetY, 335, 295 + $midOffsetY, $x, $y, 95) Then ; used for all 3 different break messages
 			SetLog("Village must take a break, wait ...", $COLOR_RED)
-			PushMsgToPushBullet("TakeBreak")
+			PushMsg("TakeBreak")
 			If _SleepStatus($iDelaycheckObstacles4) Then Return ; 2 Minutes
 			checkObstacles_ReloadCoC($aReloadButton, "#0128");Click on reload button
 			If $ichkSinglePBTForced = 1 Then $bGForcePBTUpdate = True
@@ -92,7 +94,6 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 					Return True
 				EndIf
 				SetLog("Connection lost, Reloading CoC...", $COLOR_RED)
-				ChckInetCon()
 			Case _CheckPixel($aIsCheckOOS, $bNoCapturePixel) ; Check OoS
 				SetLog("Out of Sync Error, Reloading CoC...", $COLOR_RED)
 			Case _CheckPixel($aIsMaintenance, $bNoCapturePixel) ; Check Maintenance
@@ -125,15 +126,15 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 				checkObstacles_ResetSearch()
 			Case Else
 				;  Add check for misc error messages
-				If $debugImageSave = 1 Then DebugImageSave("ChkObstaclesReloadMsg_")  ; debug only
+				If $debugImageSave = 1 Then DebugImageSave("ChkObstaclesReloadMsg_") ; debug only
 				$result = getOcrMaintenanceTime(171, 325 + $midOffsetY, "Check Obstacles OCR 'Good News!'=") ; OCR text for "Good News!"
 				If StringInStr($result, "new", $STR_NOCASESENSEBASIC) Then
 					SetLog("Game Update is required, Bot must stop!!", $COLOR_RED)
 					Btnstop() ; stop bot
 					Return True
 				EndIf
-				$result = getOcrRateCoc(228, 380 + 12 + $midOffsetY)
-				If $debugsetlog = 1 Then SetLog("Check Obstacles getOCRRateCoC= " & $result, $COLOR_PURPLE)  ; debug only
+				$result = getOcrRateCoc(228, 380 + $midOffsetY)
+				If $debugsetlog = 1 Then SetLog("Check Obstacles getOCRRateCoC=" & $result, $COLOR_PURPLE) ; debug only
 				If StringInStr($result, "never", $STR_NOCASESENSEBASIC) Then
 					SetLog("Clash feedback window found, permanently closed!", $COLOR_RED)
 					PureClick(248, 408 + $midOffsetY, 1, 0, "#9999") ; Click on never to close window and stop reappear. Never=248,408 & Later=429,408
@@ -164,46 +165,38 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 	EndIf
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	_CaptureRegion() ; Bot restart is not required for These cases just close window then WaitMainScreen then continue
+	If $DebugIt Then SetLog("#cOb# Second Checks", $COLOR_BLUE)
 	If _ColorCheck(_GetPixelColor(235, 209 + $midOffsetY), Hex(0x9E3826, 6), 20) Then
+		If $DebugIt Then SetLog("#cOb# Village was Attacked, Clicks Okay...", $COLOR_BLUE)
 		PureClick(429, 493 + $midOffsetY, 1, 0, "#0132") ;See if village was attacked, clicks Okay
 		$iShouldRearm = True
 		$MinorObstacle = True
 		If _Sleep($iDelaycheckObstacles1) Then Return
 		Return False
 	EndIf
-	If _ColorCheck(_GetPixelColor(586, 372), Hex(0xF5F5F5, 6), 20) Then
-		If $debugSetlog = 1 Then SetLog("Found Window Account", $COLOR_RED)
-		PureClickP($aAway, 1, 0, "#0000") ;Click away
-		If _Sleep(1000) Then Return
-		PureClickP($aAway, 1, 0, "#0000") ;Click away
-		$MinorObstacle = True
-		If _Sleep($iDelaycheckObstacles1) Then Return
-		Return False
-	EndIf
 	If _CheckPixel($aIsMainGrayed, $bNoCapturePixel) Then
+		If $DebugIt Then SetLog("#cOb# Click away If things are open...", $COLOR_BLUE)
 		PureClickP($aAway, 1, 0, "#0133") ;Click away If things are open
-		If _Sleep(1000) Then Return
-		If _ColorCheck(_GetPixelColor(383, 405), Hex(0xF0BE70, 6), 20) Then
-			SetLog("Found Window Load Click Cancel", $COLOR_RED)
-			PureClick(354, 435, 1, 0, "Click Cancel") ;Click Cancel Button
-		EndIf
 		$MinorObstacle = True
 		If _Sleep($iDelaycheckObstacles1) Then Return
 		Return False
 	EndIf
 	If _ColorCheck(_GetPixelColor(792, 39), Hex(0xDC0408, 6), 20) Then
+		If $DebugIt Then SetLog("#cOb# Clicks X", $COLOR_BLUE)
 		PureClick(792, 39, 1, 0, "#0134") ;Clicks X
 		$MinorObstacle = True
 		If _Sleep($iDelaycheckObstacles1) Then Return
 		Return False
 	EndIf
 	If _CheckPixel($aCancelFight, $bNoCapturePixel) Or _CheckPixel($aCancelFight2, $bNoCapturePixel) Then
+		If $DebugIt Then SetLog("#cOb# Clicks X 2, $aCancelFight", $COLOR_BLUE)
 		PureClickP($aCancelFight, 1, 0, "#0135") ;Clicks X
 		$MinorObstacle = True
 		If _Sleep($iDelaycheckObstacles1) Then Return
 		Return False
 	EndIf
 	If _CheckPixel($aChatTab, $bNoCapturePixel) Then
+		If $DebugIt Then SetLog("#cOb# Clicks chat tab, $aChatTab", $COLOR_BLUE)
 		PureClickP($aChatTab, 1, 0, "#0136") ;Clicks chat tab
 		$MinorObstacle = True
 		If _Sleep($iDelaycheckObstacles1) Then Return
@@ -211,24 +204,27 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 	EndIf
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	If _CheckPixel($aEndFightSceneBtn, $bNoCapturePixel) Then
+		If $DebugIt Then SetLog("#cOb# If in that victory or defeat scene, $aEndFightSceneBtn", $COLOR_BLUE)
 		PureClickP($aEndFightSceneBtn, 1, 0, "#0137") ;If in that victory or defeat scene
 		Return True
 	EndIf
 	If _CheckPixel($aSurrenderButton, $bNoCapturePixel) Then
+		If $DebugIt Then SetLog("#cOb# If End battle is available, $aSurrenderButton", $COLOR_BLUE)
 		ReturnHome(False, False) ;If End battle is available
 		Return True
 	EndIf
 	;If _ImageSearchArea($CocStopped, 0, 250, 328 + $midOffsetY, 618, 402 + $midOffsetY, $x, $y, 70) Then
 	If _ImageSearchAreaImgLoc($CocStopped, 0, 250, 328 + $midOffsetY, 618, 402 + $midOffsetY, $x, $y, 95) Then
 		SetLog("CoC Has Stopped Error .....", $COLOR_RED)
-		PushMsgToPushBullet("CoCError")
+		PushMsg("CoCError")
 		If _Sleep($iDelaycheckObstacles1) Then Return
 		PureClick(250 + $x, 328 + $midOffsetY + $y, 1, 0, "#0129");Check for "CoC has stopped error, looking for OK message" on screen
 		If _Sleep($iDelaycheckObstacles2) Then Return
-		CloseCoC(True)
+		checkObstacles_ReloadCoC("")
 		Return True
 	EndIf
 	If _CheckPixel($aNoCloudsAttack, $bNoCapturePixel) Then ; Prevent drop of troops while searching
+		If $DebugIt Then SetLog("#cOb# Prevent drop of troops while searching, $aNoCloudsAttack", $COLOR_BLUE)
 		$Message = _PixelSearch(23, 566 + $bottomOffsetY, 36, 580 + $bottomOffsetY, Hex(0xF4F7E3, 6), 10)
 		If IsArray($Message) Then
 			; If _ColorCheck(_GetPixelColor(67,  602 + $bottomOffsetY), Hex(0xDCCCA9, 6), 10) = False Then  ; add double check?
@@ -238,6 +234,7 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 		EndIf
 	EndIf
 	If IsPostDefenseSummaryPage() Then
+		If $DebugIt Then SetLog("#cOb# Is Post Defense Summary Page...", $COLOR_BLUE)
 		$Message = _PixelSearch(23, 566 + $bottomOffsetY, 36, 580 + $bottomOffsetY, Hex(0xE0E1CE, 6), 10)
 		If IsArray($Message) Then
 			PureClick(67, 602 + $bottomOffsetY, 1, 0, "#0138");Check if Return Home button available
@@ -245,12 +242,14 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 			Return True
 		EndIf
 	EndIf
+	If $DebugIt Then SetLog("#cOb# Second Checks FINISHED", $COLOR_BLUE)
 	Return False
 EndFunc   ;==>checkObstacles
 
 ; It's more stable to restart CoC app than click the message restarting the game
 Func checkObstacles_ReloadCoC($point, $debugtxt = "")
 	;PureClickP($point, 1, 0, $debugtxt)
+	;SetLog("Func checkObstacles_ReloadCoC", $COLOR_PURPLE)
 	CloseCoC(True)
 EndFunc   ;==>checkObstacles_ReloadCoC
 

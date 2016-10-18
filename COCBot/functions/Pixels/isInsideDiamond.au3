@@ -23,7 +23,7 @@ Func isInsideDiamondXY($Coordx, $Coordy)
 EndFunc   ;==>isInsideDiamondXY
 
 Func isInsideDiamond($aCoords)
-	Local $Left = 15, $Right = 835, $Top = 30, $Bottom = 645 ; set the diamond shape 860x780
+	Local $Left = 10, $Right = 847, $Top = 30, $Bottom = 660 ; set the diamond shape 860x780
 	Local $aDiamond[2][2] = [[$Left, $Top], [$Right, $Bottom]]
 	Local $aMiddle = [($aDiamond[0][0] + $aDiamond[1][0]) / 2, ($aDiamond[0][1] + $aDiamond[1][1]) / 2]
 	Local $aSize = [$aMiddle[0] - $aDiamond[0][0], $aMiddle[1] - $aDiamond[0][1]]

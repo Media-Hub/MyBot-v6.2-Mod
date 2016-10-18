@@ -6,7 +6,7 @@
 ;                  $Remaining           - [optional] Flag for when checking remaining troops. Default is False.
 ; Return values .: None
 ; Author ........:
-; Modified ......: mikemikemikecoc (2016)
+; Modified ......:
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2016
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......:
@@ -86,8 +86,8 @@ Func PrepareAttack($pMatchMode, $Remaining = False) ;Assigns troops
     ;AwesomeGamer CSV mod
 	$remainingTroops = $atkTroops
 	$TroopDropNumber = 0
-	
-	;ResumeAndroid()
+
+    ;ResumeAndroid()
 
 	If $debugSetLog=1 Then Setlog("troopsnumber  = " & $troopsnumber)
 	Return $troopsnumber
@@ -273,7 +273,6 @@ Func IsSpecialTroopToBeUsed($pMatchMode, $pTroopType)
 						 If $ichkSkeletonSpell[$DB] = 1 Then Return True
 				EndSwitch
 #comments-end
-
 			Case Else
 				Return False
 		EndSwitch

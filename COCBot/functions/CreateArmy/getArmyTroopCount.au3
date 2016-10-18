@@ -43,7 +43,6 @@ Func getArmyTroopCount($bOpenArmyWindow = False, $bCloseArmyWindow = False, $tes
 	Local $FullTemp = ""
 	Local $TroopQ = 0
 	Local $TroopTypeT = ""
-	ReDim $TroopSpellStats[0][2]
 
 	checkAttackDisable($iTaBChkIdle)
 
@@ -239,11 +238,9 @@ Func getArmyTroopCount($bOpenArmyWindow = False, $bCloseArmyWindow = False, $tes
 
 				EndIf
 				Local $Plural = 0
-				If $TroopQ > 1 Then $Plural = 1
-				If $TroopQ <> 0 Then
-					SetLog(" - No. of " & NameOfTroop($Troops[0], $Plural) & ": " & $TroopQ)
-					_ArrayAdd($TroopSpellStats, NameOfTroop($Troops[0], $Plural) & "|" & $TroopQ)
-				EndIf
+				If $TroopQ > 1 then $Plural = 1
+				If $TroopQ <> 0 Then SetLog(" - No. of " & NameOfTroop($Troops[0], $Plural) & ": " & $TroopQ)
+
 			EndIf
 		Next
 
