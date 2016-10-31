@@ -126,23 +126,23 @@ Func LocateBarrack($ArmyCamp = False)
 									If _ColorCheck(_GetPixelColor(254 + (60 * $x), 540 + $midOffsetY, True), Hex(0xE8E8E0, 6), 20) Then ; slot position 60 * $x
 										$barrackPos[$x][0] = $TEMPbarrackPos[$i][0]
 										$barrackPos[$x][1] = $TEMPbarrackPos[$i][1]
-										SetLog("- Barrack " & $x + 1 & ": (" & $barrackPos[$x][0] & "," & $barrackPos[$x][1] & ")", $COLOR_PURPLE)
+										SetLog("- Barrack " & $x + 1 & ": (" & $barrackPos[$x][0] & "," & $barrackPos[$x][1] & ")", $COLOR_DEBUG) ;Debug
 										;Else
-										;SetLog("- Barrack " & $i + 1 & " error , position: (" & $TEMPbarrackPos[$i][0] & "," & $TEMPbarrackPos[$i][1] & ")", $COLOR_PURPLE)
+										;SetLog("- Barrack " & $i + 1 & " error , position: (" & $TEMPbarrackPos[$i][0] & "," & $TEMPbarrackPos[$i][1] & ")", $COLOR_DEBUG) ;Debug
 									EndIf
 								Next
 							Else
-								SetLog("- Barrack " & $i + 1 & " Error open the ArmyOverView Window!", $COLOR_PURPLE)
+								SetLog("- Barrack " & $i + 1 & " Error open the ArmyOverView Window!", $COLOR_DEBUG) ;Debug
 								Local $wasDown = AndroidShieldForceDown(True, True)
 								$sInputbox = InputBox($sBotTitle & ": " & GetTranslated(640, 29, "Question"), "Enter the ArmyOverView Tab Position of this Barrack [1|2|3|4] :", "1", "", 400, Default, Default, Default, 240, (AndroidEmbedded() ? Default : $frmBot))
 								AndroidShieldForceDown($wasDown, True)
 								Local $BarrackTabPosition = Number($sInputbox)
 								$barrackPos[$BarrackTabPosition - 1][0] = $TEMPbarrackPos[$i][0]
 								$barrackPos[$BarrackTabPosition - 1][1] = $TEMPbarrackPos[$i][1]
-								SetLog("- Barrack " & $i + 1 & ": (" & $barrackPos[$BarrackTabPosition - 1][0] & "," & $barrackPos[$BarrackTabPosition - 1][1] & ")", $COLOR_PURPLE)
+								SetLog("- Barrack " & $i + 1 & ": (" & $barrackPos[$BarrackTabPosition - 1][0] & "," & $barrackPos[$BarrackTabPosition - 1][1] & ")", $COLOR_DEBUG) ;Debug
 							EndIf
 						Else
-							SetLog("- Barrack " & $i + 1 & " Don´t exist the Button to train!", $COLOR_PURPLE)
+							SetLog("- Barrack " & $i + 1 & " Don´t exist the Button to train!", $COLOR_DEBUG) ;Debug
 							Local $wasDown = AndroidShieldForceDown(True, True)
 							$sInputbox = InputBox($sBotTitle & ": " & GetTranslated(640, 29, "Question"), "Enter the ArmyOverView Tab Position of this Barrack [1|2|3|4] :", "1", " M1", 400, Default, Default, Default, 240, (AndroidEmbedded() ? Default : $frmBot))
 							AndroidShieldForceDown($wasDown, True)
@@ -150,7 +150,7 @@ Func LocateBarrack($ArmyCamp = False)
 							If $BarrackTabPosition >= 1 And $BarrackTabPosition <= 4 Then
 								$barrackPos[$BarrackTabPosition - 1][0] = $TEMPbarrackPos[$i][0]
 								$barrackPos[$BarrackTabPosition - 1][1] = $TEMPbarrackPos[$i][1]
-								SetLog("- Barrack " & $i + 1 & ": (" & $barrackPos[$BarrackTabPosition - 1][0] & "," & $barrackPos[$BarrackTabPosition - 1][1] & ")", $COLOR_PURPLE)
+								SetLog("- Barrack " & $i + 1 & ": (" & $barrackPos[$BarrackTabPosition - 1][0] & "," & $barrackPos[$BarrackTabPosition - 1][1] & ")", $COLOR_DEBUG) ;Debug
 							Else
 								; cancel so do again
 								$i -= 1
@@ -193,17 +193,17 @@ Func LocateBarrack($ArmyCamp = False)
 
 		$iCount = 0 ; reset loop counter
 		$sArmyInfo = getArmyCampCap($aArmyCampSize[0], $aArmyCampSize[1]) ; OCR read army trained and total
-		If $debugSetlog = 1 Then Setlog("$sArmyInfo = " & $sArmyInfo, $COLOR_PURPLE)
+		If $debugSetlog = 1 Then Setlog("$sArmyInfo = " & $sArmyInfo, $COLOR_DEBUG) ;Debug
 		While $sArmyInfo = "" ; In case the CC donations recieved msg are blocking, need to keep checking numbers for 10 seconds
 			If _Sleep($iDelayLocateBarrack2) Then Return
 			$sArmyInfo = getArmyCampCap($aArmyCampSize[0], $aArmyCampSize[1]) ; OCR read army trained and total
-			If $debugSetlog = 1 Then Setlog(" $sArmyInfo = " & $sArmyInfo, $COLOR_PURPLE)
+			If $debugSetlog = 1 Then Setlog(" $sArmyInfo = " & $sArmyInfo, $COLOR_DEBUG) ;Debug
 			$iCount += 1
 			If $iCount > 4 Then ExitLoop
 		WEnd
 
 		$aGetArmySize = StringSplit($sArmyInfo, "#") ; split the trained troop number from the total troop number
-		If $debugSetlog = 1 Then Setlog("$aGetArmySize[0]= " & $aGetArmySize[0] & "$aGetArmySize[1]= " & $aGetArmySize[1] & "$aGetArmySize[2]= " & $aGetArmySize[2], $COLOR_PURPLE)
+		If $debugSetlog = 1 Then Setlog("$aGetArmySize[0]= " & $aGetArmySize[0] & "$aGetArmySize[1]= " & $aGetArmySize[1] & "$aGetArmySize[2]= " & $aGetArmySize[2], $COLOR_DEBUG) ;Debug
 		If $aGetArmySize[0] > 1 Then ; check if the OCR was valid and returned both values
 			$TotalCamp = Number($aGetArmySize[2])
 			Setlog("$TotalCamp = " & $TotalCamp, $COLOR_GREEN)
@@ -267,23 +267,23 @@ Func LocateDarkBarrack()
 								If _ColorCheck(_GetPixelColor(510 + (60 * $x), 540 + $midOffsetY, True), Hex(0xE8E8E0, 6), 20) Then ; slot position 60 * $x
 									$DarkbarrackPos[$x][0] = $TEMPDARKbarrackPos[$i][0]
 									$DarkbarrackPos[$x][1] = $TEMPDARKbarrackPos[$i][1]
-									SetLog("- Dark Barrack " & $x + 1 & ": (" & $DarkbarrackPos[$x][0] & "," & $DarkbarrackPos[$x][1] & ")", $COLOR_PURPLE)
+									SetLog("- Dark Barrack " & $x + 1 & ": (" & $DarkbarrackPos[$x][0] & "," & $DarkbarrackPos[$x][1] & ")", $COLOR_DEBUG) ;Debug
 									;Else
-									;SetLog("- Barrack " & $i + 1 & " error , position: (" & $TEMPbarrackPos[$i][0] & "," & $TEMPbarrackPos[$i][1] & ")", $COLOR_PURPLE)
+									;SetLog("- Barrack " & $i + 1 & " error , position: (" & $TEMPbarrackPos[$i][0] & "," & $TEMPbarrackPos[$i][1] & ")", $COLOR_DEBUG) ;Debug
 								EndIf
 							Next
 						Else
-							SetLog("- Dark Barrack " & $i + 1 & " Error open the ArmyOverView Window!", $COLOR_PURPLE)
+							SetLog("- Dark Barrack " & $i + 1 & " Error open the ArmyOverView Window!", $COLOR_DEBUG) ;Debug
 							Local $wasDown = AndroidShieldForceDown(True, True)
 							$sInputbox = InputBox($sBotTitle & ": " & GetTranslated(640, 29, "Question"), "Enter the ArmyOverView Tab Position of this DARK Barrack [1|2] :", "1", "", 400, Default, Default, Default, 240, (AndroidEmbedded() ? Default : $frmBot))
 							AndroidShieldForceDown($wasDown, True)
 							Local $BarrackTabPosition = Number($sInputbox)
 							$DarkbarrackPos[$BarrackTabPosition - 1][0] = $TEMPDARKbarrackPos[$i][0]
 							$DarkbarrackPos[$BarrackTabPosition - 1][1] = $TEMPDARKbarrackPos[$i][1]
-							SetLog("- Dark Barrack " & $i + 1 & ": (" & $DarkbarrackPos[$BarrackTabPosition - 1][0] & "," & $DarkbarrackPos[$BarrackTabPosition - 1][1] & ")", $COLOR_PURPLE)
+							SetLog("- Dark Barrack " & $i + 1 & ": (" & $DarkbarrackPos[$BarrackTabPosition - 1][0] & "," & $DarkbarrackPos[$BarrackTabPosition - 1][1] & ")", $COLOR_DEBUG) ;Debug
 						EndIf
 					Else
-						SetLog("- Dark Barrack " & $i + 1 & " Don´t exist the Button to train!", $COLOR_PURPLE)
+						SetLog("- Dark Barrack " & $i + 1 & " Don´t exist the Button to train!", $COLOR_DEBUG) ;Debug
 						Local $wasDown = AndroidShieldForceDown(True, True)
 						$sInputbox = InputBox($sBotTitle & ": " & GetTranslated(640, 29, "Question"), "Enter the ArmyOverView Tab Position of this DARK Barrack [1|2] :", "1", " M1", 400, Default, Default, Default, 240, (AndroidEmbedded() ? Default : $frmBot))
 						AndroidShieldForceDown($wasDown, True)
@@ -291,7 +291,7 @@ Func LocateDarkBarrack()
 						If $BarrackTabPosition >= 1 And $BarrackTabPosition <= 4 Then
 							$DarkbarrackPos[$BarrackTabPosition - 1][0] = $TEMPDARKbarrackPos[$i][0]
 							$DarkbarrackPos[$BarrackTabPosition - 1][1] = $TEMPDARKbarrackPos[$i][1]
-							SetLog("- Dark Barrack " & $i + 1 & ": (" & $DarkbarrackPos[$BarrackTabPosition - 1][0] & "," & $DarkbarrackPos[$BarrackTabPosition - 1][1] & ")", $COLOR_PURPLE)
+							SetLog("- Dark Barrack " & $i + 1 & ": (" & $DarkbarrackPos[$BarrackTabPosition - 1][0] & "," & $DarkbarrackPos[$BarrackTabPosition - 1][1] & ")", $COLOR_DEBUG) ;Debug
 						Else
 							; cancel so do again
 							$i -= 1
@@ -334,12 +334,6 @@ Func LocateBarrack2()
 		ClickR($aArmyTrainButtonRND, $aArmyTrainButton[0], $aArmyTrainButton[1], 1, 0)
 	EndIf
 
-	If WaitforPixel(715, 124 + $midOffsetY, 718, 125 + $midOffsetY, Hex(0xD80408, 6), 5, 10) Then
-		BarracksStatus(False) ; $numBarracksAvaiables
-	Else
-		SetLog("Error open the ArmyOverView Windows!..")
-	EndIf
-
 	If _Sleep($iDelaycheckArmyCamp1) Then Return
 	ClickP($aAway, 1, 0, "#0295") ;Click Away
 
@@ -347,11 +341,11 @@ Func LocateBarrack2()
 		_captureRegion2()
 		Local $PixelBarrackHere = GetLocationItem("getLocationBarrack")
 		$barrackNum = UBound($PixelBarrackHere)
-		SetLog("Total No. of Barracks: " & $barrackNum, $COLOR_PURPLE)
+		SetLog("Total No. of Barracks: " & $barrackNum, $COLOR_DEBUG) ;Debug
 		If UBound($PixelBarrackHere) > 0 Then
 			For $i = 0 To UBound($PixelBarrackHere) - 1
 				$pixel = $PixelBarrackHere[$i]
-				If $debugSetlog = 1 Then Setlog("click " & $pixel[0] & "/" & $pixel[1])
+				If $debugSetlog = 1 Then Setlog("click " & $pixel[0] & "/" & $pixel[1], $COLOR_DEBUG) ;Debug
 				If isInsideDiamond($pixel) Then
 					Click($pixel[0], $pixel[1])
 					If _Sleep(1000) Then Return
@@ -364,20 +358,20 @@ Func LocateBarrack2()
 								If _ColorCheck(_GetPixelColor(254 + (60 * $x), 540 + $bottomOffsetY, True), Hex(0xE8E8E0, 6), 20) Then ; slot position 60 * $x
 									$barrackPos[$x][0] = $pixel[0]
 									$barrackPos[$x][1] = $pixel[1]
-									SetLog("- Barrack " & $x + 1 & ": (" & $barrackPos[$x][0] & "," & $barrackPos[$x][1] & ")", $COLOR_PURPLE)
+									SetLog("- Barrack " & $x + 1 & ": (" & $barrackPos[$x][0] & "," & $barrackPos[$x][1] & ")", $COLOR_DEBUG) ;Debug
 									ExitLoop
 								EndIf
 							Next
 						Else
-							SetLog("- Barrack " & $i + 1 & " Error open the ArmyOverView Window!", $COLOR_PURPLE)
+							SetLog("- Barrack " & $i + 1 & " Error open the ArmyOverView Window!", $COLOR_DEBUG) ;Debug
 							$errorPositon = 1
 						EndIf
 					Else
-						SetLog("- Barrack " & $i + 1 & " Not found the Train Button! Upgrading your Barrack?", $COLOR_PURPLE)
+						SetLog("- Barrack " & $i + 1 & " Not found the Train Button! Upgrading your Barrack?", $COLOR_DEBUG) ;Debug
 						$errorPositon = 1
 					EndIf
 				Else
-					SetLog("- Barrack " & $i + 1 & " is not inside the field, position: (" & $pixel[0] & "," & $pixel[1] & ")", $COLOR_PURPLE)
+					SetLog("- Barrack " & $i + 1 & " is not inside the field, position: (" & $pixel[0] & "," & $pixel[1] & ")", $COLOR_DEBUG) ;Debug
 					$errorPositon = 1
 				EndIf
 				ClickP($aAway, 2, 50, "#0206")
@@ -404,30 +398,30 @@ Func LocateBarrack2()
 								If _ColorCheck(_GetPixelColor(254 + (60 * $x), 540 + $bottomOffsetY, True), Hex(0xE8E8E0, 6), 20) Then ; slot position 60 * $x
 									$barrackPos[$x][0] = $TEMPbarrackPos[$i][0]
 									$barrackPos[$x][1] = $TEMPbarrackPos[$i][1]
-									SetLog("- Barrack " & $i + 1 & ": (" & $barrackPos[$x][0] & "," & $barrackPos[$x][1] & ")", $COLOR_PURPLE)
+									SetLog("- Barrack " & $i + 1 & ": (" & $barrackPos[$x][0] & "," & $barrackPos[$x][1] & ")", $COLOR_DEBUG) ;Debug
 									;Else
-									;SetLog("- Barrack " & $i + 1 & " error , position: (" & $TEMPbarrackPos[$i][0] & "," & $TEMPbarrackPos[$i][1] & ")", $COLOR_PURPLE)
+									;SetLog("- Barrack " & $i + 1 & " error , position: (" & $TEMPbarrackPos[$i][0] & "," & $TEMPbarrackPos[$i][1] & ")", $COLOR_DEBUG) ;Debug
 								EndIf
 							Next
 						Else
-							SetLog("- Barrack " & $i + 1 & " Error open the ArmyOverView Window!", $COLOR_PURPLE)
+							SetLog("- Barrack " & $i + 1 & " Error open the ArmyOverView Window!", $COLOR_DEBUG) ;Debug
 							Local $wasDown = AndroidShieldForceDown(True, True)
 							$sInputbox = InputBox($sBotTitle & ": " & GetTranslated(640, 29, "Question"), GetTranslated(640, 30, "Enter the ArmyOverView Tab Position of this Barrack [1|2|3|4] :"), "1", "", 400, Default, Default, Default, 240, (AndroidEmbedded() ? Default : $frmBot))
 							AndroidShieldForceDown($wasDown, True)
 							Local $BarrackTabPosition = Number($sInputbox)
 							$barrackPos[$BarrackTabPosition - 1][0] = $TEMPbarrackPos[$i][0]
 							$barrackPos[$BarrackTabPosition - 1][1] = $TEMPbarrackPos[$i][1]
-							SetLog("- Barrack " & $i + 1 & ": (" & $barrackPos[$BarrackTabPosition - 1][0] & "," & $barrackPos[$BarrackTabPosition - 1][1] & ")", $COLOR_PURPLE)
+							SetLog("- Barrack " & $i + 1 & ": (" & $barrackPos[$BarrackTabPosition - 1][0] & "," & $barrackPos[$BarrackTabPosition - 1][1] & ")", $COLOR_DEBUG) ;Debug
 						EndIf
 					Else
-						SetLog("- Barrack " & $i + 1 & " Don´t exist the Button to train!", $COLOR_PURPLE)
+						SetLog("- Barrack " & $i + 1 & " Don´t exist the Button to train!", $COLOR_DEBUG) ;Debug
 						Local $wasDown = AndroidShieldForceDown(True, True)
 						$sInputbox = InputBox($sBotTitle & ": " & GetTranslated(640, 29, "Question"), GetTranslated(640, 30, "Enter the ArmyOverView Tab Position of this Barrack [1|2|3|4] :"), "1", "", 400, Default, Default, Default, 240, (AndroidEmbedded() ? Default : $frmBot))
 						AndroidShieldForceDown($wasDown, True)
 						Local $BarrackTabPosition = Number($sInputbox)
 						$barrackPos[$BarrackTabPosition - 1][0] = $TEMPbarrackPos[$i][0]
 						$barrackPos[$BarrackTabPosition - 1][1] = $TEMPbarrackPos[$i][1]
-						SetLog("- Barrack " & $i + 1 & ": (" & $barrackPos[$BarrackTabPosition - 1][0] & "," & $barrackPos[$BarrackTabPosition - 1][1] & ")", $COLOR_PURPLE)
+						SetLog("- Barrack " & $i + 1 & ": (" & $barrackPos[$BarrackTabPosition - 1][0] & "," & $barrackPos[$BarrackTabPosition - 1][1] & ")", $COLOR_DEBUG) ;Debug
 					EndIf
 				Else
 					SetLog("Quit joking, Click the Barracks, or restart bot and try again", $COLOR_RED)
@@ -441,6 +435,3 @@ Func LocateBarrack2()
 	If _Sleep($iDelayBotDetectFirstTime3) Then Return
 
 EndFunc   ;==>LocateBarrack2
-
-
-

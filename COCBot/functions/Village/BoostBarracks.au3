@@ -79,19 +79,17 @@ Func BoostSpellFactory()
 EndFunc   ;==>BoostSpellFactory
 
 Func ClickOnBoostArmyWindow()
-	If $DebugBarrackBoost = 1 Then SetLog("Func ClickOnBoostArmyWindow()", $COLOR_PURPLE)
+	If $DebugBarrackBoost = 1 Then SetLog("Func ClickOnBoostArmyWindow()", $COLOR_DEBUG) ;Debug
 	_Sleep($iDelayBoostBarracks2)
-	$ClockColor = _GetPixelColor(731, 312 + $midOffsetY, True) ; Clock In Boost Button Color, Dark Yellow In Bottom Left of Clock
-	$ResColCheck = _ColorCheck($ClockColor, Hex(0x987010, 6), 20)
+	$ClockColor = _GetPixelColor(780, 312 + $midOffsetY, True)
+	$ResColCheck = _ColorCheck($ClockColor, Hex(0x65AF20, 6), 40)
 	If $ResColCheck = True Then
 		SetLog("Boost Button is Available, Clicking On...", $COLOR_BLUE)
 		Click(770, 325)
 		_Sleep($iDelayBoostBarracks2)
 		Return True
 	Else
-		If _ColorCheck(_GetPixelColor(718, 286 + $midOffsetY, True), Hex(0xFFF27B, 6), 20) Then
-			SetLog("Already Boosted! Skipping...", $COLOR_GREEN)
-		ElseIf _ColorCheck(_GetPixelColor(718, 285 + $midOffsetY, True), Hex(0xEEF470, 6), 20) Then
+		If _ColorCheck(_GetPixelColor(718, 285 + $midOffsetY, True), Hex(0xEEF470, 6), 40) Then
 			SetLog("Already Boosted! Skipping...", $COLOR_GREEN)
 		Else
 			SetLog("Cannot Verify Boost Button! Skipping...", $COLOR_ORANGE)
@@ -101,27 +99,19 @@ Func ClickOnBoostArmyWindow()
 EndFunc   ;==>ClickOnBoostArmyWindow
 
 Func IsGemWindowOpen($varToChange1 = "", $varToChange2 = "", $AcceptGem = False, $NeedCapture = True)
-	If $DebugBarrackBoost = 1 Then SetLog("Func IsGemWindowOpen(" & $AcceptGem & ", " & $NeedCapture & ")", $COLOR_PURPLE)
+	If $DebugBarrackBoost = 1 Then SetLog("Func IsGemWindowOpen(" & $AcceptGem & ", " & $NeedCapture & ")", $COLOR_DEBUG) ;Debug
 	_Sleep($iDelayisGemOpen1)
 	If _ColorCheck(_GetPixelColor(590, 235 + $midOffsetY, True), Hex(0xD80408, 6), 20) Then
 		If _ColorCheck(_GetPixelColor(375, 383 + $midOffsetY, True), Hex(0x222322, 6), 20) Then
-			If $debugSetlog = 1 Or $DebugBarrackBoost = 1 Then Setlog("DETECTED, GEM Window Is OPEN", $COLOR_PURPLE)
+			If $debugSetlog = 1 Or $DebugBarrackBoost = 1 Then Setlog("DETECTED, GEM Window Is OPEN", $COLOR_DEBUG) ;Debug
 			If $AcceptGem = True Then
 				Click(435, 445)
 				_Sleep($iDelayBoostBarracks2)
-				If _ColorCheck(_GetPixelColor(718, 286 + $midOffsetY, True), Hex(0xFFF27B, 6), 20) Or _ColorCheck(_GetPixelColor(718, 285 + $midOffsetY, True), Hex(0xEEF470, 6), 20) Then
-					If $varToChange2 = "" = False Then Assign($varToChange2, Eval($varToChange2) - 1, 4)
-					If $varToChange2 = "" = False Then
-						SetLog('Boost completed. Remaining : ' & Eval($varToChange2), $COLOR_GREEN)
-					Else
-						SetLog('Boost was Successful.', $COLOR_GREEN)
-					EndIf
+				If $varToChange2 = "" = False Then Assign($varToChange2, Eval($varToChange2) - 1, 4)
+				If $varToChange2 = "" = False Then
+					SetLog('Boost completed. Remaining : ' & Eval($varToChange2), $COLOR_GREEN)
 				Else
-					If $varToChange1 = "" = False Then Assign($varToChange1, 0, 4)
-					SetLog("Not enough gems", $COLOR_RED)
-					ClickP($aAway, 1, 0, "#0161")
-					_Sleep($iDelayBoostSpellFactory3)
-					Return False
+					SetLog('Boost was Successful.', $COLOR_GREEN)
 				EndIf
 			Else
 				PureClickP($aAway, 1, 0, "#0140") ; click away to close gem window
@@ -137,7 +127,7 @@ Func IsGemWindowOpen($varToChange1 = "", $varToChange2 = "", $AcceptGem = False,
 EndFunc   ;==>IsGemWindowOpen
 
 Func SelectBarrack($BRNum) ; 3
-	If $DebugBarrackBoost = 1 Then SetLog("Func SelectBarrack(" & $BRNum & ")", $COLOR_PURPLE)
+	If $DebugBarrackBoost = 1 Then SetLog("Func SelectBarrack(" & $BRNum & ")", $COLOR_DEBUG) ;Debug
 	If $BRNum = 0 Or $BRNum > 4 Then CheckForBarrackNoPos()
 	Local $CorrectBRNum
 
@@ -187,7 +177,7 @@ Func SelectBarrack($BRNum) ; 3
 EndFunc   ;==>SelectBarrack
 
 Func SelectDarkBarrack($BRNum)
-	If $DebugBarrackBoost = 1 Then SetLog("Func SelectBarrack(" & $BRNum & ")", $COLOR_PURPLE)
+	If $DebugBarrackBoost = 1 Then SetLog("Func SelectBarrack(" & $BRNum & ")", $COLOR_DEBUG) ;Debug
 	; If $BRNum = -1 = False Then CheckForBarrackNoPos()
 	Local $CorrectBRNum
 
@@ -231,23 +221,22 @@ Func SelectDarkBarrack($BRNum)
 EndFunc   ;==>SelectDarkBarrack
 
 Func CheckForBarrackNoPos()
-	If $DebugBarrackBoost = 1 Then SetLog("Func CheckForBarrackNoPos()", $COLOR_PURPLE)
+	If $DebugBarrackBoost = 1 Then SetLog("Func CheckForBarrackNoPos()", $COLOR_DEBUG) ;Debug
 	If $numBarracksAvaiables = 0 Then
 		If $DebugBarrackBoost = 1 Then
 			openArmyOverview()
-			BarracksStatus() ; this will check and returns the correct $Trainavailable
 		EndIf
 	EndIf
 	For $i = 0 To ($numBarracksAvaiables - 1)
 		If $barrackPos[$i][0] = "" Or $barrackPos[$i][1] = "" Then
-			SetLog("Barrack nº " & $i + 1 & " Not Located", $COLOR_ORANGE)
+			SetLog("Barrack nï¿½ " & $i + 1 & " Not Located", $COLOR_ORANGE)
 			SetLog("Locate It By It's Index In Army Overview Tab Index", $COLOR_ORANGE)
 			LocateBarrack()
 			SaveConfig()
-			If $DebugBarrackBoost = 1 Then SetLog("ReCalling Func CheckForBarrackNoPos() Due To Barrack nº " & $i + 1 & " ReLocated", $COLOR_PURPLE)
+			If $DebugBarrackBoost = 1 Then SetLog("ReCalling Func CheckForBarrackNoPos() Due To Barrack nï¿½ " & $i + 1 & " ReLocated", $COLOR_DEBUG) ;Debug
 			CheckForBarrackNoPos() ; *****ing AutoIt Doesn't have GoTo Statement
 		Else
-			If $DebugBarrackBoost = 1 Then SetLog("Barrack nº " & $i + 1 & " Is Located: (" & $barrackPos[$i][0] & ", " & $barrackPos[$i][0] & ")", $COLOR_GREEN)
+			If $DebugBarrackBoost = 1 Then SetLog("Barrack nï¿½ " & $i + 1 & " Is Located: (" & $barrackPos[$i][0] & ", " & $barrackPos[$i][0] & ")", $COLOR_GREEN)
 		EndIf
 	Next
 	Return True

@@ -31,16 +31,16 @@ Func CreateDonatedVars($ForcedVal = 0, $showLog = 0)
 	Assign("Donated" & $eSkSpell & "ViPER", $ForcedVal, $ASSIGN_FORCEGLOBAL)
 EndFunc
 
-Func DonatedTroop($type, $showLog = 0)
-	$newVal = Number(Eval("Donated" & $type & "ViPER")) + 1
+Func DonatedTroop($type, $quant , $showLog = 0)
+	$newVal = Number(Eval("Donated" & $type & "ViPER")) + $quant
 	Assign("Donated" & $type & "ViPER", $newVal, 4)
 	UpdateDonateStatsGUI($type, $newVal)
 	If $showLog = 1 Then SetLog("Donated" & $type & "ViPER = " & Eval("Donated" & $type & "ViPER"), $COLOR_BLUE)
 	If $showLog = 0 Then SetLog("Total " & NameOfTroop($type) & " Donated: " & Eval("Donated" & $type & "ViPER"), $COLOR_BLUE)
 EndFunc
 
-Func DonatedSpell($type, $showLog = 0)
-	$newVal = Number(Eval("Donated" & $type & "ViPER")) + 1
+Func DonatedSpell($type,$quant , $showLog = 0)
+	$newVal = Number(Eval("Donated" & $type & "ViPER")) + $quant
 	Assign("Donated" & $type & "ViPER", $newVal, 4)
 	UpdateDonateStatsGUI($type, $newVal)
 	If $showLog = 1 Then SetLog("Donated" & $type & "ViPER = " & Eval("Donated" & $type & "ViPER"), $COLOR_BLUE)

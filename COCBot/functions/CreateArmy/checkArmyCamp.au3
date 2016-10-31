@@ -15,7 +15,7 @@
 
 Func checkArmyCamp()
 
-	If $debugsetlogTrain = 1 Then SETLOG("Begin checkArmyCamp:", $COLOR_PURPLE)
+	If $debugsetlogTrain = 1 Then SETLOG("Begin checkArmyCamp:", $COLOR_DEBUG) ;Debug
 
 	GetArmyCapacity()
 	If _Sleep($iDelaycheckArmyCamp6) Then Return ; 10ms improve pause button response
@@ -41,14 +41,11 @@ Func checkArmyCamp()
 	getArmyCCStatus()
 	If _Sleep($iDelaycheckArmyCamp6) Then Return ; 10ms improve pause button response
 
-	;call BarracksStatus() to read barracks num
-	BarracksStatus(False)
-
 	If Not $fullArmy Then DeleteExcessTroops()
 
 	$FirstCampView = True
 
-	If $debugsetlogTrain = 1 Then SETLOG("End checkArmyCamp: canRequestCC= " & $canRequestCC & ", fullArmy= " & $fullArmy, $COLOR_PURPLE)
+	If $debugsetlogTrain = 1 Then SETLOG("End checkArmyCamp: canRequestCC= " & $canRequestCC & ", fullArmy= " & $fullArmy, $COLOR_DEBUG) ;Debug
 
 EndFunc   ;==>checkArmyCamp
 

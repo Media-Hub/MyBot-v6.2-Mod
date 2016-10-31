@@ -13,75 +13,34 @@
 ; Example .......: No
 ; ===============================================================================================================================
 
-Func cmbTroopComp()
-	If _GUICtrlComboBox_GetCurSel($cmbTroopComp) <> $icmbTroopComp Then
-		$icmbTroopComp = _GUICtrlComboBox_GetCurSel($cmbTroopComp)
-		For $i = 0 To UBound($TroopName) - 1
-			Assign("Cur" & $TroopName[$i], 1)
+Func chkUseQTrain()
+	If GUICtrlRead($hChk_UseQTrain) = $GUI_CHECKED Then
+		GUICtrlSetState($hRadio_Army1, $GUI_ENABLE)
+		GUICtrlSetState($hRadio_Army2, $GUI_ENABLE)
+		GUICtrlSetState($hRadio_Army3, $GUI_ENABLE)
+		;GUICtrlSetState($grpTrainTroops, $GUI_DISABLE)
+		For $i = $txtNumBarb To $txtNumLava
+			GUICtrlSetState($i, $GUI_DISABLE)
 		Next
-		For $i = 0 To UBound($TroopDarkName) - 1
-			Assign("Cur" & $TroopDarkName[$i], 1)
+		For $i = $txtNumLightningSpell To $txtNumSkeletonSpell
+			GUICtrlSetState($i, $GUI_DISABLE)
 		Next
-		SetComboTroopComp()
+	Else
+		GUICtrlSetState($hRadio_Army1, $GUI_DISABLE)
+		GUICtrlSetState($hRadio_Army2, $GUI_DISABLE)
+		GUICtrlSetState($hRadio_Army3, $GUI_DISABLE)
+		;GUICtrlSetState($grpTrainTroops, $GUI_ENABLE)
+		For $i = $txtNumBarb To $txtNumLava
+			GUICtrlSetState($i, $GUI_ENABLE)
+		Next
+		For $i = $txtNumLightningSpell To $txtNumSkeletonSpell
+			GUICtrlSetState($i, $GUI_ENABLE)
+		Next
 	EndIf
-EndFunc   ;==>cmbTroopComp
-
-Func cmbDarkTroopComp()
-	If _GUICtrlComboBox_GetCurSel($cmbDarkTroopComp) <> $icmbDarkTroopComp Then
-		$icmbDarkTroopComp = _GUICtrlComboBox_GetCurSel($cmbDarkTroopComp)
-		SetComboDarkTroopComp()
-	EndIf
-EndFunc   ;==>cmbDarkTroopComp
-
-Func SetComboDarkTroopComp()
-	Local $bWasRedraw = SetRedrawBotWindow(False)
-	Switch _GUICtrlComboBox_GetCurSel($cmbDarkTroopComp)
-
-		Case 0
-			;show all the barrack mode controls
-			HideDarkCustomControls()
-			ShowDarkBarrackControls()
-		Case 1
-			;show custom mode controls
-			HideDarkBarrackControls()
-			ShowDarkCustomControls()
-		Case 2
-			;Hide All
-			HideDarkBarrackControls()
-			HideDarkCustomControls()
-	EndSwitch
-	SetRedrawBotWindow($bWasRedraw)
-EndFunc   ;==>SetComboDarkTroopComp
-
-Func ShowDarkBarrackControls()
-	_GUI_Value_STATE("SHOW", $grpDarkBarrackMode & "#" & Eval("cmbDarkBarrack1") & "#" & Eval("cmbDarkBarrack2") & "#" & Eval("lblDarkBarrack1") & "#" & Eval("lblDarkBarrack2"))
-	_GUI_Value_STATE("ENABLE", Eval("cmbDarkBarrack1") & "#" & Eval("cmbDarkBarrack2"))
-EndFunc   ;==>ShowDarkBarrackControls
-
-Func ShowDarkCustomControls()
-	GUICtrlSetState($grpDarkTroops, $GUI_SHOW)
-	For $i = 0 To UBound($TroopDarkName) - 1
-		GUICtrlSetState(Eval("txtNum" & $TroopDarkName[$i]), $GUI_SHOW)
-	Next
-	_GUI_Value_STATE("SHOW", $groupTroopsDark)
-EndFunc   ;==>ShowDarkCustomControls
-
-Func HideDarkBarrackControls()
-	_GUI_Value_STATE("HIDE", $grpDarkBarrackMode & "#" & Eval("cmbDarkBarrack1") & "#" & Eval("cmbDarkBarrack2") & "#" & Eval("lblDarkBarrack1") & "#" & Eval("lblDarkBarrack2"))
-EndFunc   ;==>HideDarkBarrackControls
-
-Func HideDarkCustomControls()
-	GUICtrlSetState($grpDarkTroops, $GUI_HIDE)
-	For $i = 0 To UBound($TroopDarkName) - 1
-		GUICtrlSetState(Eval("txtNum" & $TroopDarkName[$i]), $GUI_HIDE)
-	Next
-	_GUI_Value_STATE("HIDE", $groupTroopsDark)
-EndFunc   ;==>HideDarkCustomControls
+EndFunc
 
 Func SetComboTroopComp()
 	Local $bWasRedraw = SetRedrawBotWindow(False)
-	HideBarrackControls()
-	HideCustomControls()
 	Local $ArmyCampTemp = 0
 
 	If GUICtrlRead($chkTotalCampForced) = $GUI_CHECKED Then
@@ -92,156 +51,9 @@ Func SetComboTroopComp()
 
 	Local $TotalTroopsTOtrain = 0
 
-	Switch _GUICtrlComboBox_GetCurSel($cmbTroopComp)
-		Case 0
-			_GUI_Value_STATE("SHOW", $groupTroopsArch & "#" & $groupTroopsTot)
-			For $i = 0 To UBound($TroopName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
-			Next
-			For $i = 0 To UBound($TroopDarkName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
-			Next
-			GUICtrlSetData($txtNumArch, $ArmyCampTemp)
-
-		Case 1
-			_GUI_Value_STATE("SHOW", $groupTroopsBarB & "#" & $groupTroopsTot)
-			For $i = 0 To UBound($TroopName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
-			Next
-			For $i = 0 To UBound($TroopDarkName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
-			Next
-			GUICtrlSetData($txtNumBarb, $ArmyCampTemp)
-
-		Case 2
-			_GUI_Value_STATE("SHOW", $groupTroopsGobl & "#" & $groupTroopsTot)
-			For $i = 0 To UBound($TroopName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
-			Next
-			For $i = 0 To UBound($TroopDarkName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
-			Next
-			GUICtrlSetData($txtNumGobl, $ArmyCampTemp)
-
-		Case 3
-			_GUI_Value_STATE("SHOW", $groupTroopsArch & "#" & $groupTroopsTot)
-			_GUI_Value_STATE("SHOW", $groupTroopsBarB & "#" & $groupTroopsTot)
-			For $i = 0 To UBound($TroopName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
-			Next
-			For $i = 0 To UBound($TroopDarkName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
-			Next
-			GUICtrlSetData($txtNumBarb, Ceiling($ArmyCampTemp/2))
-			GUICtrlSetData($txtNumArch, Floor($ArmyCampTemp/2))
-		Case 4
-			_GUI_Value_STATE("SHOW", $groupTroopsArch & "#" & $groupTroopsTot)
-			_GUI_Value_STATE("SHOW", $groupTroopsBarB & "#" & $groupTroopsTot)
-			_GUI_Value_STATE("SHOW", $groupTroopsGobl & "#" & $groupTroopsTot)
-			_GUI_Value_STATE("SHOW", $groupTroopsGiant)
-			For $i = 0 To UBound($TroopName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
-			Next
-			For $i = 0 To UBound($TroopDarkName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
-			Next
-			$TotalTroopsTOtrain = 0
-			GUICtrlSetData($txtNumGiant, 8)
-			$TotalTroopsTOtrain = 8 * 5
-
-			GUICtrlSetData($txtNumBarb, Ceiling((($ArmyCampTemp - $TotalTroopsTOtrain)/100)*60))
-			GUICtrlSetData($txtNumArch, Floor((($ArmyCampTemp - $TotalTroopsTOtrain)/100)*30))
-			GUICtrlSetData($txtNumGobl, Ceiling((($ArmyCampTemp - $TotalTroopsTOtrain)/100)*10))
-
-		Case 5
-			$TotalTroopsTOtrain = 0
-			_GUI_Value_STATE("SHOW", $groupTroopsArch & "#" & $groupTroopsTot)
-			_GUI_Value_STATE("SHOW", $groupTroopsBarB & "#" & $groupTroopsTot)
-			_GUI_Value_STATE("SHOW", $groupTroopsGiant)
-			For $i = 0 To UBound($TroopName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
-			Next
-			For $i = 0 To UBound($TroopDarkName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
-			Next
-			$TotalTroopsTOtrain = 0
-			GUICtrlSetData($txtNumGiant, 12)
-			$TotalTroopsTOtrain = 12 * 5
-
-			GUICtrlSetData($txtNumBarb, Ceiling((($ArmyCampTemp - $TotalTroopsTOtrain)/100)*60))
-			GUICtrlSetData($txtNumArch, Floor((($ArmyCampTemp - $TotalTroopsTOtrain)/100)*40))
-
-		Case 6
-			_GUI_Value_STATE("SHOW", $groupTroopsArch & "#" & $groupTroopsTot)
-			_GUI_Value_STATE("SHOW", $groupTroopsBarB & "#" & $groupTroopsTot)
-			_GUI_Value_STATE("SHOW", $groupTroopsGobl & "#" & $groupTroopsTot)
-			For $i = 0 To UBound($TroopName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
-			Next
-			For $i = 0 To UBound($TroopDarkName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
-			Next
-			GUICtrlSetData($txtNumBarb, Ceiling((($ArmyCampTemp - $TotalTroopsTOtrain)/100)*60))
-			GUICtrlSetData($txtNumArch, Floor((($ArmyCampTemp - $TotalTroopsTOtrain)/100)*30))
-			GUICtrlSetData($txtNumGobl, Ceiling((($ArmyCampTemp - $TotalTroopsTOtrain)/100)*10))
-		Case 7
-			$TotalTroopsTOtrain = 0
-			_GUI_Value_STATE("SHOW", $groupTroopsArch & "#" & $groupTroopsTot)
-			_GUI_Value_STATE("SHOW", $groupTroopsBarB & "#" & $groupTroopsTot)
-			_GUI_Value_STATE("SHOW", $groupTroopsGobl & "#" & $groupTroopsTot)
-			_GUI_Value_STATE("SHOW", $groupTroopsGiant)
-			_GUI_Value_STATE("SHOW", $groupTroopsWall)
-			For $i = 0 To UBound($TroopName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
-			Next
-			For $i = 0 To UBound($TroopDarkName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
-			Next
-
-			$TotalTroopsTOtrain = 0
-
- 			GUICtrlSetData($txtNumGiant, 8)
- 			GUICtrlSetData($txtNumWall, 6)
-
- 			$TotalTroopsTOtrain += 8 * 5
- 			$TotalTroopsTOtrain += 6 * 2
-
-			GUICtrlSetData($txtNumBarb, Ceiling((($ArmyCampTemp - $TotalTroopsTOtrain)/100)*60))
-			GUICtrlSetData($txtNumArch, Floor((($ArmyCampTemp - $TotalTroopsTOtrain)/100)*30))
-			GUICtrlSetData($txtNumGobl, Ceiling((($ArmyCampTemp - $TotalTroopsTOtrain)/100)*10))
-
-		Case 8
-			;show all the barrack mode controls
-			ShowBarrackControls()
-			For $i = 0 To UBound($TroopName) - 1
-				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
-			Next
-		Case 9
-			_GUI_Value_STATE("SHOW", $groupTroops1)
-			_GUI_Value_STATE("SHOW", $groupTroops2)
-
-	EndSwitch
 	lblTotalCount()
 	SetRedrawBotWindow($bWasRedraw)
 EndFunc   ;==>SetComboTroopComp
-
-Func HideBarrackControls()
-	_GUI_Value_STATE("HIDE", $grpBarrackMode & "#" & $cmbBarrack1 & "#" & $cmbBarrack2 & "#" & $cmbBarrack3 & "#" & $cmbBarrack4)
-	_GUI_Value_STATE("HIDE", Eval("lblBarrack1") & "#" & Eval("lblBarrack2") & "#" & Eval("lblBarrack3") & "#" & Eval("lblBarrack4"))
-EndFunc   ;==>HideBarrackControls
-
-Func HideCustomControls()
-	For $i = 0 To UBound($TroopName) - 1
-		GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_HIDE)
-	Next
-	_GUI_Value_STATE("HIDE", $groupTroops1)
-	_GUI_Value_STATE("HIDE", $groupTroops2)
-EndFunc   ;==>HideCustomControls
-
-Func ShowBarrackControls()
-	_GUI_Value_STATE("SHOW", $grpBarrackMode & "#" & $cmbBarrack1 & "#" & $cmbBarrack2 & "#" & $cmbBarrack3 & "#" & $cmbBarrack4)
-	_GUI_Value_STATE("SHOW", Eval("lblBarrack1") & "#" & Eval("lblBarrack2") & "#" & Eval("lblBarrack3") & "#" & Eval("lblBarrack4"))
-EndFunc   ;==>ShowBarrackControls
 
 Func lblTotalCount()
 
@@ -255,13 +67,17 @@ Func lblTotalCount()
 	EndIf
 
 	For $i = 0 To UBound($TroopName) - 1
-		If GUICtrlRead(Eval("txtNum" & $TroopName[$i])) > 0 then
+		If GUICtrlRead(Eval("txtNum" & $TroopName[$i])) > 0 Then
 			$TotalTroopsTOtrain += GUICtrlRead(Eval("txtNum" & $TroopName[$i])) * $TroopHeight[$i]
+		Else
+			GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), 0)
 		EndIf
 	Next
 	For $i = 0 To UBound($TroopDarkName) - 1
-		If GUICtrlRead(Eval("txtNum" & $TroopDarkName[$i])) > 0 then
+		If GUICtrlRead(Eval("txtNum" & $TroopDarkName[$i])) > 0 Then
 			$TotalTroopsTOtrain += GUICtrlRead(Eval("txtNum" & $TroopDarkName[$i])) * $TroopDarkHeight[$i]
+		Else
+			GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), 0)
 		EndIf
 	Next
 
@@ -282,15 +98,15 @@ Func lblTotalCount()
 	Else
 		GUICtrlSetData($caltotaltroops, (Floor((GUICtrlRead($lblTotalCount) / $ArmyCampTemp) * 100) < 1 ? (GUICtrlRead($lblTotalCount) > 0 ? 1 : 0) : Floor((GUICtrlRead($lblTotalCount) / $ArmyCampTemp) * 100)))
 	EndIf
-	
+
 	If GUICtrlRead($chkTotalCampForced) = $GUI_CHECKED And GUICtrlRead($lblTotalCount) > GUICtrlRead($txtTotalCampForced) Then
 		GUICtrlSetState($lbltotalprogress, $GUI_SHOW)
-	ElseIf GUICtrlRead($lblTotalCount) > $ArmyCampTemp Then 
+	ElseIf GUICtrlRead($lblTotalCount) > $ArmyCampTemp Then
 		GUICtrlSetState($lbltotalprogress, $GUI_SHOW)
 	Else
 		GUICtrlSetState($lbltotalprogress, $GUI_HIDE)
 	EndIf
-	
+
 EndFunc   ;==>lblTotalCount
 
 Func lblTotalCountSpell()
@@ -416,9 +232,17 @@ Func chkCloseWaitEnable()
 	If GUICtrlRead($chkCloseWaitEnable) = $GUI_CHECKED Then
 		$ichkCloseWaitEnable = 1
 		_GUI_Value_STATE("ENABLE", $groupCloseWaitTrain)
+		GUICtrlSetState($lblCloseWaitingTroops, $GUI_ENABLE)
+		GUICtrlSetState($cmbMinimumTimeClose, $GUI_ENABLE)
+		GUICtrlSetState($lblSymbolWaiting, $GUI_ENABLE)
+		GUICtrlSetState($lblWaitingInMinutes, $GUI_ENABLE)
 	Else
 		$ichkCloseWaitEnable = 0
 		_GUI_Value_STATE("DISABLE", $groupCloseWaitTrain)
+		GUICtrlSetState($lblCloseWaitingTroops, $GUI_DISABLE)
+		GUICtrlSetState($cmbMinimumTimeClose, $GUI_DISABLE)
+		GUICtrlSetState($lblSymbolWaiting, $GUI_DISABLE)
+		GUICtrlSetState($lblWaitingInMinutes, $GUI_DISABLE)
 	EndIf
 	If GUICtrlRead($btnCloseWaitStopRandom) = $GUI_CHECKED Then
 		GUICtrlSetState($btnCloseWaitStop, BitOR($GUI_DISABLE, $GUI_UNCHECKED))
@@ -686,7 +510,7 @@ EndFunc   ;==>BtnDarkTroopOrderSet
 
 Func ChangeTroopTrainOrder()
 
-	If $debugsetlog = 1 Or $debugsetlogTrain = 1 Then Setlog("Begin Func ChangeTroopTrainOrder()", $COLOR_PURPLE) ; debug
+	If $debugsetlog = 1 Or $debugsetlogTrain = 1 Then Setlog("Begin Func ChangeTroopTrainOrder()", $COLOR_DEBUG) ;Debug
 
 	; reference for original troopgroup list
 	;$TroopGroup[10][3] = [["Arch", 1, 1], ["Giant", 2, 5], ["Wall", 4, 2], ["Barb", 0, 1], ["Gobl", 3, 1], ["Heal", 7, 14], ["Pekk", 9, 25], ["Ball", 5, 5], ["Wiza", 6, 4], ["Drag", 8, 20]]
@@ -696,7 +520,7 @@ Func ChangeTroopTrainOrder()
 	Local $iUpdateCount = 0
 
 	If UBound($aTroopOrderList) - 1 <> UBound($TroopGroup) Then ; safety check in case troops are added
-		If $debugsetlogTrain = 1 Then Setlog("UBound($aTroopOrderList) - 1: " & UBound($aTroopOrderList) - 1 & " = " & UBound($TroopGroup) & "UBound($TroopGroup)", $COLOR_PURPLE)
+		If $debugsetlogTrain = 1 Then Setlog("UBound($aTroopOrderList) - 1: " & UBound($aTroopOrderList) - 1 & " = " & UBound($TroopGroup) & "UBound($TroopGroup)", $COLOR_DEBUG) ;Debug
 		Setlog("Monkey ate bad banana, fix $aTroopOrderList & $TroopGroup arrays!", $COLOR_RED)
 		SetError(1, 0, False)
 		Return
@@ -710,10 +534,10 @@ Func ChangeTroopTrainOrder()
 	For $i = 0 To UBound($aTroopOrderList) - 2 ; Look for match of combobox text to troopgroup and create new train order
 		$sComboText = StringLeft(StringStripWS(GUICtrlRead($cmbTroopOrder[$i]), $STR_STRIPALL), 5)
 		For $j = 0 To UBound($DefaultTroopGroup) - 1
-			;Setlog("$i=" & $i & ", ComboSel=" & _GUICtrlComboBox_GetCurSel($cmbTroopOrder[$i]) & ", $DefaultTroopGroup[" & $j & "][0]: " & $DefaultTroopGroup[$j][0] & " = " & $sComboText& " :$sComboText" , $COLOR_PURPLE) ; debug
+			;Setlog("$i=" & $i & ", ComboSel=" & _GUICtrlComboBox_GetCurSel($cmbTroopOrder[$i]) & ", $DefaultTroopGroup[" & $j & "][0]: " & $DefaultTroopGroup[$j][0] & " = " & $sComboText& " :$sComboText" , $COLOR_DEBUG) ;Debug
 			If StringInStr($sComboText, $DefaultTroopGroup[$j][0], $STR_NOCASESENSEBASIC) = 0 Then ContinueLoop
 			$iUpdateCount += 1 ; keep count of troops updated to ensure success
-			;Setlog("$iUpdateCount: " & $iUpdateCount , $COLOR_PURPLE)  ; debug
+			;Setlog("$iUpdateCount: " & $iUpdateCount , $COLOR_DEBUG) ;Debug  ; debug
 			For $k = 0 To UBound($DefaultTroopGroup, 2) - 1 ; if true then assign next $i array element(s) in list to match in troopgroup
 				$NewTroopGroup[$i][$k] = $DefaultTroopGroup[$j][$k]
 			Next ; ; $NewTroopGroup[$i][$k] loop
@@ -746,14 +570,14 @@ EndFunc   ;==>ChangeTroopTrainOrder
 
 Func ChangeDarkTroopTrainOrder()
 
-	If $debugsetlog = 1 Or $debugsetlogTrain = 1 Then Setlog("Begin Func ChangeDarkTroopTrainOrder()", $COLOR_PURPLE) ; debug
+	If $debugsetlog = 1 Or $debugsetlogTrain = 1 Then Setlog("Begin Func ChangeDarkTroopTrainOrder()", $COLOR_DEBUG) ;Debug
 
 	Local $sComboText = ""
 	Local $NewTroopGroup[7][3]
 	Local $iUpdateCount = 0
 
 	If UBound($aDarkTroopOrderList) - 1 <> UBound($TroopGroupDark) Then ; safety check in case troops are added
-		If $debugsetlogTrain = 1 Then Setlog("UBound($aDarkTroopOrderList) - 1: " & UBound($aDarkTroopOrderList) - 1 & " = " & UBound($TroopGroupDark) & "UBound($TroopGroupDark)", $COLOR_PURPLE)
+		If $debugsetlogTrain = 1 Then Setlog("UBound($aDarkTroopOrderList) - 1: " & UBound($aDarkTroopOrderList) - 1 & " = " & UBound($TroopGroupDark) & "UBound($TroopGroupDark)", $COLOR_DEBUG) ;Debug
 		Setlog("Monkey ate bad banana, fix $aDarkTroopOrderList & $TroopGroupDark arrays!", $COLOR_RED)
 		SetError(1, 0, False)
 		Return
@@ -767,10 +591,10 @@ Func ChangeDarkTroopTrainOrder()
 	For $i = 0 To UBound($aDarkTroopOrderList) - 2 ; Look for match of combobox text to troopgroup and create new train order
 		$sComboText = StringLeft(StringStripWS(GUICtrlRead($cmbDarkTroopOrder[$i]), $STR_STRIPALL), 5)
 		For $j = 0 To UBound($DefaultTroopGroupDark) - 1
-			;Setlog("$i=" & $i & ", ComboSel=" & _GUICtrlComboBox_GetCurSel($cmbDarkTroopOrder[$i]) & ", $DefaultTroopGroupDark[" & $j & "][0]: " & StringLeft($DefaultTroopGroupDark[$j][0], 3) & " = " & $sComboText& " :$sComboText" , $COLOR_PURPLE) ; debug
+			;Setlog("$i=" & $i & ", ComboSel=" & _GUICtrlComboBox_GetCurSel($cmbDarkTroopOrder[$i]) & ", $DefaultTroopGroupDark[" & $j & "][0]: " & StringLeft($DefaultTroopGroupDark[$j][0], 3) & " = " & $sComboText& " :$sComboText" , $COLOR_DEBUG) ;Debug
 			If StringInStr($sComboText, StringLeft($DefaultTroopGroupDark[$j][0],3), $STR_NOCASESENSEBASIC) = 0 Then ContinueLoop
 			$iUpdateCount += 1 ; keep count of troops updated to ensure success
-			;Setlog("$iUpdateCount: " & $iUpdateCount , $COLOR_PURPLE)  ; debug
+			;Setlog("$iUpdateCount: " & $iUpdateCount , $COLOR_DEBUG) ;Debug  ; debug
 			For $k = 0 To UBound($DefaultTroopGroupDark, 2) - 1 ; if true then assign next $i array element(s) in list to match in troopgroup
 				$NewTroopGroup[$i][$k] = $DefaultTroopGroupDark[$j][$k]
 			Next ; ; $NewTroopGroupDark[$i][$k] loop
@@ -838,21 +662,61 @@ EndFunc   ;==>SetDefaultTroopGroupDark
 Func IsUseCustomTroopOrder()
 	For $i = 0 To UBound($aTroopOrderList) - 2 ; Check if custom train order has been used to select log message
 		If $icmbTroopOrder[$i] = -1 Then
-			If $debugsetlogTrain = 1 Then Setlog("Custom train order not used...", $COLOR_PURPLE) ; debug
+			If $debugsetlogTrain = 1 Then Setlog("Custom train order not used...", $COLOR_DEBUG) ;Debug
 			Return False
 		EndIf
 	Next
-	If $debugsetlogTrain = 1 Then Setlog("Custom train order used...", $COLOR_PURPLE) ; debug
+	If $debugsetlogTrain = 1 Then Setlog("Custom train order used...", $COLOR_DEBUG) ;Debug
 	Return True
 EndFunc   ;==>IsUseCustomTroopOrder
 
 Func IsUseCustomDarkTroopOrder()
 	For $i = 0 To UBound($aDarkTroopOrderList) - 2 ; Check if custom train order has been used to select log message
 		If $icmbDarkTroopOrder[$i] = -1 Then
-			If $debugsetlogTrain = 1 Then Setlog("Custom dark train order not used...", $COLOR_PURPLE) ; debug
+			If $debugsetlogTrain = 1 Then Setlog("Custom dark train order not used...", $COLOR_DEBUG) ;Debug
 			Return False
 		EndIf
 	Next
-	If $debugsetlogTrain = 1 Then Setlog("Custom dark train order used...", $COLOR_PURPLE) ; debug
+	If $debugsetlogTrain = 1 Then Setlog("Custom dark train order used...", $COLOR_DEBUG) ;Debug
 	Return True
 EndFunc   ;==>IsUseCustomDarkTroopOrder
+
+;==============================================================
+; SmartZap - Added by NTS team
+;==============================================================
+Func chkSmartLightSpell()
+  If GUICtrlRead($chkSmartLightSpell) = $GUI_CHECKED Then
+    GUICtrlSetState($chkSmartZapDB, $GUI_ENABLE)
+    GUICtrlSetState($chkSmartZapSaveHeroes, $GUI_ENABLE)
+    GUICtrlSetState($txtMinDark, $GUI_ENABLE)
+	 $ichkSmartZap = 1
+  Else
+    GUICtrlSetState($chkSmartZapDB, $GUI_DISABLE)
+    GUICtrlSetState($chkSmartZapSaveHeroes, $GUI_DISABLE)
+    GUICtrlSetState($txtMinDark, $GUI_DISABLE)
+    $ichkSmartZap = 0
+  EndIf
+EndFunc   ;==>chkSmartLightSpell
+
+Func chkSmartZapDB()
+    If GUICtrlRead($chkSmartZapDB) = $GUI_CHECKED Then
+        $ichkSmartZapDB = 1
+    Else
+        $ichkSmartZapDB = 0
+    EndIf
+EndFunc   ;==>chkSmartZapDB
+
+Func chkSmartZapSaveHeroes()
+    If GUICtrlRead($chkSmartZapSaveHeroes) = $GUI_CHECKED Then
+        $ichkSmartZapSaveHeroes = 1
+    Else
+        $ichkSmartZapSaveHeroes = 0
+    EndIf
+EndFunc   ;==>chkSmartZapSaveHeroes
+
+Func txtMinDark()
+	$itxtMinDE = GUICtrlRead($txtMinDark)
+EndFunc   ;==>txtMinDark
+;==========================END=================================
+; =========== SmartZap - Added by NTS team
+;==============================================================

@@ -235,6 +235,15 @@ Func chkdebugOCRDonate()
 	SetDebugLog("chkdebugOCRDonate " & ($debugOCRdonate = 1 ? "enabled" : "disabled"))
 EndFunc   ;==>chkdebugOCRDonate
 
+Func chkdebugDeadBaseImage()
+	If GUICtrlRead($chkdebugDeadBaseImage) = $GUI_CHECKED Then
+		$debugDeadBaseImage = 1
+	Else
+		$debugDeadBaseImage = 0
+	EndIf
+	SetDebugLog("chkdebugDeadBaseImage " & ($debugDeadBaseImage = 1 ? "enabled" : "disabled"))
+EndFunc   ;==>chkdebugOCRDonate
+
 Func btnTestTrain()
 	Local $currentOCR = $debugOcr
 	Local $currentRunState = $RunState
@@ -275,7 +284,7 @@ Func btnTestDonateCC()
 	If IsArray($aDonationWindow) Then
 		$DonationWindowY = $aDonationWindow[1]
 		If _Sleep(250) Then Return
-		Setlog("$DonationWindowY: " & $DonationWindowY, $COLOR_PURPLE)
+		Setlog("$DonationWindowY: " & $DonationWindowY, $COLOR_DEBUG) ;Debug
 	Else
 		SetLog("Could not find the Donate Window :(", $COLOR_RED)
 		Return False
@@ -307,7 +316,7 @@ Func btnTestAttackBar()
 
 	_CaptureRegion2(0, 571 + $bottomOffsetY, 859, 671 + $bottomOffsetY)
 	Local $result = DllCall($hFuncLib, "str", "searchIdentifyTroop", "ptr", $hHBitmap2)
-	Setlog("DLL Troopsbar list: " & $result[0], $COLOR_PURPLE)
+	Setlog("DLL Troopsbar list: " & $result[0], $COLOR_DEBUG) ;Debug
 	Local $aTroopDataList = StringSplit($result[0], "|")
 	Local $aTemp[12][3]
 	If $result[0] <> "" Then

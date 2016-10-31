@@ -27,7 +27,7 @@ Func CheckDisplay()
 	If $iDPIRatio <> 1 Then
 		ShowDPIHelp($iDPIRatio * 100)
 	Else
-		If $Debugsetlog = 1 Then SetLog(_PadStringCenter("  Display DPI setting = " & $iDPIRatio & "  ", 53, "+"), $COLOR_BLUE)
+		If $Debugsetlog = 1 Then SetLog(_PadStringCenter("  Display DPI setting = " & $iDPIRatio & "  ", 53, "+"), $COLOR_DEBUG) ;Debug
 		ConsoleWrite('DPI= ' & $iDPIRatio & @CRLF)
 		$bDisplayDPI = True ; DPI OK
 	EndIf
@@ -63,7 +63,7 @@ Func CheckDisplay()
 					Setlog(" ")
 				Else
 					ConsoleWrite("Display Check Pass!" & @CRLF)
-					If $Debugsetlog = 1 Then SetLog(_PadStringCenter(" Display size= " & $sBSDisplaySize & " ", 50, "+"), $COLOR_Blue)
+					If $Debugsetlog = 1 Then SetLog(_PadStringCenter(" Display size= " & $sBSDisplaySize & " ", 50, "+"), $COLOR_DEBUG) ;Debug
 					ExitLoop
 				EndIf
 			EndIf

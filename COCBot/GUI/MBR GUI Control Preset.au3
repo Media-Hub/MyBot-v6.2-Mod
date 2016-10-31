@@ -135,16 +135,6 @@ Func MakeSavePresetMessage()
 
 	If $iChkTrophyRange = 1 Then $message &= "TROPHIES RANGE: " & $itxtdropTrophy & " - " & $itxtMaxTrophy & @CRLF & @CRLF
 	$message &= "TRAIN ARMY SETTINGS:" & @CRLF
-	If $iCmbTroopComp = 8 Then
-		;$message &="- Elixir Troops: Barracks" & @CRLF
-		$message &= "- Barracks: "
-		Local $troopelixirname = StringSplit($sTxtElixirTroops, "|", 2)
-		For $i = 1 To 4
-			$message &= $troopelixirname[$barrackTroop[$i - 1]]
-			If $i < 4 Then $message &= ", "
-		Next
-		$message &= @CRLF
-	Else
 		$message &= "- Elixir Troops: Custom" & @CRLF
 		For $i = 0 To UBound($TroopName) - 1
 			If Eval($TroopName[$i] & "Comp") > 0 Then
@@ -154,28 +144,6 @@ Func MakeSavePresetMessage()
 			EndIf
 		Next
 		$message &= @CRLF
-	EndIf
-	Switch $icmbDarkTroopComp
-		Case "0"
-			$message &= "- Dark Elixir Troops: Barracks: "
-			$message &= (($darkBarrackTroop[0] < UBound($darkBarrackTroop)) ? ($TroopDarkName[$darkBarrackTroop[0]]) : ("None"))
-			$message &= "," & (($darkBarrackTroop[1] < UBound($darkBarrackTroop)) ? ($TroopDarkName[$darkBarrackTroop[1]]) : ("None"))
-			$message &= @CRLF
-		Case "1"
-			$message &= "- Dark Elixir Troops: Custom" & @CRLF
-			Local $troopDarkelixirname = StringSplit($sTxtMinions & "|" & $sTxtHogRiders & "|" & $sTxtValkyries & "|" & $sTxtGolems & "|" & $sTxtWitches & "|" & $sTxtLavaHounds & "|" & $sTxtNone, "|", 2)
-			For $i = 0 To UBound($TroopDarkName) - 1
-				;$Message &= $TroopDarkName[$i] & "£ " & Eval( $TroopDarkName[$i] & "Comp")
-				If Eval($TroopDarkName[$i] & "Comp") > 0 Then
-					$message &= "  " & $TroopDarkName[$i] & " " & Eval($TroopDarkName[$i] & "Comp")
-					If Mod($i + 1, 4) = 0 Then $message &= @CRLF
-				EndIf
-			Next
-			$message &= @CRLF
-
-		Case "2"
-			$message &= "- Dark Elixir Troops: None" & @CRLF
-	EndSwitch
 
 	$message &= "SEARCH SETTINGS:" & @CRLF
 	For $i = $DB To $TS

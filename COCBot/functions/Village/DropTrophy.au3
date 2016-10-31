@@ -16,35 +16,41 @@
 Func DropTrophy()
 
 	If $iChkTrophyRange = 1 Then
-		If $DebugSetlog = 1 Then SetLog("Drop Trophy START", $COLOR_PURPLE)
+		If $DebugSetlog = 1 Then SetLog("Drop Trophy START", $COLOR_DEBUG) ;Debug
 
 		$iTrophyCurrent = getTrophyMainScreen($aTrophies[0], $aTrophies[1]) ; get OCR to read current Village Trophies
-		If $DebugSetlog = 1 Then SetLog("Current Trophy Count: " & $iTrophyCurrent, $COLOR_PURPLE)
+		If $DebugSetlog = 1 Then SetLog("Current Trophy Count: " & $iTrophyCurrent, $COLOR_DEBUG) ;Debug
 		If Number($iTrophyCurrent) <= Number($iTxtMaxTrophy) Then Return ; exit on trophy count to avoid other checks
 
 		; Check if proper troop types avail during last checkarmycamp(), no need to call separately since droptrophy checked often
 		Local $bHaveTroops = False
+#Cs
 		For $i = 0 To UBound($aDTtroopsToBeUsed, 1) - 1
 			If $aDTtroopsToBeUsed[$i][1] > 0 Then
 				$bDisableDropTrophy = False
 				$bHaveTroops = True
 				If $DebugSetlog = 1 Then
-					SetLog("Drop Trophy Found " & StringFormat("%3s", $aDTtroopsToBeUsed[$i][1]) & " " & $aDTtroopsToBeUsed[$i][0], $COLOR_PURPLE)
+					SetLog("Drop Trophy Found " & StringFormat("%3s", $aDTtroopsToBeUsed[$i][1]) & " " & $aDTtroopsToBeUsed[$i][0], $COLOR_DEBUG) ;Debug
 					ContinueLoop ; display all troop counts if debug flag set
 				Else
 					ExitLoop ; Finding 1 troop type is enough to use trophy drop, stop checking rest when no debug flag
 				EndIf
 			EndIf
 		Next
+#Ce
 		; if heroes enabled, check them and reset drop trophy disable
 		If $iChkTrophyHeroes = 1 And $iHeroAvailable > 0 Then
-			If $DebugSetlog = 1 Then SetLog("Drop Trophy Found Hero BK|AQ|GW: " & BitOR($iHeroAvailable, $HERO_KING) & "|" & BitOR($iHeroAvailable, $HERO_QUEEN) & "|" & BitOR($iHeroAvailable, $HERO_WARDEN), $COLOR_PURPLE)
+			If $DebugSetlog = 1 Then SetLog("Drop Trophy Found Hero BK|AQ|GW: " & BitOR($iHeroAvailable, $HERO_KING) & "|" & BitOR($iHeroAvailable, $HERO_QUEEN) & "|" & BitOR($iHeroAvailable, $HERO_WARDEN), $COLOR_DEBUG) ;Debug
 			$bDisableDropTrophy = False
 			$bHaveTroops = True
 		EndIf
-		If $bDisableDropTrophy = True Or $bHaveTroops = False Then ; troops available?
-			Setlog("Drop Trophy temporarily disabled, missing proper troop type", $COLOR_RED)
-			If $DebugSetlog = 1 Then SetLog("Drop Trophy END: No troops in $aDTtroopsToBeUsed array", $COLOR_PURPLE)
+		If $iChkTrophyHeroes = 0 Then
+			Setlog("Drop Trophy disabled, Your not use heroes to drop trophies!!", $COLOR_RED)
+			Return
+		ElseIf $iChkTrophyHeroes = 1 And $iHeroAvailable < 1 Then ; troops available? to => heroes available?
+			;Setlog("Drop Trophy temporarily disabled, missing proper troop type", $COLOR_RED)
+			Setlog("Drop Trophy temporarily disabled, heroes not available", $COLOR_RED)
+			If $DebugSetlog = 1 Then SetLog("Drop Trophy END: No troops in $aDTtroopsToBeUsed array", $COLOR_DEBUG) ;Debug
 			Return
 		EndIf
 
@@ -55,7 +61,7 @@ Func DropTrophy()
 		Local Const $iWaitTime = 3 ; wait time for base recheck during long drop times in minutes (3 minutes ~5-10 drop attacks)
 		Local $iDateCalc, $sWaitToDate
 		$sWaitToDate = _DateAdd('n', $iWaitTime, _NowCalc()) ; find delay time for checkbasequick
-		If $DebugSetlog = 1 Then SetLog("ChkBaseQuick delay time= " & $sWaitToDate & " Now= " & _NowCalc() & " Diff= " & _DateDiff('s', _NowCalc(), $sWaitToDate), $COLOR_PURPLE)
+		If $DebugSetlog = 1 Then SetLog("ChkBaseQuick delay time= " & $sWaitToDate & " Now= " & _NowCalc() & " Diff= " & _DateDiff('s', _NowCalc(), $sWaitToDate), $COLOR_DEBUG) ;Debug
 
 		While Number($iTrophyCurrent) > Number($iTxtMaxTrophyNeedCheck)
 			$iTrophyCurrent = getTrophyMainScreen($aTrophies[0], $aTrophies[1])
@@ -65,13 +71,13 @@ Func DropTrophy()
 					Case 1 ; If attack dead bases during trophy drop is enabled then make sure we have enough army troops
 						If ($CurCamp <= ($TotalCamp * $DTArmyPercent)) Then ; check if current troops above setting
 							SetLog("Drop Trophy is waiting for " & $itxtDTArmyMin & "% full army to also attack Deadbases.", $COLOR_ORANGE)
-							If $DebugSetlog = 1 Then SetLog("Drop Trophy END: Drop Trophy + Dead Base skipped, army < " & $itxtDTArmyMin & "%.", $COLOR_PURPLE)
+							If $DebugSetlog = 1 Then SetLog("Drop Trophy END: Drop Trophy + Dead Base skipped, army < " & $itxtDTArmyMin & "%.", $COLOR_DEBUG) ;Debug
 							ExitLoop ; no troops then cycle again
 						EndIf
 					Case 0 ; no deadbase attacks enabled, then only 1 giant or hero needed to enable drop trophy to work
 						If ($CurCamp < 5) And ($iChkTrophyHeroes = 1 And $iHeroAvailable = $HERO_NOHERO) Then
 							SetLog("No troops available to use on Drop Trophy", $COLOR_RED)
-							If $DebugSetlog = 1 Then SetLog("Drop Trophy END: Drop Trophy skipped, no army.", $COLOR_PURPLE)
+							If $DebugSetlog = 1 Then SetLog("Drop Trophy END: Drop Trophy skipped, no army.", $COLOR_DEBUG) ;Debug
 							ExitLoop ; no troops then cycle again
 						EndIf
 				EndSwitch
@@ -113,7 +119,7 @@ Func DropTrophy()
 							$Is_ClientSyncError = False ; reset OOS flag to get new new army
 							$Is_SearchLimit = False ; reset search limit flag to get new new army
 							$Restart = True ; Set restart flag after dead base attack to ensure troops are trained
-							If $DebugSetlog = 1 Then SetLog("Drop Trophy END: Dead Base was attacked, reset army and return to Village.", $COLOR_PURPLE)
+							If $DebugSetlog = 1 Then SetLog("Drop Trophy END: Dead Base was attacked, reset army and return to Village.", $COLOR_DEBUG) ;Debug
 							ExitLoop ; or Return, Will end function, no troops left to drop Trophies, will need to Train new Troops first
 						Else
 							SetLog("      " & "Not a Dead Base, resuming Drop Trophy.", $COLOR_BLACK, "Lucida Console", 7.5)
@@ -149,7 +155,7 @@ Func DropTrophy()
 
 					$aRandomEdge = $Edges[Round(Random(0, 3))]
 					$iRandomXY = Round(Random(0, 4))
-					If $DebugSetlog = 1 Then Setlog("Hero Loc = " & $iRandomXY & ", X:Y= " & $aRandomEdge[$iRandomXY][0] & "|" & $aRandomEdge[$iRandomXY][1], $COLOR_PURPLE)
+					If $DebugSetlog = 1 Then Setlog("Hero Loc = " & $iRandomXY & ", X:Y= " & $aRandomEdge[$iRandomXY][0] & "|" & $aRandomEdge[$iRandomXY][1], $COLOR_DEBUG) ;Debug
 
 					If $Warden <> -1 Then
 						SetTrophyLoss()
@@ -189,7 +195,7 @@ Func DropTrophy()
 				If ($Queen = -1 And $King = -1 And $Warden = -1) Or $iChkTrophyHeroes = 0 Then
 					$aRandomEdge = $Edges[Round(Random(0, 3))]
 					$iRandomXY = Round(Random(0, 4))
-					If $DebugSetlog = 1 Then Setlog("Troop Loc = " & $iRandomXY & ", X:Y= " & $aRandomEdge[$iRandomXY][0] & "|" & $aRandomEdge[$iRandomXY][1], $COLOR_PURPLE)
+					If $DebugSetlog = 1 Then Setlog("Troop Loc = " & $iRandomXY & ", X:Y= " & $aRandomEdge[$iRandomXY][0] & "|" & $aRandomEdge[$iRandomXY][1], $COLOR_DEBUG) ;Debug
 					Select
 						Case $atkTroops[0][0] = $eBarb
 							Click($aRandomEdge[$iRandomXY][0], $aRandomEdge[$iRandomXY][1], 1, 0, "#0181") ;Drop one troop
@@ -233,20 +239,20 @@ Func DropTrophy()
 					If _Sleep($iDelayDropTrophy1) Then ExitLoop
 				EndIf
 				$iDateCalc = _DateDiff('s', _NowCalc(), $sWaitToDate)
-				If $DebugSetlog = 1 Then SetLog("ChkBaseQuick delay= " & $sWaitToDate & " Now= " & _NowCalc() & " Diff= " & $iDateCalc, $COLOR_PURPLE)
+				If $DebugSetlog = 1 Then SetLog("ChkBaseQuick delay= " & $sWaitToDate & " Now= " & _NowCalc() & " Diff= " & $iDateCalc, $COLOR_DEBUG) ;Debug
 				If $iDateCalc <= 0 Then ; check length of time in drop trophy
 					Setlog(" Checking base during long drop cycle", $COLOR_BLUE)
 					CheckBaseQuick() ; check base during long drop times
 					$sWaitToDate = _DateAdd('n', $iWaitTime, _NowCalc()) ; create new delay date/time
-					If $DebugSetlog = 1 Then SetLog("ChkBaseQuick new delay time= " & $sWaitToDate, $COLOR_PURPLE)
+					If $DebugSetlog = 1 Then SetLog("ChkBaseQuick new delay time= " & $sWaitToDate, $COLOR_DEBUG) ;Debug
 				EndIf
 			Else
 				SetLog("Trophy Drop Complete", $COLOR_BLUE)
 			EndIf
 		WEnd
-		If $DebugSetlog = 1 Then SetLog("Drop Trophy END", $COLOR_PURPLE)
+		If $DebugSetlog = 1 Then SetLog("Drop Trophy END", $COLOR_DEBUG) ;Debug
 	Else
-		If $DebugSetlog = 1 Then SetLog("Drop Trophy SKIP", $COLOR_PURPLE)
+		If $DebugSetlog = 1 Then SetLog("Drop Trophy SKIP", $COLOR_DEBUG) ;Debug
 	EndIf
 
 EndFunc   ;==>DropTrophy
@@ -258,7 +264,7 @@ Func SetTrophyLoss()
 	Else
 		$sTrophyLoss = getTrophyLossAttackScreen(48, 184)
 	EndIf
-	Setlog(" Trophy loss = " & $sTrophyLoss, $COLOR_PURPLE) ; record trophy loss
+	Setlog(" Trophy loss = " & $sTrophyLoss, $COLOR_DEBUG) ;Debug ; record trophy loss
 	$iDroppedTrophyCount -= Number($sTrophyLoss)
 	UpdateStats()
 EndFunc   ;==>SetTrophyLoss

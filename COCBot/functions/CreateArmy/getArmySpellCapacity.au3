@@ -14,7 +14,7 @@
 ; ===============================================================================================================================
 Func getArmySpellCapacity($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 
-	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SETLOG("Begin getArmySpellCapacity:", $COLOR_PURPLE)
+	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SETLOG("Begin getArmySpellCapacity:", $COLOR_DEBUG) ;Debug
 
 	If $bOpenArmyWindow = False And IsTrainPage() = False Then ; check for train page
 		SetError(1)
@@ -45,7 +45,7 @@ Func getArmySpellCapacity($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 			If _Sleep($iDelaycheckArmyCamp5) Then Return ; Wait 250ms
 		WEnd
 
-		If $debugsetlogTrain = 1 Then Setlog("$sSpellsInfo = " & $sSpellsInfo, $COLOR_PURPLE)
+		If $debugsetlogTrain = 1 Then Setlog("$sSpellsInfo = " & $sSpellsInfo, $COLOR_DEBUG) ;Debug
 		$aGetSFactorySize = StringSplit($sSpellsInfo, "#") ; split the existen Spells from the total Spell factory capacity
 
 		If IsArray($aGetSFactorySize) Then

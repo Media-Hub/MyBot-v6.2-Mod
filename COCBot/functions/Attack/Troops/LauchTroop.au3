@@ -48,7 +48,7 @@ Func LauchTroop($troopKind, $nbSides, $waveNb, $maxWaveNb, $slotsPerEdge = 0)
 EndFunc   ;==>LauchTroop
 
 Func LaunchTroop2($listInfoDeploy, $CC, $King, $Queen, $Warden)
-	If $debugSetlog = 1 Then SetLog("LaunchTroop2 with CC " & $CC & ", K " & $King & ", Q " & $Queen & ", W " & $Warden, $COLOR_PURPLE)
+	If $debugSetlog = 1 Then SetLog("LaunchTroop2 with CC " & $CC & ", K " & $King & ", Q " & $Queen & ", W " & $Warden, $COLOR_DEBUG) ;Debug
 	Local $listListInfoDeployTroopPixel[0]
 	Local $pixelRandomDrop[2]
 	Local $pixelRandomDropcc[2]
@@ -63,7 +63,7 @@ Func LaunchTroop2($listInfoDeploy, $CC, $King, $Queen, $Warden)
 			$waveNb = $listInfoDeploy[$i][2]
 			$maxWaveNb = $listInfoDeploy[$i][3]
 			$slotsPerEdge = $listInfoDeploy[$i][4]
-			If $debugSetlog = 1 Then SetLog("**ListInfoDeploy row " & $i & ": USE " & $troopKind & " SIDES " & $nbSides & " WAVE " & $waveNb & " XWAVE " & $maxWaveNb & " SLOTXEDGE " & $slotsPerEdge, $COLOR_PURPLE)
+			If $debugSetlog = 1 Then SetLog("**ListInfoDeploy row " & $i & ": USE " & $troopKind & " SIDES " & $nbSides & " WAVE " & $waveNb & " XWAVE " & $maxWaveNb & " SLOTXEDGE " & $slotsPerEdge, $COLOR_DEBUG) ;Debug
 			If (IsNumber($troopKind)) Then
 				For $j = 0 To UBound($atkTroops) - 1 ; identify the position of this kind of troop
 					If $atkTroops[$j][0] = $troopKind Then
@@ -109,20 +109,20 @@ Func LaunchTroop2($listInfoDeploy, $CC, $King, $Queen, $Warden)
 						If $DeployHeroesPosition[0] <> -1 Then
 							$pixelRandomDrop[0] = $DeployHeroesPosition[0]
 							$pixelRandomDrop[1] = $DeployHeroesPosition[1]
-							If $debugSetlog = 1 Then SetLog("Deploy Heroes $DeployHeroesPosition")
+							If $debugSetlog = 1 Then SetLog("Deploy Heroes $DeployHeroesPosition", $COLOR_DEBUG) ;Debug
 						Else
 							$pixelRandomDrop[0] = $BottomRight[2][0]
 							$pixelRandomDrop[1] = $BottomRight[2][1] ;
-							If $debugSetlog = 1 Then SetLog("Deploy Heroes $BottomRight")
+							If $debugSetlog = 1 Then SetLog("Deploy Heroes $BottomRight", $COLOR_DEBUG) ;Debug
 						EndIf
 						If $DeployCCPosition[0] <> -1 Then
 							$pixelRandomDropcc[0] = $DeployCCPosition[0]
 							$pixelRandomDropcc[1] = $DeployCCPosition[1]
-							If $debugSetlog = 1 Then SetLog("Deploy CC $DeployHeroesPosition")
+							If $debugSetlog = 1 Then SetLog("Deploy CC $DeployHeroesPosition", $COLOR_DEBUG) ;Debug
 						Else
 							$pixelRandomDropcc[0] = $BottomRight[2][0]
 							$pixelRandomDropcc[1] = $BottomRight[2][1] ;
-							If $debugSetlog = 1 Then SetLog("Deploy CC $BottomRight")
+							If $debugSetlog = 1 Then SetLog("Deploy CC $BottomRight", $COLOR_DEBUG) ;Debug
 						EndIf
 
 						If ($infoPixelDropTroop[0] = "CC") Then
@@ -175,20 +175,20 @@ Func LaunchTroop2($listInfoDeploy, $CC, $King, $Queen, $Warden)
 									If $DeployHeroesPosition[0] <> -1 Then
 										$pixelRandomDrop[0] = $DeployHeroesPosition[0]
 										$pixelRandomDrop[1] = $DeployHeroesPosition[1]
-										If $debugSetlog = 1 Then SetLog("Deploy Heroes $DeployHeroesPosition")
+										If $debugSetlog = 1 Then SetLog("Deploy Heroes $DeployHeroesPosition", $COLOR_DEBUG) ;Debug
 									Else
 										$pixelRandomDrop[0] = $BottomRight[2][0]
 										$pixelRandomDrop[1] = $BottomRight[2][1] ;
-										If $debugSetlog = 1 Then SetLog("Deploy Heroes $BottomRight")
+										If $debugSetlog = 1 Then SetLog("Deploy Heroes $BottomRight", $COLOR_DEBUG) ;Debug
 									EndIf
 									If $DeployCCPosition[0] <> -1 Then
 										$pixelRandomDropcc[0] = $DeployCCPosition[0]
 										$pixelRandomDropcc[1] = $DeployCCPosition[1]
-										If $debugSetlog = 1 Then SetLog("Deploy CC $DeployHeroesPosition")
+										If $debugSetlog = 1 Then SetLog("Deploy CC $DeployHeroesPosition", $COLOR_DEBUG) ;Debug
 									Else
 										$pixelRandomDropcc[0] = $BottomRight[2][0]
 										$pixelRandomDropcc[1] = $BottomRight[2][1] ;
-										If $debugSetlog = 1 Then SetLog("Deploy CC $BottomRight")
+										If $debugSetlog = 1 Then SetLog("Deploy CC $BottomRight", $COLOR_DEBUG) ;Debug
 									EndIf
 
 									If ($isCCDropped = False And $infoTroopListArrPixel[0] = "CC") Then

@@ -5,7 +5,7 @@
 ; Parameters ....: $debug               - [optional]
 ; Return values .: None
 ; Author ........: Sardo (2016)
-; Modified ......: mikemikemikecoc (2016)
+; Modified ......: MR.ViPER (5-10-2016)
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2016
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......:
@@ -18,13 +18,6 @@ Func ParseAttackCSV($debug = False)
 	Global $ATTACKVECTOR_M, $ATTACKVECTOR_N, $ATTACKVECTOR_O, $ATTACKVECTOR_P, $ATTACKVECTOR_Q, $ATTACKVECTOR_R
 	Global $ATTACKVECTOR_S, $ATTACKVECTOR_T, $ATTACKVECTOR_U, $ATTACKVECTOR_V, $ATTACKVECTOR_W, $ATTACKVECTOR_X
 	Global $ATTACKVECTOR_Y, $ATTACKVECTOR_Z
-	
-	;AwesomeGamer CSV Mod
-	For $i = 0 to Ubound($atkTroops) - 1
-		$remainingTroops[$i][0] = $atkTroops[$i][0]
-		$remainingTroops[$i][1] = $atkTroops[$i][1]
-	Next
-	$TroopDropNumber = 0
 
 	Local $rownum = 0
 
@@ -35,13 +28,6 @@ Func ParseAttackCSV($debug = False)
 		Local $filename = $scmbABScriptName
 	EndIf
 	Setlog("execute " & $filename)
-
-	Local $speedText = $iCSVSpeeds[$isldSelectedCSVSpeed[$iMatchMode]] & "x"
-	If $iCSVSpeeds[$isldSelectedCSVSpeed[$iMatchMode]] = 1 Then 
-		$speedText = "Normal"
-	EndIf 
-
-	Setlog(" - at " & $speedText & " speed")
 
 	Local $f, $line, $acommand, $command
 	Local $value1, $value2, $value3, $value4, $value5, $value6, $value7, $value8, $value9
@@ -107,35 +93,7 @@ Func ParseAttackCSV($debug = False)
 								EndSwitch
 							EndIf
 							If CheckCsvValues("MAKE", 1, $value1) And CheckCsvValues("MAKE", 5, $value5) Then
-								;AwesomeGamer CSV Mod
-								If $value3 = "ALL" Then
-									Switch Eval($sidex)
-										Case "TOP-LEFT-DOWN"
-											Local $Vector = $PixelTopLeftDOWNDropLine
-										Case "TOP-LEFT-UP"
-											Local $Vector = $PixelTopLeftUPDropLine
-										Case "TOP-RIGHT-DOWN"
-											Local $Vector = $PixelTopRightDOWNDropLine
-										Case "TOP-RIGHT-UP"
-											Local $Vector = $PixelTopRightUPDropLine
-										Case "BOTTOM-LEFT-UP"
-											Local $Vector = $PixelBottomLeftUPDropLine
-										Case "BOTTOM-LEFT-DOWN"
-											Local $Vector = $PixelBottomLeftDOWNDropLine
-										Case "BOTTOM-RIGHT-UP"
-											Local $Vector = $PixelBottomRightUPDropLine
-										Case "BOTTOM-RIGHT-DOWN"
-											Local $Vector = $PixelBottomRightDOWNDropLine
-										Case Else
-									EndSwitch
-									Switch Eval($sidex) & "|" & $value5
-										Case "TOP-LEFT-DOWN|INT-EXT", "TOP-LEFT-UP|EXT-INT", "TOP-RIGHT-DOWN|EXT-INT", "TOP-RIGHT-UP|INT-EXT", "BOTTOM-LEFT-DOWN|EXT-INT", "BOTTOM-LEFT-UP|INT-EXT", "BOTTOM-RIGHT-DOWN|INT-EXT", "BOTTOM-RIGHT-UP|EXT-INT"
-											_ArrayReverse($Vector) ;reverse array
-									EndSwitch
-									Assign("ATTACKVECTOR_" & $value1, $Vector)
-								Else
 								Assign("ATTACKVECTOR_" & $value1, MakeDropPoints(Eval($sidex), $value3, $value4, $value5, $value6, $value7))
-								EndIf
 								For $i = 0 To UBound(Execute("$ATTACKVECTOR_" & $value1)) - 1
 									$pixel = Execute("$ATTACKVECTOR_" & $value1 & "[" & $i & "]")
 									debugAttackCSV($i & " - " & $pixel[0] & "," & $pixel[1])
@@ -151,21 +109,8 @@ Func ParseAttackCSV($debug = False)
 					Case "DROP"
 						KeepClicks()
 						;index...
-						Local $index1, $index2, $indexArray, $indexvect, $isIndexPercent
+						Local $index1, $index2, $indexArray, $indexvect
 						$indexvect = StringSplit($value2, "-", 2)
-						
-						;AwesomeGamer CSV Mod
-						If StringInStr($value2, "%") > 0 Then
-							$indexArray = 0
-							$isIndexPercent = 1
-							$index1 = Number(StringReplace($indexvect[0], "%", ""), 3)
-							If UBound($indexvect) > 1 Then
-								$index2 = Number(StringReplace($indexvect[1], "%", ""), 3)
-							Else
-								$index2 = $index1
-							EndIf
-						Else
-							$isIndexPercent = 0
 						If UBound($indexvect) > 1 Then
 							$indexArray = 0
 							If Int($indexvect[0]) > 0 And Int($indexvect[1]) > 0 Then
@@ -191,23 +136,9 @@ Func ParseAttackCSV($debug = False)
 								EndIf
 							EndIf
 						EndIf
-						EndIf
-						
 						;qty...
-						Local $qty1, $qty2, $qtyvect, $isQtyPercent
+						Local $qty1, $qty2, $qtyvect
 						$qtyvect = StringSplit($value3, "-", 2)
-						
-						;AwesomeGamer CSV Mod
-						If StringInStr($value3, "%") > 0 Then
-							$isQtyPercent = 1
-							$qty1 = Number(StringReplace($qtyvect[0], "%", ""), 3)
-							If UBound($qtyvect) > 1 Then
-								$qty2 = Number(StringReplace($qtyvect[1], "%", ""), 3)
-							Else
-								$qty2 = $qty1
-							EndIf
-						Else
-							$isQtyPercent = 0
 						If UBound($qtyvect) > 1 Then
 							If Int($qtyvect[0]) > 0 And Int($qtyvect[1]) > 0 Then
 								$qty1 = Int($qtyvect[0])
@@ -225,8 +156,6 @@ Func ParseAttackCSV($debug = False)
 								$qty2 = 1
 							EndIf
 						EndIf
-						EndIf
-						
 						;delay between points
 						Local $delaypoints1, $delaypoints2, $delaypointsvect
 						$delaypointsvect = StringSplit($value5, "-", 2)
@@ -275,7 +204,7 @@ Func ParseAttackCSV($debug = False)
 								$sleepdrop1 = Int($sleepdroppvect[0])
 								$sleepdrop2 = Int($sleepdroppvect[1])
 							Else
-								$sleepdrop1 = 1
+								$index1 = 1
 								$sleepdrop2 = 1
 							EndIf
 						Else
@@ -287,27 +216,105 @@ Func ParseAttackCSV($debug = False)
 								$sleepdrop2 = 1
 							EndIf
 						EndIf
-						;sleep time before drop
-						Local $sleepbeforedrop1, $sleepbeforedrop2, $sleepbeforedroppvect
-						$sleepbeforedroppvect = StringSplit($value8, "-", 2)
-						If UBound($sleepbeforedroppvect) > 1 Then
-							If Int($sleepbeforedroppvect[0]) > 0 And Int($sleepbeforedroppvect[1]) > 0 Then
-								$sleepbeforedrop1 = Int($sleepbeforedroppvect[0])
-								$sleepbeforedrop2 = Int($sleepbeforedroppvect[1])
+
+						If $value4 = "REMAIN" Then 		;drop remain troops
+							SetLog("dropRemain:  Dropping left over troops", $COLOR_BLUE)
+							IF PrepareAttack($iMatchMode, True) > 0 Then
+								For $ii = $eLava To $eBarb Step -1; lauch all remaining troops from last to first
+									LauchTroop($ii, 1, 0, 1)
+								Next
+							EndIf
+						Else
+							DropTroopFromINI($value1, $index1, $index2, $indexArray, $qty1, $qty2, $value4, $delaypoints1, $delaypoints2, $delaydrop1, $delaydrop2, $sleepdrop1, $sleepdrop2, $debug)
+						EndIf
+						ReleaseClicks($AndroidAdbClicksTroopDeploySize)
+						If _Sleep($iDelayRespond) Then ; check for pause/stop, close file before return
+							FileClose($f)
+							Return
+						EndIf
+					Case "DROPS"
+						KeepClicks()
+						;qty...
+						Local $qty1, $qty2, $qtyvect
+						$qtyvect = StringSplit($value3, "-", 2)
+						If UBound($qtyvect) > 1 Then
+							If Int($qtyvect[0]) > 0 And Int($qtyvect[1]) > 0 Then
+								$qty1 = Int($qtyvect[0])
+								$qty2 = Int($qtyvect[1])
 							Else
-								$sleepbeforedrop1 = 0
-								$sleepbeforedrop2 = 0
+								$index1 = 1
+								$qty2 = 1
 							EndIf
 						Else
 							If Int($value3) > 0 Then
-								$sleepbeforedrop1 = Int($value8)
-								$sleepbeforedrop2 = Int($value8)
+								$qty1 = Int($value3)
+								$qty2 = Int($value3)
 							Else
-								$sleepbeforedrop1 = 0
-								$sleepbeforedrop2 = 0
+								$qty1 = 1
+								$qty2 = 1
 							EndIf
 						EndIf
-						DropTroopFromINI($value1, $index1, $index2, $indexArray, $qty1, $qty2, $value4, $delaypoints1, $delaypoints2, $delaydrop1, $delaydrop2, $sleepdrop1, $sleepdrop2, $sleepbeforedrop1, $sleepbeforedrop2, $isQtyPercent, $isIndexPercent, $debug)
+						;delay between points
+						Local $delaypoints1, $delaypoints2, $delaypointsvect
+						$delaypointsvect = StringSplit($value5, "-", 2)
+						If UBound($delaypointsvect) > 1 Then
+							If Int($delaypointsvect[0]) > 0 And Int($delaypointsvect[1]) > 0 Then
+								$delaypoints1 = Int($delaypointsvect[0])
+								$delaypoints2 = Int($delaypointsvect[1])
+							Else
+								$delaypoints1 = 1
+								$delaypoints2 = 1
+							EndIf
+						Else
+							If Int($value3) > 0 Then
+								$delaypoints1 = Int($value5)
+								$delaypoints2 = Int($value5)
+							Else
+								$delaypoints1 = 1
+								$delaypoints2 = 1
+							EndIf
+						EndIf
+						;delay between  drops in same point
+						Local $delaydrop1, $delaydrop2, $delaydropvect
+						$delaydropvect = StringSplit($value6, "-", 2)
+						If UBound($delaydropvect) > 1 Then
+							If Int($delaydropvect[0]) > 0 And Int($delaydropvect[1]) > 0 Then
+								$delaydrop1 = Int($delaydropvect[0])
+								$delaydrop2 = Int($delaydropvect[1])
+							Else
+								$delaydrop1 = 1
+								$delaydrop2 = 1
+							EndIf
+						Else
+							If Int($value3) > 0 Then
+								$delaydrop1 = Int($value6)
+								$delaydrop2 = Int($value6)
+							Else
+								$delaydrop1 = 1
+								$delaydrop2 = 1
+							EndIf
+						EndIf
+						;sleep time after drop
+						Local $sleepdrop1, $sleepdrop2, $sleepdroppvect
+						$sleepdroppvect = StringSplit($value7, "-", 2)
+						If UBound($sleepdroppvect) > 1 Then
+							If Int($sleepdroppvect[0]) > 0 And Int($sleepdroppvect[1]) > 0 Then
+								$sleepdrop1 = Int($sleepdroppvect[0])
+								$sleepdrop2 = Int($sleepdroppvect[1])
+							Else
+								$index1 = 1
+								$sleepdrop2 = 1
+							EndIf
+						Else
+							If Int($value3) > 0 Then
+								$sleepdrop1 = Int($value7)
+								$sleepdrop2 = Int($value7)
+							Else
+								$sleepdrop1 = 1
+								$sleepdrop2 = 1
+							EndIf
+						EndIf
+						DropSpellFromINIOnDefense($value1, $value2, $qty1, $qty2, $value4, $delaypoints1, $delaypoints2, $delaydrop1, $delaydrop2, $sleepdrop1, $sleepdrop2, $debug)
 						ReleaseClicks($AndroidAdbClicksTroopDeploySize)
 						If _Sleep($iDelayRespond) Then ; check for pause/stop, close file before return
 							FileClose($f)
@@ -365,22 +372,22 @@ Func ParseAttackCSV($debug = False)
 								$DarkElixir = ""
 								$Trophies = getTrophyVillageSearch(48, 69 + 69)
 							EndIf
-							If $DebugSetLog = 1 Then SetLog("detected [G]: " & $Gold & " [E]: " & $Elixir & " [DE]: " & $DarkElixir, $COLOR_BLUE)
+							If $DebugSetLog = 1 Then SetLog("detected [G]: " & $Gold & " [E]: " & $Elixir & " [DE]: " & $DarkElixir, $COLOR_DEBUG) ;Debug
 							;EXIT IF RESOURCES = 0
 							If $ichkEndNoResources[$iMatchMode] = 1 And Number($Gold) = 0 And Number($Elixir) = 0 And Number($DarkElixir) = 0 Then
-								If $DebugSetLog = 1 Then Setlog("From Attackcsv: Gold & Elixir & DE = 0, end battle ", $COLOR_PURPLE)
+								If $DebugSetLog = 1 Then Setlog("From Attackcsv: Gold & Elixir & DE = 0, end battle ", $COLOR_DEBUG) ;Debug
 								$exitNoResources = 1
 								ExitLoop
 							EndIf
 							;CALCULATE TWO STARS REACH
 							If $ichkEndTwoStars[$iMatchMode] = 1 And _CheckPixel($aWonTwoStar, True) Then
-								If $DebugSetLog = 1 Then Setlog("From Attackcsv: Two Star Reach, exit", $COLOR_GREEN)
+								If $DebugSetLog = 1 Then Setlog("From Attackcsv: Two Star Reach, exit", $COLOR_DEBUG) ;Debug
 								$exitTwoStars = 1
 								ExitLoop
 							EndIf
 							;CALCULATE ONE STARS REACH
 							If $ichkEndOneStar[$iMatchMode] = 1 And _CheckPixel($aWonOneStar, True) Then
-								If $DebugSetLog = 1 Then Setlog("From Attackcsv: One Star Reach, exit", $COLOR_GREEN)
+								If $DebugSetLog = 1 Then Setlog("From Attackcsv: One Star Reach, exit", $COLOR_DEBUG) ;Debug
 								$exitOneStar = 1
 								ExitLoop
 							EndIf
@@ -398,31 +405,29 @@ Func ParseAttackCSV($debug = False)
 					Case "SIDE"
 						ReleaseClicks()
 						Setlog("Calculate main side... ")
-						;If StringUpper($value8) = "TOP-LEFT" Or StringUpper($value8) = "TOP-RIGHT" Or StringUpper($value8) = "BOTTOM-LEFT" Or StringUpper($value8) = "BOTTOM-RIGHT" Then
 						If StringUpper($value8) = "EAGLE" Then
 							Setlog("Forced side: " & StringUpper($value8))
-							Local $PixelEaglePos[2]
+							;Local $PixelEaglePos[2]
 							$hTimer = TimerInit()
 
 							Local $directory = @ScriptDir & "\images\WeakBase\Eagle"
 							Local $return = returnHighestLevelSingleMatch($directory)
 							Local $NotdetectedEagle = True
-								If $DebugSetLog = 1 Then Setlog(" »» Ubound ROW $return: " & UBound($return, $UBOUND_ROWS))
-								If $DebugSetLog = 1 Then Setlog(" »» Ubound COLUMNS $return: " & UBound($return, $UBOUND_COLUMNS))
-								If $DebugSetLog = 1 Then Setlog(" »» Ubound DIMENSIONS $return: " & UBound($return, $UBOUND_DIMENSIONS))
-
+							If $DebugSetLog = 1 Then Setlog(" »» Ubound ROW $return: " & UBound($return, $UBOUND_ROWS), $COLOR_DEBUG) ;Debug
+							If $DebugSetLog = 1 Then Setlog(" »» Ubound COLUMNS $return: " & UBound($return, $UBOUND_COLUMNS), $COLOR_DEBUG) ;Debug
+							If $DebugSetLog = 1 Then Setlog(" »» Ubound DIMENSIONS $return: " & UBound($return, $UBOUND_DIMENSIONS), $COLOR_DEBUG) ;Debug
 
 
 							If UBound($return) > 0 Then
-								If $DebugSetLog = 1 Then Setlog(" »» Image: " & $return[0])
-								If $DebugSetLog = 1 Then Setlog(" »» Build: " & $return[1])
-								If $DebugSetLog = 1 Then Setlog(" »» Level: " & $return[2])
-								local $EaglePosition = $return[5]
-								If $DebugSetLog = 1 Then Setlog(" »» $EaglePosition[0] X: " & $EaglePosition[0][0])
-								If $DebugSetLog = 1 Then Setlog(" »» $EaglePosition[1] Y: " & $EaglePosition[0][1])
-								If $DebugSetLog = 1 Then Setlog(" »» Ubound ROW $EaglePosition: " & UBound($EaglePosition, $UBOUND_ROWS))
-								If $DebugSetLog = 1 Then Setlog(" »» Ubound COLUMNS $EaglePosition: " & UBound($EaglePosition, $UBOUND_COLUMNS))
-								If $DebugSetLog = 1 Then Setlog(" »» Ubound DIMENSIONS $EaglePosition: " & UBound($EaglePosition, $UBOUND_DIMENSIONS))
+								If $DebugSetLog = 1 Then Setlog(" »» Image: " & $return[0], $COLOR_DEBUG) ;Debug
+								If $DebugSetLog = 1 Then Setlog(" »» Build: " & $return[1], $COLOR_DEBUG) ;Debug
+								If $DebugSetLog = 1 Then Setlog(" »» Level: " & $return[2], $COLOR_DEBUG) ;Debug
+								Local $EaglePosition = $return[5]
+								If $DebugSetLog = 1 Then Setlog(" »» $EaglePosition[0] X: " & $EaglePosition[0][0], $COLOR_DEBUG) ;Debug
+								If $DebugSetLog = 1 Then Setlog(" »» $EaglePosition[1] Y: " & $EaglePosition[0][1], $COLOR_DEBUG) ;Debug
+								If $DebugSetLog = 1 Then Setlog(" »» Ubound ROW $EaglePosition: " & UBound($EaglePosition, $UBOUND_ROWS), $COLOR_DEBUG) ;Debug
+								If $DebugSetLog = 1 Then Setlog(" »» Ubound COLUMNS $EaglePosition: " & UBound($EaglePosition, $UBOUND_COLUMNS), $COLOR_DEBUG) ;Debug
+								If $DebugSetLog = 1 Then Setlog(" »» Ubound DIMENSIONS $EaglePosition: " & UBound($EaglePosition, $UBOUND_DIMENSIONS), $COLOR_DEBUG) ;Debug
 
 								If $EaglePosition[0][0] <> "" Then
 									$PixelEaglePos[0] = $EaglePosition[0][0]
@@ -468,7 +473,7 @@ Func ParseAttackCSV($debug = False)
 							Setlog("Forced side: " & StringUpper($value8))
 						Else
 							Local $heightTopLeft = 0, $heightTopRight = 0, $heightBottomLeft = 0, $heightBottomRight = 0
-
+							UpdateResourcesLocations($line)
 							For $i = 0 To UBound($PixelMine) - 1
 								Local $str = ""
 								Local $pixel = $PixelMine[$i]
@@ -651,18 +656,8 @@ Func ParseAttackCSV($debug = False)
 				Return
 			EndIf
 		WEnd
-
-		SetLog("Dropping left over troops", $COLOR_BLUE)
-		For $x = 0 To 1
-			IF PrepareAttack($iMatchMode, True) > 0 Then
-				For $i = $eBarb To $eLava ; lauch all remaining troops
-					LauchTroop($i, 4, 0, 1)
-					CheckHeroesHealth()
-					If _Sleep(50) Then Return
-				Next
-			EndIf
-		Next
-
+		ResetRedLine()
+		$LastRedLines = ""
 		ReleaseClicks()
 		FileClose($f)
 	Else

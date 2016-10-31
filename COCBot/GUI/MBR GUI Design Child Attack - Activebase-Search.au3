@@ -115,6 +115,20 @@ Local $x = 25, $y = 45
 			GetTranslated(625,101, -1)
  			_GUICtrlSetTip(-1, $txtTip)
  			GUICtrlSetOnEvent(-1, "chkABSpellsWait")
+
+		$chkABWaitForCastleSpell = GUICtrlCreateCheckbox("Wait to get Castle Spell", $x, $y + 25, -1, -1)
+			$txtTip = "Wait until Someone Donate you an Spell"
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "chkABWaitForCCSpell")
+
+		$cmbABWaitForCastleSpell = GUICtrlCreateCombo("Any", $x, $y + 50, -1, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			$txtTip = "Wait until Someone Donate this Spell, Else remove other spells in Castle and Request AGAIN"
+			GUICtrlSetData(-1, "Poison|EarthQuake|Haste|Skeleton")
+			_GUICtrlSetTip(-1, $txtTip)
+
+		$chkABWaitForCastleTroops = GUICtrlCreateCheckbox("Wait to for Castle to be full", $x, $y + 75, -1, -1)
+			$txtTip = "Wait until your Clan Castle be Full"
+			_GUICtrlSetTip(-1, $txtTip)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 Local $x = 220, $y = 45

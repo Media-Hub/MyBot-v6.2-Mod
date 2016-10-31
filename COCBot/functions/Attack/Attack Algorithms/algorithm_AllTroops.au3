@@ -14,7 +14,7 @@
 ; ===============================================================================================================================
 
 Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
-	If $debugSetlog = 1 Then Setlog("algorithm_AllTroops", $COLOR_PURPLE)
+	If $debugSetlog = 1 Then Setlog("algorithm_AllTroops", $COLOR_DEBUG) ;Debug
 	SetSlotSpecialTroops()
 
 	If _Sleep($iDelayalgorithm_AllTroops1) Then Return
@@ -38,27 +38,13 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 		EndIf
 	EndIf
 
-#cs	If $iMatchMode = $TS Then; Return ;Exit attacking if trophy hunting and not bullymode
-		If ($THusedKing = 1 Or $THusedQueen = 1) And ($ichkSmartZapSaveHeroes = 1 Or $ichkSmartZap = 0 Or $ichkExtLightSpell = 0) Then
-			Setlog("Wait few sec before close attack.")
-			If _Sleep(Random(0, 2, 1) * 1000) Then Return ;wait 0-2 second before exit if king and queen are not dropped
-		ElseIf IsAttackPage() And Not (SmartZap() Or ExtremeZap()) And $THusedKing = 0 And $THusedQueen = 0 Then
-			Setlog("Wait few sec before close attack")
-			If _Sleep(Random(2, 5, 1) * 1000) Then Return ; wait 2-5 second before exit if king and queen are not dropped
-		Else
-			SetLog("King and/or Queen dropped, close attack.")
-			If ($ichkSmartZap = 1 Or $ichkExtLightSpell = 1) Then SetLog("Skipping SmartZap Or ExtremeZap to protect your royals!", $COLOR_FUCHSIA)
-			CloseBattle()
-			Return
-		EndIf
-	EndIf
-#ce
 	If $iMatchMode = $TS Then; Return ;Exit attacking if trophy hunting and not bullymode
-		If ($THusedKing = 0 And $THusedQueen = 0) Then
-			Setlog("Wait few sec before close attack.")
+		If ($THusedKing = 1 Or $THusedQueen = 1) And ($ichkSmartZap = 1 And $ichkSmartZapSaveHeroes = 1) Then
+			SetLog("King and/or Queen dropped, close attack")
+			If $ichkSmartZap = 1 Then SetLog("Skipping SmartZap to protect your royals!", $COLOR_FUCHSIA)
+		ElseIf IsAttackPage() And Not SmartZap() And $THusedKing = 0 And $THusedQueen = 0 Then
+			Setlog("Wait few sec before close attack")
 			If _Sleep(Random(0, 2, 1) * 1000) Then Return ;wait 0-2 second before exit if king and queen are not dropped
-		Else
-			SetLog("King and/or Queen dropped, close attack.")
 		EndIf
 
 		;Apply to switch Attack Standard after THSnipe End  ==>
@@ -69,6 +55,8 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 			Return
 		EndIf
 	EndIf
+
+
 
 	;############################################# LSpell Attack ############################################################
 	; DropLSpell()
@@ -174,8 +162,9 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 						[$eWiza,  $nbSides, 1, 1, 2], _
 						[$eMini,  $nbSides, 1, 1, 0], _
 						[$eGobl,  $nbSides, 1, 1, 0]]
+
 	Else
-		If $debugSetlog = 1 Then SetLog("listdeploy standard for attack", $COLOR_PURPLE)
+		If $debugSetlog = 1 Then SetLog("listdeploy standard for attack", $COLOR_DEBUG) ;Debug
 		Switch $icmbStandardAlgorithm[$iMatchMode]
 			Case 0
 				Local $listInfoDeploy[21][5] = [[$eGole, $nbSides, 1, 1, 2] _
@@ -255,7 +244,7 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 	SetLog("Dropping left over troops", $COLOR_BLUE)
 	For $x = 0 To 1
 		IF PrepareAttack($iMatchMode, True) = 0 Then
-			If $debugsetlog = 1 Then Setlog("No Wast time... exit, no troops usable left",$COLOR_PURPLE)
+			If $debugsetlog = 1 Then Setlog("No Wast time... exit, no troops usable left", $COLOR_DEBUG) ;Debug
 			ExitLoop ;Check remaining quantities
 		EndIf
 		For $i = $eBarb To $eBowl ; lauch all remaining troops
@@ -304,10 +293,10 @@ Func SetSlotSpecialTroops()
 			$Warden = $i
 		EndIf
 	Next
-	If $debugSetlog = 1 Then SetLog("Use king SLOT # " & $King, $COLOR_PURPLE)
-	If $debugSetlog = 1 Then SetLog("Use queen SLOT # " & $Queen, $COLOR_PURPLE)
-	If $debugSetlog = 1 Then SetLog("Use CC SLOT # " & $CC, $COLOR_PURPLE)
-	If $debugSetlog = 1 Then SetLog("Use Warden SLOT # " & $Warden, $COLOR_PURPLE)
+	If $debugSetlog = 1 Then SetLog("Use king SLOT # " & $King, $COLOR_DEBUG) ;Debug
+	If $debugSetlog = 1 Then SetLog("Use queen SLOT # " & $Queen, $COLOR_DEBUG) ;Debug
+	If $debugSetlog = 1 Then SetLog("Use CC SLOT # " & $CC, $COLOR_DEBUG) ;Debug
+	If $debugSetlog = 1 Then SetLog("Use Warden SLOT # " & $Warden, $COLOR_DEBUG) ;Debug
 EndFunc   ;==>SetSlotSpecialTroops
 
 Func CloseBattle()

@@ -37,11 +37,11 @@ Local $hBotLaunchTime = TimerInit()
 
 Global $sGitHubModOwner = "NguyenAnhHD"
 Global $sGitHubModRepo = "MyBot-v6.2-Mod"
-Global $sGitHubModLatestReleaseTag = "v4.2.6"
+Global $sGitHubModLatestReleaseTag = "v5.0"
 Global $sModSupportUrl = "http://clashofclans.vn/threads/update-26-08-mybot-6-2-1-mod-v4-1-4-2.8075"
 
-$sBotVersion = "v6.2.2 Mod" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it it also use on Checkversion()
-$sBotTitle = "My Bot " & $sBotVersion & " By Nguyen Anh " & $sGitHubModLatestReleaseTag & "_S " ;~ Don't use any non file name supported characters like \ / : * ? " < > |
+$sBotVersion = "v6.2.2" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it it also use on Checkversion()
+$sBotTitle = "My Bot " & $sBotVersion & " DocOC MOD Nguyen Anh " & $sGitHubModLatestReleaseTag & "_S " ;~ Don't use any non file name supported characters like \ / : * ? " < > |
 $sModversion = $sGitHubModLatestReleaseTag
 
 #include "COCBot\functions\Config\DelayTimes.au3"
@@ -259,12 +259,25 @@ Func runBot() ;Bot that runs everything in order
 		If $Is_ClientSyncError = False And $Is_SearchLimit = False and ($Quickattack = False ) Then
 	    	If BotCommand() Then btnStop()
 				If _Sleep($iDelayRunBot2) Then Return
+
 			checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
-			If $RequestScreenshot = 1 Then PushMsg("RequestScreenshot")
-				If _Sleep($iDelayRunBot3) Then Return
+			If $RequestScreenshot = 1 Then
+				$iForceNotify = 1
+				PushMsg("RequestScreenshot")
+			EndIf
+			If $RequestBuilderInfo = 1 Then
+				$iForceNotify = 1
+				PushMsg("BuilderInfo")
+			EndIf
+			If $RequestShieldInfo = 1 Then
+				$iForceNotify = 1
+				PushMsg("ShieldInfo")
+			EndIf
+
+			If _Sleep($iDelayRunBot3) Then Return
+
 			VillageReport()
-			ProfileSwitch() ; Added for Switch profile
 			If $OutOfGold = 1 And (Number($iGoldCurrent) >= Number($itxtRestartGold)) Then ; check if enough gold to begin searching again
 				$OutOfGold = 0 ; reset out of gold flag
 				Setlog("Switching back to normal after no gold to search ...", $COLOR_RED)
@@ -302,6 +315,9 @@ Func runBot() ;Bot that runs everything in order
 				EndIf
 			    If $Restart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
 			WEnd
+
+			    If $ichkSwitchAcc = 1 And $aProfileType[$nCurProfile - 1] = 2 Then checkSwitchAcc() ;  Switching to active account after donation - SwitchAcc for  - DEMEN
+
 				If $RunState = False Then Return
 				If $Restart = True Then ContinueLoop
 			DonateCC()
@@ -322,9 +338,6 @@ Func runBot() ;Bot that runs everything in order
 				   EndIf
 				   If checkAndroidTimeLag() = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
 			   WEnd
-
-			   If $ichkSwitchAcc = 1 And $aProfileType[$nCurProfile - 1] = 2 Then checkSwitchAcc() ;  Switching to active account after donation - SwitchAcc for  - DEMEN
-
 					If $RunState = False Then Return
 					If $Restart = True Then ContinueLoop
 			   If $iUnbreakableMode >= 1 Then
@@ -333,7 +346,7 @@ Func runBot() ;Bot that runs everything in order
 			EndIf
 				If $RunState = False Then Return
 				If _Sleep($iDelayRunBot3) Then Return
-			Train()
+			TestTrainRevamp()
 				If $Restart = True Then ContinueLoop
 			Local $aRndFuncList[3] = ['Laboratory', 'UpgradeHeroes', 'UpgradeBuilding']
 			While 1
@@ -365,6 +378,7 @@ Func runBot() ;Bot that runs everything in order
 				SaveStatChkDeadBase()
 				If $CommandStop <> 0 And $CommandStop <> 3 Then
 				  AttackMain()
+				  $SkipFirstZoomout = False
 				  If $OutOfGold = 1 Then
 					 Setlog("Switching to Halt Attack, Stay Online/Collect mode ...", $COLOR_RED)
 					 $ichkBotStop = 1 ; set halt attack variable
@@ -395,6 +409,7 @@ Func runBot() ;Bot that runs everything in order
 			$iTrophyCurrent = Number(getTrophyMainScreen($aTrophies[0], $aTrophies[1]))
 			If $debugsetlog = 1 Then SetLog("Runbot Trophy Count: " & $iTrophyCurrent, $COLOR_PURPLE)
 			AttackMain()
+			$SkipFirstZoomout = False
 			If $OutOfGold = 1 Then
 				Setlog("Switching to Halt Attack, Stay Online/Collect mode ...", $COLOR_RED)
 				$ichkBotStop = 1 ; set halt attack variable
@@ -470,7 +485,7 @@ Func Idle() ;Sequence that runs until Full Army
 		EndIf
 		$iCollectCounter = $iCollectCounter + 1
 		If $CommandStop = -1 Then
-			Train()
+			TestTrainRevamp()
 				If $Restart = True Then ExitLoop
 				If _Sleep($iDelayIdle1) Then ExitLoop
 				checkMainScreen(False)
@@ -482,7 +497,7 @@ Func Idle() ;Sequence that runs until Full Army
 		If _Sleep($iDelayIdle1) Then Return
 		If $CommandStop = 0 And $bTrainEnabled = True Then
 			If $fullArmy = False or $bFullArmySpells = False Then
-				Train()
+				TestTrainRevamp()
 					If $Restart = True Then ExitLoop
 					If _Sleep($iDelayIdle1) Then ExitLoop
 					checkMainScreen(False)
@@ -517,10 +532,12 @@ Func Idle() ;Sequence that runs until Full Army
 
 		If $iChkSnipeWhileTrain = 1 Then SnipeWhileTrain()  ;snipe while train
 
-		If $CommandStop = -1 And $ichkSwitchAcc = 1 Then
-		   checkSwitchAcc()					; SwitchAcc - DEMEN
-		ElseIf $ichkSwitchAcc <> 1 Then		; SwitchAcc - DEMEN
-			SmartWait4Train()
+		If $CommandStop = -1 Then ; Check if closing bot/emulator while training and not in halt mode
+			If $ichkSwitchAcc = 1 Then				; SwitchAcc - DEMEN
+				checkSwitchAcc()					; SwitchAcc - DEMEN
+			Else									; SwitchAcc - DEMEN
+				SmartWait4Train()
+			EndIf
 			If $Restart = True Then ExitLoop ; if smart wait activated, exit to runbot in case user adjusted GUI or left emulator/bot in bad state
 		EndIf
 
@@ -530,6 +547,7 @@ EndFunc   ;==>Idle
 Func AttackMain() ;Main control for attack functions
 	;LoadAmountOfResourcesImages() ; for debug
 	If IsSearchAttackEnabled() Then
+		If  $IsFullArmywithHeroesAndSpells = False then return
 		If (IsSearchModeActive($DB) And checkCollectors(True, False)) or IsSearchModeActive($LB) or IsSearchModeActive($TS) Then
 			If $iChkUseCCBalanced = 1 or $iChkUseCCBalancedCSV = 1 Then ;launch profilereport() only if option balance D/R it's activated
 				ProfileReport()
@@ -565,7 +583,7 @@ Func AttackMain() ;Main control for attack functions
 			Setlog("No one of search condition match:", $COLOR_BLUE)
 			Setlog("Waiting on troops, heroes and/or spells according to search settings", $COLOR_BLUE)
 			GetReadTimeHeroesAndSpell()
-			If $ichkSwitchAcc = 1 Then CheckSwitchAcc()
+			If $ichkSwitchAcc = 1 Then CheckSwitchAcc() 		; SwitchAcc - DEMEN
 		EndIf
 	Else
 		SetLog("Attacking Not Planned, Skipped..", $COLOR_RED)
@@ -573,6 +591,7 @@ Func AttackMain() ;Main control for attack functions
 EndFunc   ;==>AttackMain
 
 Func Attack() ;Selects which algorithm
+	If  $IsFullArmywithHeroesAndSpells = False then return
 	SetLog(" ====== Start Attack ====== ", $COLOR_GREEN)
 	If  ($iMatchMode = $DB and $iAtkAlgorithm[$DB] = 1) or ($iMatchMode = $LB and  $iAtkAlgorithm[$LB] = 1) Then
 		If $debugsetlog=1 Then Setlog("start scripted attack",$COLOR_RED)
@@ -590,6 +609,7 @@ EndFunc   ;==>Attack
 Func QuickAttack()
    Local   $quicklymilking=0
    Local   $quicklythsnipe=0
+   If  $IsFullArmywithHeroesAndSpells = False then return
    If ( $iAtkAlgorithm[$DB] = 2  and IsSearchModeActive($DB) ) or (IsSearchModeActive($TS) ) Then
 	  getArmyCapacity(true,true)
 	  VillageReport()

@@ -53,11 +53,11 @@ Func IsSearchModeActive($iMatchMode, $nocheckHeroes = False)
 
 	If $checkHeroes And $checkSpells Then ;If $checkHeroes Then
 		If $bMatchModeEnabled And ($checkSearches Or $iEnableSearchSearches[$iMatchMode] = 0) And ($checkTropies Or $iEnableSearchTropies[$iMatchMode] = 0) And ($checkArmyCamps Or $iEnableSearchCamps[$iMatchMode] = 0) Then
-			If $debugsetlog = 1 Then Setlog($sModeText[$iMatchMode] & " active! ($checkSearches=" & $checkSearches & ",$checkTropies=" & $checkTropies & ",$checkArmyCamps=" & $checkArmyCamps & ",$checkHeroes=" & $checkHeroes & ",$checkSpells=" & $checkSpells & ")", $Color_Blue) ;If $debugsetlog = 1 Then Setlog($sModeText[$iMatchMode] & " active! ($checkSearches=" & $checkSearches & ",$checkTropies=" & $checkTropies &",$checkArmyCamps=" & $checkArmyCamps & ",$checkHeroes=" & $checkHeroes & ")" , $Color_Blue)
+			If $debugsetlog = 1 Then Setlog($sModeText[$iMatchMode] & " active! ($checkSearches=" & $checkSearches & ",$checkTropies=" & $checkTropies & ",$checkArmyCamps=" & $checkArmyCamps & ",$checkHeroes=" & $checkHeroes & ",$checkSpells=" & $checkSpells & ")", $COLOR_DEBUG) ;Debug ;If $debugsetlog = 1 Then Setlog($sModeText[$iMatchMode] & " active! ($checkSearches=" & $checkSearches & ",$checkTropies=" & $checkTropies &",$checkArmyCamps=" & $checkArmyCamps & ",$checkHeroes=" & $checkHeroes & ")" , $Color_Blue)
 			Return True
 		Else
 			If $debugsetlog = 1 Then
-				Setlog($sModeText[$iMatchMode] & " not active!", $Color_Blue)
+				Setlog($sModeText[$iMatchMode] & " not active!", $COLOR_DEBUG) ;Debug
 				If $bMatchModeEnabled Then
 					Local $txtsearches = "Fail"
 					If $checkSearches Then $txtsearches = "Success"
@@ -67,22 +67,22 @@ Func IsSearchModeActive($iMatchMode, $nocheckHeroes = False)
 					If $checkArmyCamps Then $txtArmyCamp = "Success"
 					Local $txtHeroes = "Fail"
 					If $checkHeroes Then $txtHeroes = "Success"
-					If $iEnableSearchSearches[$iMatchMode] = 1 Then Setlog("searches range: " & $iEnableAfterCount[$iMatchMode] & "-" & $iEnableBeforeCount[$iMatchMode] & "  actual value: " & $currentSearch & " - " & $txtsearches, $Color_Blue)
-					If $iEnableSearchTropies[$iMatchMode] = 1 Then Setlog("tropies range: " & $iEnableAfterTropies[$iMatchMode] & "-" & $iEnableBeforeTropies[$iMatchMode] & "  actual value: " & $currentTropies & " | " & $txttropies, $Color_Blue)
-					If $iEnableSearchCamps[$iMatchMode] = 1 Then Setlog("Army camps % range >=: " & $iEnableAfterArmyCamps[$iMatchMode] & " actual value: " & $currentArmyCamps & " | " & $txtArmyCamp, $Color_Blue)
-					If $iHeroWait[$iMatchMode] > $HERO_NOHERO Then SetLog("Hero status " & BitAND($iHeroAttack[$iMatchMode], $iHeroWait[$iMatchMode], $iHeroAvailable) & " " & $iHeroAvailable & " | " & $txtHeroes, $COLOR_Blue)
+					If $iEnableSearchSearches[$iMatchMode] = 1 Then Setlog("searches range: " & $iEnableAfterCount[$iMatchMode] & "-" & $iEnableBeforeCount[$iMatchMode] & "  actual value: " & $currentSearch & " - " & $txtsearches, $COLOR_DEBUG) ;Debug
+					If $iEnableSearchTropies[$iMatchMode] = 1 Then Setlog("tropies range: " & $iEnableAfterTropies[$iMatchMode] & "-" & $iEnableBeforeTropies[$iMatchMode] & "  actual value: " & $currentTropies & " | " & $txttropies, $COLOR_DEBUG) ;Debug
+					If $iEnableSearchCamps[$iMatchMode] = 1 Then Setlog("Army camps % range >=: " & $iEnableAfterArmyCamps[$iMatchMode] & " actual value: " & $currentArmyCamps & " | " & $txtArmyCamp, $COLOR_DEBUG) ;Debug
+					If $iHeroWait[$iMatchMode] > $HERO_NOHERO Then SetLog("Hero status " & BitAND($iHeroAttack[$iMatchMode], $iHeroWait[$iMatchMode], $iHeroAvailable) & " " & $iHeroAvailable & " | " & $txtHeroes, $COLOR_DEBUG) ;Debug
 					Local $txtSpells = "Fail"
 					If $checkSpells Then $txtSpells = "Success"
-					If $iEnableSpellsWait[$iMatchMode] = 1 Then SetLog("Full spell status: " & $bFullArmySpells & " | " & $txtSpells, $COLOR_Blue)
+					If $iEnableSpellsWait[$iMatchMode] = 1 Then SetLog("Full spell status: " & $bFullArmySpells & " | " & $txtSpells, $COLOR_DEBUG) ;Debug
 				EndIf
 			EndIf
 			Return False
 		EndIf
 	ElseIf $checkHeroes = 0 Then
-		If $debugsetlog = 1 Then Setlog("Heroes not ready", $color_purple)
+		If $debugsetlog = 1 Then Setlog("Heroes not ready", $COLOR_DEBUG) ;Debug
 		Return False
 	Else
-		If $debugsetlog = 1 Then Setlog("Spells not ready", $color_purple)
+		If $debugsetlog = 1 Then Setlog("Spells not ready", $COLOR_DEBUG) ;Debug
 		Return False
 	EndIf
 EndFunc   ;==>IsSearchModeActive
@@ -114,11 +114,11 @@ Func IsWaitforSpellsActive()
 				If $iTScheck = 1 Then $bMatchModeEnabled = True
 		EndSwitch
 		If $bMatchModeEnabled And $iEnableSpellsWait[$i] = 1 Then
-			If $debugsetlogTrain = 1 Or $debugsetlog = 1 Then Setlog("IsWaitforSpellsActive = True", $COLOR_PURPLE)
+			If $debugsetlogTrain = 1 Or $debugsetlog = 1 Then Setlog("IsWaitforSpellsActive = True", $COLOR_DEBUG) ;Debug
 			Return True
 		EndIf
 	Next
-	If $debugsetlogTrain = 1 Or $debugsetlog = 1 Then Setlog("IsWaitforSpellsActive = False", $COLOR_PURPLE)
+	If $debugsetlogTrain = 1 Or $debugsetlog = 1 Then Setlog("IsWaitforSpellsActive = False", $COLOR_DEBUG) ;Debug
 	Return False
 EndFunc   ;==>IsWaitforSpellsActive
 
@@ -149,10 +149,10 @@ Func IsWaitforHeroesActive()
 				If $iTScheck = 1 Then $bMatchModeEnabled = True
 		EndSwitch
 		If $bMatchModeEnabled And ($iHeroWait[$i] > $HERO_NOHERO And (BitAND($iHeroAttack[$i], $iHeroWait[$i]) = $iHeroWait[$i])) Then
-			If $debugsetlogTrain = 1 Or $debugsetlog = 1 Then Setlog("IsWaitforHeroesActive = True", $COLOR_PURPLE)
+			If $debugsetlogTrain = 1 Or $debugsetlog = 1 Then Setlog("IsWaitforHeroesActive = True", $COLOR_DEBUG) ;Debug
 			Return True
 		EndIf
 	Next
-	If $debugsetlogTrain = 1 Or $debugsetlog = 1 Then Setlog("IsWaitforHeroesActive = False", $COLOR_PURPLE)
+	If $debugsetlogTrain = 1 Or $debugsetlog = 1 Then Setlog("IsWaitforHeroesActive = False", $COLOR_DEBUG) ;Debug
 	Return False
 EndFunc   ;==>IsWaitforHeroesActive

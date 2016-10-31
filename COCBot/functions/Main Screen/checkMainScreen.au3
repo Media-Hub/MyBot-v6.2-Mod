@@ -19,7 +19,7 @@ Func checkMainScreen($Check = True) ;Checks if in main screen
 	If $Check = True Then
 		SetLog("Trying to locate Main Screen")
 	Else
-		;If $debugsetlog = 1 Then SetLog("checkMainScreen start quiet mode", $COLOR_PURPLE)
+		;If $debugsetlog = 1 Then SetLog("checkMainScreen start quiet mode", $COLOR_DEBUG) ;Debug
 	EndIf
 	If CheckAndroidRunning(False) = False Then Return
 	getBSPos() ; Update $HWnd and Android Window Positions
@@ -50,7 +50,7 @@ Func checkMainScreen($Check = True) ;Checks if in main screen
 		WinGetAndroidHandle()
 		If _Sleep($iDelaycheckMainScreen1) Then Return
 		$Result = checkObstacles()
-		If $debugsetlog = 1 Then Setlog("CheckObstacles Result = " & $Result, $COLOR_PURPLE)
+		If $debugsetlog = 1 Then Setlog("CheckObstacles Result = " & $Result, $COLOR_DEBUG) ;Debug
 
 		If ($Result = False And $MinorObstacle = True) Then
 			$MinorObstacle = False
@@ -75,7 +75,7 @@ Func checkMainScreen($Check = True) ;Checks if in main screen
 	If $Check = True Then
 		SetLog("Main Screen Located", $COLOR_GREEN)
 	Else
-		;If $debugsetlog = 1 Then SetLog("checkMainScreen exit quiet mode", $COLOR_PURPLE)
+		;If $debugsetlog = 1 Then SetLog("checkMainScreen exit quiet mode", $COLOR_DEBUG) ;Debug
 	EndIf
 
 	;After checkscreen dispose windows

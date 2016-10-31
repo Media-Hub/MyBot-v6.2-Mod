@@ -106,8 +106,6 @@ Func ParseAttackCSV_Read_SIDE_variables($lineContent = "")
 
 					EndIf
 
-					;AwesomeGamer CSV mod
-					If StringUpper($value9) = "NO" Then $attackcsv_use_red_line = 0
 				EndIf
 			EndIf
 	EndSelect

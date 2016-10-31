@@ -16,7 +16,7 @@
 ;
 Func getArmySpellCount($bOpenArmyWindow = False, $bCloseArmyWindow = False, $test = False)
 
-	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SETLOG("Begin getArmySpellCount:", $COLOR_PURPLE)
+	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SETLOG("Begin getArmySpellCount:", $COLOR_DEBUG) ;Debug
 
 	If $bOpenArmyWindow = False And IsTrainPage() = False Then ; check for train page
 		SetError(1)
@@ -47,9 +47,9 @@ Func getArmySpellCount($bOpenArmyWindow = False, $bCloseArmyWindow = False, $tes
 		$CurTotalSpell = True
 
 		For $i = 0 To 4 ; 5 visible slots in ArmyOverView window
-			If $debugsetlogTrain = 1 Then Setlog(" Slot : " & $i + 1, $COLOR_PURPLE)
+			If $debugsetlogTrain = 1 Then Setlog(" Slot : " & $i + 1, $COLOR_DEBUG) ;Debug
 			$FullTemp = getOcrSpellDetection(125 + (62 * $i), 450 + $midOffsetY)
-			If $debugsetlogTrain = 1 Then Setlog(" getOcrSpellDetection: " & $FullTemp, $COLOR_PURPLE)
+			If $debugsetlogTrain = 1 Then Setlog(" getOcrSpellDetection: " & $FullTemp, $COLOR_DEBUG) ;Debug
 			If _Sleep($iDelayRespond) Then Return
 			$Result = getOcrSpellQuantity(146 + (62 * $i), 414 + $midOffsetY)
 			If $Result <> "" Then
@@ -57,7 +57,7 @@ Func getArmySpellCount($bOpenArmyWindow = False, $bCloseArmyWindow = False, $tes
 			Else
 				$SpellQ = 0
 			EndIf
-			If $debugsetlogTrain = 1 Then Setlog(" getOcrSpellQuantity: " & $Result & ":" & $SpellQ, $COLOR_PURPLE)
+			If $debugsetlogTrain = 1 Then Setlog(" getOcrSpellQuantity: " & $Result & ":" & $SpellQ, $COLOR_DEBUG) ;Debug
 			If _Sleep($iDelayRespond) Then Return
 			Select
 				Case $FullTemp = "Lightning"
@@ -106,7 +106,7 @@ Func getArmySpellCount($bOpenArmyWindow = False, $bCloseArmyWindow = False, $tes
 					$iMissingSpellEvent += 1
 				Case $FullTemp = ""
 					; Do nothing when empty slot
-					If $debugsetlogTrain = 1 Then Setlog(" - detected nothing in slot: " & $i + 1, $COLOR_PURPLE)
+					If $debugsetlogTrain = 1 Then Setlog(" - detected nothing in slot: " & $i + 1, $COLOR_DEBUG) ;Debug
 				Case Else
 					; Can only see this message when getOcrSpellDetection returns invalid spell type or something is broken
 					Setlog(" - Code Monkey banana distracted, detection error slot: " & $i + 1, $COLOR_RED)
@@ -127,7 +127,7 @@ Func getArmySpellCount($bOpenArmyWindow = False, $bCloseArmyWindow = False, $tes
 		$bFullArmySpells = False
 	EndIf
 
-	If $debugsetlogTrain = 1 Then SETLOG("$bFullArmySpells: " & $bFullArmySpells & ", $iTotalSpellSpace:$iTotalTrainSpaceSpell " & $iTotalSpellSpace & "|" & $iTotalTrainSpaceSpell, $COLOR_PURPLE)
+	If $debugsetlogTrain = 1 Then SETLOG("$bFullArmySpells: " & $bFullArmySpells & ", $iTotalSpellSpace:$iTotalTrainSpaceSpell " & $iTotalSpellSpace & "|" & $iTotalTrainSpaceSpell, $COLOR_DEBUG) ;Debug
 
 	If $bCloseArmyWindow = True Then
 		ClickP($aAway, 1, 0, "#0000") ;Click Away

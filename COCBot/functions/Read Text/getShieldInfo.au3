@@ -34,14 +34,14 @@ Func getShieldInfo()
 	Select ; Check for shield type
 		Case _CheckPixel($aNoShield, $bCapturePixel)
 			$aPBReturnResult[0] = "none"
-			If $debugSetlog = 1 Then Setlog("No shield active", $COLOR_PURPLE)
+			If $debugSetlog = 1 Then Setlog("No shield active", $COLOR_DEBUG) ;Debug
 			Return $aPBReturnResult ; return with zero value
 		Case _CheckPixel($aHaveShield, $bCapturePixel)
 			$aPBReturnResult[0] = "shield" ; check for shield
-			If $debugSetlog = 1 Then Setlog("Shield Active", $COLOR_PURPLE)
+			If $debugSetlog = 1 Then Setlog("Shield Active", $COLOR_DEBUG) ;Debug
 		Case _CheckPixel($aHavePerGuard, $bCapturePixel)
 			$aPBReturnResult[0] = "guard" ; check for personal guard timer
-			If $debugSetlog = 1 Then Setlog("Guard Active", $COLOR_PURPLE)
+			If $debugSetlog = 1 Then Setlog("Guard Active", $COLOR_DEBUG) ;Debug
 		Case Else
 			Setlog("Sorry, Monkey needs more bananas to read shield type", $COLOR_RED) ; Check for pixel colors errors!
 			SetError(1, "Bad shield pixel read")
@@ -49,11 +49,11 @@ Func getShieldInfo()
 	EndSelect
 
 	$sTimeResult = getOcrGuardShield(484, 21) ; read Shield time
-	If $debugSetlog = 1 Then Setlog("OCR Shield Time= " & $sTimeResult, $COLOR_PURPLE)
+	If $debugSetlog = 1 Then Setlog("OCR Shield Time= " & $sTimeResult, $COLOR_DEBUG) ;Debug
 	If $sTimeResult = "" Then ; try a 2nd time after a short delay if slow PC and null read
 		If _Sleep($iPersonalShield2) Then Return ; pause for slow PC
 		$sTimeResult = getOcrGuardShield(484, 21) ; read Shield time
-		If $debugSetlog = 1 Then Setlog("OCR2 Shield Time= " & $sTimeResult, $COLOR_PURPLE)
+		If $debugSetlog = 1 Then Setlog("OCR2 Shield Time= " & $sTimeResult, $COLOR_DEBUG) ;Debug
 		If $sTimeResult = "" Then ; error if no read value
 			$aPBReturnResult[1] = '00:00:00'
 			Setlog("strange error, no shield value found?", $COLOR_RED)
@@ -97,14 +97,14 @@ Func getShieldInfo()
 	EndSwitch
 
 	$aPBReturnResult[1] = StringFormat("%02s", ($iDay * 24) + $iHour) & ":" & StringFormat("%02s", $iMin) & ":" & StringFormat("%02s", $iSec)
-	If $debugSetlog = 1 Then Setlog("Shield Time String = " & $aPBReturnResult[1], $COLOR_PURPLE)
+	If $debugSetlog = 1 Then Setlog("Shield Time String = " & $aPBReturnResult[1], $COLOR_DEBUG) ;Debug
 
 	$iShieldSeconds = ($iDay * 86400) + ($iHour * 3600) + ($iMin * 60) + $iSec ; add time into total seconds
-	If $debugSetlog = 1 Then Setlog("Computed Shield Seconds = " & $iShieldSeconds, $COLOR_PURPLE)
+	If $debugSetlog = 1 Then Setlog("Computed Shield Seconds = " & $iShieldSeconds, $COLOR_DEBUG) ;Debug
 
 	$aPBReturnResult[2] = _DateAdd('s', $iShieldSeconds, _NowCalc()) ; Find actual expire time from NOW.
 	If @error Then Setlog("_DateAdd error= " & @error, $COLOR_RED)
-	If $debugSetlog = 1 Then Setlog("Shield expires at: " & $aPBReturnResult[2], $COLOR_BLUE)
+	If $debugSetlog = 1 Then Setlog("Shield expires at: " & $aPBReturnResult[2], $COLOR_DEBUG) ;Debug
 
 	Return $aPBReturnResult
 

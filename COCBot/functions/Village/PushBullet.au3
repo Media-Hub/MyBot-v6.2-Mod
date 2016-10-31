@@ -5,7 +5,8 @@
 ; Parameters ....: None
 ; Return values .: None
 ; Author ........: Antidote (2015-03)
-; Modified ......: Sardo and Didipe (2015-05) rewrite code
+; Modified ......: Full revamp by IceCube (2016) v1.1
+;				   Sardo and Didipe (2015-05) rewrite code
 ;				   kgns (2015-06) $pushLastModified addition
 ;				   Sardo (2015-06) compliant with new pushbullet syntax (removed title)
 ;				   Boju(2016-05)
@@ -50,6 +51,8 @@ Func _RemoteControlPushBullet()
 				$body[$x] = StringUpper(StringStripWS($body[$x], $STR_STRIPLEADING + $STR_STRIPTRAILING + $STR_STRIPSPACES))
 				$iden[$x] = StringStripWS($iden[$x], $STR_STRIPLEADING + $STR_STRIPTRAILING + $STR_STRIPSPACES)
 
+				$iForceNotify = 1
+				
 				Switch $body[$x]
 					Case GetTranslated(620,1, "BOT") & " " & GetTranslated(620,14, "HELP")
 						Local $txtHelp = GetTranslated(620,13, "You can remotely control your bot sending commands following this syntax:")
@@ -64,6 +67,10 @@ Func _RemoteControlPushBullet()
 						$txtHelp &= '\n' & GetTranslated(620,1, -1) & " <" & $iOrigPushBullet & "> " & GetTranslated(620,22,"LASTRAID") & GetTranslated(620,10, " - send the last raid loot screenshot of <Village Name>")
 						$txtHelp &= '\n' & GetTranslated(620,1, -1) & " <" & $iOrigPushBullet & "> " & GetTranslated(620,23,"LASTRAIDTXT") & GetTranslated(620,11, " - send the last raid loot values of <Village Name>")
 						$txtHelp &= '\n' & GetTranslated(620,1, -1) & " <" & $iOrigPushBullet & "> " & GetTranslated(620,24,"SCREENSHOT") & GetTranslated(620,12, " - send a screenshot of <Village Name>")
+						$txtHelp &= '\n' & GetTranslated(620,1, -1) & " <" & $iOrigPushBullet & "> " & GetTranslated(620,300,"SCREENSHOTHD") & GetTranslated(620,301, " - send a screenshot in high resolution of <Village Name>")
+						$txtHelp &= '\n' & GetTranslated(620,1, -1) & " <" & $iOrigPushBullet & "> " & GetTranslated(620,302,"BUILDER") & GetTranslated(620,303, " - send a screenshot of builder status of <Village Name>")
+						$txtHelp &= '\n' & GetTranslated(620,1, -1) & " <" & $iOrigPushBullet & "> " & GetTranslated(620,304,"SHIELD") & GetTranslated(620,305, " - send a screenshot of shield status of <Village Name>")
+						 ;$txtHelp &= '\n' & GetTranslated(620,1, -1) & " <" & $iOrigPushBullet & "> " & GetTranslated(620,306,"GAIN") & GetTranslated(620,307, " - send a top gain & zap statistics of <Village Name>")
 						$txtHelp &= '\n'
 						$txtHelp &= '\n' & GetTranslated(620,25, "Examples:")
 						$txtHelp &= '\n' & GetTranslated(620,1, -1) & " " & $iOrigPushBullet & " " & GetTranslated(620,18,"PAUSE")
@@ -126,7 +133,30 @@ Func _RemoteControlPushBullet()
 					Case GetTranslated(620,1, -1) & " " & StringUpper($iOrigPushBullet) & " " & GetTranslated(620,24, -1) ;"SCREENSHOT"
 						SetLog("Pushbullet: ScreenShot request received", $COLOR_GREEN)
 						$RequestScreenshot = 1
+						$iForceNotify = 0
 						_DeleteMessageOfPushBullet($iden[$x])
+					Case GetTranslated(620,1, -1) & " " &  StringUpper($iOrigPushBullet) & " " & GetTranslated(620,300,"SCREENSHOTHD") ;" SCREENSHOTHD"
+						SetLog("Pushbullet: ScreenShot HD request received", $COLOR_GREEN)
+						$RequestScreenshot = 1
+						$RequestScreenshotHD = 1
+						$iForceNotify = 0
+						_DeleteMessageOfPushBullet($iden[$x])
+					Case GetTranslated(620,1, -1) & " " &  StringUpper($iOrigPushBullet) & " " & GetTranslated(620,302,"BUILDER") ;" BUILDER"
+						SetLog("Pushbullet: Builder Status request received", $COLOR_GREEN)
+						$RequestBuilderInfo = 1
+						_DeleteMessageOfPushBullet($iden[$x])						
+					Case GetTranslated(620,1, -1) & " " &  StringUpper($iOrigPushBullet) & " " & GetTranslated(620,304,"SHIELD") ;" SHIELD"
+						SetLog("Pushbullet: Shield Status request received", $COLOR_GREEN)
+						$RequestShieldInfo = 1
+						$iForceNotify = 0
+						_DeleteMessageOfPushBullet($iden[$x])
+					;Case GetTranslated(620,1, -1) & " " &  StringUpper($iOrigPushBullet) & " " & GetTranslated(620,306,"GAIN") ;" GAIN"									
+					;	SetLog("Pushbullet: Your request has been received. Top Gain & Zap Statistics sent", $COLOR_GREEN)
+					;	Local $txtStats = " | Top Gain & Zap Stats Village Report" & "\n" & "\n[G]: " & _NumberFormat($topgoldloot) & "\n[E]: "
+					;		  $txtStats &= _NumberFormat($topelixirloot) & "\n[D]: " & _NumberFormat($topdarkloot) & "\n[T]: " & $toptrophyloot
+					;		  $txtStats &= "\n[Z]: " & _NumberFormat($smartZapGain) & "\n[S]: " & _NumberFormat($numLSpellsUsed)
+					;	_Push($iOrigPushBullet & $txtStats)
+					;	_DeleteMessageOfPushBullet($iden[$x])
 					Case GetTranslated(620,1, -1) & " " & StringUpper($iOrigPushBullet) & " " & GetTranslated(620,16, -1) ;"RESTART"
 						_DeleteMessageOfPushBullet($iden[$x])
 						SetLog("Your request has been received. Bot and Android Emulator restarting...", $COLOR_GREEN)
@@ -153,6 +183,8 @@ Func _RemoteControlPushBullet()
 				EndSwitch
 				$body[$x] = ""
 				$iden[$x] = ""
+
+				$iForceNotify = 0
 			EndIf
 		Next
 	EndIf
@@ -160,6 +192,37 @@ EndFunc   ;==>_RemoteControl
 
 Func _PushBullet($pMessage = "")
 	If $PushBulletEnabled = 0 Or $PushBulletToken = "" Then Return
+ 
+ 	If $iForceNotify = 0 Then
+		If $iPlannedNotifyWeekdaysEnable = 1 Then
+			If $iPlannedNotifyWeekdays[@WDAY - 1] = 1 Then
+				If $iPlannedNotifyHoursEnable = 1 Then
+					Local $hour = StringSplit(_NowTime(4), ":", $STR_NOCOUNT)
+					If $iPlannedNotifyHours[$hour[0]] = 0 Then
+						SetLog("Notify not planned for this hour, Skipped..", $COLOR_ORANGE)
+						SetLog($pMessage, $COLOR_ORANGE)
+						Return ; exit func if no planned  
+					EndIf
+				EndIf
+			Else
+				SetLog("Notify not planned to: " & _DateDayOfWeek(@WDAY), $COLOR_ORANGE)
+				SetLog($pMessage, $COLOR_ORANGE)
+				Return ; exit func if not planned  
+			EndIf
+		Else
+			If $iPlannedNotifyHoursEnable = 1 Then
+				Local $hour = StringSplit(_NowTime(4), ":", $STR_NOCOUNT)
+				If $iPlannedNotifyHours[$hour[0]] = 0 Then
+					SetLog("Notify not planned for this hour, Skipped..", $COLOR_ORANGE)
+					SetLog($pMessage, $COLOR_ORANGE)
+					Return ; exit func if no planned  
+				EndIf
+			EndIf
+		EndIf
+	EndIf	
+	
+	$iForceNotify = 0
+	
 	$oHTTP = ObjCreate("WinHTTP.WinHTTPRequest.5.1")
 	;$access_token = $PushBulletToken
 	$oHTTP.Open("Get", "https://api.pushbullet.com/v2/devices", False)
@@ -249,6 +312,37 @@ Func _DeleteMessageOfPushBullet($iden)
 EndFunc   ;==>_DeleteMessage
 
 Func PushMsgToPushBullet($Message, $Source = "")
+
+ 	If $iForceNotify = 0 Then
+		If $iPlannedNotifyWeekdaysEnable = 1 Then
+			If $iPlannedNotifyWeekdays[@WDAY - 1] = 1 Then
+				If $iPlannedNotifyHoursEnable = 1 Then
+					Local $hour = StringSplit(_NowTime(4), ":", $STR_NOCOUNT)
+					If $iPlannedNotifyHours[$hour[0]] = 0 Then
+						SetLog("Notify not planned for this hour, Skipped..", $COLOR_ORANGE)
+						SetLog($Message, $COLOR_ORANGE)
+						Return ; exit func if no planned  
+					EndIf
+				EndIf
+			Else
+				SetLog("Notify not planned to: " & _DateDayOfWeek(@WDAY), $COLOR_ORANGE)
+				SetLog($Message, $COLOR_ORANGE)
+				Return ; exit func if not planned  
+			EndIf
+		Else
+			If $iPlannedNotifyHoursEnable = 1 Then
+				Local $hour = StringSplit(_NowTime(4), ":", $STR_NOCOUNT)
+				If $iPlannedNotifyHours[$hour[0]] = 0 Then
+					SetLog("Notify not planned for this hour, Skipped..", $COLOR_ORANGE)
+					SetLog($Message, $COLOR_ORANGE)
+					Return ; exit func if no planned  
+				EndIf
+			EndIf
+		EndIf
+	EndIf	
+	
+	$iForceNotify = 0
+	
 	Local $hBitmap_Scaled
 	Switch $Message
 		Case "Restarted"
@@ -316,17 +410,56 @@ Func PushMsgToPushBullet($Message, $Source = "")
 			Local $Date = @YEAR & "-" & @MON & "-" & @MDAY
 			Local $Time = @HOUR & "." & @MIN
 			_CaptureRegion()
-			$hBitmap_Scaled = _GDIPlus_ImageResize($hBitmap, _GDIPlus_ImageGetWidth($hBitmap) / 2, _GDIPlus_ImageGetHeight($hBitmap) / 2) ;resize image
+			If $RequestScreenshotHD = 1 Then
+				$hBitmap_Scaled = $hBitmap
+			Else
+				$hBitmap_Scaled = _GDIPlus_ImageResize($hBitmap, _GDIPlus_ImageGetWidth($hBitmap) / 2, _GDIPlus_ImageGetHeight($hBitmap) / 2) ;resize image
+			EndIf
 			Local $Screnshotfilename = "Screenshot_" & $Date & "_" & $Time & ".jpg"
 			_GDIPlus_ImageSaveToFile($hBitmap_Scaled, $dirTemp & $Screnshotfilename)
 			_GDIPlus_ImageDispose($hBitmap_Scaled)
 			_PushFileToPushBullet($Screnshotfilename, "Temp", "image/jpeg", $iOrigPushBullet & " | " & GetTranslated(620,84, "Screenshot of your village") & " " & "\n" & $Screnshotfilename)
 			SetLog("Pushbullet: Screenshot sent!", $COLOR_GREEN)
 			$RequestScreenshot = 0
+			$RequestScreenshotHD = 0
 			;wait a second and then delete the file
 			If _Sleep($iDelayPushMsg2) Then Return
 			Local $iDelete = FileDelete($dirTemp & $Screnshotfilename)
 			If Not ($iDelete) Then SetLog("Pushbullet: An error occurred deleting the temporary screenshot file.", $COLOR_RED)
+		Case "BuilderInfo"
+			Click(0,0, 5)
+			Click(274,8)
+			_Sleep (500)
+			Local $Date = @YEAR & "-" & @MON & "-" & @MDAY
+			Local $Time = @HOUR & "." & @MIN
+			_CaptureRegion(234, 74, 434, 260)
+			Local $Screnshotfilename = "Screenshot_" & $Date & "_" & $Time & ".jpg"
+			_GDIPlus_ImageSaveToFile($hBitmap, $dirTemp & $Screnshotfilename)
+			_PushFileToPushBullet($Screnshotfilename, "Temp", "image/jpeg", $iOrigPushBullet & " | " &  "Buider Information" & "\n" & $Screnshotfilename)
+			SetLog("Pushbullet: Builder Information sent!", $COLOR_GREEN)
+			$RequestBuilderInfo = 0
+			;wait a second and then delete the file
+			If _Sleep($iDelayPushMsg2) Then Return
+			Local $iDelete = FileDelete($dirTemp & $Screnshotfilename)
+			If Not ($iDelete) Then SetLog("Pushbullet: An error occurred deleting the temporary screenshot file.", $COLOR_RED)
+			Click(0,0, 5)	
+		Case "ShieldInfo"
+			Click(0,0, 5)
+			Click(435,8)
+			_Sleep (500)
+			Local $Date = @YEAR & "-" & @MON & "-" & @MDAY
+			Local $Time = @HOUR & "." & @MIN
+			_CaptureRegion(200, 165, 660, 568)
+			Local $Screnshotfilename = "Screenshot_" & $Date & "_" & $Time & ".jpg"
+			_GDIPlus_ImageSaveToFile($hBitmap, $dirTemp & $Screnshotfilename)
+			_PushFileToPushBullet($Screnshotfilename, "Temp", "image/jpeg", $iOrigPushBullet & " | " &  "Shield Information" & "\n" & $Screnshotfilename)
+			SetLog("Pushbullet: Shield Information sent!", $COLOR_GREEN)
+			$RequestShieldInfo = 0
+			;wait a second and then delete the file
+			If _Sleep($iDelayPushMsg2) Then Return
+			Local $iDelete = FileDelete($dirTemp & $Screnshotfilename)
+			If Not ($iDelete) Then SetLog("Pushbullet: An error occurred deleting the temporary screenshot file.", $COLOR_RED)
+			Click(0,0, 5)
 		Case "DeleteAllPBMessages"
 			_DeletePushOfPushBullet()
 			SetLog("PushBullet: All messages deleted.", $COLOR_GREEN)

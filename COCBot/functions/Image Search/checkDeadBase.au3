@@ -234,7 +234,7 @@ Func ZombieSearch()
 ;~ 		$ZSExclude = 0 ;Set to 0 to include Elixir Lvl 6, 1 to include lvl 7 and so on..
 ;~ 	EndIf
 
-	; If $debugSetlog = 1 Then SetLog("$ZSExclude :" & $ZSExclude, $COLOR_PURPLE)
+	; If $debugSetlog = 1 Then SetLog("$ZSExclude :" & $ZSExclude, $COLOR_DEBUG) ;Debug
 
 	$ZombieCount = 0
 	$ZC = 0
@@ -465,13 +465,13 @@ Func ZombieSearch2($limit = 0, $tolerancefix = 0)
 		EndIf
 		If $debugBuildingPos = 1 And ($limit <> 0 Or $tolerancefix <> 0) Then Setlog("#*# ZombieSearch2: limit= " & $limit & ", tolerancefix=" & $tolerancefix, $COLOR_TEAL)
 		If $debugImageSave = 1 Then DebugImageSave("ZombieSearch2_NoDeadBaseFound_", True)
-		If $debugsetlog = 1 Then Setlog("Collectors NO match, dead base not found", $color_purple)
+		If $debugsetlog = 1 Then Setlog("Collectors NO match, dead base not found", $COLOR_DEBUG) ;Debug
 		Return False
 	Else
 		If $debugBuildingPos = 1 Then
 			Setlog(" FOUND = " & $ZombieFound, $COLOR_TEAL)
 		EndIf
-		If $debugsetlog = 1 Then Setlog("Collectors match, dead base found", $color_purple)
+		If $debugsetlog = 1 Then Setlog("Collectors match, dead base found", $COLOR_DEBUG) ;Debug
 		Return True
 	EndIf
 

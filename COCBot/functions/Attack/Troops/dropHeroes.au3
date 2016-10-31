@@ -17,7 +17,7 @@
 ; Example .......: No
 ; ===============================================================================================================================
 Func dropHeroes($x, $y, $KingSlot = -1, $QueenSlot = -1, $WardenSlot = -1) ;Drops for king and queen and Grand Warden
-	If $debugSetLog = 1 Then SetLog("dropHeroes KingSlot " & $KingSlot & " QueenSlot " & $QueenSlot & " WardenSlot " & $WardenSlot & " matchmode " & $iMatchMode, $Color_Purple)
+	If $debugSetLog = 1 Then SetLog("dropHeroes KingSlot " & $KingSlot & " QueenSlot " & $QueenSlot & " WardenSlot " & $WardenSlot & " matchmode " & $iMatchMode, $COLOR_DEBUG) ;Debug
 	If _Sleep($iDelaydropHeroes1) Then Return
 	$dropKing = False
 	$dropQueen = False
@@ -38,9 +38,9 @@ Func dropHeroes($x, $y, $KingSlot = -1, $QueenSlot = -1, $WardenSlot = -1) ;Drop
    If $QueenSlot <> -1 And (($MatchMode <> $DB And $MatchMode <> $LB) Or BitAND($iHeroAttack[$MatchMode], $HERO_QUEEN) = $HERO_QUEEN) Then $dropQueen = True
    If $WardenSlot <> -1 And (($MatchMode <> $DB And $MatchMode <> $LB) Or BitAND($iHeroAttack[$MatchMode], $HERO_WARDEN) = $HERO_WARDEN) Then $dropWarden = True
 
-	If $debugSetLog = 1 Then SetLog("drop KING = " & $dropKing, $Color_Purple)
-	If $debugSetLog = 1 Then SetLog("drop QUEEN = " & $dropQueen, $Color_Purple)
-	If $debugSetLog = 1 Then SetLog("drop WARDEN = " & $dropWarden, $Color_Purple)
+	If $debugSetLog = 1 Then SetLog("drop KING = " & $dropKing, $COLOR_DEBUG) ;Debug
+	If $debugSetLog = 1 Then SetLog("drop QUEEN = " & $dropQueen, $COLOR_DEBUG) ;Debug
+	If $debugSetLog = 1 Then SetLog("drop WARDEN = " & $dropWarden, $COLOR_DEBUG) ;Debug
 
 	If $dropKing Then
 		SetLog(" » Deploying King", $COLOR_BLUE)

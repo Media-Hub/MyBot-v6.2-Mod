@@ -286,10 +286,16 @@ $hGUI_ARMY_TAB_ITEM1 = GUICtrlCreateTabItem("Train ReVamp")
 	Local $y = 245
 	$grpBrewSpells = GUICtrlCreateGroup(GetTranslated(1000,3, "Train Options | Quick Train"), $x  , $y , 418, 80)
 
-	$hRadio_Army1 = GUICtrlCreateRadio("Army 1", $x + 15, $y + 20, 50, 15)
-	$hRadio_Army2 = GUICtrlCreateRadio("Army 2", $x + 15, $y + 40, 50, 15)
-	$hRadio_Army3 = GUICtrlCreateRadio("Army 3", $x + 15, $y + 60, 50, 15)
-	GUICtrlSetState($hRadio_Army1, $GUI_CHECKED)
+	$hRadio_Army1 = GUICtrlCreateRadio("Army 1", $x + 135, $y + 20, 50, 15)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	GUICtrlSetState(-1, $GUI_CHECKED)
+	$hChk_UseQTrain = GUICtrlCreateCheckbox("Use Quick Train > ", $x + 15, $y + 40, 115, 15)
+	GUICtrlSetState(-1, $GUI_UNCHECKED)
+	GUICtrlSetOnEvent(-1, "chkUseQTrain")
+	$hRadio_Army2 = GUICtrlCreateRadio("Army 2", $x + 135, $y + 40, 50, 15)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$hRadio_Army3 = GUICtrlCreateRadio("Army 3", $x + 135, $y + 60, 50, 15)
+	GUICtrlSetState(-1, $GUI_DISABLE)
 
 	$x += 280
 	$y += 20
@@ -420,10 +426,10 @@ Local $x = $xStart + 25, $y = $yStart +  45
 	$grpBoosterBarracks = GUICtrlCreateGroup(GetTranslated(623,2, "Boost Barracks"), $x - 20, $y - 20, 430, 60)
 		GUICtrlCreateIcon ($pIconLib, $eIcnBarrackBoost, $x - 10, $y + 5, 24, 24)
 		GUICtrlCreateIcon ($pIconLib, $eIcnDarkBarrackBoost, $x + 19, $y + 5, 24, 24)
-		$lblBoostBarracks = GUICtrlCreateLabel(GetTranslated(623,5,"Barracks") & " "&$textBoostLeft, $x + 20 + 29, $y + 4 + 7, -1, -1)
+		$lblBoostBarracks = GUICtrlCreateLabel(GetTranslated(623,5,"Barracks") & " " & $textBoostLeft, $x + 20 + 29, $y + 4 + 7, -1, -1)
 		$txtTip = GetTranslated(623,6, "Use this to boost your Barracks with GEMS! Use with caution!")
 			_GUICtrlSetTip(-1, $txtTip)
-		$cmbBoostBarracks = GUICtrlCreateCombo("", $x + 140 + 29, $y + 7, 47, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbBoostBarracks = GUICtrlCreateCombo("", $x + 140 + 45, $y + 7, 40, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 		$txtTip = "How Many Times To Boost? Use with caution!"
 			GUICtrlSetData(-1, "0|1|2|3|4|5|6|7|8|9|10|11|12", "0")
 			_GUICtrlSetTip(-1, $txtTip)
@@ -468,10 +474,10 @@ $y += 65
 	$grpBoosterSpellFactories = GUICtrlCreateGroup(GetTranslated(623,7,"Boost Spell Factories"), $x - 20, $y - 20, 430, 50)
 		GUICtrlCreateIcon ($pIconLib, $eIcnSpellFactoryBoost, $x - 10, $y - 2, 24, 24)
 		GUICtrlCreateIcon ($pIconLib, $eIcnDarkSpellBoost, $x + 19, $y - 2, 24, 24)
-		$lblBoostSpellFactory = GUICtrlCreateLabel(GetTranslated(623,8,"Spell Factory") & " "&$textBoostLeft, $x + 20 + 29, $y + 4, -1, -1)
+		$lblBoostSpellFactory = GUICtrlCreateLabel(GetTranslated(623,8,"Spell Factory") & " " & $textBoostLeft, $x + 20 + 29, $y + 4, -1, -1)
 		$txtTip = GetTranslated(623,9, "Use this to boost your Spell Factory with GEMS! Use with caution!")
 			_GUICtrlSetTip(-1, $txtTip)
-		$cmbBoostSpellFactory = GUICtrlCreateCombo("", $x + 185, $y, 47, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbBoostSpellFactory = GUICtrlCreateCombo("", $x + 185, $y, 40, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetData(-1, "0|1|2|3|4|5|6|7|8|9|10|11|12", "0")
 			_GUICtrlSetTip(-1, $txtTip)
  	$y += 25
@@ -493,7 +499,7 @@ $y += 30
 		$lblBoostBarbarianKing = GUICtrlCreateLabel(GetTranslated(623,13,"Barbarian King" ) & " "&$textBoostLeft, $x + 20, $y + 4, -1, -1)
  		$txtTip = GetTranslated(623,14, "Use this to boost your Barbarian King with GEMS! Use with caution!")
 			_GUICtrlSetTip(-1, $txtTip)
-		$cmbBoostBarbarianKing = GUICtrlCreateCombo("", $x + 200, $y, 30, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbBoostBarbarianKing = GUICtrlCreateCombo("", $x + 185, $y, 40, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetData(-1, "0|1|2|3|4|5|6|7|8|9|10|11|12", "0")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkUpgradeKing")
@@ -502,7 +508,7 @@ $y += 30
 		$lblBoostArcherQueen = GUICtrlCreateLabel(GetTranslated(623,15,"Archer Queen") & " " &$textBoostLeft, $x + 20, $y + 4, -1, -1)
  		$txtTip = GetTranslated(623,16, "Use this to boost your Archer Queen with GEMS! Use with caution!")
  		_GUICtrlSetTip(-1, $txtTip)
-		$cmbBoostArcherQueen = GUICtrlCreateCombo("", $x + 200, $y, 30, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbBoostArcherQueen = GUICtrlCreateCombo("", $x + 185, $y, 40, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetData(-1, "0|1|2|3|4|5|6|7|8|9|10|11|12", "0")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkUpgradeQueen")
@@ -511,7 +517,7 @@ $y += 30
 		$lblBoostWarden = GUICtrlCreateLabel(GetTranslated(623,17,"Grand Warden") & " "&$textBoostLeft, $x + 20, $y + 4, -1, -1)
  		$txtTip = GetTranslated(623,18, "Use this to boost your Grand Warden with GEMS! Use with caution!")
  		_GUICtrlSetTip(-1, $txtTip)
-		$cmbBoostWarden = GUICtrlCreateCombo("", $x + 200, $y, 30, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbBoostWarden = GUICtrlCreateCombo("", $x + 185, $y, 40, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetData(-1, "0|1|2|3|4|5|6|7|8|9|10|11|12", "0")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkUpgradeWarden")
@@ -534,17 +540,29 @@ $y += 50
 	$lbBoostBarracksHoursED = GUICtrlCreateLabel("X", $x + 213, $y+2, 11, 11)
 	$y += 15
 	$chkBoostBarracksHours0 = GUICtrlCreateCheckbox("", $x + 30, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED )
 	$chkBoostBarracksHours1 = GUICtrlCreateCheckbox("", $x + 45, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED )
 	$chkBoostBarracksHours2 = GUICtrlCreateCheckbox("", $x + 60, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED )
 	$chkBoostBarracksHours3 = GUICtrlCreateCheckbox("", $x + 75, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED )
 	$chkBoostBarracksHours4 = GUICtrlCreateCheckbox("", $x + 90, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED )
 	$chkBoostBarracksHours5 = GUICtrlCreateCheckbox("", $x + 105, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED )
 	$chkBoostBarracksHours6 = GUICtrlCreateCheckbox("", $x + 120, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED )
 	$chkBoostBarracksHours7 = GUICtrlCreateCheckbox("", $x + 135, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED )
 	$chkBoostBarracksHours8 = GUICtrlCreateCheckbox("", $x + 150, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED )
 	$chkBoostBarracksHours9 = GUICtrlCreateCheckbox("", $x + 165, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED )
 	$chkBoostBarracksHours10 = GUICtrlCreateCheckbox("", $x + 180, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED )
 	$chkBoostBarracksHours11 = GUICtrlCreateCheckbox("", $x + 195, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED )
 	$chkBoostBarracksHoursE1 = GUICtrlCreateCheckbox("", $x + 211, $y+1, 13, 13, BitOR($BS_PUSHLIKE, $BS_ICON))
 	GUICtrlSetImage(-1, $pIconLib, $eIcnGoldStar, 0)
 	GUICtrlSetState(-1, $GUI_UNCHECKED)
@@ -590,7 +608,7 @@ GUICtrlCreateTabItem("")
 $hGUI_ARMY_TAB_ITEM3 = GUICtrlCreateTabItem(GetTranslated(641,1,"Options"))
 	$x = $xStart + 25
 	$y = $yStart + 45
-	$grpCloseWaitTrain = GUICtrlCreateGroup(GetTranslated(641, 2, "Training Idle Time"), $x - 20, $y - 20, 151, 215)
+	$grpCloseWaitTrain = GUICtrlCreateGroup(GetTranslated(641, 2, "Training Idle Time"), $x - 20, $y - 20, 151, 266)
 		;
 		$chkCloseWaitEnable = GUICtrlCreateCheckbox(GetTranslated(641, 3, "Close While Training"),$x - 12, $y, 140, -1)
 			$txtTip = GetTranslated(641, 4, "Option will exit CoC game for time required to complete TROOP training when SHIELD IS ACTIVE")& @CRLF & _
@@ -646,8 +664,24 @@ $hGUI_ARMY_TAB_ITEM3 = GUICtrlCreateTabItem(GetTranslated(641,1,"Options"))
 			GetTranslated(641,23,"maximum random percent entered to appear more human like")
 			GUICtrlSetData(-1, "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15", "10")
 			_GUICtrlSetTip(-1, $txtTip)
-		$lblCloseWaitRdmPercent = GUICtrlCreateLabel("%",$x + 84, $y+3, -1, 18)
-		_GUICtrlSetTip(-1, $txtTip)
+		$lblCloseWaitRdmPercent = GUICtrlCreateLabel("%",$x + 84, $y + 3, -1, -1)
+			_GUICtrlSetTip(-1, $txtTip)
+	$y +=	28
+		$lblCloseWaitingTroops = GUICtrlCreateLabel("Minimum Time To Close : ", $x - 12, $y, -1, -1)
+			$txtTip = "Will be close CoC If train time troops >= (Minimum time required to close)" & @CRLF & _
+						"Just stay in the main screen if train time troops < (Minimum time required to close)"
+			GUICtrlSetState(-1, $GUI_UNCHECKED)
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "chkCloseWaitEnable")
+	$y +=	22
+		$lblSymbolWaiting = GUICtrlCreateLabel(">",$x + 26, $y + 3, -1, -1)
+			$txtTip = "Enter number Minimum time to close in minutes for close CoC which you want, Default Is (2)"
+			_GUICtrlSetTip(-1, $txtTip)
+		$cmbMinimumTimeClose = GUICtrlCreateCombo("", $x + 36, $y, 40, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			GUICtrlSetData(-1, "2|3|4|5|6|7|8|9|10", "2")
+			_GUICtrlSetTip(-1, $txtTip)
+		$lblWaitingInMinutes = GUICtrlCreateLabel("Min",$x + 84, $y + 3, -1, -1)
+			_GUICtrlSetTip(-1, $txtTip)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 	$y += 53
@@ -747,114 +781,6 @@ $y = $yStart + 45 + 184
 		_GUICtrlSetTip(-1, $txtTip)
 		GUICtrlSetOnEvent(-1, "btnDarkTroopOrderSet")
 	$ImgDarkTroopOrderSet = GUICtrlCreateIcon ($pIconLib, $eIcnSilverStar, $x + 98, $y+1, 18, 18)
-
-	GUICtrlCreateGroup("", -99, -99, 1, 1)
-For $i = $grpTrainOrder To $ImgDarkTroopOrderSet
-	GUICtrlSetState($i, $GUI_HIDE)
-Next
-GUICtrlCreateTabItem("")
-
-
-$hGUI_ARMY_TAB_ITEM4 = GUICtrlCreateTabItem(GetTranslated(600,20,"Old Train"))
-
-Local $x = $xStart +  25, $y = $yStart +  80 + 25 - 60
-	$grpTroopComp = GUICtrlCreateGroup(GetTranslated(621,1, "Elixir Troops"), $x - 20, $y - 20, 142, 50)
-		$x -= 5
-		$cmbTroopComp = GUICtrlCreateCombo("", $x - 10, $y, 130, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-			_GUICtrlSetTip(-1, GetTranslated(621,2, "Set the type of Army composition.") & @CRLF & GetTranslated(621,3, "'Use Barrack Mode' or 'Custom Army' for manual compositions."))
-			GUICtrlSetOnEvent(-1, "cmbTroopComp")
-			GUICtrlSetData(-1, GetTranslated(621,4, "Preset: Archers") &"|" & GetTranslated(621,5, "Preset: Barbarians") & "|" & GetTranslated(621,6, "Preset: Goblins") & "|" & GetTranslated(621,7, "Preset: B.Arch") & "|" &  GetTranslated(621,8, "Preset: B.A.G.G.") & "|" & GetTranslated(621,9, "Preset: B.A.Giant") & "|" & GetTranslated(621,10, "Preset: B.A.Goblin")  &"|" & GetTranslated(621,11, "Preset: B.A.G.G.Wall") & "|" & GetTranslated(621,12, "Use Barrack Mode") & "|" & GetTranslated(621,13, "Custom Army"), GetTranslated(621,13, -1))
-			GUICtrlSetState(-1, $GUI_DISABLE)
-	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
-Local $x = $xStart +  25, $y = $yStart +  75 + 25
-	$grpTroops = GUICtrlCreateGroup(GetTranslated(621,14, "Troops"), $x - 20, $y - 20, 142, 95)
-
-	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
-Local $x = $xStart + 20, $y = $yStart +  75 + 25
-	$grpBarrackMode = GUICtrlCreateGroup(GetTranslated(621,17, "Barrack Mode"), $x - 15, $y -20, 142, 117 )
-		GUICtrlSetState(-1, $GUI_HIDE)
-		$lblBarrack1 = GUICtrlCreateLabel("1:", $x - 5, $y + 5, -1, -1)
-		GUICtrlSetState(-1, $GUI_HIDE)
-		$cmbBarrack1 = GUICtrlCreateCombo("", $x + 10, $y, 100, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-			$txtTip = GetTranslated(621,18, "Set the Troops to make in Barrack")
-			_GUICtrlSetTip(-1, $txtTip & " 1.")
-			GUICtrlSetData(-1,$sTxtElixirTroops, $sTxtBarbarians)
-			;GUICtrlSetState(-1, $GUI_DISABLE)
-			GUICtrlSetState(-1, $GUI_HIDE)
-		$y += 2
-		$lblBarrack2 = GUICtrlCreateLabel("2:", $x - 5, $y + 26, -1, -1)
-		GUICtrlSetState(-1, $GUI_HIDE)
-		$cmbBarrack2 = GUICtrlCreateCombo("", $x + 10, $y + 21, 100, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-			_GUICtrlSetTip(-1, $txtTip & " 2.")
-			GUICtrlSetData(-1, $sTxtElixirTroops, $sTxtArchers)
-			;GUICtrlSetState(-1, $GUI_DISABLE)
-			GUICtrlSetState(-1, $GUI_HIDE)
-		$y += 2
-		$lblBarrack3 = GUICtrlCreateLabel("3:", $x - 5, $y + 47, -1, -1)
-		GUICtrlSetState(-1, $GUI_HIDE)
-		$cmbBarrack3 = GUICtrlCreateCombo("", $x + 10, $y + 42, 100, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-			_GUICtrlSetTip(-1, $txtTip & " 3.")
-			GUICtrlSetData(-1, $sTxtElixirTroops, $sTxtArchers)
-			;GUICtrlSetState(-1, $GUI_DISABLE)
-			GUICtrlSetState(-1, $GUI_HIDE)
-		$y += 2
-		$lblBarrack4 = GUICtrlCreateLabel("4:", $x - 5, $y + 68, -1, -1)
-		GUICtrlSetState(-1, $GUI_HIDE)
-		$cmbBarrack4 = GUICtrlCreateCombo("", $x + 10, $y + 63, 100, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-			_GUICtrlSetTip(-1, $txtTip & " 4.")
-			GUICtrlSetData(-1, $sTxtElixirTroops, $sTxtGoblins)
-			;GUICtrlSetState(-1, $GUI_DISABLE)
-			GUICtrlSetState(-1, $GUI_HIDE)
-	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
-Local $x = $xStart +  160 + 5, $y = $yStart +  45
-	$grpRaidComp = GUICtrlCreateGroup(GetTranslated(621,19, "Army Strength"), $x - 15, $y - 20, 139, 50)
-
-	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
-Local $x = $xStart +  160 + 5, $y = $yStart +  75 + 25
-	$grpOtherTroops = GUICtrlCreateGroup(GetTranslated(621,22, "Add. Troops"), $x - 15, $y - 20, 139, 247)
-
-	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
-Local $x = $xStart +  160 + 148, $y = $yStart +  80 + 25 - 60
-	$grpDarkTroopComp = GUICtrlCreateGroup(GetTranslated(621,23, "Dark Elixir Troops"), $x - 15, $y - 20, 140, 50)
-		$cmbDarkTroopComp = GUICtrlCreateCombo("", $x - 10, $y, 125, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-			_GUICtrlSetTip(-1, GetTranslated(621,2, -1) & @CRLF & GetTranslated(621,3, -1))
-			GUICtrlSetOnEvent(-1, "cmbDarkTroopComp")
-			GUICtrlSetData(-1,  GetTranslated(621,12, -1) & "|" &GetTranslated(621,13, -1) & "|" & $sTxtNone, GetTranslated(621,13, -1))
-			GUICtrlSetState(-1, $GUI_DISABLE)
-	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
-	$y = $yStart +  75 + 25
-	$grpDarkTroops = GUICtrlCreateGroup(GetTranslated(621,24, "Add. Dark Troops"), $x - 15, $y - 20, 140, 200)
-
-	GUICtrlCreateGroup("", -99, -99, 1, 1)
-	$y = $yStart +  75 + 25
-	$grpDarkBarrackMode = GUICtrlCreateGroup(GetTranslated(621,25, "Dark Barracks Troops"), $x - 15, $y -20, 140, 76 )
-		GUICtrlSetState(-1, $GUI_HIDE)
-		$lblDarkBarrack1 = GUICtrlCreateLabel("1:", $x - 5, $y + 5, -1, -1)
-		GUICtrlSetState(-1, $GUI_HIDE)
-		$cmbDarkBarrack1 = GUICtrlCreateCombo("", $x + 10, $y, 100, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-			$txtTip = GetTranslated(621,18, -1)
-			_GUICtrlSetTip(-1, $txtTip & " 1.")
-			GUICtrlSetData(-1, $sTxtMinions & "|" & $sTxtHogRiders & "|" & $sTxtValkyries & "|" & $sTxtGolems & "|" & $sTxtWitches & "|" & $sTxtLavaHounds & "|" & $sTxtBowlers & "|" & $sTxtNone, $sTxtMinions)
-			GUICtrlSetState(-1, $GUI_DISABLE)
-			GUICtrlSetState(-1, $GUI_HIDE)
-		$y += 2
-		$lblDarkBarrack2 = GUICtrlCreateLabel("2:", $x - 5, $y + 26, -1, -1)
-		GUICtrlSetState(-1, $GUI_HIDE)
-		$cmbDarkBarrack2 = GUICtrlCreateCombo("", $x + 10, $y + 21, 100, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-			_GUICtrlSetTip(-1, $txtTip & " 2.")
-			GUICtrlSetData(-1, $sTxtMinions & "|" & $sTxtHogRiders & "|" & $sTxtValkyries & "|" & $sTxtGolems & "|" & $sTxtWitches & "|" & $sTxtLavaHounds & "|" & $sTxtBowlers & "|" & $sTxtNone, $sTxtMinions)
-			GUICtrlSetState(-1, $GUI_DISABLE)
-			GUICtrlSetState(-1, $GUI_HIDE)
-	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
-	$x = 293
-	$y = 282
 
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 

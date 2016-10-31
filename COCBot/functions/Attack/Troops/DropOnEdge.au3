@@ -34,7 +34,7 @@ Func DropOnEdge($troop, $edge, $number, $slotsPerEdge = 0, $edge2 = -1, $x = -1,
 			AttackClick($edge[2][0], $edge[2][1], $number, $iDelayDropOnEdge1, 0, "#0102")
 			AttackClick($edge2[2][0], $edge2[2][1], $number, $iDelayDropOnEdge1, $iDelayDropOnEdge3, "#0103")
 		EndIf
-	ElseIf $slotsPerEdge = 2 Then ; Drop on 2 points per edge
+	ElseIf $slotsPerEdge = 2 And $FourFingers = 0 Then ; Drop on 2 points per edge
 		Local $half = Ceiling($number / 2)
 		AttackClick($edge[1][0], $edge[1][1], $half, SetSleep(0), 0, "#0104")
 		If $edge2 <> -1 Then

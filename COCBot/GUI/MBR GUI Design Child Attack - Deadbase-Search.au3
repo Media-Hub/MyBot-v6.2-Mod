@@ -120,6 +120,21 @@ Local $x = 25, $y = 45
 			GetTranslated(625,101, "Warning: Do not enable unless you have spell factory or bot will not attack!")
  			_GUICtrlSetTip(-1, $txtTip)
  			GUICtrlSetOnEvent(-1, "chkDBSpellsWait")
+
+
+		$chkDBWaitForCastleSpell = GUICtrlCreateCheckbox("Wait to get Castle Spell", $x, $y + 25, -1, -1)
+			$txtTip = "Wait until Someone Donate you an Spell"
+			_GUICtrlSetTip(-1, $txtTip)
+			GUICtrlSetOnEvent(-1, "chkDBWaitForCCSpell")
+
+		$cmbDBWaitForCastleSpell = GUICtrlCreateCombo("Any", $x, $y + 50, -1, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			$txtTip = "Wait until Someone Donate this Spell, Else remove other spells in Castle and Request AGAIN"
+			GUICtrlSetData(-1, "Poison|EarthQuake|Haste|Skeleton")
+			_GUICtrlSetTip(-1, $txtTip)
+
+		$chkDBWaitForCastleTroops = GUICtrlCreateCheckbox("Wait to for Castle troops to be full", $x, $y + 75, -1, -1)
+			$txtTip = "Wait until your Clan Castle be Full"
+			_GUICtrlSetTip(-1, $txtTip)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 Local $x = 220, $y = 45
@@ -251,7 +266,7 @@ Local $x = 220, $y = 45
 			$txtTip = GetTranslated(625,62, "Search for a base that has Inferno below this level")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkDBWeakBase")
-		$cmbWeakInferno[$DB] = GUICtrlCreateCombo("", $x + 17, $y, 50, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbWeakInferno[$DB] = GUICtrlCreateCombo("", $x + 19, $y, 50, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			$txtTip = GetTranslated(625,52, "Set the Max. level of the Inferno Tower to search for on a village to attack.")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetData(-1, "-|Lvl 1|Lvl 2|Lvl 3", "Lvl 2")
@@ -263,7 +278,7 @@ Local $x = 220, $y = 45
 			$txtTip = GetTranslated(625,63, "Search for a base that has Eagle Artillery below this level")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkDBWeakBase")
-		$cmbWeakEagle[$DB] = GUICtrlCreateCombo("", $x + 17, $y, 50, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$cmbWeakEagle[$DB] = GUICtrlCreateCombo("", $x + 19, $y, 50, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			$txtTip = GetTranslated(625,53, "Set the Max. level of the Eagle Artillery to search for on a village to attack.")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetData(-1, "-|Lvl 1|Lvl 2", "Lvl 1")

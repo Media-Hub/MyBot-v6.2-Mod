@@ -134,7 +134,7 @@ Func ResetLabUpgradeTime()
 	Local $stext = @CRLF & GetTranslated(614, 13, "Are you 100% sure you want to reset lab upgrade timer?") & @CRLF & _
 			GetTranslated(614, 14, "Click OK to reset") & @CRLF & GetTranslated(614, 15, "Or Click Cancel to exit") & @CRLF
 	Local $MsgBox = _ExtMsgBox(0, GetTranslated(614, 16, "Reset timer") & "|" & GetTranslated(614, 17, "Cancel and Return"), GetTranslated(614, 18, "Reset laboratory upgrade timer?"), $stext, 120, $frmBot)
-	If $DebugSetlog = 1 Then Setlog("$MsgBox= " & $MsgBox, $COLOR_PURPLE)
+	If $DebugSetlog = 1 Then Setlog("$MsgBox= " & $MsgBox, $COLOR_DEBUG) ;Debug
 	If $MsgBox = 1 Then
 		$sLabUpgradeTime = ""
 		$txtTip = GetTranslated(614, 8, "Visible Red button means that laboratory upgrade in process") & @CRLF & _

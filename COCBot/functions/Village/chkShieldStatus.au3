@@ -30,15 +30,15 @@ Func chkShieldStatus($bChkShield = True, $bForceChkPBT = False)
 
 		If IsArray($Result) Then
 			If $debugSetlog = 1 Then
-				;Setlog("getShieldInfo() return String|String|String : " & $Result[0] & "|" & $Result[1] & "|" & $Result[2], $COLOR_PURPLE)
-				Setlog("Shield expires in: " & _DateDiff('n', $Result[2], _NowCalc()) & " Minutes", $COLOR_PURPLE)
+				;Setlog("getShieldInfo() return String|String|String : " & $Result[0] & "|" & $Result[1] & "|" & $Result[2], $COLOR_DEBUG) ;Debug
+				Setlog("Shield expires in: " & _DateDiff('n', $Result[2], _NowCalc()) & " Minutes", $COLOR_DEBUG) ;Debug
 			EndIf
 
 			If _DateIsValid($aShieldStatus[2]) Then ; if existing global shield time is valid
 				$ichkTime = Abs(Int(_DateDiff('s', $aShieldStatus[2], $Result[2]))) ; compare old and new time
 				If $ichkTime > 60 Then ; test if more than 60 seconds different in case of attack while shield has reduced time
 					$bForceChkPBT = True ; update PB time
-					If $debugSetlog = 1 Then Setlog("Shield time changed: " & $ichkTime & " Sec, Force PBT OCR: " & $bForceChkPBT, $COLOR_MAROON)
+					If $debugSetlog = 1 Then Setlog("Shield time changed: " & $ichkTime & " Sec, Force PBT OCR: " & $bForceChkPBT, $COLOR_DEBUG) ;Debug
 				EndIf
 			EndIf
 
@@ -58,12 +58,12 @@ Func chkShieldStatus($bChkShield = True, $bForceChkPBT = False)
 						$bDonationEnabled = True
 						$MeetCondStop = False
 					Else
-						If $debugSetlog = 1 Then Setlog("Halt With Shield: Shield not found...", $COLOR_PURPLE)
+						If $debugSetlog = 1 Then Setlog("Halt With Shield: Shield not found...", $COLOR_DEBUG) ;Debug
 					EndIf
 				EndIf
 			EndIf
 		Else
-			If $debugSetlog = 1 Then Setlog("Bad getShieldInfo() return value: " & $Result, $COLOR_RED)
+			If $debugSetlog = 1 Then Setlog("Bad getShieldInfo() return value: " & $Result, $COLOR_DEBUG) ;Debug
 			If _Sleep($iDelayRespond) Then Return
 
 			For $i = 0 To UBound($aShieldStatus) - 1 ; clear global shieldstatus if no shield data returned
@@ -79,7 +79,7 @@ Func chkShieldStatus($bChkShield = True, $bForceChkPBT = False)
 		$ichkPBTime = Int(_DateDiff('s', $sPBStartTime, _NowCalc())) ; compare existing shield date/time to now.
 		If $ichkPBTime >= 295 Then
 			$bForceChkPBT = True ; test if PBT date/time in more than 5 minutes past, force update
-			If $debugSetlog = 1 Then Setlog("Found old PB time= " & $ichkPBTime & " Seconds, Force update:" & $bForceChkPBT, $COLOR_MAROON)
+			If $debugSetlog = 1 Then Setlog("Found old PB time= " & $ichkPBTime & " Seconds, Force update:" & $bForceChkPBT, $COLOR_DEBUG) ;Debug
 		EndIf
 	EndIf
 
@@ -90,12 +90,12 @@ Func chkShieldStatus($bChkShield = True, $bForceChkPBT = False)
 		$Result = getPBTime() ; Get time in future that PBT starts
 
 		If @error Then Setlog("chkShieldStatus getPBTime OCR error= " & @error & ", Extended= " & @extended, $COLOR_RED)
-		;If $debugSetlog = 1 Then Setlog("getPBTime() returned: " & $Result, $COLOR_PURPLE)
+		;If $debugSetlog = 1 Then Setlog("getPBTime() returned: " & $Result, $COLOR_DEBUG) ;Debug
 		If _Sleep($iDelayRespond) Then Return
 
 		If _DateIsValid($Result) Then
 			$iTimeTillPBTstartMin = Int(_DateDiff('n', $Result, _NowCalc())) ; time in seconds
-			If $debugSetlog = 1 Then Setlog("Personal Break starts in: " & $iTimeTillPBTstartMin & "Minutes", $COLOR_PURPLE)
+			If $debugSetlog = 1 Then Setlog("Personal Break starts in: " & $iTimeTillPBTstartMin & "Minutes", $COLOR_DEBUG) ;Debug
 
 			If $iTimeTillPBTstartMin < -(Int($iValuePBTimeForcedExit)) Then
 				$sPBStartTime = _DateAdd('n', -(Int($iValuePBTimeForcedExit)), $Result) ; subtract GUI time setting from PB start time to set early forced break time
@@ -104,7 +104,7 @@ Func chkShieldStatus($bChkShield = True, $bForceChkPBT = False)
 			Else
 				$sPBStartTime = "" ; clear value, can not log off ealy.
 			EndIf
-			If $debugSetlog = 1 Then Setlog("Early Log Off time=" & $sPBStartTime & ", In " & _DateDiff('n', $sPBStartTime, _NowCalc()) & " Minutes", $COLOR_PURPLE)
+			If $debugSetlog = 1 Then Setlog("Early Log Off time=" & $sPBStartTime & ", In " & _DateDiff('n', $sPBStartTime, _NowCalc()) & " Minutes", $COLOR_DEBUG) ;Debug
 		Else
 			Setlog("Bad getPBTtime() return value: " & $Result, $COLOR_RED)
 			$sPBStartTime = "" ; reset to force update next pass

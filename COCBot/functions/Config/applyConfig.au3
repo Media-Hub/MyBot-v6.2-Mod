@@ -651,7 +651,7 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 		GUICtrlSetState($chkABEndNoResources, $GUI_UNCHECKED)
 	EndIf
 
-#CS
+#cs
 
 	GUICtrlSetData($txtTSTimeStopAtk, $sTimeStopAtk[$TS])
 	If $iChkTimeStopAtk[$TS] = 1 Then
@@ -689,38 +689,45 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	Else
 		GUICtrlSetState($chkTSEndNoResources, $GUI_UNCHECKED)
 	EndIf
- #CE
+
+#ce
 
 	;Troop Settings--------------------------------------------------------------------------
-	_GUICtrlComboBox_SetCurSel($cmbTroopComp, $iCmbTroopComp)
-	_GUICtrlComboBox_SetCurSel($cmbDarkTroopComp, $iCmbDarkTroopComp)
 	For $i = 0 To UBound($TroopName) - 1
-		GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), Eval($TroopName[$i] & "Comp"))
+		If Eval($TroopName[$i] & "Comp") <> 0 Then
+			GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), Eval($TroopName[$i] & "Comp"))
+		Else
+			GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), 0)
+		EndIf
 	Next
 	For $i = 0 To UBound($TroopDarkName) - 1
-		GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), Eval($TroopDarkName[$i] & "Comp"))
+		If Eval($TroopDarkName[$i] & "Comp") <> 0 Then
+			GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), Eval($TroopDarkName[$i] & "Comp"))
+		Else
+			GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), 0)
+		EndIf
 	Next
 	SetComboTroopComp()
-	SetComboDarkTroopComp()
 	lblTotalCount()
-
-	_GUICtrlComboBox_SetCurSel($cmbBarrack1, $barrackTroop[0])
-	_GUICtrlComboBox_SetCurSel($cmbBarrack2, $barrackTroop[1])
-	_GUICtrlComboBox_SetCurSel($cmbBarrack3, $barrackTroop[2])
-	_GUICtrlComboBox_SetCurSel($cmbBarrack4, $barrackTroop[3])
-
-	_GUICtrlComboBox_SetCurSel($cmbDarkBarrack1, $darkBarrackTroop[0])
-	_GUICtrlComboBox_SetCurSel($cmbDarkBarrack2, $darkBarrackTroop[1])
 
 	GUICtrlSetData($txtFullTroop, $fulltroop)
 
 	If $ichkCloseWaitEnable = 1 Then
 		GUICtrlSetState($chkCloseWaitEnable, $GUI_CHECKED)
 		_GUI_Value_STATE("ENABLE", $groupCloseWaitTrain)
+		GUICtrlSetState($lblCloseWaitingTroops, $GUI_ENABLE)
+		GUICtrlSetState($cmbMinimumTimeClose, $GUI_ENABLE)
+		GUICtrlSetState($lblSymbolWaiting, $GUI_ENABLE)
+		GUICtrlSetState($lblWaitingInMinutes, $GUI_ENABLE)
 	ElseIf $ichkCloseWaitEnable = 0 Then
 		GUICtrlSetState($chkCloseWaitEnable, $GUI_UNCHECKED)
 		_GUI_Value_STATE("DISABLE", $groupCloseWaitTrain)
+		GUICtrlSetState($lblCloseWaitingTroops, $GUI_DISABLE)
+		GUICtrlSetState($cmbMinimumTimeClose, $GUI_DISABLE)
+		GUICtrlSetState($lblSymbolWaiting, $GUI_DISABLE)
+		GUICtrlSetState($lblWaitingInMinutes, $GUI_DISABLE)
 	EndIf
+	GUICtrlSetData($cmbMinimumTimeClose, $icmbMinimumTimeClose)
 	If $ichkCloseWaitTrain = 1 Then
 		GUICtrlSetState($chkCloseWaitTrain, $GUI_CHECKED)
 	ElseIf $ichkCloseWaitTrain = 0 Then
@@ -1761,6 +1768,33 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	EndIf
 	GUICtrlSetData($PushBulletTokenValue, $PushBulletToken)
 	GUICtrlSetData($OrigPushBullet, $iOrigPushBullet)
+		;Scheduler
+	If $iPlannedNotifyHoursEnable = 1 Then
+		GUICtrlSetState($chkNotifyHours, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkNotifyHours, $GUI_UNCHECKED)
+	EndIf
+	chkNotifyHours()
+	For $i = 0 To 23
+		If $iPlannedNotifyHours[$i] = 1 Then
+			GUICtrlSetState(Eval("chkNotifyHours" & $i), $GUI_CHECKED)
+		Else
+			GUICtrlSetState(Eval("chkNotifyHours" & $i), $GUI_UNCHECKED)
+		EndIf
+	Next
+	If $iPlannedNotifyWeekDaysEnable = 1 Then
+		GUICtrlSetState($chkNotifyWeekDays, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkNotifyWeekDays, $GUI_UNCHECKED)
+	EndIf
+	chkNotifyWeekDays()
+	For $i = 0 To 6
+		If $iPlannedNotifyWeekDays[$i] = 1 Then
+			GUICtrlSetState(Eval("chkNotifyWeekdays" & $i), $GUI_CHECKED)
+		Else
+			GUICtrlSetState(Eval("chkNotifyWeekdays" & $i), $GUI_UNCHECKED)
+		EndIf
+	Next
 
 	; apply upgrade buildings -------------------------------------------------------------------
 	;Lab
@@ -2023,6 +2057,13 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	Else
 		GUICtrlSetState($chkdebugOCRDonate, $GUI_UNCHECKED)
 	EndIf
+
+	If $ichkUseQTrain = 1 Then
+		GUICtrlSetState($hChk_UseQTrain, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($hChk_UseQTrain, $GUI_UNCHECKED)
+	EndIf
+	chkUseQTrain()
 
 	;forced Total Camp values
 	If $ichkTotalCampForced = 1 Then
@@ -2589,6 +2630,33 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	EndIf
 	chkABSpellsWait()
 
+	If $iChkWaitForCastleSpell[$DB] = 1 Then
+		GUICtrlSetState($chkDBWaitForCastleSpell, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkDBWaitForCastleSpell, $GUI_UNCHECKED)
+	EndIf
+	If $iChkWaitForCastleSpell[$LB] = 1 Then
+		GUICtrlSetState($chkABWaitForCastleSpell, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkABWaitForCastleSpell, $GUI_UNCHECKED)
+	EndIf
+	If $iChkWaitForCastleTroops[$DB] = 1 Then
+		GUICtrlSetState($chkDBWaitForCastleTroops, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkDBWaitForCastleTroops, $GUI_UNCHECKED)
+	EndIf
+	If $iChkWaitForCastleTroops[$LB] = 1 Then
+		GUICtrlSetState($chkABWaitForCastleTroops, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkABWaitForCastleTroops, $GUI_UNCHECKED)
+	EndIf
+
+	chkDBWaitForCCSpell()
+	chkABWaitForCCSpell()
+
+	_GUICtrlComboBox_SetCurSel($cmbDBWaitForCastleSpell, $iCmbWaitForCastleSpell[$DB])
+	_GUICtrlComboBox_SetCurSel($cmbABWaitForCastleSpell, $iCmbWaitForCastleSpell[$LB])
+
 	;Apply to switch Attack Standard after THSnipe End ==>
 	If $ichkTSActivateCamps2 = 1 Then
 		GUICtrlSetState($chkTSActivateCamps2, $GUI_CHECKED)
@@ -2618,133 +2686,15 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 		GUICtrlSetState($hRadio_Army3, $GUI_UNCHECKED)
 	EndIf
 
-	; Profile Switch
-	If $ichkGoldSwitchMax = 1 Then
-		GUICtrlSetState($chkGoldSwitchMax, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkGoldSwitchMax, $GUI_UNCHECKED)
-	EndIf
-	_GUICtrlComboBox_SetCurSel($cmbGoldMaxProfile, $icmbGoldMaxProfile)
-	GUICtrlSetData($txtMaxGoldAmount, $itxtMaxGoldAmount)
-	If $ichkGoldSwitchMin = 1 Then
-		GUICtrlSetState($chkGoldSwitchMin, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkGoldSwitchMin, $GUI_UNCHECKED)
-	EndIf
-	_GUICtrlComboBox_SetCurSel($cmbGoldMinProfile, $icmbGoldMinProfile)
-	GUICtrlSetData($txtMinGoldAmount, $itxtMinGoldAmount)
-
-	If $ichkElixirSwitchMax = 1 Then
-		GUICtrlSetState($chkElixirSwitchMax, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkElixirSwitchMax, $GUI_UNCHECKED)
-	EndIf
-	_GUICtrlComboBox_SetCurSel($cmbElixirMaxProfile, $icmbElixirMaxProfile)
-	GUICtrlSetData($txtMaxElixirAmount, $itxtMaxElixirAmount)
-	If $ichkElixirSwitchMin = 1 Then
-		GUICtrlSetState($chkElixirSwitchMin, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkElixirSwitchMin, $GUI_UNCHECKED)
-	EndIf
-	_GUICtrlComboBox_SetCurSel($cmbElixirMinProfile, $icmbElixirMinProfile)
-	GUICtrlSetData($txtMinElixirAmount, $itxtMinElixirAmount)
-
-	If $ichkDESwitchMax = 1 Then
-		GUICtrlSetState($chkDESwitchMax, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkDESwitchMax, $GUI_UNCHECKED)
-	EndIf
-	_GUICtrlComboBox_SetCurSel($cmbDEMaxProfile, $icmbDEMaxProfile)
-	GUICtrlSetData($txtMaxDEAmount, $itxtMaxDEAmount)
-	If $ichkDESwitchMin = 1 Then
-		GUICtrlSetState($chkDESwitchMin, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkDESwitchMin, $GUI_UNCHECKED)
-	EndIf
-	_GUICtrlComboBox_SetCurSel($cmbDEMinProfile, $icmbDEMinProfile)
-	GUICtrlSetData($txtMinDEAmount, $itxtMinDEAmount)
-
-	If $ichkTrophySwitchMax = 1 Then
-		GUICtrlSetState($chkTrophySwitchMax, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkTrophySwitchMax, $GUI_UNCHECKED)
-	EndIf
-	_GUICtrlComboBox_SetCurSel($cmbTrophyMaxProfile, $icmbTrophyMaxProfile)
-	GUICtrlSetData($txtMaxTrophyAmount, $itxtMaxTrophyAmount)
-	If $ichkTrophySwitchMin = 1 Then
-		GUICtrlSetState($chkTrophySwitchMin, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkTrophySwitchMin, $GUI_UNCHECKED)
-	EndIf
-	_GUICtrlComboBox_SetCurSel($cmbTrophyMinProfile, $icmbTrophyMinProfile)
-	GUICtrlSetData($txtMinTrophyAmount, $itxtMinTrophyAmount)
-
-	; SwitchAcc- DEMEN
-	Switch $ProfileType
-	Case 1
-		GUICtrlSetState($radActiveProfile, $GUI_CHECKED)
-	Case 2
-		GUICtrlSetState($radDonateProfile, $GUI_CHECKED)
-	Case 3
-		GUICtrlSetState($radIdleProfile, $GUI_CHECKED)
-	EndSwitch
-
-	_GUICtrlCombobox_SetCurSel($cmbMatchProfileAcc, $MatchProfileAcc)
-
-	If $ichkSwitchAcc = 1 Then
-		GUICtrlSetState($chkSwitchAcc, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkSwitchAcc, $GUI_UNCHECKED)
-	EndIf
-
-	If $ichkSmartSwitch = 1 Then
-		GUICtrlSetState($radSmartSwitch, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($radNormalSwitch, $GUI_CHECKED)
-	EndIf
-
-	chkSwitchAcc()
-
-
-	_GUICtrlCombobox_SetCurSel($cmbTotalAccount, $icmbTotalCoCAcc)	; 0 = AutoDetect
-
-	If $ichkCloseTraining >= 1 Then
-		GUICtrlSetState($chkUseTrainingClose, $GUI_CHECKED)
-		If $ichkCloseTraining = 1 Then
-			GUICtrlSetState($radCloseCoC, $GUI_CHECKED)
-		Else
-			GUICtrlSetState($radCloseAndroid, $GUI_CHECKED)
-		EndIf
-	Else
-		GUICtrlSetState($chkUseTrainingClose, $GUI_UNCHECKED)
-	EndIf
-
-	If $ichkCloseTraining = 1 Then
-		GUICtrlSetState($chkUseTrainingClose, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkUseTrainingClose, $GUI_UNCHECKED)
-	EndIf
-
-	; Restart Android after long search - DEMEN
-	If $iChkRestartAndroid = 1 Then
-		GUICtrlSetState($chkRestartAndroid, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkRestartAndroid, $GUI_UNCHECKED)
-	EndIf
-	chkRestartAndroid()
-
-	GUICtrlSetData($txtRestartAndroidSearchLimit, $iRestartAndroidSearchLimit)
-	GUICtrlSetData($txtRestartAndroidTrainError, $iRestartAndroidTrainError)
-
-#cs	; SmartZap Settings
+;==============================================================
+; SmartZap - Added by NTS team
+;==============================================================
 	If $ichkSmartZap = 1 Then
-		GUICtrlSetState($chkExtLightSpell, $GUI_DISABLE)
 		GUICtrlSetState($chkSmartLightSpell, $GUI_CHECKED)
 		GUICtrlSetState($chkSmartZapDB, $GUI_ENABLE)
 		GUICtrlSetState($chkSmartZapSaveHeroes, $GUI_ENABLE)
 		GUICtrlSetState($txtMinDark, $GUI_ENABLE)
 	Else
-		GUICtrlSetState($chkExtLightSpell, $GUI_ENABLE)
 		GUICtrlSetState($chkSmartZapDB, $GUI_DISABLE)
 		GUICtrlSetState($chkSmartZapSaveHeroes, $GUI_DISABLE)
 		GUICtrlSetState($txtMinDark, $GUI_DISABLE)
@@ -2762,18 +2712,49 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	EndIf
 	GUICtrlSetData($txtMinDark, $itxtMinDE)
 
-	; ExtremeZap
-	If $ichkExtLightSpell = 1 Then
-		GUICtrlSetState($chkSmartLightSpell, $GUI_DISABLE)
-		GUICtrlSetState($chkExtLightSpell, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkSmartLightSpell, $GUI_ENABLE)
-		GUICtrlSetState($chkExtLightSpell, $GUI_UNCHECKED)
-	EndIf
-	ExtLightSpell()
+;==============================================================
+; SmartZap - Added by NTS team
+;==============================================================
 
-	GUICtrlSetData($txtMinDark, $itxtMinDE)
-#ce
+	; SwitchAcc- DEMEN
+	Switch $ProfileType
+	Case 1
+	   GUICtrlSetState($radActiveProfile, $GUI_CHECKED)
+	Case 2
+	   GUICtrlSetState($radDonateProfile, $GUI_CHECKED)
+	Case 3
+	   GUICtrlSetState($radIdleProfile, $GUI_CHECKED)
+	EndSwitch
+
+	_GUICtrlCombobox_SetCurSel($cmbMatchProfileAcc, $MatchProfileAcc)
+
+ 	If $ichkSwitchAcc = 1 Then
+ 		GUICtrlSetState($chkSwitchAcc, $GUI_CHECKED)
+ 	Else
+ 		GUICtrlSetState($chkSwitchAcc, $GUI_UNCHECKED)
+ 	EndIf
+
+	If $ichkSmartSwitch = 1 Then
+	   GUICtrlSetState($radSmartSwitch, $GUI_CHECKED)
+ 	Else
+	   GUICtrlSetState($radNormalSwitch, $GUI_CHECKED)
+ 	EndIf
+
+	chkSwitchAcc()
+
+	_GUICtrlCombobox_SetCurSel($cmbTotalAccount, $icmbTotalCoCAcc)	; 0 = AutoDetect
+
+	If $ichkCloseTraining >= 1 Then
+		GUICtrlSetState($chkUseTrainingClose, $GUI_CHECKED)
+		If $ichkCloseTraining = 1 Then
+			GUICtrlSetState($radCloseCoC, $GUI_CHECKED)
+		Else
+			GUICtrlSetState($radCloseAndroid, $GUI_CHECKED)
+		EndIf
+	Else
+		GUICtrlSetState($chkUseTrainingClose, $GUI_UNCHECKED)
+	EndIf
+
 	; Reenabling window redraw - Keep this last....
 	If $bRedrawAtExit Then SetRedrawBotWindow(True)
 

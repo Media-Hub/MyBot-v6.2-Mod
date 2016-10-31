@@ -17,7 +17,7 @@
 ;
 Func getArmyHeroCount($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 
-	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SETLOG("Begin getArmyTHeroCount:", $COLOR_PURPLE)
+	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SETLOG("Begin getArmyTHeroCount:", $COLOR_DEBUG) ;Debug
 
 	If $bOpenArmyWindow = False And ISArmyWindow() = False Then ; check for train page
 		SetError(1)
@@ -46,13 +46,13 @@ Func getArmyHeroCount($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 		If $sResult <> "" Then ; we found something, figure out what?
 			Select
 				Case StringInStr($sResult, "king", $STR_NOCASESENSEBASIC)
-					Setlog(" - Barbarian King available")
+					Setlog(" - Barbarian King available", $COLOR_GREEN)
 					$iHeroAvailable = BitOR($iHeroAvailable, $HERO_KING)
 				Case StringInStr($sResult, "queen", $STR_NOCASESENSEBASIC)
-					Setlog(" - Archer Queen available")
+					Setlog(" - Archer Queen available", $COLOR_GREEN)
 					$iHeroAvailable = BitOR($iHeroAvailable, $HERO_QUEEN)
 				Case StringInStr($sResult, "warden", $STR_NOCASESENSEBASIC)
-					Setlog(" - Grand Warden available")
+					Setlog(" - Grand Warden available", $COLOR_GREEN)
 					$iHeroAvailable = BitOR($iHeroAvailable, $HERO_WARDEN)
 				Case StringInStr($sResult, "heal", $STR_NOCASESENSEBASIC)
 					If $debugsetlogTrain = 1 Or $debugArmyHeroCount = 1 Then
@@ -66,8 +66,11 @@ Func getArmyHeroCount($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 							Case Else
 								$sMessage = "-Very Bad Monkey Needs"
 						EndSwitch
-						SetLog("Hero slot#" & $i + 1 & $sMessage & " Healing", $COLOR_PURPLE)
+						SetLog("Hero slot#" & $i + 1 & $sMessage & " Healing", $COLOR_DEBUG) ;Debug
 					EndIf
+					If $i = 0 then Setlog(" - Barbarian King Recovering", $COLOR_ACTION)
+					If $i = 1 then Setlog(" - Archer Queen Recovering", $COLOR_ACTION)
+					If $i = 2 then Setlog(" - Grand Warden Recovering", $COLOR_ACTION)
 				Case StringInStr($sResult, "upgrade", $STR_NOCASESENSEBASIC)
 					Switch $i
 						Case 0
@@ -106,9 +109,9 @@ Func getArmyHeroCount($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 						Case Else
 							$sMessage = "-Need to Get Monkey"
 					EndSwitch
-					If $debugsetlogTrain = 1 Or $debugArmyHeroCount = 1 Then SetLog("Hero slot#" & $i + 1 & $sMessage & " Upgrade in Process", $COLOR_PURPLE)
+					If $debugsetlogTrain = 1 Or $debugArmyHeroCount = 1 Then SetLog("Hero slot#" & $i + 1 & $sMessage & " Upgrade in Process", $COLOR_DEBUG) ;Debug
 				Case StringInStr($sResult, "none", $STR_NOCASESENSEBASIC)
-					If $debugsetlogTrain = 1 Or $debugArmyHeroCount = 1 Then SetLog("Hero slot#" & $i + 1 & " Empty, stop count", $COLOR_PURPLE)
+					If $debugsetlogTrain = 1 Or $debugArmyHeroCount = 1 Then SetLog("Hero slot#" & $i + 1 & " Empty, stop count", $COLOR_DEBUG) ;Debug
 					ExitLoop ; when we find empty slots, done looking for heroes
 				Case Else
 					SetLog("Hero slot#" & $i + 1 & " bad OCR string returned!", $COLOR_RED)
@@ -118,13 +121,16 @@ Func getArmyHeroCount($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 		EndIf
 	Next
 
-	If BitAND($iHeroWait[$DB], $iHeroAvailable) > 0 Or BitAND($iHeroWait[$LB], $iHeroAvailable) > 0 Or _
+	If $iDBcheck = 0 then $iHeroWait[$DB] = $HERO_NOHERO
+	If $iABcheck = 0 then $iHeroWait[$LB] = $HERO_NOHERO
+
+	If (($iDBcheck = 1 and $iHeroWait[$DB]<= $iHeroAvailable) Or ($iABcheck = 1 and $iHeroWait[$LB]<= $iHeroAvailable)) Or _
 			($iHeroWait[$DB] = $HERO_NOHERO And $iHeroWait[$LB] = $HERO_NOHERO) Then
 		$bFullArmyHero = True
-		If $debugsetlogTrain = 1 Or $debugArmyHeroCount = 1 Then SetLog("$bFullArmyHero= " & $bFullArmyHero, $COLOR_PURPLE)
+		If $debugsetlogTrain = 1 Or $debugArmyHeroCount = 1 Then SetLog("$bFullArmyHero= " & $bFullArmyHero, $COLOR_DEBUG) ;Debug
 	EndIf
 
-	If $debugsetlogTrain = 1 Or $debugArmyHeroCount = 1 Then SetLog("Hero Status K|Q|W : " & BitAND($iHeroAvailable, $HERO_KING) & "|" & BitAND($iHeroAvailable, $HERO_QUEEN) & "|" & BitAND($iHeroAvailable, $HERO_WARDEN), $COLOR_PURPLE)
+	If $debugsetlogTrain = 1 Or $debugArmyHeroCount = 1 Then SetLog("Hero Status K|Q|W : " & BitAND($iHeroAvailable, $HERO_KING) & "|" & BitAND($iHeroAvailable, $HERO_QUEEN) & "|" & BitAND($iHeroAvailable, $HERO_WARDEN), $COLOR_DEBUG) ;Debug
 
 	If $bCloseArmyWindow = True Then
 		ClickP($aAway, 1, 0, "#0000") ;Click Away

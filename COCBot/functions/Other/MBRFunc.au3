@@ -18,14 +18,21 @@ Func MBRFunc($Start = True)
 		Case True
 			$hFuncLib = DllOpen($pFuncLib)
 			$hImgLib = DllOpen($pImgLib)
+			$hFuncRedLib = DllOpen($pFuncRedLib)
 			If $hFuncLib = -1 Then
 				Setlog("MBRfunctions.dll not found.", $COLOR_RED)
 				Return False
 			EndIf
+			If $hFuncRedLib = -1 Then
+				Setlog("RedLineDetection.dll not found.", $COLOR_RED)
+				BotStop()
+			EndIf
 			SetDebugLog("MBRfunctions.dll opened.")
+			SetDebugLog("RedLineDetection.dll opened.")
 		Case False
 			DllClose($hFuncLib)
 			DllClose($hImgLib)
+			DllClose($hFuncRedLib)
 			SetDebugLog("MBRfunctions.dll closed.")
 	EndSwitch
 EndFunc   ;==>MBRFunc
@@ -40,10 +47,11 @@ Func debugMBRFunctions($debugSearchArea = 0, $debugRedArea = 0, $debugOcr = 0)
 	EndIf
 	;dll return 0 on success, -1 on error
 	If IsArray($result) Then
-		If $debugSetlog = 1 And $result[0] = -1 Then SetLog("MBRfunctions.dll error setting Global vars.", $COLOR_PURPLE)
+		If $debugSetlog = 1 And $result[0] = -1 Then SetLog("MBRfunctions.dll error setting Global vars.", $COLOR_DEBUG) ;Debug
 	Else
 		SetDebugLog("MBRfunctions.dll not found.", $COLOR_RED)
 	EndIf
+
 	WinActivate($activeHWnD) ; restore current active window
 EndFunc   ;==>debugMBRFunctions
 

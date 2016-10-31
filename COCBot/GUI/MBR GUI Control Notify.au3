@@ -131,3 +131,66 @@ EndFunc   ;==>_Restart
 
 
 
+Func chkNotifyHours()
+	If GUICtrlRead($chkNotifyHours) = $GUI_CHECKED Then
+		For $i = $lbNotifyHours1 To $lbNotifyHoursPM
+			GUICtrlSetState($i, $GUI_ENABLE)
+		Next
+		GUICtrlSetState($chkNotifyWeekDays, $GUI_ENABLE)
+	Else
+		GUICtrlSetState($chkNotifyWeekDays, $GUI_UNCHECKED)
+		For $i = $lbNotifyHours1 To $lbNotifyHoursPM
+			GUICtrlSetState($i, $GUI_DISABLE)
+		Next
+		GUICtrlSetState($chkNotifyWeekDays, $GUI_UNCHECKED)
+		GUICtrlSetState($chkNotifyWeekDays, $GUI_DISABLE)
+		chkNotifyWeekDays()
+	EndIf
+EndFunc   ;==>chkNotifyHours
+
+Func chkNotifyhoursE1()
+	If GUICtrlRead($chkNotifyhoursE1) = $GUI_CHECKED And GUICtrlRead($chkNotifyhours0) = $GUI_CHECKED Then
+		For $i = $chkNotifyhours0 To $chkNotifyhours11
+			GUICtrlSetState($i, $GUI_UNCHECKED)
+		Next
+	Else
+		For $i = $chkNotifyhours0 To $chkNotifyhours11
+			GUICtrlSetState($i, $GUI_CHECKED)
+		Next
+	EndIf
+	Sleep(300)
+	GUICtrlSetState($chkNotifyhoursE1, $GUI_UNCHECKED)
+EndFunc   ;==>chkNotifyhoursE1
+Func chkNotifyhoursE2()
+	If GUICtrlRead($chkNotifyhoursE2) = $GUI_CHECKED And GUICtrlRead($chkNotifyhours12) = $GUI_CHECKED Then
+		For $i = $chkNotifyhours12 To $chkNotifyhours23
+			GUICtrlSetState($i, $GUI_UNCHECKED)
+		Next
+	Else
+		For $i = $chkNotifyhours12 To $chkNotifyhours23
+			GUICtrlSetState($i, $GUI_CHECKED)
+		Next
+	EndIf
+	Sleep(300)
+	GUICtrlSetState($chkNotifyhoursE2, $GUI_UNCHECKED)
+EndFunc		;==>chkNotifyhoursE2
+
+Func chkNotifyWeekDays()
+
+	If GUICtrlRead($chkNotifyWeekDays) = $GUI_CHECKED Then
+		For $i = $chkNotifyWeekdays0 To $chkNotifyWeekdays6
+			GUICtrlSetState($i, $GUI_ENABLE)
+		Next
+		For $i = $lbNotifyWeekdays0 To $lbNotifyWeekdays6
+			GUICtrlSetState($i, $GUI_ENABLE)
+		Next
+	Else
+		For $i = $chkNotifyWeekdays0 To $chkNotifyWeekdays6
+			GUICtrlSetState($i, $GUI_DISABLE)
+		Next
+		For $i = $lbNotifyWeekdays0 To $lbNotifyWeekdays6
+			GUICtrlSetState($i, $GUI_DISABLE)
+		Next
+	EndIf
+ 
+EndFunc	;==>chkNotifyWeekDays

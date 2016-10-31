@@ -15,7 +15,7 @@
 ; ===============================================================================================================================
 Func PrepareAttack($pMatchMode, $Remaining = False) ;Assigns troops
 	Local $troopsnumber = 0
-	If $debugSetlog = 1 Then SetLog("PrepareAttack for " & $pMatchMode & " " & $sModeText[$pMatchMode], $COLOR_PURPLE)
+	If $debugSetlog = 1 Then SetLog("PrepareAttack for " & $pMatchMode & " " & $sModeText[$pMatchMode], $COLOR_DEBUG) ;Debug
 	If $Remaining Then
 		SetLog("Checking remaining unused troops for: " & $sModeText[$pMatchMode], $COLOR_BLUE)
 	Else
@@ -27,15 +27,19 @@ Func PrepareAttack($pMatchMode, $Remaining = False) ;Assigns troops
 
     ;SuspendAndroid()
 
-	Local $result = DllCall($hFuncLib, "str", "searchIdentifyTroop", "ptr", $hHBitmap2)
-	If $debugSetlog = 1 Then Setlog("DLL Troopsbar list: " & $result[0], $COLOR_PURPLE)
-	Local $aTroopDataList = StringSplit($result[0], "|")
+	;Local $result = DllCall($hFuncLib, "str", "searchIdentifyTroop", "ptr", $hHBitmap2)
+
+	Local $Plural = 0
+	Local $result = AttackBarCheck()
+	If $debugSetlog = 1 Then Setlog("DLL Troopsbar list: " & $result, $COLOR_DEBUG) ;Debug
+	Local $aTroopDataList = StringSplit($result, "|")
 	Local $aTemp[12][3]
-	If $result[0] <> "" Then
+	If $result <> "" Then
 		For $i = 1 To $aTroopDataList[0]
 			Local $troopData = StringSplit($aTroopDataList[$i], "#", $STR_NOCOUNT)
 			$aTemp[Number($troopData[1])][0] = $troopData[0]
 			$aTemp[Number($troopData[1])][1] = Number($troopData[2])
+			$aTemp[Number($troopData[1])][2] = Number($troopData[1])
 		Next
 	EndIf
 	For $i = 0 To UBound($aTemp) - 1
@@ -45,11 +49,11 @@ Func PrepareAttack($pMatchMode, $Remaining = False) ;Assigns troops
 		Else
 			$troopKind = $aTemp[$i][0]
 			;If $debugsetlog=1 Then Setlog("examine troop " &  NameOfTroop($TroopKind) ,$color_aqua)
-			If $troopKind <$eKing Then
+			If $troopKind < $eKing Then
 				;If $debugsetlog=1 Then Setlog("examine troop " &  NameOfTroop($TroopKind) & " -> normal troop",$color_aqua)
 				;normal troop
 				If Not IsTroopToBeUsed($pMatchMode, $troopKind) Then
-					If $debugSetlog = 1 Then Setlog("Discard use of troop " & $troopKind &  " " & NameOfTroop($troopKind), $COLOR_RED)
+					If $debugSetlog = 1 Then Setlog("Discard use of troop " & $troopKind &  " " & NameOfTroop($troopKind), $COLOR_DEBUG) ;Debug
 					$atkTroops[$i][0] = -1
 					$troopKind = -1
 				Else
@@ -74,18 +78,15 @@ Func PrepareAttack($pMatchMode, $Remaining = False) ;Assigns troops
 					$troopsnumber +=  1
 				Else
 					;If $debugSetlog=1 Then Setlog("for matchmode = " & $pMatchMode & " and troop " & $TroopKind & " " & NameOfTroop($TroopKind) & " DISCARD",$COLOR_aqua)
-					If $debugSetlog = 1 Then Setlog("Discard use hero/poison " & $troopKind &  " " & NameOfTroop($troopKind), $COLOR_RED)
+					If $debugSetlog = 1 Then Setlog("Discard use hero/poison " & $troopKind &  " " & NameOfTroop($troopKind), $COLOR_DEBUG) ;Debug
 					$troopKind = -1
 				EndIf
 			EndIf
-
-			If $troopKind <> -1 Then SetLog("-*-" & $atkTroops[$i][0] & " " & NameOfTroop($atkTroops[$i][0]) & " " & $atkTroops[$i][1], $COLOR_GREEN)
+			$Plural = 0
+			If $aTemp[$i][1] > 1 then $Plural = 1
+			If $troopKind <> -1 Then SetLog($aTemp[$i][2] & " » " & $aTemp[$i][1] & " " & NameOfTroop($atkTroops[$i][0], $Plural), $COLOR_GREEN)
 		EndIf
     Next
-
-    ;AwesomeGamer CSV mod
-	$remainingTroops = $atkTroops
-	$TroopDropNumber = 0
 
     ;ResumeAndroid()
 
@@ -164,13 +165,13 @@ Func IsSpecialTroopToBeUsed($pMatchMode, $pTroopType)
 			Case  $eLSpell
 				Switch $pmatchMode
 					Case $DB
-						 If $ichkLightSpell[$DB] = 1 Then Return True
+						 If $ichkLightSpell[$DB] = 1 Or $ichkSmartZap = 1 Then Return True
 					Case $LB
-						 If $ichkLightSpell[$LB] = 1 Then Return True
+						 If $ichkLightSpell[$LB] = 1 Or $ichkSmartZap = 1 Then Return True
 					Case $TS
-						 If $ichkLightSpell[$TS] = 1 Then Return True
+						 If $ichkLightSpell[$TS] = 1 Or $ichkSmartZap = 1 Then Return True
 					Case $MA
-						 If $ichkLightSpell[$DB] = 1 Then Return True
+						 If $ichkLightSpell[$DB] = 1 Or $ichkSmartZap = 1 Then Return True
 				EndSwitch
 			Case  $eHSpell
 				Switch $pmatchMode

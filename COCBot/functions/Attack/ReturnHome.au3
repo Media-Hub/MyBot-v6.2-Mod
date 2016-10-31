@@ -14,7 +14,7 @@
 ; Example .......: No
 ; ===============================================================================================================================
 Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
-	If $DebugSetLog = 1 Then Setlog("ReturnHome function... (from matchmode=" & $iMatchMode & " - " & $sModeText[$iMatchMode] & ")", $COLOR_PURPLE)
+	If $DebugSetLog = 1 Then Setlog("ReturnHome function... (from matchmode=" & $iMatchMode & " - " & $sModeText[$iMatchMode] & ")", $COLOR_DEBUG) ;Debug
 	Local $counter = 0
 	Local $hBitmap_Scaled
 	Local $i, $j
@@ -30,13 +30,13 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 			While GoldElixirChangeEBO()
 				If _Sleep($iDelayReturnHome1) Then Return
 			WEnd
-
-#cs			; Check to see if we should zap the DE Drills - Added by LunaEclipse
-			If IsAttackPage() Then
-				smartZap()
-				ExtremeZap()
-			EndIf
-#ce
+			;==============================================================
+			; SmartZap - Added by NTS team
+			;==============================================================
+			If IsAttackPage() Then smartZap(); Check to see if we should zap the DE Drills - Added by NTS team
+			;==============================================================
+			; SmartZap - Added by NTS team
+			;==============================================================
 			;If Heroes were not activated: Hero Ability activation before End of Battle to restore health
 			If ($checkKPower = True Or $checkQPower = True) And $iActivateKQCondition = "Auto" Then
 				;_CaptureRegion()
@@ -52,7 +52,7 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 				EndIf
 			EndIf
 		Else
-			If $DebugSetLog = 1 Then Setlog("Battle already over", $COLOR_PURPLE)
+			If $DebugSetLog = 1 Then Setlog("Battle already over", $COLOR_DEBUG) ;Debug
 		EndIf
 	EndIf
 
@@ -65,7 +65,7 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 	$checkWPower = False
 
 	;reset barracks upon return when TH sniping w/custom army
-	If $iTScheck = 1 And $iMatchMode = $TS And $icmbTroopComp <> 8 Then $FirstStart = True
+	If $iTScheck = 1 And $iMatchMode = $TS Then $FirstStart = True
 
 	SetLog("Returning Home", $COLOR_BLUE)
 	If $RunState = False Then Return
@@ -98,7 +98,7 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 			If _Sleep($iDelayReturnHome5) Then Return
 		WEnd
 	Else
-		If $DebugSetLog = 1 Then Setlog("Battle already over.", $COLOR_PURPLE)
+		If $DebugSetLog = 1 Then Setlog("Battle already over.", $COLOR_DEBUG) ;Debug
 	EndIf
 	If _Sleep($iDelayReturnHome2) Then Return ; short wait for return to main
 

@@ -17,7 +17,7 @@ Func CheckBaseQuick()
 
 	If IsMainPage() Then ; check for main page
 
-		If $Debugsetlog = 1 Then Setlog("CheckBaseQuick now...", $COLOR_RED)
+		If $Debugsetlog = 1 Then Setlog("CheckBaseQuick now...", $COLOR_DEBUG) ;Debug
 
 		RequestCC() ; fill CC
 		If _Sleep($iDelayRunBot1) Then Return
@@ -31,7 +31,7 @@ Func CheckBaseQuick()
 
 		CheckOverviewFullArmy(True) ; Check if army needs to be trained due donations
 		If Not ($FullArmy) And $bTrainEnabled = True Then
-			Train()
+			TestTrainRevamp()
 			If $Restart = True Then Return
 		EndIf
 
@@ -39,7 +39,7 @@ Func CheckBaseQuick()
 		If _Sleep($iDelayRunBot1) Then Return
 
 	Else
-		If $Debugsetlog = 1 Then Setlog("Not on main page, CheckBaseQuick skipped", $COLOR_RED)
+		If $Debugsetlog = 1 Then Setlog("Not on main page, CheckBaseQuick skipped", $COLOR_DEBUG) ;Debug
 	EndIf
 
 EndFunc   ;==>CheckBaseQuick

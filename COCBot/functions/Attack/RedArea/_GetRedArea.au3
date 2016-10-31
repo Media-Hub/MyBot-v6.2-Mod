@@ -24,10 +24,11 @@ Func _GetRedArea()
 	$nameFunc = "[_GetRedArea] "
 	debugRedArea($nameFunc & " IN")
 
-	Local $colorVariation = 40
+	Local $colorVariation = 60
 	Local $xSkip = 1
 	Local $ySkip = 5
 
+	_CaptureRegion2()
 	If $iMatchMode = $LB And $iChkDeploySettings[$LB] = 4 Then ; Used for DES Side Attack (need to know the side the DES is on)
 		Local $result = DllCall($hFuncLib, "str", "getRedAreaSideBuilding", "ptr", $hHBitmap2, "int", $xSkip, "int", $ySkip, "int", $colorVariation, "int", $eSideBuildingDES)
 		If $debugSetlog Then Setlog("Debug: Redline with DES Side chosen")
@@ -35,16 +36,62 @@ Func _GetRedArea()
 		Local $result = DllCall($hFuncLib, "str", "getRedAreaSideBuilding", "ptr", $hHBitmap2, "int", $xSkip, "int", $ySkip, "int", $colorVariation, "int", $eSideBuildingTH)
 		If $debugSetlog Then Setlog("Debug: Redline with TH Side chosen")
 	Else ; Normal getRedArea
-		;Local $result = DllCall($hFuncLib, "str", "getRedArea", "ptr", $hHBitmap2, "int", $xSkip, "int", $ySkip, "int", $colorVariation)
-		Local $result[1]
-		$result[0] = GetImgLoc2MBR()
+		Local $result = GetImgLoc2MBR()
 		If $debugSetlog Then Setlog("Debug: Redline chosen")
 	EndIf
 
-	Local $listPixelBySide = StringSplit($result[0], "#")
+	Local $listPixelBySide = StringSplit($result, "#")
 
-	$listPixelBySide[2] &= "|213-512|218-516|222-520|227-524|231-528|236-532|240-536|245-540|249-544|254-548|258-552|263-556|267-560|272-564|276-568|281-572|285-576|290-580|294-584|299-588|303-592|308-596|312-600|317-604|321-608|326-612|330-616|335-620|339-624|344-628"
-	$listPixelBySide[3] &= "|496-629|501-625|506-621|511-617|516-613|521-609|526-605|531-601|536-597|541-593|546-589|551-585|556-581|561-577|566-573|571-569|576-565|581-561|586-557|591-553|596-549|601-545|606-541|611-537|616-533|621-529|626-525|631-521|636-517|641-513"
+	If $debugRedArea =  1 then
+		Local $1 = StringSplit($listPixelBySide[1], "|", 2)
+		Local $2 = StringSplit($listPixelBySide[2], "|", 2)
+		Local $3 = StringSplit($listPixelBySide[3], "|", 2)
+		Local $4 = StringSplit($listPixelBySide[4], "|", 2)
+
+
+		_CaptureRegion()
+
+		; Store a copy of the image handle
+		Local $editedImage = $hBitmap
+		Local $hGraphic = _GDIPlus_ImageGetGraphicsContext($editedImage)
+		Local $hPenRED = _GDIPlus_PenCreate(0xFFFF0000, 2) ; Create a pencil Color FF0000/RED
+		Local $subDirectory = @ScriptDir & "\RedLineDebug"
+		DirCreate($subDirectory)
+		Local $Date = @YEAR & "-" & @MON & "-" & @MDAY
+		Local $Time = @HOUR & "." & @MIN & "." & @SEC
+		Local $fileName = String($Date & "_" & $Time & "_variation_" & $colorVariation & "_.png")
+
+		For $i = 0 To UBound($1) - 1
+			Local $temp = StringSplit($1[$i], "-", 2)
+			If UBound($temp) > 1 Then
+				_GDIPlus_GraphicsDrawRect($hGraphic, $temp[0] - 2, $temp[1] - 2, 4, 4, $hPenRED)
+			EndIf
+		Next
+		For $i = 0 To UBound($2) - 1
+			Local $temp = StringSplit($2[$i], "-", 2)
+			If UBound($temp) > 1 Then
+				_GDIPlus_GraphicsDrawRect($hGraphic, $temp[0] - 2, $temp[1] - 2, 4, 4, $hPenRED)
+			EndIf
+		Next
+		For $i = 0 To UBound($3) - 1
+			Local $temp = StringSplit($3[$i], "-", 2)
+			If UBound($temp) > 1 Then
+				_GDIPlus_GraphicsDrawRect($hGraphic, $temp[0] - 2, $temp[1] - 2, 4, 4, $hPenRED)
+			EndIf
+		Next
+		For $i = 0 To UBound($4) - 1
+			Local $temp = StringSplit($4[$i], "-", 2)
+			If UBound($temp) > 1 Then
+				_GDIPlus_GraphicsDrawRect($hGraphic, $temp[0] - 2, $temp[1] - 2, 4, 4, $hPenRED)
+			EndIf
+		Next
+
+
+		_GDIPlus_ImageSaveToFile($editedImage, $subDirectory & "\" & $fileName)
+		_GDIPlus_PenDispose($hPenRED)
+		_GDIPlus_GraphicsDispose($hGraphic)
+
+	EndIf
 
 	$PixelTopLeft = GetPixelSide($listPixelBySide, 1)
 	$PixelBottomLeft = GetPixelSide($listPixelBySide, 2)
@@ -58,9 +105,9 @@ Func _GetRedArea()
 
 	;If Milking Attack ($iAtkAlgorithm[$DB] = 2) or AttackCSV skip calc of troops further offset (archers drop points for standard attack)
 	; but need complete calc if use standard attack after milking attack ($MilkAttackAfterStandardAtk =1) and use redarea ($iChkRedArea[$MA] = 1)
-	;If $debugsetlog = 1 Then Setlog("REDAREA matchmode " & $iMatchMode & " atkalgorithm[0] = " & $iAtkAlgorithm[$DB] & " $MilkAttackAfterScriptedAtk = " & $MilkAttackAfterScriptedAtk , $color_aqua)
+	;If $debugsetlog = 1 Then Setlog("REDAREA matchmode " & $iMatchMode & " atkalgorithm[0] = " & $iAtkAlgorithm[$DB] & " $MilkAttackAfterScriptedAtk = " & $MilkAttackAfterScriptedAtk , $COLOR_DEBUG) ;Debug
 	If ($iMatchMode = $DB And $iAtkAlgorithm[$DB] = 2) Or ($iMatchMode = $DB And $ichkUseAttackDBCSV = 1) Or ($iMatchMode = $LB And $ichkUseAttackABCSV = 1) Then
-		If $debugsetlog = 1 Then setlog("redarea no calc pixel further (quick)", $color_purple)
+		If $debugsetlog = 1 Then setlog("redarea no calc pixel further (quick)", $COLOR_DEBUG) ;Debug
 		$count = 0
 		ReDim $PixelTopLeftFurther[UBound($PixelTopLeft)]
 		For $i = 0 To UBound($PixelTopLeft) - 1
@@ -92,7 +139,7 @@ Func _GetRedArea()
 		Next
 		debugRedArea("PixelTopLeftFurther* " & UBound($PixelTopLeftFurther))
 	Else
-		If $debugsetlog = 1 Then setlog("redarea calc pixel further", $color_purple)
+		If $debugsetlog = 1 Then setlog("redarea calc pixel further", $COLOR_DEBUG) ;Debug
 		$count = 0
 		ReDim $PixelTopLeftFurther[UBound($PixelTopLeft)]
 		For $i = 0 To UBound($PixelTopLeft) - 1
@@ -149,51 +196,77 @@ EndFunc   ;==>_GetRedArea
 
 Func GetImgLoc2MBR()
 
-	Local $directory = @ScriptDir & "\images\WeakBase\Eagle"
-	Local $return = returnHighestLevelSingleMatch($directory)
-	If IsRedLineOld() = True Then
-		If $debugDropSCommand = 1 Then SetLog("RedLine For Defense Being Updated...", $color_purple)
-		$redLinesDefense[0] = DllCall($hImgLib, "str", "GetProperty", "str", "redline", "str", "")[0]
-		$redLinesDefense[1] = TimerInit()
+	_CaptureRegion2()
+	Local $_PixelTopLeft, $_PixelBottomLeft, $_PixelBottomRight, $_PixelTopRight , $AllPoints , $EachPoint[1][2]
+	Local $SingleCocDiamond = "FV"
+	Local $res = DllCall($pImgLib2, "str", "SearchRedLines", "handle", $hHBitmap2, "str", $SingleCocDiamond)
+
+	If @error Then _logErrorDLLCall($pImgLib2 & ", SearchRedLines: ", @error)
+
+	If IsArray($res) Then
+		If $res[0] = "0" Or $res[0] = "" Then
+			SetLog("Imgloc|SearchRedLines not found!", $COLOR_RED)
+		ElseIf StringLeft($res[0], 2) = "-1" Then
+			SetLog("DLL Error: " & $res[0] & ", SearchRedLines", $COLOR_RED)
+		Else
+			$AllPoints = StringSplit($res[0], "|", $STR_NOCOUNT)
+
+			ReDim $EachPoint[UBound($AllPoints)][2]
+
+			For $i = 0 To UBound($AllPoints) - 1
+				Local $temp = StringSplit($AllPoints[$i], ",", $STR_NOCOUNT)
+				$EachPoint[$i][0] = Number($temp[0])
+				$EachPoint[$i][1] = Number($temp[1])
+				; Setlog(" $EachPoint[0]: " & $EachPoint[$i][0] & " | $EachPoint[1]: " & $EachPoint[$i][1])
+			Next
+
+			_ArraySort($EachPoint, 0, 0, 0, 0)
+
+			For $i = 0 To UBound($EachPoint) - 1
+				If $EachPoint[$i][0] > 20 And $EachPoint[$i][0] < 440 And $EachPoint[$i][1] > 20 And $EachPoint[$i][1] < 349 Then
+					$_PixelTopLeft &= String("|" & $EachPoint[$i][0] & "-" & $EachPoint[$i][1])
+
+				ElseIf $EachPoint[$i][0] > 20 And $EachPoint[$i][0] < 440 And $EachPoint[$i][1] > 349 And $EachPoint[$i][1] < 630 Then
+					$_PixelBottomLeft &= String("|" & $EachPoint[$i][0] & "-" & $EachPoint[$i][1])
+
+				ElseIf $EachPoint[$i][0] > 440 And $EachPoint[$i][0] < 850 And $EachPoint[$i][1] > 349 And $EachPoint[$i][1] < 630 Then
+					$_PixelBottomRight &= String("|" & $EachPoint[$i][0] & "-" & $EachPoint[$i][1])
+
+				ElseIf $EachPoint[$i][0] > 440 And $EachPoint[$i][0] < 850 And $EachPoint[$i][1] > 20 And $EachPoint[$i][1] < 349 Then
+					$_PixelTopRight &= String("|" & $EachPoint[$i][0] & "-" & $EachPoint[$i][1])
+
+				EndIf
+			Next
+
+			If Not StringIsSpace($_PixelTopLeft) Then $_PixelTopLeft = StringTrimLeft($_PixelTopLeft, 1)
+			If Not StringIsSpace($_PixelBottomLeft) Then $_PixelBottomLeft = StringTrimLeft($_PixelBottomLeft, 1)
+			If Not StringIsSpace($_PixelBottomRight) Then $_PixelBottomRight = StringTrimLeft($_PixelBottomRight, 1)
+			If Not StringIsSpace($_PixelTopRight) Then $_PixelTopRight = StringTrimLeft($_PixelTopRight, 1)
+		EndIf
 	EndIf
 
-	Local $AllPoints = StringSplit($return[6], "|", $STR_NOCOUNT)
-	Local $EachPoint[UBound($AllPoints)][2]
-	Local $_PixelTopLeft, $_PixelBottomLeft, $_PixelBottomRight, $_PixelTopRight
+	_CaptureRegion2()
+	Local $result = DllCall($hFuncRedLib, "str", "getRedArea", "ptr", $hHBitmap2, "int", 1, "int", 5, "int", 60)
+	If @error Then _logErrorDLLCall($hFuncRedLib & ", getRedArea: ", @error)
 
-	For $i = 0 To UBound($AllPoints) - 1
-		Local $temp = StringSplit($AllPoints[$i], ",", $STR_NOCOUNT)
-		$EachPoint[$i][0] = Number($temp[0])
-		$EachPoint[$i][1] = Number($temp[1])
-		; Setlog(" $EachPoint[0]: " & $EachPoint[$i][0] & " | $EachPoint[1]: " & $EachPoint[$i][1])
-	Next
+	Local $AllPoints2 = StringSplit($result[0], "#", $STR_NOCOUNT)
 
-	_ArraySort($EachPoint, 0, 0, 0, 0)
+	$_PixelTopLeft &= "|" & $AllPoints2[0]
+	$_PixelBottomLeft &= "|" & $AllPoints2[1]
+	$_PixelBottomRight &= "|" & $AllPoints2[2]
+	$_PixelTopRight &= "|" & $AllPoints2[3]
 
-	For $i = 0 To UBound($EachPoint) - 1
-		If $EachPoint[$i][0] > 60 And $EachPoint[$i][0] < 430 And $EachPoint[$i][1] > 35 And $EachPoint[$i][1] < 336 Then
-			$_PixelTopLeft &= String("|" & $EachPoint[$i][0] & "-" & $EachPoint[$i][1])
+	Local $__PixelTopLeft = ReturnString($_PixelTopLeft)
+	Local $__PixelBottomLeft = ReturnString($_PixelBottomLeft)
+	Local $__PixelBottomRight = ReturnString($_PixelBottomRight)
+	Local $__PixelTopRight = ReturnString($_PixelTopRight)
 
-		ElseIf $EachPoint[$i][0] > 60 And $EachPoint[$i][0] < 430 And $EachPoint[$i][1] > 336 And $EachPoint[$i][1] < 630 Then
-			$_PixelBottomLeft &= String("|" & $EachPoint[$i][0] & "-" & $EachPoint[$i][1])
+	If Not StringIsSpace($__PixelTopLeft) Then $__PixelTopLeft = StringTrimLeft($__PixelTopLeft, 1)
+	If Not StringIsSpace($__PixelBottomLeft) Then $__PixelBottomLeft = StringTrimLeft($__PixelBottomLeft, 1)
+	If Not StringIsSpace($__PixelBottomRight) Then $__PixelBottomRight = StringTrimLeft($__PixelBottomRight, 1)
+	If Not StringIsSpace($__PixelTopRight) Then $__PixelTopRight = StringTrimLeft($__PixelTopRight, 1)
 
-		ElseIf $EachPoint[$i][0] > 430 And $EachPoint[$i][0] < 805 And $EachPoint[$i][1] > 336 And $EachPoint[$i][1] < 630 Then
-			$_PixelBottomRight &= String("|" & $EachPoint[$i][0] & "-" & $EachPoint[$i][1])
-
-		ElseIf $EachPoint[$i][0] > 430 And $EachPoint[$i][0] < 805 And $EachPoint[$i][1] > 35 And $EachPoint[$i][1] < 336 Then
-			$_PixelTopRight &= String("|" & $EachPoint[$i][0] & "-" & $EachPoint[$i][1])
-
-		EndIf
-	Next
-
-	If Not StringIsSpace($_PixelTopLeft) Then $_PixelTopLeft = StringTrimLeft($_PixelTopLeft, 1)
-	If Not StringIsSpace($_PixelBottomLeft) Then $_PixelBottomLeft = StringTrimLeft($_PixelBottomLeft, 1)
-	If Not StringIsSpace($_PixelBottomRight) Then $_PixelBottomRight = StringTrimLeft($_PixelBottomRight, 1)
-	If Not StringIsSpace($_PixelTopRight) Then $_PixelTopRight = StringTrimLeft($_PixelTopRight, 1)
-
-	Local $NewRedLineString = $_PixelTopLeft & "#" & $_PixelBottomLeft & "#" & $_PixelBottomRight & "#" & $_PixelTopRight
-
-	;Setlog(" »» NEW REDlines Imgloc: " & $NewRedLineString)
+	Local $NewRedLineString = $__PixelTopLeft & "#" & $__PixelBottomLeft & "#" & $__PixelBottomRight & "#" & $__PixelTopRight
 
 	Return $NewRedLineString
 
@@ -210,3 +283,37 @@ Func ResetRedLine()
 	$redLinesDefense[0] = -1
 	$redLinesDefense[1] = 0
 EndFunc   ;==>ResetRedLine
+
+Func ReturnString($string = "")
+
+	Local $OldPixel = StringSplit($string, "|", $STR_NOCOUNT)
+	Local $EachPointOld[1][2]
+	Local $__Pixel = ""
+
+	Local $z = 0
+	For $i = 0 To UBound($OldPixel) - 1
+		Local $temp = StringSplit($OldPixel[$i], "-", $STR_NOCOUNT)
+		If UBound($temp) > 1 Then
+			Local $aResult = _ArraySearch($EachPointOld, $temp[0], 0, 0, 0, 0, 1, 0, False)
+			If not @error And $temp[1] = $EachPointOld[$aResult][1] Then
+				ContinueLoop
+			Else
+				$EachPointOld[$z][0] = Number($temp[0])
+				$EachPointOld[$z][1] = Number($temp[1])
+				$z += 1
+				ReDim $EachPointOld[$z + 1][2]
+			EndIf
+		EndIf
+	Next
+
+	_ArraySort($EachPointOld, 0, 0, 0, 0)
+
+	For $i = 0 To UBound($EachPointOld) - 1
+		If $EachPointOld[$i][0] > 1 And $EachPointOld[$i][1] > 1 Then
+			$__Pixel &= String("|" & $EachPointOld[$i][0] & "-" & $EachPointOld[$i][1])
+		EndIf
+	Next
+
+	Return $__Pixel
+
+EndFunc   ;==>ReturnString

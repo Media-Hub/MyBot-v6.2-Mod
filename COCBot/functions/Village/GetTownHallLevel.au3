@@ -16,7 +16,7 @@ Func GetTownHallLevel($bFirstTime = False)
 
 	Local $aTHInfo[3] = ["", "", ""]
 
-	If $debugSetlog = 1 Then SetLog("Town Hall Position: " & $TownHallPos[0] & ", " & $TownHallPos[1], $COLOR_PURPLE)
+	If $debugSetlog = 1 Then SetLog("Town Hall Position: " & $TownHallPos[0] & ", " & $TownHallPos[1], $COLOR_DEBUG) ;Debug
 	If isInsideDiamond($TownHallPos) = False Then ; If TH pos is not known or is outside village then get new position
 		LocateTownHall(True) ; Set flag = true for location only, or repeated loop happens
 		If isInsideDiamond($TownHallPos) Then SaveConfig() ; save new location
@@ -32,7 +32,7 @@ Func GetTownHallLevel($bFirstTime = False)
 
 	$iTownHallLevel = 0 ; Reset Townhall level
 	$aTHInfo = BuildingInfo(242, 520 + $bottomOffsetY)
-	If $debugSetlog = 1 Then Setlog("$aTHInfo[0]=" & $aTHInfo[0] & ", $aTHInfo[1]=" & $aTHInfo[1] & ", $aTHInfo[2]=" & $aTHInfo[2], $COLOR_PURPLE)
+	If $debugSetlog = 1 Then Setlog("$aTHInfo[0]=" & $aTHInfo[0] & ", $aTHInfo[1]=" & $aTHInfo[1] & ", $aTHInfo[2]=" & $aTHInfo[2], $COLOR_DEBUG) ;Debug
 	If $aTHInfo[0] > 1 Then
 		If StringInStr($aTHInfo[1], "Town") = 0 Then
 			SetLog("Town Hall not found! I detected a " & $aTHInfo[1] & "! Please locate again!", $COLOR_Fuchsia)

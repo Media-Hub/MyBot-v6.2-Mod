@@ -61,7 +61,7 @@ Func CheckWall()
 					Else
 						If $debugSetlog Then
 							ClickP($aAway, 1, 0, "#0931") ;Click Away
-							Setlog("Position No: " & $i + 1 & " is not a Wall Level: " & $icmbWalls + 4 & ". It was: " & $aResult[1] & ", " & $aResult[2] & " at: (" & $pixel[0] + $xCompensation & "," & $pixel[1] + $yCompensation & ").", $COLOR_PURPLE) ;debug
+							Setlog("Position No: " & $i + 1 & " is not a Wall Level: " & $icmbWalls + 4 & ". It was: " & $aResult[1] & ", " & $aResult[2] & " at: (" & $pixel[0] + $xCompensation & "," & $pixel[1] + $yCompensation & ").", $COLOR_DEBUG) ;Debug
 						Else
 							ClickP($aAway, 1, 0, "#0932") ;Click Away
 							Setlog("Position No: " & $i + 1 & " is not a Wall Level: " & $icmbWalls + 4 & ".", $COLOR_RED)
@@ -181,7 +181,7 @@ Func SaveDebugImageWall($listPixel, $TxtName, $SaveLQImageAlso = False)
 	_GDIPlus_ImageDispose($hImage)
 	_GDIPlus_PenDispose($hPen)
 	_GDIPlus_GraphicsDispose($hGraphics)
-	Setlog($filename, $COLOR_purple)
+	Setlog($filename, $COLOR_DEBUG) ;Debug
 	If _Sleep($iDelayDebugImageSave1) Then Return
 EndFunc   ;==>SaveDebugImageWall
 
@@ -284,7 +284,7 @@ Func SaveDebugImageWall2($result, $SaveLQImageAlso = False)
 			_GDIPlus_ImageDispose($hImage)
 			_GDIPlus_PenDispose($hPen)
 			_GDIPlus_GraphicsDispose($hGraphics)
-			Setlog($filename, $COLOR_purple)
+			Setlog($filename, $COLOR_DEBUG) ;Debug
 		EndIf
 	Next
 	If _Sleep($iDelayDebugImageSave1) Then Return

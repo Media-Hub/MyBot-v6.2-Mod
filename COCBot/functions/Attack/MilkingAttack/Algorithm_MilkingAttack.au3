@@ -55,22 +55,22 @@ Func Alogrithm_MilkingAttack()
 	;07 - Attack  Resources -----------------------------------------------------------------------------------------------------------------------
 	If StringLen($MilkFarmObjectivesSTR) > 0 Then
 		Local $vect = StringSplit($MilkFarmObjectivesSTR, "|", 2)
-		If $debugsetlog = 1 Then Setlog("MilkFarmObjectivesSTR = <" & $MilkFarmObjectivesSTR & ">.. UBOUND=" & UBound($vect))
+		If $debugsetlog = 1 Then Setlog("MilkFarmObjectivesSTR = <" & $MilkFarmObjectivesSTR & ">.. UBOUND=" & UBound($vect), $COLOR_DEBUG) ;Debug
 		If UBound($vect) > 0 Then
 			If StringLen($vect[0]) > 0 Then
-				If $debugsetlog = 1 Then SetLog(">Structures to attack: (" & UBound($vect) & ")", $color_purple)
+				If $debugsetlog = 1 Then SetLog(">Structures to attack: (" & UBound($vect) & ")", $COLOR_DEBUG) ;Debug
 				For $i = 0 To UBound($vect) - 1
-					If $debugsetlog = 1 Then Setlog("> " & $i & " " & $vect[$i], $color_purple)
+					If $debugsetlog = 1 Then Setlog("> " & $i & " " & $vect[$i], $COLOR_DEBUG) ;Debug
 				Next
 				MilkFarmObjectivesDebugImage($MilkFarmObjectivesSTR, 0)
 				Local $troopPosition = -1
 				For $i = 0 To UBound($atkTroops) - 1
 					If $atkTroops[$i][1] <> -1 Then ;if not empty
 						If $atkTroops[$i][0] = $eGobl Then
-							If $debugsetlog = 1 Then SetLog("-*-" & $atkTroops[$i][0] & " " & NameOfTroop($atkTroops[$i][0]) & " " & $atkTroops[$i][1] & " <<---" & $eGobl, $COLOR_GREEN)
+							If $debugsetlog = 1 Then SetLog("-*-" & $atkTroops[$i][0] & " " & NameOfTroop($atkTroops[$i][0]) & " " & $atkTroops[$i][1] & " <<---" & $eGobl, $COLOR_DEBUG) ;Debug
 							$troopPosition = $i
 						Else
-							If $debugsetlog = 1 Then SetLog("-*-" & $atkTroops[$i][0] & " " & NameOfTroop($atkTroops[$i][0]) & " " & $atkTroops[$i][1] & "", $COLOR_GRAY)
+							If $debugsetlog = 1 Then SetLog("-*-" & $atkTroops[$i][0] & " " & NameOfTroop($atkTroops[$i][0]) & " " & $atkTroops[$i][1] & "", $COLOR_DEBUG) ;Debug
 						EndIf
 					EndIf
 				Next
@@ -82,12 +82,12 @@ Func Alogrithm_MilkingAttack()
 							Case 1 ;RANDOM
 								Local $rnd = _RandomUnique(UBound($vect) - 1, 0, UBound($vect) - 2, 1) ;make a random list of structure to attack
 								For $i = 0 To UBound($rnd) - 1
-									If $debugsetlog = 1 Then Setlog("random vect pos " & $i & " value " & $rnd[$i],$color_purple)
+									If $debugsetlog = 1 Then Setlog("random vect pos " & $i & " value " & $rnd[$i], $COLOR_DEBUG) ;Debug
 								Next
 							Case 2 ; ORDERED BY SIDE
 								Local $rnd = _OrderBySideObjectives($vect)
 								For $i = 0 To UBound($rnd) - 1
-									If $debugsetlog = 1 Then Setlog("order by side vect pos " & $i & " value " & $rnd[$i],$color_purple)
+									If $debugsetlog = 1 Then Setlog("order by side vect pos " & $i & " value " & $rnd[$i], $COLOR_DEBUG) ;Debug
 								Next
 							Case else ; AS FOUND
 								Local $tmpstr = ""
@@ -97,7 +97,7 @@ Func Alogrithm_MilkingAttack()
 								$tmpstr=StringLeft($tmpStr,StringLen($tmpstr)-1)
 								Local $rnd = StringSplit($tmpStr,"-",2)
 								For $i = 0 To UBound($rnd) - 1
-									If $debugsetlog = 1 Then Setlog("as found vect pos " & $i & " value " & $rnd[$i],$color_purple)
+									If $debugsetlog = 1 Then Setlog("as found vect pos " & $i & " value " & $rnd[$i], $COLOR_DEBUG) ;Debug
 								Next
 						EndSwitch
 
@@ -106,14 +106,14 @@ Func Alogrithm_MilkingAttack()
 							;Msgbox("","", "attack structure n. " &$i)
 							Local $vect2 = StringSplit($vect[$i], ".", 2)
 							If UBound($vect2) > 1 Then
-								If $debugsetlog = 1 Then Setlog($i & "- Attack structure n. " & $rnd[$i] +1 & "/" & UBound($vect) & " - " & $vect2[0], $color_purple)
+								If $debugsetlog = 1 Then Setlog($i & "- Attack structure n. " & $rnd[$i] +1 & "/" & UBound($vect) & " - " & $vect2[0], $COLOR_DEBUG) ;Debug
 								If UBound($vect) > $rnd[$i] Then
 									MilkingAttackStructure($vect[$rnd[$i]])
 								Else
-									If $debugsetlog = 1 Then Setlog($i & " range exceeded of $vect!")
+									If $debugsetlog = 1 Then Setlog($i & " range exceeded of $vect!", $COLOR_DEBUG) ;Debug
 								EndIf
 							Else
-								If $debugsetlog = 1 Then Setlog("Error @18")
+								If $debugsetlog = 1 Then Setlog("Error @18", $COLOR_DEBUG) ;Debug
 							EndIf
 						Next
 					EndIf
@@ -121,23 +121,23 @@ Func Alogrithm_MilkingAttack()
 					If UBound($vect) = 2 Then
 						For $i = 0 To 1
 							;Msgbox("","", "attack structure n. " &$i)
-							If $debugsetlog = 1 Then Setlog($i & "- Attack structure n. " & $i & "/1 ", $color_purple)
+							If $debugsetlog = 1 Then Setlog($i & "- Attack structure n. " & $i & "/1 ", $COLOR_DEBUG) ;Debug
 							MilkingAttackStructure($vect[$i])
 						Next
 					EndIf
 
 					If UBound($vect) = 1 Then
-						If $debugsetlog = 1 Then Setlog($i & "- Attack structure n. 0/0 ", $color_purple)
+						If $debugsetlog = 1 Then Setlog($i & "- Attack structure n. 0/0 ", $COLOR_DEBUG) ;Debug
 						MilkingAttackStructure($vect[0])
 					EndIf
 				Else
-					If $debugsetlog = 1 Then Setlog("No Goblins left ")
+					If $debugsetlog = 1 Then Setlog("No Goblins left ", $COLOR_DEBUG) ;Debug
 				EndIf
 			Else
-				If $debugsetlog = 1 Then Setlog("No structures to attack...")
+				If $debugsetlog = 1 Then Setlog("No structures to attack...", $COLOR_DEBUG) ;Debug
 			EndIf
 		Else
-			If $debugsetlog = 1 Then Setlog("No structures to attack..")
+			If $debugsetlog = 1 Then Setlog("No structures to attack..", $COLOR_DEBUG) ;Debug
 		EndIf
 	Else
 		Setlog("No structures to attack, skip attack structures!")

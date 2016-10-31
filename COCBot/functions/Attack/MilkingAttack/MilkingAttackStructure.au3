@@ -14,7 +14,7 @@
 ; ===============================================================================================================================
 
 Func MilkingAttackStructure($vectstr)
-	If $debugsetlog = 1 Then SetLog("###### Attack " & $vectstr & "######")
+	If $debugsetlog = 1 Then SetLog("###### Attack " & $vectstr & "######", $COLOR_DEBUG) ;Debug
 	Local $vect = StringSplit($vectstr, ".", 2)
 	If UBound($vect) = 4 Then ; (only 1 point)
 		Local $temp = $vect[3]
@@ -28,10 +28,10 @@ Func MilkingAttackStructure($vectstr)
 			$troopxwave = Random($MilkFarmTroopForWaveMin, $MilkFarmTroopForWaveMax, 1)
 		EndIf
 
-		If $debugsetlog = 1 Then Setlog("drop n.: " & $troopxwave & " troops | structure:" & $vect[0])
+		If $debugsetlog = 1 Then Setlog("drop n.: " & $troopxwave & " troops | structure:" & $vect[0], $COLOR_DEBUG) ;Debug
 		Local $skipdelay = False
 		For $i = 1 To $MilkFarmTroopMaxWaves
-			If $debugsetlog = 1 Then Setlog("Wave attack number " & $i)
+			If $debugsetlog = 1 Then Setlog("Wave attack number " & $i, $COLOR_DEBUG) ;Debug
 			$skipdelay = False
 			If IsAttackPage() Then
 
@@ -78,11 +78,11 @@ Func MilkingAttackStructure($vectstr)
 						;If $debugsetlog=1 Then Setlog("Click( " & $pixel[0] & ", " & $pixel[1] & " ," &  $troopxwave& ", "0,#0778)")
 						Click($pixel[0], $pixel[1], $troopxwave, Random(2, 7, 1), "#0778")
 					Else
-						If $debugsetlog = 1 Then Setlog("MilkingAttackStructure error #1")
+						If $debugsetlog = 1 Then Setlog("MilkingAttackStructure error #1", $COLOR_DEBUG) ;Debug
 					EndIf
 				EndIf
 			Else
-				If $debugsetlog = 1 Then Setlog("You are not in Attack phase")
+				If $debugsetlog = 1 Then Setlog("You are not in Attack phase", $COLOR_DEBUG) ;Debug
 				Return
 			EndIf
 
@@ -93,7 +93,7 @@ Func MilkingAttackStructure($vectstr)
 				Else
 					$delayfromwaves = Random($MilkFarmDelayFromWavesMin, $MilkFarmDelayFromWavesMax, 1)
 				EndIf
-				If $debugsetlog = 1 Then Setlog("wait " & $delayfromwaves)
+				If $debugsetlog = 1 Then Setlog("wait " & $delayfromwaves, $COLOR_DEBUG) ;Debug
 				If _Sleep($delayfromwaves) Then Return ;wait before attack new structure.
 			EndIf
 		Next

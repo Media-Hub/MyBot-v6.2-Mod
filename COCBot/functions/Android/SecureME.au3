@@ -20,15 +20,20 @@ Func RemoveUnAvailableFoldersFromInUseList()
 	Local $inUsePath = $HKLM & "\SOFTWARE\MyBOT"
 	Local $arrInUseList
 	$inUseList = RegRead($inUsePath, "inUse")
-	$arrInUseList = StringSplit($inUseList, "|", 2)
-	;For $i = 0 To UBound($arrInUseList) - 1
-	;	If StringLen($arrInUseList[$i]) > 0 Then
-	For $TheFolder In $arrInUseList
-		If StringLen($TheFolder) > 0 Then
-			$path = $AndroidPicturesHostPath & $TheFolder & "\"
-			If FileExists($path) = False Then RemoveFolderFromInUseList($TheFolder)
-		EndIf
-	Next
+	If StringInStr($inUseList, "|") > 0 Then
+		$arrInUseList = StringSplit($inUseList, "|", 2)
+		;For $i = 0 To UBound($arrInUseList) - 1
+		;	If StringLen($arrInUseList[$i]) > 0 Then
+		For $TheFolder In $arrInUseList
+			If StringLen($TheFolder) > 0 Then
+				$path = $AndroidPicturesHostPath & $TheFolder & "\"
+				If FileExists($path) = False Then RemoveFolderFromInUseList($TheFolder)
+			EndIf
+		Next
+	Else
+		$path = $AndroidPicturesHostPath & $inUseList & "\"
+		If FileExists($path) = False Then RemoveFolderFromInUseList($inUseList)
+	EndIf
 EndFunc   ;==>RemoveUnAvailableFoldersFromInUseList
 
 Func RemoveFolderFromInUseList($folder = "")
@@ -39,11 +44,15 @@ Func RemoveFolderFromInUseList($folder = "")
 	EndIf
 	Select
 		Case $forcedFolder = False
-			If IsFolderInUse($folder) = False Then
+			If IsFolderInUse($folder) = True Then
 				Local $inUseList = ""
 				Local $inUsePath = $HKLM & "\SOFTWARE\MyBOT"
 				$inUseList = RegRead($inUsePath, "inUse")
-				$inUseList = StringReplace($inUseList, $folder & "|", "")
+				If StringInStr($inUseList, "|") > 0 Then
+					$inUseList = StringReplace($inUseList, $folder & "|", "")
+				Else
+					$inUseList = StringReplace($inUseList, $folder, "")
+				EndIf
 				;---- Update inUse Registery
 				RegWrite($inUsePath, "inUse", "REG_SZ", $inUseList)
 			EndIf
@@ -51,7 +60,11 @@ Func RemoveFolderFromInUseList($folder = "")
 			Local $inUseList = ""
 			Local $inUsePath = $HKLM & "\SOFTWARE\MyBOT"
 			$inUseList = RegRead($inUsePath, "inUse")
-			$inUseList = StringReplace($inUseList, $folder & "|", "")
+			If StringInStr($inUseList, "|") > 0 Then
+				$inUseList = StringReplace($inUseList, $folder & "|", "")
+			Else
+				$inUseList = StringReplace($inUseList, $folder, "")
+			EndIf
 			;---- Update inUse Registery
 			RegWrite($inUsePath, "inUse", "REG_SZ", $inUseList)
 	EndSelect
@@ -60,13 +73,18 @@ EndFunc   ;==>RemoveFolderFromInUseList
 
 Func AddFolderToInUseList($folder = "")
 	If $folder = "" Then $folder = StringReplace($AndroidPicturesHostFolder, "\", "")
-	If IsFolderInUse($folder) = False Then
+	If IsFolderInUse($folder) = True Then
 		Local $inUseList = ""
 		;Local $inUsePath = @ScriptDir & "\inUse.txt"
 		Local $inUsePath = $HKLM & "\SOFTWARE\MyBOT"
 		$inUseList = RegRead($inUsePath, "inUse")
-		$inUseList = StringReplace($inUseList, $folder & "|", "")
-		$inUseList &= $folder & "|"
+		If StringInStr($inUseList, "|") > 0 Then
+			$inUseList = StringReplace($inUseList, $folder & "|", "")
+			$inUseList &= $folder & "|"
+		Else
+			$inUseList = StringReplace($inUseList, $folder, "")
+			$inUseList &= $folder & "|"
+		EndIf
 		;---- Update inUse Registery
 		RegWrite($inUsePath, "inUse", "REG_SZ", $inUseList)
 	EndIf
@@ -75,14 +93,19 @@ EndFunc   ;==>AddFolderToInUseList
 Func IsFolderInUse($folderName = "lol")
 	Local $inUsePath = $HKLM & "\SOFTWARE\MyBOT"
 	Local $inUseList = ""
+	If $folderName = $replaceOfMyBotFolder Then Return True
 	Local $foundInReg = False
 	Local $allowedFolderDate = True
 	$inUseList = RegRead($inUsePath, "inUse")
 	;---- Split Data To Get Each Folder Name
-	$inUseList = StringSplit($inUseList, "|", 2)
-	For $i = 0 To UBound($inUseList) - 1
-		If $inUseList[$i] = $folderName Then $foundInReg = True
-	Next
+	If StringInStr($inUseList, "|") > 0 Then
+		$inUseList = StringSplit($inUseList, "|", 2)
+		For $i = 0 To UBound($inUseList) - 1
+			If $inUseList[$i] = $folderName Then $foundInReg = True
+		Next
+	Else
+		If $inUseList = $folderName Then $foundInReg = True
+	EndIf
 	If $foundInReg = True Then
 		Local $fModifiedDate[0]
 		$path = $AndroidPicturesHostPath & $folderName & "\"

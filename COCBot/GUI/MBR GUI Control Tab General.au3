@@ -139,7 +139,6 @@ Func MoveDivider()
 
 EndFunc   ;==>MoveDivider
 
-
 Func XPStyleToggle($Off = 1)
 	Local $XS_n
 	If Not StringInStr(@OSType, "WIN32_NT") Then Return 0

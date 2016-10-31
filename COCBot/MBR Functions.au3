@@ -101,7 +101,6 @@
 #include "functions\Attack\Troops\SetSleep.au3"
 
 #include "functions\CreateArmy\_TrainMoveBtn.au3"
-#include "functions\CreateArmy\BarracksStatus.au3"
 #include "functions\CreateArmy\CheckFullArmy.au3"
 #include "functions\CreateArmy\CheckArmyCamp.au3"
 #include "functions\CreateArmy\getArmyCapacity.au3"
@@ -119,9 +118,8 @@
 #include "functions\CreateArmy\Spell.au3"
 #include "functions\CreateArmy\SmartWait4Train.au3"
 #include "functions\CreateArmy\TrainClick.au3"
-#include "functions\CreateArmy\Train.au3"
 #include "functions\CreateArmy\TrainIt.au3"
-#include "functions\CreateArmy\RecalculateTrain.au3"
+#include "functions\CreateArmy\TrainRevamp.au3"
 
 #include "functions\Image Search\ImageSearch.au3"
 #include "functions\Image Search\checkDeadBase.au3"
@@ -129,7 +127,6 @@
 #include "functions\Image Search\checkWall.au3"
 #include "functions\Image Search\CheckTombs.au3"
 #include "functions\Image Search\THSearch.au3"
-#include "functions\Image Search\TestEQDeploy.au3"
 
 #include "functions\Main Screen\checkMainScreen.au3"
 #include "functions\Main Screen\checkObstacles.au3"
@@ -153,9 +150,11 @@
 #include "functions\Android\AndroidMEmu.au3"
 #include "functions\Android\AndroidLeapDroid.au3"
 #include "functions\Android\AndroidNox.au3"
+#include "functions\Android\AndroidKOPLAYER.au3"
 #include "functions\Android\getBSPos.au3"
 #include "functions\Android\UniversalCloseWaitOpenCoC.au3"
 #include "functions\Android\AndroidEmbed.au3"
+#include "functions\Android\checkAndroidPageError.au3"
 
 #include "functions\Other\WerFaultClose.au3"
 #include "functions\Other\_NumberFormat.au3"
@@ -200,7 +199,6 @@
 #include "functions\Other\KillProcess.au3"
 #include "functions\Other\LaunchConsole.au3"
 #include "functions\Other\ADB.au3"
-#include "functions\Other\JSON.au3"
 
 #include "functions\Pixels\_CaptureRegion.au3"
 #include "functions\Pixels\_ColorCheck.au3"
@@ -267,20 +265,15 @@
 #include "functions\Village\StarBonus.au3"
 #include "functions\Other\ClickZoneR.au3"
 #include "functions\Village\DonateStats.au3"
-
-; Switch Profile
-#include "functions\Village\ProfileSwitch.au3"
+;==============================================================
+; SmartZap - Added by NTS team
+;==============================================================
+#include "functions\Attack\SmartZap\drillSearch.au3"
+#include "functions\Attack\SmartZap\smartZap.au3"
+#include "functions\Other\JSON.au3"
+;==============================================================
+; SmartZap - Added by NTS team
+;==============================================================
 
 ; SwitchAcc - DEMEN
 #include "functions\Mod\Switch Accounts\SwitchAcc.au3"
-#cs
-; Attack files - Added by LunaEclipse
-#include "functions\Attack\attackFunctions.au3"
-
-; ExtremeZap - Added by TheRevenor
-#include "functions\Mod\SmartZap\ExtremeZap.au3"
-
-; SmartZap files - Added by LunaEclipse
-#include "functions\Mod\SmartZap\drillSearch.au3"
-#include "functions\Mod\SmartZap\smartZap.au3"
-#ce

@@ -42,7 +42,7 @@ EndFunc   ;==>GetListPixel
 Func GetLocationItem($functionName, $useImgLoc = False)
 	If $debugSetLog = 1 Or $debugBuildingPos = 1 Then
 		Local $hTimer = TimerInit()
-		Setlog("GetLocationItem(" & $functionName & ")", $COLOR_PURPLE)
+		Setlog("GetLocationItem(" & $functionName & ")", $COLOR_DEBUG) ;Debug
 	EndIf
 	Local $resultHere
 	If $useImgLoc = False Then
@@ -51,10 +51,10 @@ Func GetLocationItem($functionName, $useImgLoc = False)
 		$resultHere = GetLocationItemImgLoc($functionName)
 	EndIf
 	If UBound($resultHere) > 0 Then
-		If $debugBuildingPos = 1 Then Setlog("#*# " & $functionName & ": " & $resultHere[0] & "calc in " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_TEAL)
+		If $debugBuildingPos = 1 Then Setlog("#*# " & $functionName & ": " & $resultHere[0] & "calc in " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_DEBUG) ;Debug
 		Return GetListPixel($resultHere[0])
 	Else
-		If $debugBuildingPos = 1 Then Setlog("#*# " & $functionName & ": NONE calc in " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_TEAL)
+		If $debugBuildingPos = 1 Then Setlog("#*# " & $functionName & ": NONE calc in " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_DEBUG) ;Debug
 	EndIf
 EndFunc   ;==>GetLocationItem
 
@@ -62,7 +62,7 @@ Func GetLocationItemImgLoc($functionName)
 	Local $DebugIt = False
 	If $debugSetLog = 1 Or $debugBuildingPos = 1 Then
 		Local $hTimer = TimerInit()
-		Setlog("GetLocationItemImgLoc(" & $functionName & ")", $COLOR_PURPLE)
+		Setlog("GetLocationItemImgLoc(" & $functionName & ")", $COLOR_DEBUG) ;Debug
 	EndIf
 
 	Switch $functionName
@@ -71,7 +71,7 @@ Func GetLocationItemImgLoc($functionName)
 			Local $resultHere = multiMatchesPixelOnly($directory, 0, "ECD", "ECD")
 			If $DebugIt Then SetLog("$resultHere = " & $resultHere, $COLOR_BLUE)
 			If Not $resultHere = "" Then
-				If $debugSetLog = 1 Or $debugBuildingPos = 1 Then Setlog("Found TH Within " & Round(TimerDiff($hTimer) / 1000, 2) & " second(s)", $COLOR_PURPLE)
+				If $debugSetLog = 1 Or $debugBuildingPos = 1 Then Setlog("Found TH Within " & Round(TimerDiff($hTimer) / 1000, 2) & " second(s)", $COLOR_DEBUG) ;Debug
 				Return StringSplit($resultHere, "|", 2)
 			EndIf
 	EndSwitch
@@ -80,10 +80,10 @@ EndFunc   ;==>GetLocationItemImgLoc
 Func GetLocationCC()
 	If $debugSetLog = 1 Or $debugBuildingPos = 1 Then
 		Local $hTimer = TimerInit()
-		Setlog("GetLocationCC()", $COLOR_PURPLE)
+		Setlog("GetLocationCC()", $COLOR_DEBUG) ;Debug
 	EndIf
 	Local $directory = @ScriptDir & "\images\ClanCastle"
 	Local $Result = multiMatchesPixelOnly($directory, 0, "ECD", "ECD")
-	If $debugSetLog = 1 Or $debugBuildingPos = 1 Then SetLog("GetLocationCC() Time Taken: " & Round(Number(TimerDiff($hTimer) / 1000), 2) & " Second(s)!")
+	If $debugSetLog = 1 Or $debugBuildingPos = 1 Then SetLog("GetLocationCC() Time Taken: " & Round(Number(TimerDiff($hTimer) / 1000), 2) & " Second(s)!", $COLOR_DEBUG) ;Debug
 	Return GetListPixel($Result)
 EndFunc   ;==>GetLocationCC

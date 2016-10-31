@@ -222,10 +222,6 @@ Func BrewSpells()
 					If $iTempCloneSpell = 0 then Setlog("Already done Clone Spell(s)")
 				EndIf
 			EndIf
-			Local $TotalTime = getBarracksTotalTime(634, 203)
-			If $TotalTime[0] <> "" And $TotalTime[0] <> -1 and $TotalTime[0] > 0 Then
-				SetLog(" » [SF] | Total Time: " & $TotalTime[0], $COLOR_BLUE)
-			EndIf
 		Else
 			SetLog("Spell Factory not found...", $COLOR_BLUE)
 		EndIf
@@ -391,10 +387,6 @@ Func BrewSpells()
 					If $iTempSkeletonSpell > 0 then Setlog("Already Brewed " & $iTempSkeletonSpell & " Skeleton Spell(s)")
 					If $iTempSkeletonSpell = 0 then Setlog("Already done Skeleton Spell(s)")
 				EndIf
-			EndIf
-			Local $TotalTime = getBarracksTotalTime(634, 203)
-			If $TotalTime[0] <> "" And $TotalTime[0] <> -1 and $TotalTime[0] > 0 Then
-				SetLog(" » [DSF] | Total Time: " & $TotalTime[0], $COLOR_BLUE)
 			EndIf
 		Else
 			SetLog("Dark Spell Factory not found...", $COLOR_BLUE)

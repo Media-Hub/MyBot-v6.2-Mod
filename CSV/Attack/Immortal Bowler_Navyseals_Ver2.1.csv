@@ -4,8 +4,8 @@ NOTE  |Make Troops: 22-28Bowlers," 4-6healers, 4-12Giants(opt), 2-JSpells (opt),
       |EXTR. GOLD |EXTR.ELIXIR|EXTR. DARK |DEPO. GOLD |DEPO.ELIXIR|DEPO. DARK |TOWNHALL   |FORCED SIDE|,
 SIDE  |0          |0          |0          |0          |0          |0          |10         |EAGLE      |,
       |VECTOR_____|SIDE_______|DROP_POINTS|ADDTILES___|VERSUS_____|RANDOMX_PX_|RANDOMY_PX_|___________|,
-MAKE  |N          |FRONT-LEFT |10         |6          |INT-EXT    |0          |1          |           |,
-MAKE  |A          |FRONT-RIGHT|10         |6          |INT-EXT    |0          |1          |           |,
+MAKE  |N          |FRONT-LEFT |10         |2          |INT-EXT    |0          |1          |           |,
+MAKE  |A          |FRONT-RIGHT|10         |2          |INT-EXT    |0          |1          |           |,
 MAKE  |V          |FRONT-LEFT |10         |12         |INT-EXT    |2          |1          |           |,
 MAKE  |Y          |FRONT-RIGHT|10         |12         |INT-EXT    |1          |2          |           |,
 MAKE  |F          |FRONT-LEFT |10         |2          |INT-EXT    |0          |1          |           |,
@@ -45,3 +45,6 @@ WAIT  |4000-6000  |           |           |           |           |           | 
 DROP  |L          |2          |1          |RSpell     |0          |0          |0          |           |,
 WAIT  |4000-5500  |           |           |           |           |           |           |           |,
 DROP  |N-A        |1-8        |40         |arch       |50         |0          |10-20      |           |,
+DROP  |L          |1          |1          |HaSpell    |0          |0          |0          |           |drop freeze spell
+DROP  |A          |1-10       |10         |Remain     |0          |0          |100-500    |           |Drop Remain Troops 
+DROP  |B          |1-10       |10         |Remain     |0          |0          |100-500    |           |Drop Remain Troops 

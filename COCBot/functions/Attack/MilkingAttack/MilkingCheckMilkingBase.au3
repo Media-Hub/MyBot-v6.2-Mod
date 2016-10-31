@@ -20,7 +20,7 @@ Func CheckMilkingBase($matchDB, $dbBase)
 		If $matchDB And $iAtkAlgorithm[$DB] = 2 Then ;MilkingAttack
 			If ( ( $MilkAttackType=1 and $dbBase )  or ( $MilkAttackType= 0 ) )  then  ;if milking attack enabled high cpu(attacktype=0) or lowcpu and match $dbase Collectors...
 				  Local $TimeCheckMilkingAttack = TimerInit()
-				  If $debugsetlog = 1 Then Setlog("Check Milking...", $color_purple)
+				  If $debugsetlog = 1 Then Setlog("Check Milking...", $COLOR_DEBUG) ;Debug
 				  MilkingDetectRedArea()
 				  $MilkingExtractorsMatch = MilkingDetectElixirExtractors()
 				  If $MilkingExtractorsMatch > 0 Then
@@ -29,28 +29,28 @@ Func CheckMilkingBase($matchDB, $dbBase)
 
 				  If StringLen($MilkFarmObjectivesSTR) > 0 Then
 					  If $MilkAttackType = 1 Then
-						  If $debugsetlog = 1 Then Setlog("Milking match LOW CPU SETTINGS", $color_purple)
-						  If $debugsetlog = 1 Then Setlog("objectives: " & $MilkFarmObjectivesSTR , $color_purple)
+						  If $debugsetlog = 1 Then Setlog("Milking match LOW CPU SETTINGS", $COLOR_DEBUG) ;Debug
+						  If $debugsetlog = 1 Then Setlog("objectives: " & $MilkFarmObjectivesSTR , $COLOR_DEBUG) ;Debug
 					  Else
-						  If $debugsetlog = 1 Then Setlog("Milking match HIGH CPU SETTINGS", $color_purple)
-						  If $debugsetlog = 1 Then Setlog("objectives: " & $MilkFarmObjectivesSTR , $color_purple)
+						  If $debugsetlog = 1 Then Setlog("Milking match HIGH CPU SETTINGS", $COLOR_DEBUG) ;Debug
+						  If $debugsetlog = 1 Then Setlog("objectives: " & $MilkFarmObjectivesSTR , $COLOR_DEBUG) ;Debug
 					  EndIf
 				  Else
-					  If $debugsetlog = 1 Then Setlog("Milking no match", $color_purple)
+					  If $debugsetlog = 1 Then Setlog("Milking no match", $COLOR_DEBUG) ;Debug
 					  If $MilkAttackAfterTHSnipe = 1 and $chkSnipeIfNoElixir = 1 Then
-						  If $debugsetlog = 1 Then Setlog("Milking no match but Snipe even if no structures detected... check...",$COLOR_PURPLE)
+						  If $debugsetlog = 1 Then Setlog("Milking no match but Snipe even if no structures detected... check...", $COLOR_DEBUG) ;Debug
 						  If $searchTH = "-" Then	FindTownHall(True)
 						  If $searchTH <>"-" Then
 							  $milkingAttackOutside = 1
 							  If SearchTownHallLoc() Then  ;check if townhall position it is outside
-								  If $debugsetlog = 1 Then Setlog("Milking Attack TH outside match!",$color_purple)
+								  If $debugsetlog = 1 Then Setlog("Milking Attack TH outside match!", $COLOR_DEBUG) ;Debug
 								  $milkingAttackOutside = 1
 							  Else
-								  If $debugsetlog = 1 Then Setlog("TH it is not outside, skip attack")
+								  If $debugsetlog = 1 Then Setlog("TH it is not outside, skip attack", $COLOR_DEBUG) ;Debug
 							  EndIf
 							  $milkingAttackOutside = 0
 						  Else
-							  If $debugsetlog = 1 Then Setlog("Cannot detect Townhall, skip THsnipe")
+							  If $debugsetlog = 1 Then Setlog("Cannot detect Townhall, skip THsnipe", $COLOR_DEBUG) ;Debug
 						  EndIf
 					  EndIf
 				  EndIf

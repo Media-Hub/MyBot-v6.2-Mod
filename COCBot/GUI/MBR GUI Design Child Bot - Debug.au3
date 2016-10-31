@@ -49,36 +49,43 @@ $grpDebug = GUICtrlCreateGroup(GetTranslated(636,34, "Debug"), $x - 20, $y - 20,
 		_GUICtrlSetTip(-1, GetTranslated(636,92, "Debug: make ocr of donations and simulate only donate but no donate any troop"))
 		GUICtrlSetState(-1, $GUI_DISABLE)
 		GUICtrlSetState(-1, $GUI_HIDE)
+	$y += 20
+	$chkdebugDeadBaseImage = GUICtrlCreateCheckbox(GetTranslated(636,107, "Dead Bases Images"), $x , $y-5, -1, -1)
+		_GUICtrlSetTip(-1, GetTranslated(636,108, "Debug: Capture the Skipped and detected dead bases"))
+		GUICtrlSetState(-1, $GUI_DISABLE)
+		GUICtrlSetState(-1, $GUI_HIDE)
 
-	$y += 45
+	$y += 40
 
-	$btnDBCheck = GUICtrlCreateButton("DeadBase Check", $x  , $y , 140, 30)
+	$btnDBCheck = GUICtrlCreateButton("DeadBase Check", $x  , $y , 140, 25)
 
-	$y += 35
+	$y += 30
 
-	$btnPosCheck = GUICtrlCreateButton("Position Check", $x  , $y , 140, 30)
+	$btnPosCheck = GUICtrlCreateButton("Position Check", $x  , $y , 140, 25)
+
+	$y += 30
 
 Local $x = 295
-$y = 45
-	$btnTestTrain = GUICtrlCreateButton(GetTranslated(636,88, "Test Train"), $x  , $y , 140, 30)
+$y = 40
+	$btnTestTrain = GUICtrlCreateButton(GetTranslated(636,88, "Test Train"), $x  , $y , 140, 25)
 
-	$y += 35
+	$y += 30
 
-	$btnTestDonateCC = GUICtrlCreateButton(GetTranslated(636,89, "Test Donate"), $x  , $y , 140, 30)
+	$btnTestDonateCC = GUICtrlCreateButton(GetTranslated(636,89, "Test Donate"), $x  , $y , 140, 25)
 
-	$y += 35
+	$y += 30
 
-	$btnTestAttackBar = GUICtrlCreateButton(GetTranslated(636,90, "Test Attack Bar"), $x  , $y , 140, 30)
+	$btnTestAttackBar = GUICtrlCreateButton(GetTranslated(636,90, "Test Attack Bar"), $x  , $y , 140, 25)
 
-	$y += 35
+	$y += 30
 
-	$btnTestClickDrag = GUICtrlCreateButton(GetTranslated(636,102, "Test Click Drag (scrolling)"), $x  , $y , 140, 30)
+	$btnTestClickDrag = GUICtrlCreateButton(GetTranslated(636,102, "Test Click Drag (scrolling)"), $x  , $y , 140, 25)
 
-	$y += 35
+	$y += 30
 
-	$btnTestImage = GUICtrlCreateButton(GetTranslated(636,103, "Test Image"), $x  , $y , 140, 30)
+	$btnTestImage = GUICtrlCreateButton(GetTranslated(636,103, "Test Image"), $x  , $y , 140, 25)
 
-	$y += 35
+	$y += 30
 
 	$btnEagle = GUICtrlCreateButton(GetTranslated(636,104, "Test Eagle"), $x  , $y , 140, 25)
 
@@ -89,7 +96,6 @@ $y = 45
 	$y += 30
 
 	$btnTestAD = GUICtrlCreateButton("Test Air Defense", $x  , $y , 140, 25)
-	;GUICtrlSetOnEvent($btnEagle, "btnEagle")
 
 	$y += 30
 
@@ -97,7 +103,7 @@ $y = 45
 
 	$y += 30
 
-	$btnEQDeploy = GUICtrlCreateButton(GetTranslated(636,106, "Army Over View"), $x  , $y , 140, 25)
+	$btnEQDeploy = GUICtrlCreateButton(GetTranslated(636,106, "Test Attack Bar 2"), $x  , $y , 140, 25)
 
 GUICtrlCreateGroup("", -99, -99, 1, 1)
 

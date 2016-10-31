@@ -97,7 +97,7 @@ Func LocateUpgrades()
 					AndroidShieldForceDown($wasDown)
 					Return False
 				Case Else
-					Setlog("Impossible value (" & $MsgBox & ") from Msgbox, you have been a bad programmer!", $COLOR_PURPLE)
+					Setlog("Impossible value (" & $MsgBox & ") from Msgbox, you have been a bad programmer!", $COLOR_DEBUG) ;Debug
 			EndSwitch
 
 			ClickP($aAway, 1, 0, "#0210") ;Click Away to close windows
@@ -175,11 +175,11 @@ Func UpgradeValue($inum, $bRepeat = False) ;function to find the value and type 
 		; check for upgrade in process
 		Local $offColors[3][3] = [[0x000000, 44, 17], [0xE07740, 69, 31], [0xF2F7F1, 81, 0]] ; 2nd pixel black broken hammer, 3rd pixel lt brown handle, 4th pixel white edge of button
 		Global $ButtonPixel = _MultiPixelSearch(284, 572, 570, 615, 1, 1, Hex(0x000000, 6), $offColors, 25) ; first pixel blackon side of button
-		If $debugSetlog = 1 Then Setlog("Pixel Color #1: " & _GetPixelColor(389, 572, True) & ", #2: " & _GetPixelColor(433, 589, True) & ", #3: " & _GetPixelColor(458, 603, True) & ", #4: " & _GetPixelColor(470, 572, True), $COLOR_PURPLE)
+		If $debugSetlog = 1 Then Setlog("Pixel Color #1: " & _GetPixelColor(389, 572, True) & ", #2: " & _GetPixelColor(433, 589, True) & ", #3: " & _GetPixelColor(458, 603, True) & ", #4: " & _GetPixelColor(470, 572, True), $COLOR_DEBUG) ;Debug
 		If IsArray($ButtonPixel) Then
 			If $debugSetlog = 1 Or $bOopsFlag = True Then
-				Setlog("ButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_PURPLE) ;Debug
-				Setlog("Pixel Color #1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 44, $ButtonPixel[1] + 17, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 69, $ButtonPixel[1] + 31, True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 81, $ButtonPixel[1], True), $COLOR_PURPLE)
+				Setlog("ButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_DEBUG) ;Debug
+				Setlog("Pixel Color #1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 44, $ButtonPixel[1] + 17, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 69, $ButtonPixel[1] + 31, True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 81, $ButtonPixel[1], True), $COLOR_DEBUG) ;Debug
 			EndIf
 			Setlog("Selection #" & $inum + 1 & " Upgrade in process - Skipped!", $COLOR_MAROON)
 			ClickP($aAway, 1, 0, "#0999") ;Click Away to close windows
@@ -224,16 +224,16 @@ Func UpgradeValue($inum, $bRepeat = False) ;function to find the value and type 
 	Local $offColors[3][3] = [[0xD6714B, 47, 37], [0xF0E850, 70, 0], [0xF4F8F2, 79, 0]] ; 2nd pixel brown hammer, 3rd pixel gold, 4th pixel edge of button
 	Global $ButtonPixel = _MultiPixelSearch(240, 563 + $bottomOffsetY, 670, 620 + $bottomOffsetY, 1, 1, Hex(0xF3F3F1, 6), $offColors, 30) ; first gray/white pixel of button
 	If $debugSetlog = 1 And IsArray($ButtonPixel) Then
-		Setlog("GoldButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_PURPLE) ;Debug
-		Setlog("Color #1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 47, $ButtonPixel[1] + 37, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 70, $ButtonPixel[1], True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 79, $ButtonPixel[1], True), $COLOR_PURPLE)
+		Setlog("GoldButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_DEBUG) ;Debug
+		Setlog("Color #1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 47, $ButtonPixel[1] + 37, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 70, $ButtonPixel[1], True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 79, $ButtonPixel[1], True), $COLOR_DEBUG) ;Debug
 	EndIf
 
 	If IsArray($ButtonPixel) = 0 Then ; If its not normal gold upgrade, then try to find elixir upgrade button
 		Local $offColors[3][3] = [[0xBC5B31, 38, 32], [0xF84CF9, 72, 0], [0xF5F9F2, 79, 0]] ; 2nd pixel brown hammer, 3rd pixel pink, 4th pixel edge of button
 		Global $ButtonPixel = _MultiPixelSearch(240, 563 + $bottomOffsetY, 670, 620 + $bottomOffsetY, 1, 1, Hex(0xF4F7F2, 6), $offColors, 30) ; first gray/white pixel of button
 		If $debugSetlog = 1 And IsArray($ButtonPixel) Then
-			Setlog("ElixirButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_PURPLE) ;Debug
-			Setlog("Color #1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 38, $ButtonPixel[1] + 32, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 70, $ButtonPixel[1], True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 79, $ButtonPixel[1], True), $COLOR_PURPLE)
+			Setlog("ElixirButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_DEBUG) ;Debug
+			Setlog("Color #1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 38, $ButtonPixel[1] + 32, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 70, $ButtonPixel[1], True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 79, $ButtonPixel[1], True), $COLOR_DEBUG) ;Debug
 		EndIf
 	EndIf
 
@@ -241,15 +241,15 @@ Func UpgradeValue($inum, $bRepeat = False) ;function to find the value and type 
 		Local $offColors[3][3] = [[0x9B4C28, 41, 23], [0x040009, 72, 0], [0xF5F9F2, 79, 0]] ; 2nd pixel brown hammer, 3rd pixel black, 4th pixel edge of button
 		Global $ButtonPixel = _MultiPixelSearch(240, 563 + $bottomOffsetY, 670, 620 + $bottomOffsetY, 1, 1, Hex(0xF6F9F3, 6), $offColors, 25) ; first gray/white pixel of button4
 		If $debugSetlog = 1 And IsArray($ButtonPixel) Then
-			Setlog("HeroButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_PURPLE) ;Debug
-			Setlog("Color #1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 41, $ButtonPixel[1] + 23, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 72, $ButtonPixel[1], True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 79, $ButtonPixel[1], True), $COLOR_PURPLE)
+			Setlog("HeroButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_DEBUG) ;Debug
+			Setlog("Color #1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 41, $ButtonPixel[1] + 23, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 72, $ButtonPixel[1], True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 79, $ButtonPixel[1], True), $COLOR_DEBUG) ;Debug
 		EndIf
 	EndIf
 
 	If IsArray($ButtonPixel) Then
 		If $debugSetlog = 1 Or $bOopsFlag = True Then
-			Setlog("ButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_PURPLE) ;Debug
-			Setlog("#1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 41, $ButtonPixel[1] + 23, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 70, $ButtonPixel[1], True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 79, $ButtonPixel[1], True), $COLOR_PURPLE)
+			Setlog("ButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_DEBUG) ;Debug
+			Setlog("#1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 41, $ButtonPixel[1] + 23, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 70, $ButtonPixel[1], True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 79, $ButtonPixel[1], True), $COLOR_DEBUG) ;Debug
 		EndIf
 
 		Click($ButtonPixel[0] + 20, $ButtonPixel[1] + 20, 1, 0, "#0213") ; Click Upgrade Button
@@ -341,7 +341,7 @@ Func UpgradeValue($inum, $bRepeat = False) ;function to find the value and type 
 				Return False
 			EndIf
 			$aUpgrades[$inum][2] = Int($inputbox)
-			Setlog("User input value = " & $aUpgrades[$inum][2], $COLOR_PURPLE)
+			Setlog("User input value = " & $aUpgrades[$inum][2], $COLOR_DEBUG) ;Debug
 			_ExtMsgBoxSet(1 + 64, $SS_CENTER, 0x004080, 0xFFFF00, 12, "Comic Sans MS", 500)
 			$stext = GetTranslated(640, 58, "Save copy of upgrade image for developer analysis ?")
 			$MsgBox = _ExtMsgBox(48, GetTranslated(640, 59, "YES|NO"), GetTranslated(640, 37, "Notice"), $stext, 60, $frmBot)
@@ -350,7 +350,7 @@ Func UpgradeValue($inum, $bRepeat = False) ;function to find the value and type 
 		If $aUpgrades[$inum][3] = "" And $bOopsFlag = True And $bRepeat = False Then
 			_ExtMsgBoxSet(1 + 64, $SS_CENTER, 0x004080, 0xFFFF00, 10, "Comic Sans MS", 500)
 			$inputbox = _ExtMsgBox(0, GetTranslated(640, 60, "   GOLD   |  ELIXIR  |DARK ELIXIR"), GetTranslated(640, 61, "Need User Help"), GetTranslated(640, 62, "Select Upgrade Type:"), 0, $frmBot)
-			If $debugSetlog = 1 Then Setlog(" _MsgBox returned = " & $inputbox, $COLOR_PURPLE)
+			If $debugSetlog = 1 Then Setlog(" _MsgBox returned = " & $inputbox, $COLOR_DEBUG) ;Debug
 			Switch $inputbox
 				Case 1
 					$aUpgrades[$inum][3] = "Gold"
@@ -362,7 +362,7 @@ Func UpgradeValue($inum, $bRepeat = False) ;function to find the value and type 
 					SetLog("Silly programmer made an error!", $COLOR_MAROON)
 					$aUpgrades[$inum][3] = "HaHa"
 			EndSwitch
-			Setlog("User selected type = " & $aUpgrades[$inum][3], $COLOR_PURPLE)
+			Setlog("User selected type = " & $aUpgrades[$inum][3], $COLOR_DEBUG) ;Debug
 		EndIf
 		If $aUpgrades[$inum][2] = "" Or $aUpgrades[$inum][3] = "" And $ichkUpgrdeRepeat[$inum] <> 1 Then ;report loot error if exists
 			Setlog("Error finding loot info " & $inum & ", Loot = " & $aUpgrades[$inum][2] & ", Type= " & $aUpgrades[$inum][3], $COLOR_RED)

@@ -27,7 +27,7 @@
 Global $debugDropSCommand = 0, $LocateMode = 1 ; Can be 1 OR 2, CURRENTLY 2 is not completed
 
 Func DropSpellFromINIOnDefense($Defense, $options, $qtaMin, $qtaMax, $troopName, $delayPointmin, $delayPointmax, $delayDropMin, $delayDropMax, $sleepafterMin, $sleepAfterMax, $debug = False)
-	If $debugDropSCommand = 1 Then SetLog("Func DropSpellFromINIOnDefense(" & $Defense & ", " & $options & ")", $COLOR_PURPLE)
+	If $debugDropSCommand = 1 Then SetLog("Func DropSpellFromINIOnDefense(" & $Defense & ", " & $options & ")", $COLOR_DEBUG) ;Debug
 	debugAttackCSV("drop using Defense " & $Defense & " and using " & $qtaMin & "-" & $qtaMax & " of " & $troopName)
 	debugAttackCSV(" - delay for multiple troops in same point: " & $delayPointmin & "-" & $delayPointmax)
 	debugAttackCSV(" - delay when  change deploy point : " & $delayDropMin & "-" & $delayDropMax)
@@ -81,7 +81,7 @@ Func DropSpellFromINIOnDefense($Defense, $options, $qtaMin, $qtaMax, $troopName,
 			Setlog("No troop found in your attack troops list")
 			debugAttackCSV("No troop found in your attack troops list")
 		Else
-			If $DebugSetLog = 1 Then SetLog("discard use spell", $COLOR_PURPLE)
+			If $DebugSetLog = 1 Then SetLog("discard use spell", $COLOR_DEBUG) ;Debug
 		EndIf
 
 	Else
@@ -173,7 +173,7 @@ Func DropSpellFromINIOnDefense($Defense, $options, $qtaMin, $qtaMax, $troopName,
 EndFunc   ;==>DropSpellFromINIOnDefense
 
 Func GetFullDefenseName($Defense)
-	If $debugDropSCommand = 1 Then SetLog("Func GetFullDefenseName(" & $Defense & ")", $COLOR_PURPLE)
+	If $debugDropSCommand = 1 Then SetLog("Func GetFullDefenseName(" & $Defense & ")", $COLOR_DEBUG) ;Debug
 	Select
 		Case $Defense = "EAGLE"
 			Return "Eagle"
@@ -187,7 +187,7 @@ Func GetFullDefenseName($Defense)
 EndFunc   ;==>GetFullDefenseName
 
 Func AssignPixelOfDefense($Defense, $options, $forceReLocate = False)
-	If $debugDropSCommand = 1 Then SetLog("Func AssignPixelOfDefense(" & $Defense & ", " & $options & ", " & $forceReLocate & ")", $COLOR_PURPLE)
+	If $debugDropSCommand = 1 Then SetLog("Func AssignPixelOfDefense(" & $Defense & ", " & $options & ", " & $forceReLocate & ")", $COLOR_DEBUG) ;Debug
 	Local $LocateResult
 	Switch $forceReLocate
 		Case True
@@ -218,7 +218,7 @@ Func AssignPixelOfDefense($Defense, $options, $forceReLocate = False)
 EndFunc   ;==>AssignPixelOfDefense
 
 Func ResetDefensesLocation($Defense = "")
-	If $debugDropSCommand = 1 Then SetLog("Func ResetDefensesLocation(" & $Defense & ")", $COLOR_PURPLE)
+	If $debugDropSCommand = 1 Then SetLog("Func ResetDefensesLocation(" & $Defense & ")", $COLOR_DEBUG) ;Debug
 	Select
 		Case $LocateMode = 1 Or $Defense <> ""
 			Switch $Defense
@@ -286,7 +286,7 @@ Func ResetDefensesLocation($Defense = "")
 EndFunc   ;==>ResetDefensesLocation
 
 Func isLocatedBefore($Defense)
-	If $debugDropSCommand = 1 Then SetLog("Func isLocatedBefore(" & $Defense & ")", $COLOR_PURPLE)
+	If $debugDropSCommand = 1 Then SetLog("Func isLocatedBefore(" & $Defense & ")", $COLOR_DEBUG) ;Debug
 	Select
 		Case $LocateMode = 1
 			Switch $Defense
@@ -340,7 +340,7 @@ Func isLocatedBefore($Defense)
 EndFunc   ;==>isLocatedBefore
 
 Func LocateDefense($Defense, $options)
-	If $debugDropSCommand = 1 Then SetLog("Func LocateDefense(" & $Defense & ", " & $options & ")", $COLOR_PURPLE)
+	If $debugDropSCommand = 1 Then SetLog("Func LocateDefense(" & $Defense & ", " & $options & ")", $COLOR_DEBUG) ;Debug
 	Local $Result[4] = [False, False, False, ""]
 	; [0] = Will be TRUE if Defense Found
 	; [1] = Will be TRUE if Defense Found AND Matched With Side Condition
@@ -380,7 +380,7 @@ Func LocateDefense($Defense, $options)
 				$splitedEachPos = StringSplit($eachPos, ",", 2)
 				If IsArray($splitedEachPos) And UBound($splitedEachPos) > 1 Then
 					$Counter += 1
-					If $debugDropSCommand = 1 Then SetLog("$SideCondition = " & $SideCondition, $COLOR_PURPLE)
+					If $debugDropSCommand = 1 Then SetLog("$SideCondition = " & $SideCondition, $COLOR_DEBUG) ;Debug
 					If IsSameColor($Defense, $Counter, $splitedEachPos[0], $splitedEachPos[1], $Counter = 0, False, $reLocated) = True Then
 						Select
 							Case $SideCondition = "AnySide"
@@ -493,7 +493,7 @@ Func LocateDefense($Defense, $options)
 				$splitedEachPos = StringSplit($eachPos, ",", 2)
 				If IsArray($splitedEachPos) And UBound($splitedEachPos) > 1 Then
 					$Counter += 1
-					If $debugDropSCommand = 1 Then SetLog("$SideCondition = " & $SideCondition, $COLOR_PURPLE)
+					If $debugDropSCommand = 1 Then SetLog("$SideCondition = " & $SideCondition, $COLOR_DEBUG) ;Debug
 					If IsSameColor($Defense, $Counter, $splitedEachPos[0], $splitedEachPos[1], $Counter = 0, False, $reLocated) = True Then
 						Select
 							Case $SideCondition = "AnySide"
@@ -649,7 +649,7 @@ Func LocateDefense($Defense, $options)
 				$splitedEachPos = StringSplit($eachPos, ",", 2)
 				If IsArray($splitedEachPos) And UBound($splitedEachPos) > 1 Then
 					$Counter += 1
-					If $debugDropSCommand = 1 Then SetLog("$SideCondition = " & $SideCondition, $COLOR_PURPLE)
+					If $debugDropSCommand = 1 Then SetLog("$SideCondition = " & $SideCondition, $COLOR_DEBUG) ;Debug
 					If IsSameColor($Defense, $Counter, $splitedEachPos[0], $splitedEachPos[1], $Counter = 0, False, $reLocated) = True Then
 						Select
 							Case $SideCondition = "AnySide"
@@ -744,7 +744,7 @@ Func LocateDefense($Defense, $options)
 EndFunc   ;==>LocateDefense
 
 Func IsSameColor($Defense, $Counter, $X, $Y, $bNeedCapture = False, $Equal = False, $bSkip = False)
-	If $debugDropSCommand = 1 Then SetLog("Func IsSameColor(" & $Defense & ", " & $Counter & ", " & $X & ", " & $Y & ", " & $bNeedCapture & ", " & $Equal & ", " & $bSkip & ")", $COLOR_PURPLE)
+	If $debugDropSCommand = 1 Then SetLog("Func IsSameColor(" & $Defense & ", " & $Counter & ", " & $X & ", " & $Y & ", " & $bNeedCapture & ", " & $Equal & ", " & $bSkip & ")", $COLOR_DEBUG) ;Debug
 	If $LocateMode = 1 Or $bSkip = True Then Return True
 	Select
 		Case $Defense = "EAGLE"
@@ -791,7 +791,7 @@ Func IsSameColor($Defense, $Counter, $X, $Y, $bNeedCapture = False, $Equal = Fal
 EndFunc   ;==>IsSameColor
 
 Func SavePositions($Defense, $return)
-	If $debugDropSCommand = 1 Then SetLog("Func SavePositions(" & $Defense & ", " & $return & ")", $COLOR_PURPLE)
+	If $debugDropSCommand = 1 Then SetLog("Func SavePositions(" & $Defense & ", " & $return & ")", $COLOR_DEBUG) ;Debug
 	Local $splitedPositions = StringSplit($return, "|", 2)
 	Select
 		Case $Defense = "EAGLE"
@@ -840,7 +840,7 @@ Func SavePositions($Defense, $return)
 EndFunc   ;==>SavePositions
 
 Func ReturnSavedPositions($Defense)
-	If $debugDropSCommand = 1 Then SetLog("Func ReturnSavedPositions(" & $Defense & ")", $COLOR_PURPLE)
+	If $debugDropSCommand = 1 Then SetLog("Func ReturnSavedPositions(" & $Defense & ")", $COLOR_DEBUG) ;Debug
 	Local $Result = ""
 	Select
 		Case $Defense = "EAGLE"
@@ -872,7 +872,7 @@ Func ReturnSavedPositions($Defense)
 EndFunc   ;==>ReturnSavedPositions
 
 Func ParseCommandOptions($options)
-	If $debugDropSCommand = 1 Then SetLog("Func ParseCommandOptions(" & $options & ")", $COLOR_PURPLE)
+	If $debugDropSCommand = 1 Then SetLog("Func ParseCommandOptions(" & $options & ")", $COLOR_DEBUG) ;Debug
 	Local $Result[3] = [False, "", True]
 	;	[0] = IF True, Change Drop Position by a Low Random Number
 	; 	[1] = Side
@@ -910,7 +910,7 @@ Func ParseCommandOptions($options)
 EndFunc   ;==>ParseCommandOptions
 
 Func IsInfernoTowersNearToTheOtherOne($positions, $DropBetween)
-	If $debugDropSCommand = 1 Then SetLog("Func IsInfernoTowersNearToTheOtherOne(" & $positions & ", " & $DropBetween & ")", $COLOR_PURPLE)
+	If $debugDropSCommand = 1 Then SetLog("Func IsInfernoTowersNearToTheOtherOne(" & $positions & ", " & $DropBetween & ")", $COLOR_DEBUG) ;Debug
 	Local $Result[5] = [False, False, 0, 0, False]
 	; [0] = $xDiff was started with "-" at first
 	; [1] = $yDiff was started with "-" at first

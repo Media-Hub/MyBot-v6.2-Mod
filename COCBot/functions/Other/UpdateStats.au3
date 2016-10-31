@@ -30,9 +30,6 @@ Global $iOldAttackedCount, $iOldAttackedVillageCount[$iModeCount + 1] ; number o
 Global $iOldTotalGoldGain[$iModeCount + 1], $iOldTotalElixirGain[$iModeCount + 1], $iOldTotalDarkGain[$iModeCount + 1], $iOldTotalTrophyGain[$iModeCount + 1] ; total resource gains for DB, LB, TB, TS
 Global $iOldNbrOfDetectedMines[$iModeCount + 1], $iOldNbrOfDetectedCollectors[$iModeCount + 1], $iOldNbrOfDetectedDrills[$iModeCount + 1] ; number of mines, collectors, drills detected for DB, LB, TB
 
-; Smart Zap Totals - Added by LunaEclipse
-;Global $iOldsmartZapGain = 0, $iOldNumLTSpellsUsed = 0
-
 Func UpdateStats()
 	If $FirstRun = 1 Then
 		GUICtrlSetState($lblResultStatsTemp, $GUI_HIDE)
@@ -96,30 +93,18 @@ Func UpdateStats()
 	If Number($iGoldLast) > Number($topgoldloot) Then
 		$topgoldloot = $iGoldLast
 		GUICtrlSetData($lbltopgoldloot,_NumberFormat($topgoldloot))
-		If $topgoldloot > 0 And $pAlertTopGain  = 1 Then
-			_PushToPushBullet("New Top Gold Gain: " & _NumberFormat($topgoldloot) & " on profile " & $sCurrProfile)
-		EndIf
 	EndIf
 	If Number($iElixirLast) > Number($topelixirloot) Then
 		$topelixirloot = $iElixirLast
 		GUICtrlSetData($lbltopelixirloot,_NumberFormat($topelixirloot))
-		If $topelixirloot > 0 And $pAlertTopGain  = 1 Then
-			_PushToPushBullet("New Top Elixir Gain: " & _NumberFormat($topelixirloot) & " on profile " & $sCurrProfile)
-		EndIf
 	EndIf
 	If Number($iDarkLast) > Number($topdarkloot) Then
 		$topdarkloot = $idarklast
 		GUICtrlSetData($lbltopdarkloot,_NumberFormat($topdarkloot))
-		If $topdarkloot > 0 And $pAlertTopGain  = 1 Then
-			_PushToPushBullet("New Top Dark Elixir Gain: " & _NumberFormat($topdarkloot) & " on profile " & $sCurrProfile)
-		EndIf
 	EndIf
 	If Number($iTrophyLast) > Number($topTrophyloot) Then
 		$topTrophyloot = $iTrophylast
 		GUICtrlSetData($lbltopTrophyloot,_NumberFormat($topTrophyloot))
-		If $topTrophyloot > 0 And $pAlertTopGain  = 1 Then
-			_PushToPushBullet("New Top Trophy Gain: " & _NumberFormat($toptrophyloot) & " on profile " & $sCurrProfile)
-		EndIf
 	EndIf
 
 	If $ResetStats = 1 Then
@@ -335,21 +320,27 @@ Func UpdateStats()
 		GUICtrlSetData($lblDElixirFromDrills, _NumberFormat($iDElixirFromDrills, True))
 		$iOldDElixirFromDrills = $iDElixirFromDrills
 	EndIf
-#cs
-	; SmartZap DE Gain - Added by LunaEclipse
+
+;==============================================================
+; SmartZap - Added by NTS team
+;==============================================================
+   ; SmartZap DE Gain - Added by NTS team
 	If $iOldSmartZapGain <> $smartZapGain Then
 		GUICtrlSetData($lblSmartZap, _NumberFormat($smartZapGain, True))
 		GUICtrlSetData($lblSmartZapStat, _NumberFormat($smartZapGain, True))
 		$iOldSmartZapGain = $smartZapGain
 	EndIf
 
-	; SmartZap Spells Used - Added by LunaEclipse
+	; SmartZap Spells Used - Added by NTS team
 	If $iOldNumLTSpellsUsed <> $numLSpellsUsed Then
 		GUICtrlSetData($lblLightningUsed, _NumberFormat($numLSpellsUsed, True))
 		GUICtrlSetData($lblLightningUsedStat, _NumberFormat($numLSpellsUsed, True))
 		$iOldNumLTSpellsUsed = $numLSpellsUsed
  	EndIf
-#ce
+;==============================================================
+; SmartZap - Added by NTS team
+;==============================================================
+
 	$iAttackedCount = 0
 
 	For $i = 0 To $iModeCount
@@ -435,6 +426,8 @@ Func UpdateStats()
 		GUICtrlSetData($lblResultBuilderNowAcc[$i], $aFreeBuilderCountAcc[$i] & "/" & $aTotalBuilderCountAcc[$i])
 	Next
 
+; =============SwitchAcc Mod - Demen
+
 	If $FirstAttack = 2 Then
 		GUICtrlSetData($lblHourlyStatsGold, _NumberFormat(Round($iGoldTotal / (Int(TimerDiff($sTimer) + $iTimePassed)) * 3600)) & "K / h")
 		GUICtrlSetData($lblHourlyStatsElixir, _NumberFormat(Round($iElixirTotal / (Int(TimerDiff($sTimer) + $iTimePassed)) * 3600)) & "K / h")
@@ -466,30 +459,18 @@ Func UpdateStats()
 	If Number($iGoldLast) > Number($topgoldloot) Then
 		$topgoldloot = $iGoldLast
 		GUICtrlSetData($lbltopgoldloot,_NumberFormat($topgoldloot))
-		If $topgoldloot > 0 And $pAlertTopGain  = 1 Then
-			_PushToPushBullet("New Top Gold Gain: " & _NumberFormat($topgoldloot) & " on profile " & $sCurrProfile)
-		EndIf
 	EndIf
 	If Number($iElixirLast) > Number($topelixirloot) Then
 		$topelixirloot = $iElixirLast
 		GUICtrlSetData($lbltopelixirloot,_NumberFormat($topelixirloot))
-		If $topelixirloot > 0 And $pAlertTopGain  = 1 Then
-			_PushToPushBullet("New Top Elixir Gain: " & _NumberFormat($topelixirloot) & " on profile " & $sCurrProfile)
-		EndIf
 	EndIf
 	If Number($iDarkLast) > Number($topdarkloot) Then
 		$topdarkloot = $idarklast
 		GUICtrlSetData($lbltopdarkloot,_NumberFormat($topdarkloot))
-		If $topdarkloot > 0 And $pAlertTopGain  = 1 Then
-			_PushToPushBullet("New Top Dark Elixir Gain: " & _NumberFormat($topdarkloot) & " on profile " & $sCurrProfile)
-		EndIf
 	EndIf
 	If Number($iTrophyLast) > Number($topTrophyloot) Then
 		$topTrophyloot = $iTrophylast
 		GUICtrlSetData($lbltopTrophyloot,_NumberFormat($topTrophyloot))
-		If $topTrophyloot > 0 And $pAlertTopGain  = 1 Then
-			_PushToPushBullet("New Top Trophy Gain: " & _NumberFormat($toptrophyloot) & " on profile " & $sCurrProfile)
-		EndIf
 	EndIf
 
 EndFunc   ;==>UpdateStats
@@ -550,10 +531,10 @@ Func ResetStats()
 	$iGoldFromMines = 0
 	$iElixirFromCollectors = 0
 	$iDElixirFromDrills = 0
-	; Reset SmartZap stats - Added by LunaEclipse
-	;$smartZapGain = 0
-	;$ExtremeZapGain = 0
-	;$numLSpellsUsed = 0
+; ======================= SmartZap - Added by NTS team =======================
+	$smartZapGain = 0
+	$numLSpellsUsed = 0
+; ======================= SmartZap - Added by NTS team =======================
 	For $i = 0 To $iModeCount
 		$iAttackedVillageCount[$i] = 0
 		$iTotalGoldGain[$i] = 0

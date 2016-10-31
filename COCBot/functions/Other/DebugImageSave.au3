@@ -59,7 +59,7 @@ Func DebugImageSave($TxtName = "Unknown", $capturenew = True, $extensionpng = "p
 
 	If $capturenew Then _CaptureRegion()
 	_GDIPlus_ImageSaveToFile($hBitmap,$filename)
-	If $debugsetlog = 1 Then Setlog($filename, $COLOR_purple)
+	If $debugsetlog = 1 Then Setlog($filename, $COLOR_DEBUG) ;Debug
 
 	If _Sleep($iDelayDebugImageSave1) Then Return
 

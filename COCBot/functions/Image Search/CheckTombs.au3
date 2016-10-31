@@ -43,14 +43,14 @@ Func CheckTombs()
 		Next
 		$TombsXY = $return[5]
 
-		If $DebugSetLog = 1 Then SetLog("Filename :" & $return[0])
-		If $DebugSetLog = 1 Then SetLog("Type :" & $return[1])
-		If $DebugSetLog = 1 Then SetLog("Total Objects :" & $return[4])
+		If $DebugSetLog = 1 Then SetLog("Filename :" & $return[0], $COLOR_DEBUG) ;Debug
+		If $DebugSetLog = 1 Then SetLog("Type :" & $return[1], $COLOR_DEBUG) ;Debug
+		If $DebugSetLog = 1 Then SetLog("Total Objects :" & $return[4], $COLOR_DEBUG) ;Debug
 
 		If IsArray($TombsXY) Then
 			; Loop through all found points for the item and click them to clear them, there should only be one
 			For $j = 0 To UBound($TombsXY) - 1
-				If $DebugSetLog = 1 Then Setlog("Coords :" & $TombsXY[$j][0] & "," & $TombsXY[$j][1])
+				If $DebugSetLog = 1 Then Setlog("Coords :" & $TombsXY[$j][0] & "," & $TombsXY[$j][1], $COLOR_DEBUG) ;Debug
 				If IsMainPage() Then Click($TombsXY[$j][0], $TombsXY[$j][1], 1, 0, "#0430")
 			Next
 		EndIf
@@ -95,7 +95,7 @@ Func CleanYard()
 				If IsArray($CleanYardXY) Then
 					For $t = 0 To UBound($CleanYardXY) - 1 ; each filename can have several positions
 						If isInsideDiamondXY($CleanYardXY[$t][0], $CleanYardXY[$t][1]) Then ; secure x because of clan chat tab
-							If $DebugSetLog = 1 Then SetLog($Filename & " found (" & $CleanYardXY[$t][0] & "," & $CleanYardXY[$t][1] & ")", $COLOR_GREEN)
+							If $DebugSetLog = 1 Then SetLog($Filename & " found (" & $CleanYardXY[$t][0] & "," & $CleanYardXY[$t][1] & ")", $COLOR_DEBUG) ;Debug
 							If IsMainPage() Then Click($CleanYardXY[$t][0], $CleanYardXY[$t][1], 1, 0, "#0430")
 							$Locate = 1
 							If _Sleep($iDelayCollect3) Then Return
@@ -141,14 +141,14 @@ Func CleanYard()
 			Next
 			$GemBoxXY = $return[5]
 
-			If $DebugSetLog = 1 Then SetLog("Filename :" & $return[0])
-			If $DebugSetLog = 1 Then SetLog("Type :" & $return[1])
-			If $DebugSetLog = 1 Then SetLog("Total Objects :" & $return[4])
+			If $DebugSetLog = 1 Then SetLog("Filename :" & $return[0], $COLOR_DEBUG) ;Debug
+			If $DebugSetLog = 1 Then SetLog("Type :" & $return[1], $COLOR_DEBUG) ;Debug
+			If $DebugSetLog = 1 Then SetLog("Total Objects :" & $return[4], $COLOR_DEBUG) ;Debug
 
 			If IsArray($GemBoxXY) Then
 				; Loop through all found points for the item and click them to remove it, there should only be one
 				For $j = 0 To UBound($GemBoxXY) - 1
-					If $DebugSetLog = 1 Then Setlog("Coords :" & $GemBoxXY[$j][0] & "," & $GemBoxXY[$j][1])
+					If $DebugSetLog = 1 Then Setlog("Coords :" & $GemBoxXY[$j][0] & "," & $GemBoxXY[$j][1], $COLOR_DEBUG) ;Debug
 					If Number($GemBoxXY[$j][0]) > 80 Then
 						If IsMainPage() Then Click($GemBoxXY[$j][0], $GemBoxXY[$j][1], 1, 0, "#0430")
 						If _Sleep($iDelayCheckTombs2) Then Return
@@ -175,7 +175,7 @@ Func CleanYard()
 	EndIf
 
 	If $Locate = 0 Then SetLog("No Obstacles found, Yard is clean!", $COLOR_GREEN)
-	If $DebugSetLog = 1 Then SetLog("Time: " & Round(TimerDiff($hObstaclesTimer) / 1000, 2) & "'s", $COLOR_GREEN)
+	If $DebugSetLog = 1 Then SetLog("Time: " & Round(TimerDiff($hObstaclesTimer) / 1000, 2) & "'s", $COLOR_DEBUG) ;Debug
 	UpdateStats()
 	ClickP($aAway, 1, 300, "#0329") ;Click Away
 

@@ -141,7 +141,7 @@ EndFunc   ;==>DisposeWindows
 ; Replacement for WinMove ( "title", "text", x, y [, width [, height [, speed]]] )
 ; Parameter [, speed] is not supported and is actually $hAfter!
 Func WinMove2($WinTitle, $WinText, $x = -1, $y = -1, $w = -1, $h = -1, $hAfter = 0, $iFlags = 0, $bCheckAfterPos = True)
-	;If $s <> 0 And $debugSetlog = 1 Then SetLog("WinMove2(" & $WinTitle & "," & $WinText & "," & $x & "," & $y & "," & $w & "," & $h & "," & $s & "): speed parameter '" & $s & "' is not supported!", $COLOR_RED);
+	;If $s <> 0 And $debugSetlog = 1 Then SetLog("WinMove2(" & $WinTitle & "," & $WinText & "," & $x & "," & $y & "," & $w & "," & $h & "," & $s & "): speed parameter '" & $s & "' is not supported!", $COLOR_DEBUG) ;Debug;
 	Local $hWin = WinGetHandle($WinTitle, $WinText)
 
 	If _WinAPI_IsIconic($hWin) Then
@@ -175,7 +175,7 @@ Func WinMove2($WinTitle, $WinText, $x = -1, $y = -1, $w = -1, $h = -1, $hAfter =
 	$NoMove = $NoMove Or ($x = $aPos[0] And $y = $aPos[1])
 	$NoResize = $NoResize Or ($w = $aPos[2] And $h = $aPos[3])
 
-	;If $debugSetlog = 1 Then SetLog("Window " & $WinTitle & "(" & $hWin & "): " & ($NoResize ? "no resize" : "resize to " & $w & " x " & $h) & ($NoMove ? ", no move" : ", move to " & $x & "," & $y), $COLOR_BLUE);
+	;If $debugSetlog = 1 Then SetLog("Window " & $WinTitle & "(" & $hWin & "): " & ($NoResize ? "no resize" : "resize to " & $w & " x " & $h) & ($NoMove ? ", no move" : ", move to " & $x & "," & $y), $COLOR_DEBUG) ;Debug;
 	_WinAPI_SetWindowPos($hWin, $hAfter, $x, $y, $w, $h, BitOR(($NoMove ? BitOR($SWP_NOMOVE, $SWP_NOREPOSITION) : 0), $SWP_NOACTIVATE, $SWP_NOSENDCHANGING, $NOZORDER, $iFlags)) ; resize window without sending changing message to window
 
 	; check width and height if it got changed...

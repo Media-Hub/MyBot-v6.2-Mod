@@ -82,7 +82,7 @@ Func CheckMilkingBaseTest()
 	For $i = 0 To UBound($ElixirVect) - 1
 
 
-	;	If $debugsetlog = 1 Then Setlog($i & " : " & $ElixirVect[$i]) ;[15:51:30] 0 : 2#405-325 -> level 6
+	;	If $debugsetlog = 1 Then Setlog($i & " : " & $ElixirVect[$i], $COLOR_DEBUG) ;Debug ;[15:51:30] 0 : 2#405-325 -> level 6
 
 			;03.02 check isinsidediamond
 			Local $temp = StringSplit($ElixirVect[$i], "#", 2) ;TEMP ["2", "404-325"]
@@ -163,7 +163,7 @@ Func CheckMilkingBaseTest()
 ;~ 				EndIf
 
 			Else
-				If $debugsetlog = 1 Then Setlog(" - discard #1 no valid point", $color_purple)
+				If $debugsetlog = 1 Then Setlog(" - discard #1 no valid point", $COLOR_DEBUG) ;Debug
 				$elixirdiscard += 1
 			EndIf
 		Setlog("............ next ..........")

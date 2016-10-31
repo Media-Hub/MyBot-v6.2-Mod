@@ -16,9 +16,13 @@
 ;
 Func getArmySpellTime($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 
-	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("Begin getArmySpellTime:", $COLOR_PURPLE)
+	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("Begin getArmySpellTime:", $COLOR_DEBUG) ;Debug
 
-	$aTimeTrain[1] = 0  ; reset time
+	Local $ResultTroopsHour = 0
+	Local $ResultTroopsMinutes = 0
+	Local $ResultTroopsSeconds = 0
+	$aTimeTrain[1] = 0
+	Local $iRemainTrainSpellsTimer = 0
 
 	If $bOpenArmyWindow = False And ISArmyWindow() = False Then ; check for train page
 		SetError(1)
@@ -31,22 +35,27 @@ Func getArmySpellTime($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 		If _Sleep($iDelaycheckArmyCamp5) Then Return
 	EndIf
 
-	Local $iRemainTrainSpellsTimer = 0, $sResultSpellsMinutes = "", $aResult
+	Local $TimeRemainSpells = getRemainTrainTimer(495, 315) ;Get spell training time via OCR.
 
-	Local $sResultSpells = getRemainTrainTimer(495, 313)  ;Get spell training time via OCR.
+	If $TimeRemainSpells <> "" Then
 
-	If $sResultSpells <> "" Then
-		If StringInStr($sResultSpells, "m") > 1 Then
-			$iRemainTrainSpellsTimer = Number(StringTrimRight($sResultSpells, 1)) ; removing the "m"
-		ElseIf StringInStr($sResultSpells, "s") > 1 Then
-			$iRemainTrainSpellsTimer = Number(StringTrimRight($sResultSpells, 1)) / 60  ; removing the "s" and convert to minutes
+		If StringInStr($TimeRemainSpells, "h") > 1 Then
+			$ResultTroopsHour = StringSplit($TimeRemainSpells, "h", $STR_NOCOUNT)
+			; $ResultTroopsHour[0] will be the Hour and the $ResultTroopsHour[1] will be the Minutes with the "m" at end
+			$ResultTroopsMinutes = StringTrimRight($ResultTroopsHour[1], 1) ; removing the "m"
+			$iRemainTrainSpellsTimer = (Number($ResultTroopsHour[0]) * 60) + Number($ResultTroopsMinutes)
+		ElseIf StringInStr($TimeRemainSpells, "m") > 1 Then
+			$ResultTroopsMinutes = StringSplit($TimeRemainSpells, "m", $STR_NOCOUNT)
+			$iRemainTrainSpellsTimer = $ResultTroopsMinutes[0] + Ceiling($ResultTroopsMinutes[1] / 60)
 		Else
-			If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SetLog("getArmySpellTime: Bad OCR string", $COLOR_RED)
+			$ResultTroopsSeconds = StringTrimRight($TimeRemainSpells, 1) ; removing the "s"
+			$iRemainTrainSpellsTimer = Ceiling($ResultTroopsSeconds / 60)
 		EndIf
-		SetLog("Spells cook time: " & StringFormat("%.2f", $iRemainTrainSpellsTimer), $COLOR_BLUE)
+		$aTimeTrain[1] = $iRemainTrainSpellsTimer
+		Setlog("Remain Spells Time: " & $iRemainTrainSpellsTimer & " min", $COLOR_GREEN)
 	Else
 		If Not $bFullArmySpells Then
-			If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SetLog("Can not read remaining Spell train time!", $COLOR_RED)
+			If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SetLog("Can not read remaining Spell train time!", $COLOR_DEBUG) ;Debug
 		EndIf
 	EndIf
 
@@ -55,6 +64,6 @@ Func getArmySpellTime($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 		If _Sleep($iDelaycheckArmyCamp4) Then Return
 	EndIf
 
-	$aTimeTrain[1] = $iRemainTrainSpellsTimer  ; update global array
+	$aTimeTrain[1] = $iRemainTrainSpellsTimer ; update global array
 
-EndFunc   ;==>getArmySpellCount
+EndFunc   ;==>getArmySpellTime

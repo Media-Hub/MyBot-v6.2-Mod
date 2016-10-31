@@ -59,21 +59,6 @@ Global $groupKingSleeping=$IMGchkDBKingSleepWait&"#"&$IMGchkABKingSleepWait&"#"&
 Global $groupQueenSleeping=$IMGchkDBQueenSleepWait&"#"&$IMGchkABQueenSleepWait&"#"&$IMGchkQueenSleepWait
 Global $groupWardenSleeping=$IMGchkDBWardenSleepWait&"#"&$IMGchkABWardenSleepWait&"#"&$IMGchkWardenSleepWait
 
-;Troops Dark
-Global $groupTroopsDark=$lblMinion&"#"&$lblHogRiders&"#"&$lblValkyries&"#"&$lblGolems&"#"&$lblWitches&"#"&$lblLavaHounds&"#"&$lblBowlers&"#"&$lblTimesMinions&"#"&$lblTimesHogRiders&"#"&$lblTimesValkyries&"#"&$lblTimesGolems&"#"&$lblTimesWitches&"#"&$lblTimesLavaHounds&"#"&$lblTimesBowlers&"#"&$icnMini&"#"&$icnHogs&"#"&$icnValk&"#"&$icnGole&"#"&$icnWitc&"#"&$icnLava&"#"&$icnBowl
-;Troops 1
-Global $groupTroops1=$grpTroops&"#"&$lblBarbarians&"#"&$lblArchers&"#"&$lblGoblins&"#"&$txtNumBarb&"#"&$txtNumArch&"#"&$txtNumGobl&"#"&$icnBarb&"#"&$icnArch&"#"&$icnGobl&"#"&$lblPercentBarbarians&"#"&$lblPercentArchers&"#"&$lblPercentGoblins&"#"&$lblTotalCount&"#"&$lblTotalTroops&"#"&$lblPercentTotal
-Global $groupTroopsBarb=$grpTroops&"#"&$lblBarbarians&"#"&$txtNumBarb&"#"&$icnBarb&"#"&$lblPercentBarbarians
-Global $groupTroopsArch=$grpTroops&"#"&$lblArchers&"#"&$txtNumArch&"#"&$icnArch&"#"&$lblPercentArchers
-Global $groupTroopsGobl=$grpTroops&"#"&$lblGoblins&"#"&$txtNumGobl&"#"&$icnGobl&"#"&$lblPercentGoblins
-Global $groupTroopsGiant=$grpOtherTroops&"#"&$lblGiants&"#"&$lblTimesGiants&"#"&$txtNumGiant&"#"&$icnGiant
-Global $groupTroopsWall=$grpOtherTroops&"#"&$lblWallBreakers&"#"&$lblTimesWallBreakers&"#"&$txtNumWall&"#"&$icnWall
-Global $groupTroopsTot=$lblTotalCount&"#"&$lblTotalTroops&"#"&$lblPercentTotal
-;Troops 2
-Global $groupTroops2=$grpOtherTroops&"#"&$lblGiants&"#"&$lblWallBreakers&"#"&$lblBalloons&"#"&$lblWizards&"#"&$lblHealers&"#"&$lblDragons&"#"&$lblPekka&"#"&$lblBabyDragons&"#"&$lblMine&"#"&$lblTimesGiants&"#"&$lblTimesWallBreakers&"#"&$lblTimesBalloons&"#"&$lblTimesWizards&"#"&$lblTimesHealers&"#"&$lblTimesDragons&"#"&$lblTimesPekka&"#"&$lblTimesBabyDragons&"#"&$lblTimesMine&"#"&$txtNumGiant&"#"&$txtNumWall&"#"&$txtNumWiza&"#"&$txtNumHeal&"#"&$txtNumBall&"#"&$txtNumDrag&"#"&$txtNumPekk&"#"&$txtNumBabyD&"#"&$txtNumMine &"#"&$icnGiant&"#"&$icnWall&"#"&$icnWiza&"#"&$icnHeal&"#"&$icnBall&"#"&$icnDrag&"#"&$icnPekk&"#"&$icnBabyD&"#"&$icnMine
-
-;Spell Army Training
-Global $groupTxtSpeels=$txtNumLightningSpell&"#"&$txtNumHealSpell&"#"&$txtNumRageSpell&"#"&$txtNumJumpSpell&"#"&$txtNumFreezeSpell&"#"&$txtNumPoisonSpell&"#"&$txtNumEarthSpell&"#"&$txtNumHasteSpell
 Global $groupCloseWaitTrain=$chkCloseWaitTrain&"#"&$btnCloseWaitStop&"#"&$picCloseWaitTrain&"#"&$btnCloseWaitStopRandom&"#"&$picCloseWaitStop&"#"&$btnCloseWaitExact&"#"&$picCloseWaitExact&"#"&$btnCloseWaitRandom&"#"&$cmbCloseWaitRdmPercent&"#"&$lblCloseWaitRdmPercent
 
 ;Spell
@@ -97,5 +82,3 @@ Global $groupListTHLevels=$THLevels04&"#"&$THLevels05&"#"&$THLevels06&"#"&$THLev
 
 ;League
 Global $groupLeague=$UnrankedLeague&"#"&$BronzeLeague&"#"&$SilverLeague&"#"&$GoldLeague &"#"&$CrystalLeague&"#"&$MasterLeague&"#"&$ChampionLeague&"#"&$TitanLeague&"#"&$LegendLeague
-
-

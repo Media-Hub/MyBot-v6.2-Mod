@@ -52,7 +52,7 @@ Func ReArm()
 		$pixel = $PixelTHHere[0]
 		$TownHallPos[0] = $pixel[0]
 		$TownHallPos[1] = $pixel[1]
-		If $debugSetlog = 1 Then SetLog("ImgLoc# Townhall: (" & $TownHallPos[0] & "," & $TownHallPos[1] & ")", $COLOR_RED)
+		If $debugSetlog = 1 Then SetLog("ImgLoc# Townhall: (" & $TownHallPos[0] & "," & $TownHallPos[1] & ")", $COLOR_DEBUG) ;Debug
 	EndIf
 
 	If IsMainPage() Then Click($TownHallPos[0], $TownHallPos[1] + 5, 1, 0, "#0225")
@@ -70,9 +70,9 @@ Func ReArm()
 			$res = DllCall($hImgLib, "str", "SearchTile", "handle", $hHBitmap2, "str", $ImagesToUse[$i], "float", $ToleranceImgLoc, "str", "FV", "int", 1)
 			If @error Then _logErrorDLLCall($pImgLib, @error)
 			If IsArray($res) Then
-				If $DebugSetlog = 1 Then SetLog("DLL Call succeeded " & $res[0], $COLOR_RED)
+				If $DebugSetlog = 1 Then SetLog("DLL Call succeeded " & $res[0], $COLOR_DEBUG) ;Debug
 				If $res[0] = "0" Or $res[0] = "" Then
-					If $DebugSetlog = 1 Then SetLog("No Button found")
+					If $DebugSetlog = 1 Then SetLog("No Button found", $COLOR_DEBUG) ;Debug
 				ElseIf StringLeft($res[0], 2) = "-1" Then
 					SetLog("DLL Error: " & $res[0], $COLOR_RED)
 				Else

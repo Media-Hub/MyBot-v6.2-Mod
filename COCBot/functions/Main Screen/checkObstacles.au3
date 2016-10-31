@@ -26,7 +26,7 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 	EndIf
 
 	; SwitchAcc - DEMEN
-    If _ColorCheck(_GetPixelColor(383, 405), Hex(0xF0BE70, 6), 20) Then
+	If _ColorCheck(_GetPixelColor(383, 405), Hex(0xF0BE70, 6), 20) Then
 		SetLog("Found SwitchAcc Dialog")
 		PureClick(383, 405, 1, 0, "Click Cancel")      ;Click Cancel
 	EndIf		; SwitchAcc - DEMEN
@@ -36,9 +36,9 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 	$Message = _PixelSearch($aIsReloadError[0], $aIsReloadError[1], $aIsReloadError[0] + 3, $aIsReloadError[1] + 11, Hex($aIsReloadError[2], 6), $aIsReloadError[3])
 	If IsArray($Message) Then
 		_CaptureRegion()
-		If $debugsetlog = 1 OR $DebugIt Then SetLog("(Inactive=" & _GetPixelColor($aIsInactive[0], $aIsInactive[1]) & ")(DC=" & _GetPixelColor($aIsConnectLost[0], $aIsConnectLost[1]) & ")(OoS=" & _GetPixelColor($aIsCheckOOS[0], $aIsCheckOOS[1]) & ")", $COLOR_PURPLE)
-		If $debugsetlog = 1 OR $DebugIt Then SetLog("(Maintenance=" & _GetPixelColor($aIsMaintenance[0], $aIsMaintenance[1]) & ")(RateCoC=" & ")", $COLOR_PURPLE)
-		If $debugsetlog = 1 OR $DebugIt Then SetLog("33B5E5=>true, 282828=>false", $COLOR_PURPLE)
+		If $debugsetlog = 1 OR $DebugIt Then SetLog("(Inactive=" & _GetPixelColor($aIsInactive[0], $aIsInactive[1]) & ")(DC=" & _GetPixelColor($aIsConnectLost[0], $aIsConnectLost[1]) & ")(OoS=" & _GetPixelColor($aIsCheckOOS[0], $aIsCheckOOS[1]) & ")", $COLOR_DEBUG) ;Debug
+		If $debugsetlog = 1 OR $DebugIt Then SetLog("(Maintenance=" & _GetPixelColor($aIsMaintenance[0], $aIsMaintenance[1]) & ")(RateCoC=" & ")", $COLOR_DEBUG) ;Debug
+		If $debugsetlog = 1 OR $DebugIt Then SetLog("33B5E5=>true, 282828=>false", $COLOR_DEBUG) ;Debug
 		;;;;;;;##### 1- Another device #####;;;;;;;
 		$result = getOcrMaintenanceTime(184, 325 + $midOffsetY) ; OCR text to find Another device message
 		If StringInStr($result, "device", $STR_NOCASESENSEBASIC) Or _
@@ -134,7 +134,7 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 					Return True
 				EndIf
 				$result = getOcrRateCoc(228, 380 + $midOffsetY)
-				If $debugsetlog = 1 Then SetLog("Check Obstacles getOCRRateCoC=" & $result, $COLOR_PURPLE) ; debug only
+				If $debugsetlog = 1 Then SetLog("Check Obstacles getOCRRateCoC=" & $result, $COLOR_DEBUG) ;Debug only
 				If StringInStr($result, "never", $STR_NOCASESENSEBASIC) Then
 					SetLog("Clash feedback window found, permanently closed!", $COLOR_RED)
 					PureClick(248, 408 + $midOffsetY, 1, 0, "#9999") ; Click on never to close window and stop reappear. Never=248,408 & Later=429,408
@@ -249,7 +249,7 @@ EndFunc   ;==>checkObstacles
 ; It's more stable to restart CoC app than click the message restarting the game
 Func checkObstacles_ReloadCoC($point, $debugtxt = "")
 	;PureClickP($point, 1, 0, $debugtxt)
-	;SetLog("Func checkObstacles_ReloadCoC", $COLOR_PURPLE)
+	;SetLog("Func checkObstacles_ReloadCoC", $COLOR_DEBUG) ;Debug
 	CloseCoC(True)
 EndFunc   ;==>checkObstacles_ReloadCoC
 

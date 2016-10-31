@@ -20,15 +20,15 @@ Func BotComError()
 
 	SetError(0, 0, 0)
 	If $debugsetlog = 1 Then
-		Setlog("We intercepted a COM Error !", $COLOR_RED)
-		Setlog("err.description is: " & $oMyError.description, $COLOR_RED)
-		Setlog("err.windescription:" & $oMyError.windescription, $COLOR_RED)
-		Setlog("err.number is: " & Hex($oMyError.number, 8), $COLOR_RED)
-		Setlog("err.lastdllerror is: " & $oMyError.lastdllerror, $COLOR_RED)
-		Setlog("err.scriptline is: " & $oMyError.scriptline, $COLOR_RED)
-		Setlog("err.source is: " & $oMyError.source, $COLOR_RED)
-		Setlog("err.helpfile is: " & $oMyError.helpfile, $COLOR_RED)
-		Setlog("err.helpcontext is: " & $oMyError.helpcontext, $COLOR_RED)
+		Setlog("We intercepted a COM Error !", $COLOR_DEBUG) ;Debug
+		Setlog("err.description is: " & $oMyError.description, $COLOR_DEBUG) ;Debug
+		Setlog("err.windescription:" & $oMyError.windescription, $COLOR_DEBUG) ;Debug
+		Setlog("err.number is: " & Hex($oMyError.number, 8), $COLOR_DEBUG) ;Debug
+		Setlog("err.lastdllerror is: " & $oMyError.lastdllerror, $COLOR_DEBUG) ;Debug
+		Setlog("err.scriptline is: " & $oMyError.scriptline, $COLOR_DEBUG) ;Debug
+		Setlog("err.source is: " & $oMyError.source, $COLOR_DEBUG) ;Debug
+		Setlog("err.helpfile is: " & $oMyError.helpfile, $COLOR_DEBUG) ;Debug
+		Setlog("err.helpcontext is: " & $oMyError.helpcontext, $COLOR_DEBUG) ;Debug
 	EndIf
 	SetError(0, 0, 0)
 

@@ -24,6 +24,7 @@ Global Const $iDelayRunBot5 = 500
 Global Const $iDelayRunBot6 = 100
 Global Const $iDelayIdle1 = 200
 Global Const $iDelayIdle2 = 1500
+Global Const $iDelaySmartWait = 500
 Global Const $iDelayAttackMain1 = 1000
 Global Const $iDelayAttackMain2 = 1500
 
@@ -263,7 +264,7 @@ Global Const $iDelayCollect3 = 500
 Global Const $iDelayDonateCC1 = 200
 Global Const $iDelayDonateCC2 = 250
 Global Const $iDelayDonateCC3 = 50 ; click
-Global Const $iDelayDonateCC4 = 1000
+Global Const $iDelayDonateCC4 = 1250
 
 ;DonateTroopType
 Global Const $iDelayDonateTroopType1 = 250

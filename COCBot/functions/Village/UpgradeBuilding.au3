@@ -80,14 +80,14 @@ Func UpgradeBuilding()
 				$iDTDiff = Int(_DateDiff("n", _NowCalc(), $sNextCheckTime)) ; get date/time difference for repeat upgrade check
 				If @error Then _logErrorDateDiff(@error)
 				If $debugSetlog = 1 Then
-					Setlog("Delay time between repeat upgrade checks = " & $aCheckFrequency[($iTownHallLevel < 3 ? 0 : $iTownHallLevel - 3)] & " Min", $COLOR_PURPLE)
-					SetLog("Delay time remaining = " & $iDTDiff & " Min", $COLOR_PURPLE)
+					Setlog("Delay time between repeat upgrade checks = " & $aCheckFrequency[($iTownHallLevel < 3 ? 0 : $iTownHallLevel - 3)] & " Min", $COLOR_DEBUG) ;Debug
+					SetLog("Delay time remaining = " & $iDTDiff & " Min", $COLOR_DEBUG) ;Debug
 				EndIf
 				If $iDTDiff < 0 Then ; check dwell time clock to avoid checking repeats too often
 					$sNextCheckTime = _DateAdd("n", $aCheckFrequency[($iTownHallLevel < 3 ? 0 : $iTownHallLevel - 3)], _NowCalc()) ; create new check date/time
 					If @error Then _logErrorDateAdd(@error) ; log Date function errors
 					$bChkAllRptUpgrade = True ; set flag to allow entire array of updates to get updated values if delay time is past.
-					If $debugSetlog = 1 Then SetLog("New delayed check time=  " & $sNextCheckTime, $COLOR_PURPLE)
+					If $debugSetlog = 1 Then SetLog("New delayed check time=  " & $sNextCheckTime, $COLOR_DEBUG) ;Debug
 				EndIf
 			EndIf
 
@@ -97,7 +97,7 @@ Func UpgradeBuilding()
 					_logErrorDateDiff(@error)
 					$iUpGrdEndTimeDiff = 0
 				EndIf
-				If $debugSetlog = 1 Then SetLog("Difference between upgrade end and NOW= " & $iUpGrdEndTimeDiff & " Min", $COLOR_PURPLE)
+				If $debugSetlog = 1 Then SetLog("Difference between upgrade end and NOW= " & $iUpGrdEndTimeDiff & " Min", $COLOR_DEBUG) ;Debug
 			EndIf
 
 			If $bChkAllRptUpgrade = True Or $iUpGrdEndTimeDiff < 0 Then ; when past delay time or past end time for previous upgrade then check status
@@ -114,7 +114,7 @@ Func UpgradeBuilding()
 		EndIf
 
 		SetLog("Upgrade #" & $iz + 1 & " " & $aUpgrades[$iz][4] & " Selected", $COLOR_GREEN) ; Tell logfile which upgrade working on.
-		If $debugSetlog = 1 Then SetLog("-Upgrade location =  " & "(" & $aUpgrades[$iz][0] & "," & $aUpgrades[$iz][1] & ")", $COLOR_PURPLE) ;Debug
+		If $debugSetlog = 1 Then SetLog("-Upgrade location =  " & "(" & $aUpgrades[$iz][0] & "," & $aUpgrades[$iz][1] & ")", $COLOR_DEBUG) ;Debug
 		If _Sleep($iDelayUpgradeBuilding1) Then Return
 
 		Switch $aUpgrades[$iz][3] ;Change action based on upgrade type!
@@ -163,7 +163,7 @@ Func UpgradeBuilding()
 		EndSwitch
 
 		$aUpgrades[$iz][7] = _NowCalc() ; what is date:time now
-		If $debugSetlog = 1 Then SetLog("Upgrade #" & $iz + 1 & " " & $aUpgrades[$iz][4] & " Started @ " & $aUpgrades[$iz][7], $COLOR_GREEN)
+		If $debugSetlog = 1 Then SetLog("Upgrade #" & $iz + 1 & " " & $aUpgrades[$iz][4] & " Started @ " & $aUpgrades[$iz][7], $COLOR_DEBUG) ;Debug
 		$aArray = StringSplit($aUpgrades[$iz][6], ' ', BitOR($STR_CHRSPLIT, $STR_NOCOUNT))  ;separate days, hours
 		If IsArray($aArray) Then
 			Local $iRemainingTimeMin = 0
@@ -182,7 +182,7 @@ Func UpgradeBuilding()
 					Case Else
 						Setlog("Upgrade #" & $iz + 1 & " OCR time invalid" & $aArray[$i], $COLOR_FUCHSIA)
 				EndSelect
-				If $debugSetlog = 1 Then Setlog("Upgrade Time: " & $aArray[$i] & ", Minutes= " & $iRemainingTimeMin, $COLOR_PURPLE)
+				If $debugSetlog = 1 Then Setlog("Upgrade Time: " & $aArray[$i] & ", Minutes= " & $iRemainingTimeMin, $COLOR_DEBUG) ;Debug
 			Next
 			$aUpgrades[$iz][7] = _DateAdd('n', Floor($iRemainingTimeMin), _NowCalc()) ; add the time required to NOW to finish the upgrade
 			If @error Then _logErrorDateAdd(@error)
@@ -238,15 +238,15 @@ Func UpgradeNormal($inum)
 		Local $offColors[3][3] = [[0xD6714B, 47, 37], [0xF0E850, 70, 0], [0xF4F8F2, 79, 0]] ; 2nd pixel brown hammer, 3rd pixel gold, 4th pixel edge of button
 		Global $ButtonPixel = _MultiPixelSearch(240, 563 + $bottomOffsetY, 670, 650 + $bottomOffsetY, 1, 1, Hex(0xF3F3F1, 6), $offColors, 30) ; first gray/white pixel of button
 		If $debugSetlog = 1 And IsArray($ButtonPixel) Then
-			Setlog("ButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_PURPLE) ;Debug
-			Setlog("Color #1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 47, $ButtonPixel[1] + 37, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 70, $ButtonPixel[1], True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 79, $ButtonPixel[1], True), $COLOR_PURPLE)
+			Setlog("ButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_DEBUG) ;Debug
+			Setlog("Color #1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 47, $ButtonPixel[1] + 37, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 70, $ButtonPixel[1], True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 79, $ButtonPixel[1], True), $COLOR_DEBUG) ;Debug
 		EndIf
 	Else ;Use elxir button
 		Local $offColors[3][3] = [[0xBC5B31, 38, 32], [0xF84CF9, 72, 0], [0xF5F9F2, 79, 0]] ; 2nd pixel brown hammer, 3rd pixel pink, 4th pixel edge of button
 		Global $ButtonPixel = _MultiPixelSearch(240, 563 + $bottomOffsetY, 670, 650 + $bottomOffsetY, 1, 1, Hex(0xF4F7F2, 6), $offColors, 30) ; first gray/white pixel of button
 		If $debugSetlog = 1 And IsArray($ButtonPixel) Then
-			Setlog("ButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_PURPLE) ;Debug
-			Setlog("Color #1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 38, $ButtonPixel[1] + 32, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 72, $ButtonPixel[1], True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 79, $ButtonPixel[1], True), $COLOR_PURPLE)
+			Setlog("ButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_DEBUG) ;Debug
+			Setlog("Color #1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 38, $ButtonPixel[1] + 32, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 72, $ButtonPixel[1], True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 79, $ButtonPixel[1], True), $COLOR_DEBUG) ;Debug
 		EndIf
 	EndIf
 	If IsArray($ButtonPixel) Then
@@ -356,8 +356,8 @@ Func UpgradeHero($inum)
 	Global $ButtonPixel = _MultiPixelSearch(240, 563 + $bottomOffsetY, 670, 620 + $bottomOffsetY, 1, 1, Hex(0xF6F9F3, 6), $offColors, 30) ; first gray/white pixel of button
 	If IsArray($ButtonPixel) Then
 		If $debugSetlog = 1 And IsArray($ButtonPixel) Then
-			Setlog("ButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_PURPLE) ;Debug
-			Setlog("Color #1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 41, $ButtonPixel[1] + 23, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 72, $ButtonPixel[1], True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 79, $ButtonPixel[1], True), $COLOR_PURPLE)
+			Setlog("ButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_DEBUG) ;Debug
+			Setlog("Color #1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 41, $ButtonPixel[1] + 23, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 72, $ButtonPixel[1], True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 79, $ButtonPixel[1], True), $COLOR_DEBUG) ;Debug
 		EndIf
 		If _Sleep($iDelayUpgradeHero2) Then Return
 		Click($ButtonPixel[0] + 20, $ButtonPixel[1] + 20, 1, 0, "#0305") ; Click Upgrade Button
@@ -416,21 +416,21 @@ EndFunc   ;==>UpgradeHero
 Func SetlogUpgradeValues($i)
 	Local $j
 	For $j = 0 To UBound($aUpgrades, 2) - 1
-		Setlog("$aUpgrades[" & $i & "][" & $j & "]= " & $aUpgrades[$i][$j], $COLOR_PURPLE)
+		Setlog("$aUpgrades[" & $i & "][" & $j & "]= " & $aUpgrades[$i][$j], $COLOR_DEBUG) ;Debug
 	Next
-	;Setlog("$chkbxUpgrade= " & GUICtrlRead($chkbxUpgrade[$i]) & "|" & $ichkbxUpgrade[$i], $COLOR_PURPLE) ; upgrade selection box
-	;Setlog("$txtUpgradeName= " & GUICtrlRead($txtUpgradeName[$i]) & "|" &  $aUpgrades[$i][4], $COLOR_PURPLE) ;  Unit Name
-	;Setlog("$txtUpgradeLevel= " & GUICtrlRead($txtUpgradeLevel[$i]) & "|" & $itxtUpgradeLevel[$i], $COLOR_PURPLE) ; Unit Level
-	;Setlog("$picUpgradeType= " & GUICtrlRead($picUpgradeType[$i]) & "|" & $ipicUpgradeStatus[$i], $COLOR_PURPLE) ; status image
-	;Setlog("$txtUpgradeValue= " & GUICtrlRead($txtUpgradeValue[$i]) & "|" & $aUpgrades[$i][2], $COLOR_PURPLE) ; Upgrade value
-	;Setlog("$txtUpgradeTime= " & GUICtrlRead($txtUpgradeTime[$i]) & "|" & $aUpgrades[$i][6], $COLOR_PURPLE) ; Upgrade time
-	;Setlog("$chkUpgrdeRepeat= " & GUICtrlRead($chkUpgrdeRepeat[$i]) & "|" & $ichkUpgrdeRepeat, $COLOR_PURPLE) ; repeat box
-	Setlog("$chkbxUpgrade= " & $ichkbxUpgrade[$i], $COLOR_PURPLE) ; upgrade selection box
-	Setlog("$txtUpgradeName= " & $aUpgrades[$i][4], $COLOR_PURPLE) ;  Unit Name
-	Setlog("$txtUpgradeLevel= " & $itxtUpgradeLevel[$i], $COLOR_PURPLE) ; Unit Level
-	Setlog("$picUpgradeType= " & $ipicUpgradeStatus[$i], $COLOR_PURPLE) ; status image
-	Setlog("$txtUpgradeValue= " & $aUpgrades[$i][2], $COLOR_PURPLE) ; Upgrade value
-	Setlog("$txtUpgradeTime= " & $aUpgrades[$i][6], $COLOR_PURPLE) ; Upgrade time
-	Setlog("$txtUpgradeEndTime= " & $aUpgrades[$i][7], $COLOR_PURPLE) ; Upgrade End time
-	Setlog("$chkUpgrdeRepeat= " & $ichkUpgrdeRepeat, $COLOR_PURPLE) ; repeat box
+	;Setlog("$chkbxUpgrade= " & GUICtrlRead($chkbxUpgrade[$i]) & "|" & $ichkbxUpgrade[$i], $COLOR_DEBUG) ;Debug ; upgrade selection box
+	;Setlog("$txtUpgradeName= " & GUICtrlRead($txtUpgradeName[$i]) & "|" &  $aUpgrades[$i][4], $COLOR_DEBUG) ;Debug ;  Unit Name
+	;Setlog("$txtUpgradeLevel= " & GUICtrlRead($txtUpgradeLevel[$i]) & "|" & $itxtUpgradeLevel[$i], $COLOR_DEBUG) ;Debug ; Unit Level
+	;Setlog("$picUpgradeType= " & GUICtrlRead($picUpgradeType[$i]) & "|" & $ipicUpgradeStatus[$i], $COLOR_DEBUG) ;Debug ; status image
+	;Setlog("$txtUpgradeValue= " & GUICtrlRead($txtUpgradeValue[$i]) & "|" & $aUpgrades[$i][2], $COLOR_DEBUG) ;Debug ; Upgrade value
+	;Setlog("$txtUpgradeTime= " & GUICtrlRead($txtUpgradeTime[$i]) & "|" & $aUpgrades[$i][6], $COLOR_DEBUG) ;Debug ; Upgrade time
+	;Setlog("$chkUpgrdeRepeat= " & GUICtrlRead($chkUpgrdeRepeat[$i]) & "|" & $ichkUpgrdeRepeat, $COLOR_DEBUG) ;Debug ; repeat box
+	Setlog("$chkbxUpgrade= " & $ichkbxUpgrade[$i], $COLOR_DEBUG) ;Debug ; upgrade selection box
+	Setlog("$txtUpgradeName= " & $aUpgrades[$i][4], $COLOR_DEBUG) ;Debug ;  Unit Name
+	Setlog("$txtUpgradeLevel= " & $itxtUpgradeLevel[$i], $COLOR_DEBUG) ;Debug ; Unit Level
+	Setlog("$picUpgradeType= " & $ipicUpgradeStatus[$i], $COLOR_DEBUG) ;Debug ; status image
+	Setlog("$txtUpgradeValue= " & $aUpgrades[$i][2], $COLOR_DEBUG) ;Debug ; Upgrade value
+	Setlog("$txtUpgradeTime= " & $aUpgrades[$i][6], $COLOR_DEBUG) ;Debug ; Upgrade time
+	Setlog("$txtUpgradeEndTime= " & $aUpgrades[$i][7], $COLOR_DEBUG) ;Debug ; Upgrade End time
+	Setlog("$chkUpgrdeRepeat= " & $ichkUpgrdeRepeat, $COLOR_DEBUG) ;Debug ; repeat box
 EndFunc   ;==>SetlogUpgradeValues

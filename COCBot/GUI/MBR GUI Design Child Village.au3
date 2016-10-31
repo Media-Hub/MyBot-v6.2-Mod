@@ -120,7 +120,6 @@ GUICtrlCreateTabItem("")
 $hGUI_VILLAGE_TAB_ITEM5 = GUICtrlCreateTabItem(GetTranslated(600,10,"Notify"))
 GUICtrlCreateTabItem("")
 
-;GUISetState()
-
+ 
 
 

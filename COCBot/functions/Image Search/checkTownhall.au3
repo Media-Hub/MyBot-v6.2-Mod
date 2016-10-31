@@ -163,7 +163,7 @@ Func CaptureTHwithInfo($THx, $THy, $ImageInfo)
 	Local $Time = @HOUR & "." & @MIN & "." & @SEC
 	Local $filename = String("THDetected_" & $Date & "_" & $Time & "_" & $ImageInfo & ".png")
 
-	If $debugBuildingPos = 1 And $debugsetlog = 1 Then Setlog(" _GDIPlus_ImageSaveToFile", $COLOR_PURPLE)
+	If $debugBuildingPos = 1 And $debugsetlog = 1 Then Setlog(" _GDIPlus_ImageSaveToFile", $COLOR_DEBUG) ;Debug
 	Local $savefolder = $dirTempDebug & "THDetected_" & "\"
 	DirCreate($savefolder)
 	_GDIPlus_ImageSaveToFile($EditedImage, $savefolder & $filename)

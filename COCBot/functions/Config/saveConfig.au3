@@ -459,6 +459,37 @@ Func saveConfig() ;Saves the controls settings to the config
 		$pTakeAbreak = 0
 	EndIf
 
+	;Scheduler
+	If GUICtrlRead($chkNotifyWeekDays) = $GUI_CHECKED Then
+		IniWrite($config, "pushbullet", "NotifyWeekDaysEnable", 1)
+	Else
+		IniWrite($config, "pushbullet", "NotifyWeekDaysEnable", 0)
+	EndIf
+	Local $string = ""
+	For $i = 0 To 6
+		If GUICtrlRead(Eval("chkNotifyWeekdays" & $i)) = $GUI_CHECKED Then
+			$string &= "1|"
+		Else
+			$string &= "0|"
+		EndIf
+	Next
+	IniWrite($config, "pushbullet", "NotifyWeekDays", $string)
+	If GUICtrlRead($chkNotifyHours) = $GUI_CHECKED Then
+		IniWrite($config, "pushbullet", "NotifyHoursEnable", 1)
+	Else
+		IniWrite($config, "pushbullet", "NotifyHoursEnable", 0)
+	EndIf
+
+	Local $string = ""
+	For $i = 0 To 23
+		If GUICtrlRead(Eval("chkNotifyHours" & $i)) = $GUI_CHECKED Then
+			$string &= "1|"
+		Else
+			$string &= "0|"
+		EndIf
+	Next
+	IniWrite($config, "pushbullet", "NotifyHours", $string)
+
 	; save upgrade buildings GUI -> Variables ------------------------------------------------------------------
 
 	If GUICtrlRead($chkLab) = $GUI_CHECKED Then
@@ -665,6 +696,12 @@ Func saveConfig() ;Saves the controls settings to the config
 		Else
 			$debugOCRdonate = 0
 		EndIf
+	EndIf
+
+	If GUICtrlRead($hChk_UseQTrain) = $GUI_CHECKED Then
+		$ichkUseQTrain = 1
+	Else
+		$ichkUseQTrain = 0
 	EndIf
 
 	If GUICtrlRead($chkTotalCampForced) = $GUI_CHECKED Then
@@ -1971,23 +2008,12 @@ Func saveConfig() ;Saves the controls settings to the config
 
 
 	;Troop Settings--------------------------------------------------------------------------
-	IniWriteS($config, "troop", "TroopComposition", _GUICtrlComboBox_GetCurSel($cmbTroopComp))
-	IniWriteS($config, "troop", "DarkTroopComposition", _GUICtrlComboBox_GetCurSel($cmbDarkTroopComp))
 	For $i = 0 To UBound($TroopName) - 1
 		IniWriteS($config, "troop", $TroopName[$i], GUICtrlRead(Eval("txtNum" & $TroopName[$i])))
 	Next
 	For $i = 0 To UBound($TroopDarkName) - 1
 		IniWriteS($config, "troop", $TroopDarkName[$i], GUICtrlRead(Eval("txtNum" & $TroopDarkName[$i])))
 	Next
-
-	IniWriteS($config, "troop", "troop1", _GUICtrlComboBox_GetCurSel($cmbBarrack1))
-	IniWriteS($config, "troop", "troop2", _GUICtrlComboBox_GetCurSel($cmbBarrack2))
-	IniWriteS($config, "troop", "troop3", _GUICtrlComboBox_GetCurSel($cmbBarrack3))
-	IniWriteS($config, "troop", "troop4", _GUICtrlComboBox_GetCurSel($cmbBarrack4))
-
-	IniWriteS($config, "troop", "Darktroop1", _GUICtrlComboBox_GetCurSel($cmbDarkBarrack1))
-	IniWriteS($config, "troop", "Darktroop2", _GUICtrlComboBox_GetCurSel($cmbDarkBarrack2))
-
 
 	IniWriteS($config, "troop", "fulltroop", GUICtrlRead($txtFullTroop))
 	IniWriteS($config, "other", "TrainITDelay", $isldTrainITDelay)
@@ -1999,6 +2025,7 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWriteS($config, "other", "btnCloseWaitExact", $ibtnCloseWaitExact)
 	IniWriteS($config, "other", "btnCloseWaitRandom", $ibtnCloseWaitRandom)
 	IniWriteS($config, "other", "CloseWaitRdmPercent", _GUICtrlComboBox_GetCurSel($cmbCloseWaitRdmPercent))
+	IniWriteS($config, "other", "MinimumTimeToClose", GUICtrlRead($cmbMinimumTimeClose))
 
 	IniWriteS($config, "troop", "chkTroopOrder", $ichkTroopOrder)
 	For $z = 0 To UBound($DefaultTroopGroup) -1
@@ -2200,6 +2227,36 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWriteS($config, "pushbullet", "AlertPBVillage", $iAlertPBVillage)
 	IniWriteS($config, "pushbullet", "AlertPBLastAttack", $iLastAttackPB)
 	IniWriteS($config, "pushbullet", "AlertPBVBreak", $pTakeAbreak)
+	;Scheduler
+	If GUICtrlRead($chkNotifyWeekDays) = $GUI_CHECKED Then
+		IniWrite($config, "pushbullet", "NotifyWeekDaysEnable", 1)
+	Else
+		IniWrite($config, "pushbullet", "NotifyWeekDaysEnable", 0)
+	EndIf
+	Local $string = ""
+	For $i = 0 To 6
+		If GUICtrlRead(Eval("chkNotifyWeekdays" & $i)) = $GUI_CHECKED Then
+			$string &= "1|"
+		Else
+			$string &= "0|"
+		EndIf
+	Next
+	IniWrite($config, "pushbullet", "NotifyWeekDays", $string)
+	If GUICtrlRead($chkNotifyHours) = $GUI_CHECKED Then
+		IniWrite($config, "pushbullet", "NotifyHoursEnable", 1)
+	Else
+		IniWrite($config, "pushbullet", "NotifyHoursEnable", 0)
+	EndIf
+
+	Local $string = ""
+	For $i = 0 To 23
+		If GUICtrlRead(Eval("chkNotifyHours" & $i)) = $GUI_CHECKED Then
+			$string &= "1|"
+		Else
+			$string &= "0|"
+		EndIf
+	Next
+	IniWrite($config, "pushbullet", "NotifyHours", $string)
 
 	IniWriteS($config, "other", "WAOffsetX", $iWAOffsetX)
 	IniWriteS($config, "other", "WAOffsetY", $iWAOffsetY)
@@ -2347,6 +2404,8 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniDelete($config, "debug", "debugOCRDonate")
 	EndIf
 
+	IniWriteS($config, "other", "ChkUseQTrain", $ichkUseQTrain)
+
 	;forced Total Camp values
 	IniWriteS($config, "other", "ChkTotalCampForced", $ichkTotalCampForced)
 	IniWriteS($config, "other", "ValueTotalCampForced", $iValueTotalCampForced)
@@ -2485,12 +2544,38 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWriteS($config, "search", "ChkDBSpellsWait", 0)
 	EndIf
 
+	If GUICtrlRead($chkDBWaitForCastleSpell) = $GUI_CHECKED Then
+		IniWriteS($config, "search", "ChkDBCastleSpellWait", 1)
+	Else
+		IniWriteS($config, "search", "ChkDBCastleSpellWait", 0)
+	EndIf
+
 	If GUICtrlRead($chkABSpellsWait) = $GUI_CHECKED Then
 		IniWriteS($config, "search", "ChkABSpellsWait", 1)
 	Else
 		IniWriteS($config, "search", "ChkABSpellsWait", 0)
 	EndIf
 	IniWriteS($config, "search", "TotalTrainSpaceSpell", 0)
+
+	If GUICtrlRead($chkABWaitForCastleSpell) = $GUI_CHECKED Then
+		IniWriteS($config, "search", "ChkABCastleSpellWait", 1)
+	Else
+		IniWriteS($config, "search", "ChkABCastleSpellWait", 0)
+	EndIf
+
+
+	If GUICtrlRead($chkDBWaitForCastleTroops) = $GUI_CHECKED Then
+		IniWriteS($config, "search", "ChkDBCastleTroopsWait", 1)
+	Else
+		IniWriteS($config, "search", "ChkDBCastleTroopsWait", 0)
+	EndIf
+	If GUICtrlRead($chkABWaitForCastleTroops) = $GUI_CHECKED Then
+		IniWriteS($config, "search", "ChkABCastleTroopsWait", 1)
+	Else
+		IniWriteS($config, "search", "ChkABCastleTroopsWait", 0)
+	EndIf
+	IniWriteS($config, "search", "cmbDBWaitForCastleSpell", _GUICtrlComboBox_GetCurSel($cmbDBWaitForCastleSpell))
+	IniWriteS($config, "search", "cmbABWaitForCastleSpell", _GUICtrlComboBox_GetCurSel($cmbABWaitForCastleSpell))
 
 	;;Train Radio/QuickTrain
 	If GUICtrlRead($hRadio_Army1) = $GUI_CHECKED Then
@@ -2511,119 +2596,9 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWriteS($config, "troop", "QuickTrain3", 0)
 	EndIf
 
-	; Profile Switch Settings
-	If GUICtrlRead($chkGoldSwitchMax) = $GUI_CHECKED Then
-		IniWrite($config, "profiles", "chkGoldSwitchMax", 1)
-	Else
-		IniWrite($config, "profiles", "chkGoldSwitchMax", 0)
-	EndIf
-	IniWrite($config, "profiles", "cmbGoldMaxProfile", _GUICtrlComboBox_GetCurSel($cmbGoldMaxProfile))
-	IniWrite($config, "profiles", "txtMaxGoldAmount", GUICtrlRead($txtMaxGoldAmount))
-
-	If GUICtrlRead($chkGoldSwitchMin) = $GUI_CHECKED Then
-		IniWrite($config, "profiles", "chkGoldSwitchMin", 1)
-	Else
-		IniWrite($config, "profiles", "chkGoldSwitchMin", 0)
-	EndIf
-	IniWrite($config, "profiles", "cmbGoldMinProfile", _GUICtrlComboBox_GetCurSel($cmbGoldMinProfile))
-	IniWrite($config, "profiles", "txtMinGoldAmount", GUICtrlRead($txtMinGoldAmount))
-
-	If GUICtrlRead($chkElixirSwitchMax) = $GUI_CHECKED Then
-		IniWrite($config, "profiles", "chkElixirSwitchMax", 1)
-	Else
-		IniWrite($config, "profiles", "chkElixirSwitchMax", 0)
-	EndIf
-	IniWrite($config, "profiles", "cmbElixirMaxProfile", _GUICtrlComboBox_GetCurSel($cmbElixirMaxProfile))
-	IniWrite($config, "profiles", "txtMaxElixirAmount", GUICtrlRead($txtMaxElixirAmount))
-
-	If GUICtrlRead($chkElixirSwitchMin) = $GUI_CHECKED Then
-		IniWrite($config, "profiles", "chkElixirSwitchMin", 1)
-	Else
-		IniWrite($config, "profiles", "chkElixirSwitchMin", 0)
-	EndIf
-	IniWrite($config, "profiles", "cmbElixirMinProfile", _GUICtrlComboBox_GetCurSel($cmbElixirMinProfile))
-	IniWrite($config, "profiles", "txtMinElixirAmount", GUICtrlRead($txtMinElixirAmount))
-
-	If GUICtrlRead($chkDESwitchMax) = $GUI_CHECKED Then
-		IniWrite($config, "profiles", "chkDESwitchMax", 1)
-	Else
-		IniWrite($config, "profiles", "chkDESwitchMax", 0)
-	EndIf
-	IniWrite($config, "profiles", "cmbDEMaxProfile", _GUICtrlComboBox_GetCurSel($cmbDEMaxProfile))
-	IniWrite($config, "profiles", "txtMaxDEAmount", GUICtrlRead($txtMaxDEAmount))
-
-	If GUICtrlRead($chkDESwitchMin) = $GUI_CHECKED Then
-		IniWrite($config, "profiles", "chkDESwitchMin", 1)
-	Else
-		IniWrite($config, "profiles", "chkDESwitchMin", 0)
-	EndIf
-	IniWrite($config, "profiles", "cmbDEMinProfile", _GUICtrlComboBox_GetCurSel($cmbDEMinProfile))
-	IniWrite($config, "profiles", "txtMinDEAmount", GUICtrlRead($txtMinDEAmount))
-
-	If GUICtrlRead($chkTrophySwitchMax) = $GUI_CHECKED Then
-		IniWrite($config, "profiles", "chkTrophySwitchMax", 1)
-	Else
-		IniWrite($config, "profiles", "chkTrophySwitchMax", 0)
-	EndIf
-	IniWrite($config, "profiles", "cmbTrophyMaxProfile", _GUICtrlComboBox_GetCurSel($cmbTrophyMaxProfile))
-	IniWrite($config, "profiles", "txtMaxTrophyAmount", GUICtrlRead($txtMaxTrophyAmount))
-
-	If GUICtrlRead($chkTrophySwitchMin) = $GUI_CHECKED Then
-		IniWrite($config, "profiles", "chkTrophySwitchMin", 1)
-	Else
-		IniWrite($config, "profiles", "chkTrophySwitchMin", 0)
-	EndIf
-	IniWrite($config, "profiles", "cmbTrophyMinProfile", _GUICtrlComboBox_GetCurSel($cmbTrophyMinProfile))
-	IniWrite($config, "profiles", "txtMinTrophyAmount", GUICtrlRead($txtMinTrophyAmount))
-
-	; SwitchAcc Mode - DEMEN
-	If GUICtrlRead($radActiveProfile) = $GUI_CHECKED Then ; 1 = Active, 2 = Donate, 3 = Idle
-		IniWrite($config, "Switch Account", "Profile Type", 1)
-		IniWrite($profile, "Profile Type", _GUICtrlComboBox_GetCurSel($cmbProfile) + 1, 1)
-	ElseIf GUICtrlRead($radDonateProfile) = $GUI_CHECKED Then
-		IniWrite($config, "Switch Account", "Profile Type", 2)
-		IniWrite($profile, "Profile Type", _GUICtrlComboBox_GetCurSel($cmbProfile) + 1, 2)
-	Else
-		IniWrite($config, "Switch Account", "Profile Type", 3)
-		IniWrite($profile, "Profile Type", _GUICtrlComboBox_GetCurSel($cmbProfile) + 1, 3)
-	EndIf
-
-	IniWrite($config, "Switch Account", "Match Profile Acc", _GUICtrlComboBox_GetCurSel($cmbMatchProfileAcc)) ; 0 = No Acc (idle), 1 = Acc 1, 2 = Acc 2, etc.
-
-	If GUICtrlRead($chkSwitchAcc) = $GUI_CHECKED Then
-		IniWrite($profile, "Switch Account", "Enable", 1)
-	Else
-		IniWrite($profile, "Switch Account", "Enable", 0)
-	EndIf
-
-	IniWrite($profile, "Switch Account", "Total Coc Account", _GUICtrlComboBox_GetCurSel($cmbTotalAccount)) ; 0 = AutoDetect, 1 = 1 Acc, 2 = 2 Acc, etc.
-
-	If GUICtrlRead($radSmartSwitch) = $GUI_CHECKED Then
-		IniWrite($profile, "Switch Account", "Smart Switch", 1)
-	Else
-		IniWrite($profile, "Switch Account", "Smart Switch", 0)
-	EndIf
-
-	If GUICtrlRead($chkUseTrainingClose) = $GUI_CHECKED Then
-		If GUICtrlRead($radCloseCoC) = $GUI_CHECKED Then
-			IniWrite($profile, "Switch Account", "Sleep Combo", 1) ; Sleep Combo = 1 => Close CoC
-		Else
-			IniWrite($profile, "Switch Account", "Sleep Combo", 2) ; Sleep Combo = 2 => Close Android
-		EndIf
-	Else
-		IniWrite($profile, "Switch Account", "Sleep Combo", 0)
-	EndIf
-
-	; Restart Android after long search - DEMEN
-	If GUICtrlRead($ChkRestartAndroid) = $GUI_CHECKED Then
-		IniWrite($config, "Restart Android", "Enable", 1)
-	Else
-		IniWrite($config, "Restart Android", "Enable", 0)
-	EndIf
-	IniWrite($config, "Restart Android", "Restart Android Search Limit", GUICtrlRead($TxtRestartAndroidSearchlimit))
-	IniWrite($config, "Restart Android", "Restart Android Train Error", GUICtrlRead($TxtRestartAndroidTrainError))
-
-#cs	; SmartZap Settings
+;==============================================================
+; SmartZap - Added by NTS team
+;==============================================================
 	If GUICtrlRead($chkSmartLightSpell) = $GUI_CHECKED Then
 		IniWrite($config, "SmartZap", "UseSmartZap", 1)
 	Else
@@ -2640,18 +2615,47 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWrite($config, "SmartZap", "THSnipeSaveHeroes", 0)
 	EndIf
 	IniWrite($config, "SmartZap", "MinDE", GUICtrlRead($txtMinDark))
+;==============================================================
+; SmartZap - Added by NTS team
+;==============================================================
 
-	;ExtremeZap
-	If GUICtrlRead($chkExtLightSpell) = $GUI_CHECKED Then
-		IniWrite($config, "MOD", "ExtLightSpell", 1)
-	Else
-		IniWrite($config, "MOD", "ExtLightSpell", 0)
+	; SwitchAcc Mode - DEMEN
+	If GUICtrlRead($radActiveProfile) = $GUI_CHECKED Then														; 1 = Active, 2 = Donate, 3 = Idle
+		IniWrite($config, "Switch Account", "Profile Type", 1)
+		IniWrite($profile, "Profile Type", _GUICtrlCombobox_GetCurSel($cmbProfile)+1, 1)
+	 ElseIf GUICtrlRead($radDonateProfile) = $GUI_CHECKED Then
+		IniWrite($config, "Switch Account", "Profile Type", 2)
+		IniWrite($profile, "Profile Type", _GUICtrlCombobox_GetCurSel($cmbProfile)+1, 2)
+	 Else
+		IniWrite($config, "Switch Account", "Profile Type", 3)
+		IniWrite($profile, "Profile Type", _GUICtrlCombobox_GetCurSel($cmbProfile)+1, 3)
 	EndIf
-	IniWrite($config, "MOD", "MinDE", GUICtrlRead($txtMinDark))
-#ce
-	; CSV Deployment Speed Mod
-	IniWriteS($config, "attack", "CSVSpeedDB", $isldSelectedCSVSpeed[$DB])
-	IniWriteS($config, "attack", "CSVSpeedAB", $isldSelectedCSVSpeed[$LB])
+
+	IniWrite($config, "Switch Account", "Match Profile Acc", _GUICtrlCombobox_GetCurSel($cmbMatchProfileAcc))	 ; 0 = No Acc (idle), 1 = Acc 1, 2 = Acc 2, etc.
+
+	If GUICtrlRead($chkSwitchAcc) = $GUI_CHECKED Then
+		IniWrite($profile, "Switch Account", "Enable", 1)
+	Else
+		IniWrite($profile, "Switch Account", "Enable", 0)
+	EndIf
+
+	IniWrite($profile, "Switch Account", "Total Coc Account", _GUICtrlCombobox_GetCurSel($cmbTotalAccount))	; 0 = AutoDetect, 1 = 1 Acc, 2 = 2 Acc, etc.
+
+	If GUICtrlRead($radSmartSwitch) = $GUI_CHECKED Then
+	   IniWrite($profile, "Switch Account", "Smart Switch", 1)
+	Else
+	   IniWrite($profile, "Switch Account", "Smart Switch", 0)
+	EndIf
+
+	If GUICtrlRead($chkUseTrainingClose) = $GUI_CHECKED Then
+		If GUICtrlRead($radCloseCoC) = $GUI_CHECKED Then
+			IniWrite($profile, "Switch Account", "Sleep Combo", 1)		; Sleep Combo = 1 => Close CoC
+		Else
+			IniWrite($profile, "Switch Account", "Sleep Combo", 2)		; Sleep Combo = 2 => Close Android
+		EndIf
+	Else
+		IniWrite($profile, "Switch Account", "Sleep Combo", 0)
+	EndIf
 
 	If $hFile <> -1 Then FileClose($hFile)
 

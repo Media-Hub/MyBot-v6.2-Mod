@@ -26,7 +26,7 @@ Func getBuilderCount($bSuppressLog = False)
 			$aGetBuilders = StringSplit($sBuilderInfo, "#", $STR_NOCOUNT)  ; Split into free and total builder strings
 			$iFreeBuilderCount = Int($aGetBuilders[0]) ; update global values
 			$iTotalBuilderCount = Int($aGetBuilders[1])
-			If $debugSetlog = 1 And $bSuppressLog = False Then Setlog("No. of Free/Total Builders: " & $iFreeBuilderCount & "/" & $iTotalBuilderCount, $COLOR_PURPLE)
+			If $debugSetlog = 1 And $bSuppressLog = False Then Setlog("No. of Free/Total Builders: " & $iFreeBuilderCount & "/" & $iTotalBuilderCount, $COLOR_DEBUG) ;Debug
 			Return True  ; Happy Monkey returns!
 		Else
 			SetLog("Bad OCR read Free/Total Builders", $COLOR_RED) ; OCR returned unusable value?

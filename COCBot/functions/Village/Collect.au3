@@ -51,7 +51,7 @@ Func Collect()
 			If IsMainPage() Then
 				If IsArray($CollectXY) Then
 					For $t = 0 To UBound($CollectXY) - 1 ; each filename can have several positions
-						If $DebugSetLog = 1 Then SetLog($Filename & " found (" & $CollectXY[$t][0] & "," & $CollectXY[$t][1] & ")", $COLOR_GREEN)
+						If $DebugSetLog = 1 Then SetLog($Filename & " found (" & $CollectXY[$t][0] & "," & $CollectXY[$t][1] & ")", $COLOR_DEBUG) ;Debug
 						If $iUseRandomClick = 0 then
 							Click($CollectXY[$t][0], $CollectXY[$t][1], 1, 0, "#0430")
 							If _Sleep($iDelayCollect2) Then Return
@@ -82,7 +82,7 @@ Func Collect()
 		Local $res = DllCall($hImgLib, "str", "SearchTile", "handle", $hHBitmap2, "str", $LootCart, "float", $ToleranceImgLoc, "str", $fullCocAreas, "Int", $MaxReturnPoints)
 		If @error Then _logErrorDLLCall($pImgLib, @error)
 		If IsArray($res) Then
-			If $DebugSetlog = 1 Then SetLog("DLL Call succeeded " & $res[0], $COLOR_RED)
+			If $DebugSetlog = 1 Then SetLog("DLL Call succeeded " & $res[0], $COLOR_DEBUG) ;Debug
 			If $res[0] = "0" Or $res[0] = "" Then
 				SetLog("No Loot Cart found, Yard is clean!", $COLOR_GREEN)
 			ElseIf StringLeft($res[0], 2) = "-1" Then
@@ -109,7 +109,7 @@ Func Collect()
 						$CountGetInfo += 1
 						If $CountGetInfo >= 5 Then Return
 					WEnd
-					If $DebugSetlog Then SetLog(_ArrayToString($sInfo, " "), $COLOR_PURPLE)
+					If $DebugSetlog Then SetLog(_ArrayToString($sInfo, " "), $COLOR_DEBUG) ;Debug
 					If @error Then Return SetError(0, 0, 0)
 					If $sInfo[0] > 1 Or $sInfo[0] = "" Then
 						If StringInStr($sInfo[1], "Loot") = 0 Then

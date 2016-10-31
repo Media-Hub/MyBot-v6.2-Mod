@@ -18,7 +18,7 @@
 ;
 Func getArmyHeroTime($HeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = False)
 
-	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("Begin getArmyHeroTime:", $COLOR_PURPLE)
+	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("Begin getArmyHeroTime:", $COLOR_DEBUG) ;Debug
 
 	; validate hero troop type input, must be hero enum value or "all"
 	If $HeroType <> $eKing And $HeroType <> $eQueen And $HeroType <> $eWarden And StringInStr($HeroType, "all", $STR_NOCASESENSEBASIC) = 0 Then
@@ -57,13 +57,13 @@ Func getArmyHeroTime($HeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = Fa
 		;$sResult = getHeroStatus($HeroSlots[$index][0], $HeroSlots[$index][1]) ; OCR slot for status information
 		$sResult = ArmyHeroStatus($index + 1) ; OCR slot for status information
 		If $sResult <> "" Then ; we found something
-			If StringInStr($sResult, "heal", $STR_NOCASESENSEBASIC) = 0 Then
+			If StringInStr($sResult, "heal", $STR_NOCASESENSEBASIC) = 0 or StringInStr($sResult, "none", $STR_NOCASESENSEBASIC) <> 0 Then
 				If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then
-					SetLog("Hero slot#" & $index + 1 & " status: " & $sResult & " :skip time read", $COLOR_PURPLE)
+					SetLog("Hero slot#" & $index + 1 & " status: " & $sResult & " :skip time read", $COLOR_DEBUG) ;Debug
 				EndIf
 				ContinueLoop ; if do not find hero healing, then do not read time
 			Else
-				If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SetLog("Hero slot#" & $index + 1 & " status: " & $sResult, $COLOR_PURPLE)
+				If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SetLog("Hero slot#" & $index + 1 & " status: " & $sResult, $COLOR_DEBUG) ;Debug
 			EndIf
 		Else
 			SetLog("Hero slot#" & $index + 1 & " Status read problem!", $COLOR_RED)
@@ -82,7 +82,7 @@ Func getArmyHeroTime($HeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = Fa
 				Case Else
 					SetLog("Bad read of remaining " & $aHeroRemainData[$index][2] & " train time: " & $sResult, $COLOR_RED)
 			EndSelect
-			If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SetLog("Remaining " & $aHeroRemainData[$index][2] & " train time: " & StringFormat("%.2f", $iResultHeroes[$index]), $COLOR_PURPLE)
+			If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SetLog("Remaining " & $aHeroRemainData[$index][2] & " train time: " & StringFormat("%.2f", $iResultHeroes[$index]), $COLOR_DEBUG) ;Debug
 
 			If $HeroType = $aHeroRemainData[$index][3] Then ; if only one hero requested, then set return value and exit loop
 				$iRemainTrainHeroTimer = Number($sResultHeroTime)
@@ -99,7 +99,7 @@ Func getArmyHeroTime($HeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = Fa
 						SetLog("Can not read remaining " & $aHeroRemainData[$index][2] & " train time", $COLOR_RED)
 						ExitLoop
 					Else
-						If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SetLog("Bad read remain " & $aHeroRemainData[$index][2] & " train time, but not enabled", $COLOR_PURPLE)
+						If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SetLog("Bad read remain " & $aHeroRemainData[$index][2] & " train time, but not enabled", $COLOR_DEBUG) ;Debug
 					EndIf
 				Next
 			EndIf
@@ -127,7 +127,7 @@ Func ReadHeroesRecoverTime($aHeroResult)	; get hero regen time remaining if enab
 
 	If $iTownHallLevel < 7 Then Return
 
-	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("ReadHeroesRecoverTime", $COLOR_PURPLE)
+	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("ReadHeroesRecoverTime", $COLOR_DEBUG) ;Debug
 
 	Setlog(" » Getting Heroes Recover Time: ")
 	If $aHeroResult[0] > 0 Then
@@ -142,14 +142,14 @@ Func ReadHeroesRecoverTime($aHeroResult)	; get hero regen time remaining if enab
 	If $aHeroResult[0] = 0 And $aHeroResult[1] = 0 And $aHeroResult[2] = 0 Then
 	SetLog(" » No Heroes Waiting Time..", $COLOR_GREEN)
 	EndIf
-		If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SetLog("getArmyHeroTime returned: " & $aHeroResult[0] & ":" & $aHeroResult[1] & ":" & $aHeroResult[2], $COLOR_PURPLE)
+		If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then SetLog("getArmyHeroTime returned: " & $aHeroResult[0] & ":" & $aHeroResult[1] & ":" & $aHeroResult[2], $COLOR_DEBUG) ;Debug
 		If _Sleep($iDelayRespond) Then Return
 		If $aHeroResult[0] > 0 Or $aHeroResult[1] > 0 Or $aHeroResult[2] > 0 Then ; check if hero is enabled to use/wait and set wait time
 			For $pTroopType = $eKing To $eWarden ; check all 3 hero
 				For $pMatchMode = $DB To $iModeCount - 1 ; check all attack modes
 				If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then
-					SetLog("$pTroopType: " & NameOfTroop($pTroopType) & ", $pMatchMode: " & $sModeText[$pMatchMode], $COLOR_PURPLE)
-					Setlog("TroopToBeUsed: " & IsSpecialTroopToBeUsed($pMatchMode, $pTroopType) & ", Hero Wait Status: " & (BitOr($iHeroAttack[$pMatchMode], $iHeroWait[$pMatchMode]) = $iHeroAttack[$pMatchMode]), $COLOR_PURPLE)
+					SetLog("$pTroopType: " & NameOfTroop($pTroopType) & ", $pMatchMode: " & $sModeText[$pMatchMode], $COLOR_DEBUG) ;Debug
+					Setlog("TroopToBeUsed: " & IsSpecialTroopToBeUsed($pMatchMode, $pTroopType) & ", Hero Wait Status: " & (BitOr($iHeroAttack[$pMatchMode], $iHeroWait[$pMatchMode]) = $iHeroAttack[$pMatchMode]), $COLOR_DEBUG) ;Debug
 				EndIf
 				$iActiveHero = -1
 				If IsSpecialTroopToBeUsed($pMatchMode, $pTroopType) And _
@@ -162,14 +162,14 @@ Func ReadHeroesRecoverTime($aHeroResult)	; get hero regen time remaining if enab
 						$aTimeTrain[2] = $aHeroResult[$iActiveHero] ; use exact time
 					EndIf
 					If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then
-						SetLog("Wait enabled: " & NameOfTroop($pTroopType) & ", Attack Mode:" & $sModeText[$pMatchMode] & ", Hero Time:" & $aHeroResult[$iActiveHero] & ", Wait Time: " & StringFormat("%.2f", $aTimeTrain[2]), $COLOR_PURPLE)
+						SetLog("Wait enabled: " & NameOfTroop($pTroopType) & ", Attack Mode:" & $sModeText[$pMatchMode] & ", Hero Time:" & $aHeroResult[$iActiveHero] & ", Wait Time: " & StringFormat("%.2f", $aTimeTrain[2]), $COLOR_DEBUG) ;Debug
 					EndIf
 				EndIf
 			Next
 			If _Sleep($iDelayRespond) Then Return
 		Next
 	Else
-		If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("getArmyHeroTime return all zero hero wait times", $COLOR_PURPLE)
+		If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("getArmyHeroTime return all zero hero wait times", $COLOR_DEBUG) ;Debug
 	EndIf
 
 	If $aHeroResult[0] > 0 Or $aHeroResult[1] > 0 Or $aHeroResult[2] > 0 Then

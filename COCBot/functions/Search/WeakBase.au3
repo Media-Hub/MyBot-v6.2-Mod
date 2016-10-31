@@ -161,7 +161,7 @@ Func getMaxUISetting($settingArray, $defenseType)
 		$result = _Max(Number($maxDB), Number($maxLB))
 	EndIf
 
-	If $debugSetLog = 1 Then SetLog("Max " & $weakDefenseNames[$defenseType] & " Level: " & $result, $COLOR_BLUE)
+	If $debugSetLog = 1 Then SetLog("Max " & $weakDefenseNames[$defenseType] & " Level: " & $result, $COLOR_DEBUG) ;Debug
 	Return $result
 EndFunc   ;==>getMaxUISetting
 
@@ -179,7 +179,7 @@ Func getMinUISetting($settingArray, $defenseType)
 		$result = _Min(Number($minDB), Number($minLB))
 	EndIf
 
-	If $debugSetLog = 1 Then SetLog("Min " & $weakDefenseNames[$defenseType] & " Level: " & $result, $COLOR_BLUE)
+	If $debugSetLog = 1 Then SetLog("Min " & $weakDefenseNames[$defenseType] & " Level: " & $result, $COLOR_DEBUG) ;Debug
 	Return $result
 EndFunc   ;==>getMinUISetting
 
@@ -222,10 +222,10 @@ Func defenseSearch(ByRef $aResult, $directory, $townHallLevel, $settingArray, $d
 			If $aResult[0][0] = "" Then $aResult[0][0] = $aDefenseResult[6]
 			; Check to see if further searches are required, $performSearch is passed ByRef, so this will update the value in the calling function
 			If Number($aDefenseResult[2]) > getMaxUISetting($settingArray, $defenseType) Then $performSearch = False
-			If $debugSetLog = 1 Then SetLog("checkDefense: " & $weakDefenseNames[$defenseType] & " - " & Round(TimerDiff($defenseTimer) / 1000, 2) & " seconds")
+			If $debugSetLog = 1 Then SetLog("checkDefense: " & $weakDefenseNames[$defenseType] & " - " & Round(TimerDiff($defenseTimer) / 1000, 2) & " seconds", $COLOR_DEBUG) ;Debug
 		Else
 			$aDefenseResult = $aNotNecessary
-			If $debugSetLog = 1 Then SetLog("checkDefense: " & $weakDefenseNames[$defenseType] & " not necessary!")
+			If $debugSetLog = 1 Then SetLog("checkDefense: " & $weakDefenseNames[$defenseType] & " not necessary!", $COLOR_DEBUG) ;Debug
 		EndIf
 	EndIf
 

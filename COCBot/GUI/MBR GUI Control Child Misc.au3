@@ -28,19 +28,20 @@ Func cmbProfile()
 	saveConfig()
 
 	SetLog("Profile " & $sCurrProfile & " loaded from " & $config, $COLOR_GREEN)
-
 	btnUpdateProfile()			;- Refreshing setting of all profiles in SwitchAcc Mode - DEMEN
 
 EndFunc   ;==>cmbProfile
 
-Func radProfileType()
+; Actions While Training (SleepMode, HibernateMode, SwitchAcc) - DEMEN
+
+ Func radProfileType()
 	If GUICtrlRead($radIdleProfile) = $GUI_CHECKED Then
 	   _GUICtrlComboBox_SetCurSel($cmbMatchProfileAcc, 0)
 	EndIf
 	btnUpdateProfile()
-EndFunc   ;==>radProfileType
+ EndFunc   ;==>radProfileType
 
-Func cmbMatchProfileAcc()
+ Func cmbMatchProfileAcc()
 
 	If _GUICtrlComboBox_GetCurSel($cmbMatchProfileAcc) = 0 Then
 		GUICtrlSetState($radIdleProfile, $GUI_CHECKED)
@@ -57,8 +58,8 @@ Func cmbMatchProfileAcc()
 	   MsgBox($MB_OK, "SwitchAcc Mode", "Account [" & _GUICtrlComboBox_GetCurSel($cmbMatchProfileAcc) & "] has been assigned to Profile [" & _ArraySearch($aMatchProfileAcc,_GUICtrlComboBox_GetCurSel($cmbMatchProfileAcc)) + 1 & "]" ,30, $hGUI_BOT)
 	   _GUICtrlComboBox_SetCurSel($cmbMatchProfileAcc, 0)
 	   GUICtrlSetState($radIdleProfile, $GUI_CHECKED)
+	   btnUpdateProfile()
 	EndIf
-	btnUpdateProfile()
 
 	If _GUICtrlComboBox_GetCurSel($cmbMatchProfileAcc) <> 0 And UBound(_ArrayFindAll($aMatchProfileAcc,_GUICtrlComboBox_GetCurSel($cmbMatchProfileAcc))) > 1 Then
 	   MsgBox($MB_OK, "SwitchAcc Mode", "Account [" & _GUICtrlComboBox_GetCurSel($cmbMatchProfileAcc) & "] has been assigned to another profile" ,30, $hGUI_BOT)
@@ -67,9 +68,9 @@ Func cmbMatchProfileAcc()
 	   btnUpdateProfile()
 	EndIf
 
-EndFunc   ;==>cmbMatchProfileAcc
+ EndFunc   ;==>cmbMatchProfileAcc
 
-Func btnUpdateProfile()
+ Func btnUpdateProfile()
 
     saveConfig()
 	setupProfile()
@@ -128,9 +129,9 @@ Func btnUpdateProfile()
 	  EndIf
    Next
 
-EndFunc
+ EndFunc
 
-Func chkSwitchAcc()
+ Func chkSwitchAcc()
 	If GUICtrlRead($chkSwitchAcc) = $GUI_CHECKED Then
 	   If _GUICtrlComboBox_GetCount($cmbProfile) <= 1 Then
 		  GUICtrlSetState($chkSwitchAcc, $GUI_UNCHECKED)
@@ -148,14 +149,14 @@ Func chkSwitchAcc()
 			 GUICtrlSetState($i, $GUI_DISABLE)
 		  Next
 	EndIf
-EndFunc   ;==>chkSwitchAcc
+ EndFunc   ;==>chkSwitchAcc
 
-Func radNormalSwitch()
+ Func radNormalSwitch()
 	If GUICtrlRead($chkUseTrainingClose) = $GUI_CHECKED Then
 	   GUICtrlSetState($radSmartSwitch, $GUI_CHECKED)
 	   MsgBox($MB_OK, "SwitchAcc Mode", "Cannot enable Sleep Mode together with Normal Switch Mode", 30, $hGUI_BOT)
 	EndIf
-EndFunc   ;==>radNormalSwitch  - Normal Switch is not on the same boat with Sleep Combo
+ EndFunc   ;==>radNormalSwitch  - Normal Switch is not on the same boat with Sleep Combo
 
 Func chkUseTrainingClose()
 	If GUICtrlRead($chkUseTrainingClose) = $GUI_CHECKED And GUICtrlRead($chkSwitchAcc) = $GUI_CHECKED And GUICtrlRead($radNormalSwitch) = $GUI_CHECKED Then
@@ -164,18 +165,8 @@ Func chkUseTrainingClose()
 	EndIf
 EndFunc   ;==>chkUseTrainingClose
 
-Func chkRestartAndroid()
-	If GUICtrlRead($chkRestartAndroid) = $GUI_CHECKED Then
-		For $i = $txtRestartAndroidSearchLimit To $lblRestartAndroidTrainError
-			GUICtrlSetState($i, $GUI_ENABLE)
-		Next
-	Else
-		For $i = $txtRestartAndroidSearchLimit To $lblRestartAndroidTrainError
-			GUICtrlSetState($i, $GUI_DISABLE)
-		Next
-	EndIf
-EndFunc   ;==>chkRestartAndroid
-#cs
+; ============= SwitchAcc Mode ============= - DEMEN
+
 Func btnAddConfirm()
 	Switch @GUI_CtrlId
 		Case $btnAdd
@@ -289,7 +280,6 @@ Func btnRenameConfirm()
 			SetLog("If you are seeing this log message there is something wrong.", $COLOR_RED)
 	EndSwitch
 EndFunc   ;==>btnRenameConfirm
-#ce
 Func cmbBotCond()
 	If _GUICtrlComboBox_GetCurSel($cmbBotCond) = 15 Then
 		If _GUICtrlComboBox_GetCurSel($cmbHoursStop) = 0 Then _GUICtrlComboBox_SetCurSel($cmbHoursStop, 1)
@@ -388,12 +378,12 @@ Func btnLocateTownHall()
 			GetTranslated(640, 73, "then you must restart bot!!!") & @CRLF & @CRLF & _
 			GetTranslated(640, 74, "Click OK to restart bot") & " ," & @CRLF & @CRLF & GetTranslated(640, 65, "Or Click Cancel to exit") & @CRLF
 	Local $MsgBox = _ExtMsgBox(0, GetTranslated(640, 1, "Ok|Cancel"), GetTranslated(640, 76, "Close Bot Please!"), $stext, 120, $frmBot)
-	If $DebugSetlog = 1 Then Setlog("$MsgBox= " & $MsgBox, $COLOR_PURPLE)
+	If $DebugSetlog = 1 Then Setlog("$MsgBox= " & $MsgBox, $COLOR_DEBUG) ;Debug
 	If $MsgBox = 1 Then
 		Local $stext = @CRLF & GetTranslated(640, 77, "Are you 100% sure you want to restart bot ?") & @CRLF & @CRLF & _
 				GetTranslated(640, 78, "Click OK to close bot and then restart the bot (manually)") & @CRLF & @CRLF & GetTranslated(640, 65, -1) & @CRLF
 		Local $MsgBox = _ExtMsgBox(0, GetTranslated(640, 1, -1), GetTranslated(640, 76, -1), $stext, 120, $frmBot)
-		If $DebugSetlog = 1 Then Setlog("$MsgBox= " & $MsgBox, $COLOR_PURPLE)
+		If $DebugSetlog = 1 Then Setlog("$MsgBox= " & $MsgBox, $COLOR_DEBUG) ;Debug
 		If $MsgBox = 1 Then BotClose(False)
 	EndIf
 	$RunState = $wasRunState
@@ -412,12 +402,12 @@ Func btnResetBuilding()
 			Local $stext = @CRLF & GetTranslated(640, 63, "Click OK to Delete and Reset all Building info,") & @CRLF & @CRLF & _
 					GetTranslated(640, 64, "NOTE =>> Bot will exit and need to be restarted when complete") & @CRLF & @CRLF & GetTranslated(640, 65, "Or Click Cancel to exit") & @CRLF
 			Local $MsgBox = _ExtMsgBox(0, GetTranslated(640, 1, "Ok|Cancel"), GetTranslated(640, 67, "Delete Building Infomation ?"), $stext, 120, $frmBot)
-			If $DebugSetlog = 1 Then Setlog("$MsgBox= " & $MsgBox, $COLOR_PURPLE)
+			If $DebugSetlog = 1 Then Setlog("$MsgBox= " & $MsgBox, $COLOR_DEBUG) ;Debug
 			If $MsgBox = 1 Then
 				Local $stext = @CRLF & GetTranslated(640, 68, "Are you 100% sure you want to delete Building information ?") & @CRLF & @CRLF & _
 						GetTranslated(640, 69, "Click OK to Delete and then restart the bot (manually)") & @CRLF & @CRLF & GetTranslated(640, 65, -1) & @CRLF
 				Local $MsgBox = _ExtMsgBox(0, GetTranslated(640, 1, -1), GetTranslated(640, 67, -1), $stext, 120, $frmBot)
-				If $DebugSetlog = 1 Then Setlog("$MsgBox= " & $MsgBox, $COLOR_PURPLE)
+				If $DebugSetlog = 1 Then Setlog("$MsgBox= " & $MsgBox, $COLOR_DEBUG) ;Debug
 				If $MsgBox = 1 Then
 					Local $Result = FileDelete($building)
 					If $Result = 0 Then
@@ -464,8 +454,8 @@ Func chkTrophyRange()
 		GUICtrlSetState($txtdropTrophy, $GUI_ENABLE)
 		GUICtrlSetState($txtMaxTrophy, $GUI_ENABLE)
 		GUICtrlSetState($chkTrophyHeroes, $GUI_ENABLE)
-		GUICtrlSetState($chkTrophyAtkDead, $GUI_ENABLE)
-		chkTrophyAtkDead()
+		;GUICtrlSetState($chkTrophyAtkDead, $GUI_ENABLE)
+		;chkTrophyAtkDead()
 	Else
 		GUICtrlSetState($txtdropTrophy, $GUI_DISABLE)
 		GUICtrlSetState($txtMaxTrophy, $GUI_DISABLE)

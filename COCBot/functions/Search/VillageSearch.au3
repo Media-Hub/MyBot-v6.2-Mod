@@ -269,7 +269,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 		EndIf
 
 		If $noMatchTxt <> "" Then
-			;SetLog(_PadStringCenter(" " & StringMid($noMatchTxt, 3) & " ", 50, "~"), $COLOR_PURPLE)
+			;SetLog(_PadStringCenter(" " & StringMid($noMatchTxt, 3) & " ", 50, "~"), $COLOR_DEBUG) ;Debug
 			SetLog($GetResourcesTXT, $COLOR_BLACK, "Lucida Console", 7.5)
 			SetLog("      " & StringMid($noMatchTxt, 3), $COLOR_ORANGE, "Lucida Console", 7.5)
 			$logwrited = True
@@ -290,7 +290,6 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 		;If SWHTSearchLimit($iSkipped + 1) Then Return True
 		; Return Home on Search limit
 		If SearchLimit($iSkipped + 1) Then Return True
-		If SearchLimitRestartAndroid($SearchCount) Then Return True				; Restart Android after long search - DEMEN
 
 		If checkAndroidTimeLag() = True Then
 		   $Restart = True
@@ -312,7 +311,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 				EndIF
 				ExitLoop
 			Else
-				If $debugsetlog = 1 Then SetLog("Wait to see Next Button... " & $i, $COLOR_PURPLE)
+				If $debugsetlog = 1 Then SetLog("Wait to see Next Button... " & $i, $COLOR_DEBUG) ;Debug
 			EndIf
 			If $i >= 99 Or isProblemAffect(True) Then ; if we can't find the next button or there is an error, then restart
 				$Is_ClientSyncError = True
@@ -348,6 +347,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 		$iSkipped = $iSkipped + 1
 		$iSkippedVillageCount += 1
 		If $ichkSwitchAcc = 1 Then $aSkippedVillageCountAcc[$nCurProfile - 1] += 1 ; SwitchAcc Mod - DEMEN
+
 		If $iTownHallLevel <> "" Then
 			$iSearchCost += $aSearchCost[$iTownHallLevel - 1]
 			$iGoldTotal -= $aSearchCost[$iTownHallLevel - 1]
@@ -356,7 +356,6 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 		UpdateStats()
 
 	WEnd ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;### Main Search Loop End ###;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 	;--- show buttons attacknow ----
 	If $bBtnAttackNowPressed = True Then
@@ -393,7 +392,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 
 ;~ 		If $searchTH = "-" Then ; retry with autoit search after $iDelayVillageSearch5 seconds
 ;~ 			If _Sleep($iDelayVillageSearch5) Then Return
-;~ 			If $debugsetlog = 1 Then SetLog("2nd attempt to detect the TownHall!", $COLOR_RED)
+;~ 			If $debugsetlog = 1 Then SetLog("2nd attempt to detect the TownHall!", $COLOR_DEBUG) ;Debug
 ;~ 			$searchTH = THSearch()
 ;~ 		EndIf
 
@@ -416,7 +415,7 @@ Func SearchLimit($iSkipped)
 		While _CheckPixel($aSurrenderButton, $bCapturePixel) = False
 			If _Sleep($iDelaySWHTSearchLimit1) Then Return
 			$Wcount += 1
-			If $debugsetlog = 1 Then setlog("wait surrender button " & $Wcount, $COLOR_PURPLE)
+			If $debugsetlog = 1 Then setlog("wait surrender button " & $Wcount, $COLOR_DEBUG) ;Debug
 			If $Wcount >= 50 Or isProblemAffect(True) Then
 				checkMainScreen()
 				$Is_ClientSyncError = False ; reset OOS flag for long restart
@@ -435,25 +434,6 @@ Func SearchLimit($iSkipped)
 	EndIf
 EndFunc   ;==>SearchLimit
 
-Func SearchLimitRestartAndroid($SearchCount); Restart-Android after long search - DEMEN
-	If Number($iRestartAndroidSearchlimit) = 0 Then $iRestartAndroidSearchLimit = 999
-	If $iChkRestartAndroid = 1 And Mod($SearchCount, Number($iRestartAndroidSearchlimit)) = 0  Then
-		$Is_SearchLimit = True
-		Setlog("So many skips, Restart CoC and Android")
-			MakeScreenshot($dirTemp, "jpg")
-			PoliteCloseCoC()
-			CloseAndroid()
-			If _SleepStatus(10000) Then Return
-			OpenAndroid()
-			OpenCoC()
-		getArmyCapacity(True, True)
-		$Restart = True ; set force runbot restart flag
-		$Is_ClientSyncError = True ; set OOS flag for fast restart
-		Return True
-	Else
-		Return False
-	EndIf
-EndFunc; ==> SearchLimitRestartAndroid (Restart Android after long search - DEMEN)
 
 Func WriteLogVillageSearch ($x)
 	;this function write in BOT LOG the values setting for each attack mode ($DB,$LB, $TS)
@@ -475,22 +455,22 @@ Func WriteLogVillageSearch ($x)
 	If $iChkMeetTHO[$x] = 1 Then $MeetTHOtext = "- TH Outside"
 	If IsWeakBaseActive($x) Then $MeetWeakBasetext = "- Weak Base"
 	If Not ($Is_SearchLimit) And $debugsetlog = 1 Then
-		SetLog(_PadStringCenter(" Searching For " & $sModeText[$x] & " ", 54, "="), $COLOR_BLUE)
-		Setlog("Enable " & $sModeText[$x] & " search IF ", $COLOR_BLUE)
-		If $iEnableSearchSearches[$x] = 1 Then Setlog("- Numbers of searches range " & $iEnableAfterCount[$x] & " - " & $iEnableBeforeCount[$x], $COLOR_BLUE)
-		If $iEnableSearchTropies[$x] = 1 Then Setlog("- Search tropies range " & $iEnableAfterTropies[$x] & " - " & $iEnableBeforeTropies[$x], $COLOR_BLUE)
-		If $iEnableSearchCamps[$x] = 1 Then Setlog("- Army Camps % >  " & $iEnableAfterArmyCamps[$x], $COLOR_BLUE)
-		Setlog("Match " & $sModeText[$x] & "  village IF ", $COLOR_BLUE)
-		If $MeetGxEtext <> "" Then Setlog($MeetGxEtext, $COLOR_BLUE)
-		If $MeetGorEtext <> "" Then Setlog($MeetGorEtext, $COLOR_BLUE)
-		If $MeetGplusEtext <> "" Then Setlog($MeetGplusEtext, $COLOR_BLUE)
-		If $MeetDEtext <> "" Then Setlog($MeetDEtext, $COLOR_BLUE)
-		If $MeetTrophytext <> "" Then Setlog($MeetTrophytext, $COLOR_BLUE)
-		If $MeetTHtext <> "" Then Setlog($MeetTHtext, $COLOR_BLUE)
-		If $MeetTHOtext <> "" Then Setlog($MeetTHOtext, $COLOR_BLUE)
-		If $MeetWeakBasetext <> "" Then Setlog($MeetWeakBasetext, $COLOR_BLUE)
+		SetLog(_PadStringCenter(" Searching For " & $sModeText[$x] & " ", 54, "="), $COLOR_DEBUG) ;Debug
+		Setlog("Enable " & $sModeText[$x] & " search IF ", $COLOR_DEBUG) ;Debug
+		If $iEnableSearchSearches[$x] = 1 Then Setlog("- Numbers of searches range " & $iEnableAfterCount[$x] & " - " & $iEnableBeforeCount[$x], $COLOR_DEBUG) ;Debug
+		If $iEnableSearchTropies[$x] = 1 Then Setlog("- Search tropies range " & $iEnableAfterTropies[$x] & " - " & $iEnableBeforeTropies[$x], $COLOR_DEBUG) ;Debug
+		If $iEnableSearchCamps[$x] = 1 Then Setlog("- Army Camps % >  " & $iEnableAfterArmyCamps[$x], $COLOR_DEBUG) ;Debug
+		Setlog("Match " & $sModeText[$x] & "  village IF ", $COLOR_DEBUG) ;Debug
+		If $MeetGxEtext <> "" Then Setlog($MeetGxEtext, $COLOR_DEBUG) ;Debug
+		If $MeetGorEtext <> "" Then Setlog($MeetGorEtext, $COLOR_DEBUG) ;Debug
+		If $MeetGplusEtext <> "" Then Setlog($MeetGplusEtext, $COLOR_DEBUG) ;Debug
+		If $MeetDEtext <> "" Then Setlog($MeetDEtext, $COLOR_DEBUG) ;Debug
+		If $MeetTrophytext <> "" Then Setlog($MeetTrophytext, $COLOR_DEBUG) ;Debug
+		If $MeetTHtext <> "" Then Setlog($MeetTHtext, $COLOR_DEBUG) ;Debug
+		If $MeetTHOtext <> "" Then Setlog($MeetTHOtext, $COLOR_DEBUG) ;Debug
+		If $MeetWeakBasetext <> "" Then Setlog($MeetWeakBasetext, $COLOR_DEBUG) ;Debug
 		If $iChkMeetOne[$x] = 1 Then SetLog("Meet One and Attack!")
-		SetLog(_PadStringCenter(" RESOURCE CONDITIONS ", 50, "~"), $COLOR_BLUE)
+		SetLog(_PadStringCenter(" RESOURCE CONDITIONS ", 50, "~"), $COLOR_DEBUG) ;Debug
 		If $iChkMeetTH[$x] = 1 Then $iAimTHtext[$x] = " [TH]:" & StringFormat("%2s", $iMaxTH[$x]) ;$icmbTH
 		If $iChkMeetTHO[$x] = 1 Then $iAimTHtext[$x] &= ", Out"
 	EndIf

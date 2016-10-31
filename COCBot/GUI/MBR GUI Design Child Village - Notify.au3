@@ -121,9 +121,169 @@ $hGUI_NOTIFY_TAB_ITEM4 = GUICtrlCreateTabItem(GetTranslated(600,19,"Instructions
 				GetTranslated(620,1, -1) & " <" & GetTranslated(619,16, -1) & "> " & GetTranslated(620,21,"LOG") & GetTranslated(620,9, " - send the current log file of <Village Name>") & @CRLF & _
 				GetTranslated(620,1, -1) & " <" & GetTranslated(619,16, -1) & "> " & GetTranslated(620,22,"LASTRAID") & GetTranslated(620,10, " - send the last raid loot screenshot of <Village Name>") & @CRLF & _
 				GetTranslated(620,1, -1) & " <" & GetTranslated(619,16, -1) & "> " & GetTranslated(620,23,"LASTRAIDTXT") & GetTranslated(620,11, " - send the last raid loot values of <Village Name>") & @CRLF & _
-				GetTranslated(620,1, -1) & " <" & GetTranslated(619,16, -1) & "> " & GetTranslated(620,24,"SCREENSHOT") & GetTranslated(620,12, " - send a screenshot of <Village Name>"), $x, $y - 5, -1, -1, $SS_LEFT)
+				GetTranslated(620,1, -1) & " <" & GetTranslated(619,16, -1) & "> " & GetTranslated(620,24,"SCREENSHOT") & GetTranslated(620,12, " - send a screenshot of <Village Name>") & @CRLF & _
+				GetTranslated(620,1, -1) & " <" & GetTranslated(619,16, -1) & "> " & GetTranslated(620,300,"SCREENSHOTHD") & GetTranslated(620,301, " - send a screenshot in high resolution of <Village Name>") & @CRLF & _
+				GetTranslated(620,1, -1) & " <" & GetTranslated(619,16, -1) & "> " & GetTranslated(620,302,"BUILDER") & GetTranslated(620,303, " - send a screenshot of builder status of <Village Name>") & @CRLF & _
+				GetTranslated(620,1, -1) & " <" & GetTranslated(619,16, -1) & "> " & GetTranslated(620,304,"SHIELD") & GetTranslated(620,305, " - send a screenshot of shield status of <Village Name>") _
+				, $x, $y - 5, -1, -1, $SS_LEFT)
     GUICtrlCreateGroup("", -99, -99, 1, 1)
 GUICtrlCreateTabItem("")
+
+
+$hGUI_NOTIFY_TAB_ITEM6 = GUICtrlCreateTabItem(GetTranslated(600,300,"Notify Scheduler"))
+	$x = 25
+	$y = 150 - 105
+	$grpSchedulerNotify = GUICtrlCreateGroup(GetTranslated(619,39, "Notify Scheduler"), $x - 20, $y - 20, 430, 334)
+	$x += 10
+	$y += 10
+
+	GUICtrlCreateIcon($pIconLib, $eIcnPBNotify, $x - 5, $y, 64, 60, $BS_ICON)
+	$chkNotifyHours = GUICtrlCreateCheckbox(GetTranslated(619,40, "Only during these hours of day"), $x+70, $y-6)
+	GUICtrlSetOnEvent(-1, "chkNotifyHours")
+	
+	$x += 59
+	$y += 85
+	$lbNotifyhours1 = GUICtrlCreateLabel(" 0", $x + 30, $y)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyhours2 = GUICtrlCreateLabel(" 1", $x + 45, $y)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyhours3 = GUICtrlCreateLabel(" 2", $x + 60, $y)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyhours4 = GUICtrlCreateLabel(" 3", $x + 75, $y)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyhours5 = GUICtrlCreateLabel(" 4", $x + 90, $y)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyhours6 = GUICtrlCreateLabel(" 5", $x + 105, $y)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyhours7 = GUICtrlCreateLabel(" 6", $x + 120, $y)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyhours8 = GUICtrlCreateLabel(" 7", $x + 135, $y)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyhours9 = GUICtrlCreateLabel(" 8", $x + 150, $y)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyhours10 = GUICtrlCreateLabel(" 9", $x + 165, $y)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyhours11 = GUICtrlCreateLabel("10", $x + 180, $y)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyhours12 = GUICtrlCreateLabel("11", $x + 195, $y)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$y += 15
+	$chkNotifyhours0 = GUICtrlCreateCheckbox("", $x + 30, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours1 = GUICtrlCreateCheckbox("", $x + 45, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours2 = GUICtrlCreateCheckbox("", $x + 60, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours3 = GUICtrlCreateCheckbox("", $x + 75, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours4 = GUICtrlCreateCheckbox("", $x + 90, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours5 = GUICtrlCreateCheckbox("", $x + 105, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours6 = GUICtrlCreateCheckbox("", $x + 120, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours7 = GUICtrlCreateCheckbox("", $x + 135, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours8 = GUICtrlCreateCheckbox("", $x + 150, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours9 = GUICtrlCreateCheckbox("", $x + 165, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours10 = GUICtrlCreateCheckbox("", $x + 180, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours11 = GUICtrlCreateCheckbox("", $x + 195, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhoursE1 = GUICtrlCreateCheckbox("", $x + 211, $y+1, 13, 13, BitOR($BS_PUSHLIKE, $BS_ICON))
+	GUICtrlSetImage(-1, $pIconLib, $eIcnGoldStar, 0)
+	GUICtrlSetState(-1, $GUI_UNCHECKED + $GUI_DISABLE)
+	$txtTip = GetTranslated(619,326, "This button will clear or set the entire row of boxes")
+	GUICtrlSetTip(-1, $txtTip)
+	GUICtrlSetOnEvent(-1, "chkNotifyhoursE1")
+	$lbNotifyhoursAM = GUICtrlCreateLabel("AM", $x + 10, $y)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$y += 15
+	$chkNotifyhours12 = GUICtrlCreateCheckbox("", $x + 30, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours13 = GUICtrlCreateCheckbox("", $x + 45, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours14 = GUICtrlCreateCheckbox("", $x + 60, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours15 = GUICtrlCreateCheckbox("", $x + 75, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours16 = GUICtrlCreateCheckbox("", $x + 90, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours17 = GUICtrlCreateCheckbox("", $x + 105, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours18 = GUICtrlCreateCheckbox("", $x + 120, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours19 = GUICtrlCreateCheckbox("", $x + 135, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours20 = GUICtrlCreateCheckbox("", $x + 150, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours21 = GUICtrlCreateCheckbox("", $x + 165, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours22 = GUICtrlCreateCheckbox("", $x + 180, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhours23 = GUICtrlCreateCheckbox("", $x + 195, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyhoursE2 = GUICtrlCreateCheckbox("", $x + 211, $y+1, 13, 13, BitOR($BS_PUSHLIKE, $BS_ICON))
+	GUICtrlSetImage(-1, $pIconLib, $eIcnGoldStar, 0)
+	GUICtrlSetState(-1, $GUI_UNCHECKED + $GUI_DISABLE)
+	$txtTip = GetTranslated(619,327, "This button will clear or set the entire row of boxes")
+	GUICtrlSetTip(-1, $txtTip)
+	GUICtrlSetOnEvent(-1, "chkNotifyhoursE2")
+	$lbNotifyhoursPM = GUICtrlCreateLabel("PM", $x + 10, $y)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+
+
+	$x = 35
+	$y = 220
+	
+	
+ 
+	$chkNotifyWeekDays = GUICtrlCreateCheckbox(GetTranslated(619,346, "Notify only in this day of the week"), $x + 70, $y - 6)
+	GUICtrlSetOnEvent(-1, "chkNotifyWeekDays")
+		GUICtrlSetState(-1, $GUI_DISABLE)
+
+	$x += 59
+	$y += 19
+	$lbNotifyWeekdays0 = GUICtrlCreateLabel(GetTranslated(619,337, " S"), $x + 30, $y)
+	GUICtrlSetTip(-1, GetTranslated(619,329, "Sunday"))
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyWeekdays1 = GUICtrlCreateLabel(GetTranslated(619,338, " M"), $x + 45, $y)
+	GUICtrlSetTip(-1, GetTranslated(619,330, "Monday"))
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyWeekdays2 = GUICtrlCreateLabel(GetTranslated(619,339, " T"), $x + 60, $y)
+	GUICtrlSetTip(-1, GetTranslated(619,331, "Tuesday"))
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyWeekdays3 = GUICtrlCreateLabel(GetTranslated(619,340, " W"), $x + 75, $y)
+	GUICtrlSetTip(-1, GetTranslated(619,332, "Wednesday"))
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyWeekdays4 = GUICtrlCreateLabel(GetTranslated(619,341, " T"), $x + 90, $y)
+	GUICtrlSetTip(-1, GetTranslated(619,333, "Thursday"))
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyWeekdays5 = GUICtrlCreateLabel(GetTranslated(619,342, " F"), $x + 105, $y)
+	GUICtrlSetTip(-1, GetTranslated(619,334, "Friday"))
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$lbNotifyWeekdays6 = GUICtrlCreateLabel(GetTranslated(619,343, " S"), $x + 120, $y)
+	GUICtrlSetTip(-1, GetTranslated(619,335, "Saturday"))
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	$y += 13
+	$chkNotifyWeekdays0 = GUICtrlCreateCheckbox("", $x + 30, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyWeekdays1 = GUICtrlCreateCheckbox("", $x + 45, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyWeekdays2 = GUICtrlCreateCheckbox("", $x + 60, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyWeekdays3 = GUICtrlCreateCheckbox("", $x + 75, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyWeekdays4 = GUICtrlCreateCheckbox("", $x + 90, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyWeekdays5 = GUICtrlCreateCheckbox("", $x + 105, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+	$chkNotifyWeekdays6 = GUICtrlCreateCheckbox("", $x + 120, $y, 15, 15)
+	GUICtrlSetState(-1, $GUI_CHECKED + $GUI_DISABLE)
+
+
 
 
 ;GUISetState()

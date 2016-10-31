@@ -5,7 +5,7 @@
 ; Parameters ....: None
 ; Return values .: None
 ; Author ........: Sardo (2015-06)
-; Modified ......:
+; Modified ......: TheRevenor (26-10-2016)
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2016
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......:
@@ -16,6 +16,7 @@
 Func CheckVersion()
 	If $ichkVersion = 1 Then
 		CheckVersionHTML()
+#Cs
 		If $lastversion = "" Then
 			SetLog("WE CANNOT OBTAIN PRODUCT VERSION AT THIS TIME", $COLOR_ORANGE)
 		ElseIf VersionNumFromVersionTXT($sBotVersion) < VersionNumFromVersionTXT($lastversion) Then
@@ -33,7 +34,7 @@ Func CheckVersion()
 			SetLog(" ")
 			_PrintLogVersion($lastmessage)
 		EndIf
-
+#Ce
 		If $lastModversion = "" Then
 			SetLog("WE CANNOT OBTAIN MOD VERSION AT THIS TIME", $COLOR_ORANGE)
 		ElseIf VersionNumFromVersionTXT($sModversion) < VersionNumFromVersionTXT($lastModversion) Then
@@ -103,11 +104,11 @@ Func CheckVersionHTML()
 
 	;search version into downloaded page
 	Local $f, $f2, $line, $line2, $Casesense = 0, $chkvers = False, $chkmsg = False, $chkmsg2 = False, $i = 0
-	$lastversion = ""
+	;$lastversion = ""
 	$lastModversion = ""
 	If FileExists($versionfile) Then
 		$f = FileOpen($versionfile, 0)
-		$lastversion = IniRead($versionfile, "general", "version", "")
+		;$lastversion = IniRead($versionfile, "general", "version", "")
 		$lastModversion = IniRead($versionfile,"mod","version","")
 		;look for localized messages for the new and old versions
 		Local $versionfilelocalized = @ScriptDir & "\LastVersion_" & $sLanguage & ".txt";
@@ -128,15 +129,15 @@ Func CheckVersionHTML()
 		EndIf
 		If FileExists($versionfilelocalized) Then
 			$f2 = FileOpen($versionfilelocalized, 0)
-			$lastmessage = IniRead($versionfilelocalized, "general", "messagenew", "")
-			$oldversmessage = IniRead($versionfilelocalized, "general", "messageold", "")
+			;$lastmessage = IniRead($versionfilelocalized, "general", "messagenew", "")
+			;$oldversmessage = IniRead($versionfilelocalized, "general", "messageold", "")
 			$lastModmessage = IniRead($versionfilelocalized,"mod","messagenew","")
 			$oldModversmessage = IniRead($versionfilelocalized,"mod","messageold","")
 			FileClose($f2)
 			FileDelete($versionfilelocalized)
 		Else
-			$lastmessage = IniRead($versionfile, "general", "messagenew", "")
-			$oldversmessage = IniRead($versionfile, "general", "messageold", "")
+			;$lastmessage = IniRead($versionfile, "general", "messagenew", "")
+			;$oldversmessage = IniRead($versionfile, "general", "messageold", "")
 			$lastModmessage = IniRead($versionfilelocalized,"mod","messagenew","")
 			$oldModversmessage = IniRead($versionfilelocalized,"mod","messageold","")
 		EndIf
@@ -193,9 +194,9 @@ Func CheckMODVersion()
 	FileClose($file)
 	FileDelete($tempJson)
 
-	If $sLatestReleaseTag <> $sGitHubModLatestReleaseTag Then
-		MsgBox(0, "Attentions!", "Chief, A New Version Of Mod By Nguyen Anh Has Been Uploaded (" & $sLatestReleaseTag & "), Your Version Might Be Outdated." & @CRLF & _
-		"Please Download Latest Version From Official MOD By Nguyen Anh")
+	If $sLatestReleaseTag > $sGitHubModLatestReleaseTag Then
+		MsgBox(0, "Attentions!", "Chief, A New Version Of Mod Nguyen Anh Has Been Uploaded (" & $sLatestReleaseTag & "), Your Version Might Be Outdated." & @CRLF & _
+		"Please Download Latest Version From Official MOD Nguyen Anh")
 		ShellExecute("https://github.com/" & $sGitHubModOwner & "/" & $sGitHubModRepo & "/releases/latest")
 		Return False
 	EndIf

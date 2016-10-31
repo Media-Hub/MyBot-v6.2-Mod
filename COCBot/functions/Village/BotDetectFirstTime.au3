@@ -32,15 +32,15 @@ Func BotDetectFirstTime()
 			$pixel = $PixelTHHere[0]
 			$TownHallPos[0] = $pixel[0]
 			$TownHallPos[1] = $pixel[1]
-			If $debugSetlog = 1 Then SetLog("ImgLoc# Townhall: (" & $TownHallPos[0] & "," & $TownHallPos[1] & ")", $COLOR_RED)
+			If $debugSetlog = 1 Then SetLog("ImgLoc# Townhall: (" & $TownHallPos[0] & "," & $TownHallPos[1] & ")", $COLOR_DEBUG) ;Debug
 		EndIf
 		If $TownHallPos[1] = "" Or $TownHallPos[1] = -1 Then
 			checkTownhallADV2()
 			$TownHallPos[0] = $THx
 			$TownHallPos[1] = $THy
-			If $debugSetlog = 1 Then SetLog("OldDDL Townhall: (" & $TownHallPos[0] & "," & $TownHallPos[1] & ")", $COLOR_RED)
+			If $debugSetlog = 1 Then SetLog("OldDDL Townhall: (" & $TownHallPos[0] & "," & $TownHallPos[1] & ")", $COLOR_DEBUG) ;Debug
 		EndIf
-		SetLog("Townhall: (" & $TownHallPos[0] & "," & $TownHallPos[1] & ")", $COLOR_PURPLE)
+		SetLog("Townhall: (" & $TownHallPos[0] & "," & $TownHallPos[1] & ")", $COLOR_DEBUG) ;Debug
 	EndIf
 
 	If Number($iTownHallLevel) < 2 Then
@@ -155,7 +155,7 @@ Func BotDetectFirstTime()
 	;Boju Display TH Level in Stats
 
 	_GUI_Value_STATE("HIDE", $groupListTHLevels)
-	If $debugSetlog = 1 Then Setlog("Select TH Level:" & Number($iTownHallLevel), $COLOR_PURPLE)
+	If $debugSetlog = 1 Then Setlog("Select TH Level:" & Number($iTownHallLevel), $COLOR_DEBUG) ;Debug
 	Switch Number($iTownHallLevel)
 		Case 4
 			GUICtrlSetState($THLevels04, $GUI_SHOW)
@@ -205,7 +205,7 @@ Func BotDetectFirstTime()
 		If isInsideDiamond($PixelMineHere[$i]) Then
 		$pixel = $PixelMineHere[$i]
 		$listResourceLocation = $listResourceLocation & $pixel[0] & ";" & $pixel[1] & "|"
-		If $debugSetlog = 1 Then SetLog("- Gold Mine " & $i + 1 & ": (" & $pixel[0] & "," & $pixel[1] & ")", $COLOR_PURPLE)
+		If $debugSetlog = 1 Then SetLog("- Gold Mine " & $i + 1 & ": (" & $pixel[0] & "," & $pixel[1] & ")", $COLOR_DEBUG) ;Debug
 		$t +=1
 		EndIf
 		Next
@@ -220,7 +220,7 @@ Func BotDetectFirstTime()
 		If isInsideDiamond($PixelElixirHere[$i]) Then
 		$pixel = $PixelElixirHere[$i]
 		$listResourceLocation = $listResourceLocation & $pixel[0] & ";" & $pixel[1] & "|"
-		If $debugSetlog = 1 Then SetLog("- Elixir Collector " & $i + 1 & ": (" & $pixel[0] & "," & $pixel[1] & ")", $COLOR_PURPLE)
+		If $debugSetlog = 1 Then SetLog("- Elixir Collector " & $i + 1 & ": (" & $pixel[0] & "," & $pixel[1] & ")", $COLOR_DEBUG) ;Debug
 		$t +=1
 		EndIf
 		Next
@@ -235,7 +235,7 @@ Func BotDetectFirstTime()
 		If isInsideDiamond($PixelDarkElixirHere[$i]) Then
 		$pixel = $PixelDarkElixirHere[$i]
 		$listResourceLocation = $listResourceLocation & $pixel[0] & ";" & $pixel[1] & "|"
-		If $debugSetlog = 1 Then SetLog("- Dark Ellxir Drill " & $i + 1 & ": (" & $pixel[0] & "," & $pixel[1] & ")", $COLOR_PURPLE)
+		If $debugSetlog = 1 Then SetLog("- Dark Ellxir Drill " & $i + 1 & ": (" & $pixel[0] & "," & $pixel[1] & ")", $COLOR_DEBUG) ;Debug
 		$t +=1
 		EndIf
 		Next

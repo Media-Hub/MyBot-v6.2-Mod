@@ -35,12 +35,12 @@ Func _GetVectorOutZone($eVectorType)
 		$xMin = 2
 		$yMin = 349
 		$xMax = 440
-		$yMax = 630
+		$yMax = 625
 		$xStep = 4
 		$yStep = 3
 	Else
 		$xMin = 440
-		$yMin = 630
+		$yMin = 625
 		$xMax = 857
 		$yMax = 349
 		$xStep = 4

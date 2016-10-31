@@ -142,7 +142,7 @@ Func GetLocationGoldStorage()
 	Local $minLevel = 0
 	Local $maxLevel = 12
 	Local $statFile = ""
-	If $DebugSetLog = 1 Then SetLog("Started the function | GetLocationGoldStorage")
+	If $DebugSetLog = 1 Then SetLog("Started the function | GetLocationGoldStorage", $COLOR_DEBUG) ;Debug
 
 	; Performing the search
 	Local $aResult = returnMultipleMatches($directory, $maxReturnPoints , $redLines, $statFile, $minLevel, $maxLevel)
@@ -154,7 +154,7 @@ Func GetLocationGoldStorage()
 			$GoldStorageXY = $aResult[$i][5] ; Coords
 			If IsArray($GoldStorageXY) and $TotalObjects > 0 Then
 				For $t = 0 To UBound($GoldStorageXY) - 1 ; each filename can have several positions
-					If $DebugSetLog = 1 Then SetLog($Filename & " found (" & $GoldStorageXY[$t][0] & "," & $GoldStorageXY[$t][1] & ")", $COLOR_GREEN)
+					If $DebugSetLog = 1 Then SetLog($Filename & " found (" & $GoldStorageXY[$t][0] & "," & $GoldStorageXY[$t][1] & ")", $COLOR_DEBUG) ;Debug
 					$TempVectStr &= $GoldStorageXY[$t][0] & "-" & $GoldStorageXY[$t][1] & "|"
 					$TotalStorages += 1
 					If $TotalStorages >= 4 Then ExitLoop (2)
@@ -163,7 +163,7 @@ Func GetLocationGoldStorage()
 		Next
 	EndIf
 
-	If $DebugSetLog = 1 Then SetLog("  - Calculated  in: " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_TEAL)
+	If $DebugSetLog = 1 Then SetLog("  - Calculated  in: " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_DEBUG) ;Debug
 
 	If StringLen($TempVectStr) > 0 Then
 		$TempVectStr = StringLeft($TempVectStr, StringLen($TempVectStr) - 1)
@@ -191,7 +191,7 @@ Func GetLocationElixirStorage()
 	Local $minLevel = 0
 	Local $maxLevel = 12
 	Local $statFile = ""
-	If $DebugSetLog = 1 Then SetLog("Started the function | GetLocationElixirStorage")
+	If $DebugSetLog = 1 Then SetLog("Started the function | GetLocationElixirStorage", $COLOR_DEBUG) ;Debug
 
 	; Performing the search
 	Local $aResult = returnMultipleMatches($directory, $maxReturnPoints , $redLines, $statFile, $minLevel, $maxLevel)
@@ -203,7 +203,7 @@ Func GetLocationElixirStorage()
 			$ElixirStorageXY = $aResult[$i][5] ; Coords
 			If IsArray($ElixirStorageXY) and $TotalObjects > 0 Then
 				For $t = 0 To UBound($ElixirStorageXY) - 1 ; each filename can have several positions
-					If $DebugSetLog = 1 Then SetLog($Filename & " found (" & $ElixirStorageXY[$t][0] & "," & $ElixirStorageXY[$t][1] & ")", $COLOR_GREEN)
+					If $DebugSetLog = 1 Then SetLog($Filename & " found (" & $ElixirStorageXY[$t][0] & "," & $ElixirStorageXY[$t][1] & ")", $COLOR_DEBUG) ;Debug
 					$TempVectStr &= $ElixirStorageXY[$t][0] & "-" & $ElixirStorageXY[$t][1] & "|"
 					$TotalStorages += 1
 					If $TotalStorages >= 4 Then ExitLoop (2)
@@ -212,7 +212,7 @@ Func GetLocationElixirStorage()
 		Next
 	EndIf
 
-	If $DebugSetLog = 1 Then SetLog("  - Calculated  in: " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_TEAL)
+	If $DebugSetLog = 1 Then SetLog("  - Calculated  in: " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_DEBUG) ;Debug
 
 	If StringLen($TempVectStr) > 0 Then
 		$TempVectStr = StringLeft($TempVectStr, StringLen($TempVectStr) - 1)

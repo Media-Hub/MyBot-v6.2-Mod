@@ -30,11 +30,11 @@ Func BoostKing()
 			_CaptureRegion()
 			$Boost = _PixelSearch(382, 603 + $bottomOffsetY, 440, 621 + $bottomOffsetY, Hex(0xfffd70, 6), 10)
 			If IsArray($Boost) Then
-				If $DebugSetlog = 1 Then Setlog("Boost Button X|Y = " & $Boost[0] & "|" & $Boost[1] & ", color = " & _GetPixelColor($Boost[0], $Boost[1]), $COLOR_PURPLE)
+				If $DebugSetlog = 1 Then Setlog("Boost Button X|Y = " & $Boost[0] & "|" & $Boost[1] & ", color = " & _GetPixelColor($Boost[0], $Boost[1]), $COLOR_DEBUG) ;Debug
 				Click($Boost[0], $Boost[1], 1, 0, "#0463")
 				If _Sleep($iDelayBoostHeroes1) Then Return
-				If _ColorCheck(_GetPixelColor(420, 375 + $midOffsetY, True), Hex(0xD0E978, 6), 20) Then
-					Click(420, 375 + $midOffsetY, 1, 0, "#0464")
+				If _ColorCheck(_GetPixelColor(428, 227 + $midOffsetY, True), Hex(0xFFFFFF, 6), 20) Then
+					Click(430, 415 + $midOffsetY, 1, 0, "#0464")
 					If _Sleep($iDelayBoostHeroes4) Then Return
 					If _ColorCheck(_GetPixelColor(586, 267 + $midOffsetY, True), Hex(0xd80405, 6), 20) Then
 						$icmbBoostBarbarianKing = 0
@@ -74,11 +74,11 @@ Func BoostQueen()
 			_CaptureRegion()
 			$Boost = _PixelSearch(382, 603 + $bottomOffsetY, 440, 621 + $bottomOffsetY, Hex(0xfffd70, 6), 10)
 			If IsArray($Boost) Then
-				If $DebugSetlog = 1 Then Setlog("Boost Button X|Y = " & $Boost[0] & "|" & $Boost[1] & ", color = " & _GetPixelColor($Boost[0], $Boost[1]), $COLOR_PURPLE)
+				If $DebugSetlog = 1 Then Setlog("Boost Button X|Y = " & $Boost[0] & "|" & $Boost[1] & ", color = " & _GetPixelColor($Boost[0], $Boost[1]), $COLOR_DEBUG) ;Debug
 				Click($Boost[0], $Boost[1], 1, 0, "#0563")
 				If _Sleep($iDelayBoostHeroes1) Then Return
-				If _ColorCheck(_GetPixelColor(420, 375 + $midOffsetY, True), Hex(0xD0E978, 6), 20) Then
-					Click(420, 375 + $midOffsetY, 1, 0, "#0564")
+				If _ColorCheck(_GetPixelColor(428, 227 + $midOffsetY, True), Hex(0xFFFFFF, 6), 20) Then
+					Click(430, 415 + $midOffsetY, 1, 0, "#0464")
 					If _Sleep($iDelayBoostHeroes4) Then Return
 					If _ColorCheck(_GetPixelColor(586, 267 + $midOffsetY, True), Hex(0xd80405, 6), 20) Then
 						$icmbBoostArcherQueen = 0
@@ -117,11 +117,11 @@ Func BoostWarden()
 			_CaptureRegion()
 			$Boost = _PixelSearch(382, 603 + $bottomOffsetY, 440, 621 + $bottomOffsetY, Hex(0xfffd70, 6), 10)
 			If IsArray($Boost) Then
-				If $DebugSetlog = 1 Then Setlog("Boost Button X|Y = " & $Boost[0] & "|" & $Boost[1] & ", color = " & _GetPixelColor($Boost[0], $Boost[1]), $COLOR_PURPLE)
+				If $DebugSetlog = 1 Then Setlog("Boost Button X|Y = " & $Boost[0] & "|" & $Boost[1] & ", color = " & _GetPixelColor($Boost[0], $Boost[1]), $COLOR_DEBUG) ;Debug
 				Click($Boost[0], $Boost[1], 1, 0, "#0463")
 				If _Sleep($iDelayBoostHeroes1) Then Return
-				If _ColorCheck(_GetPixelColor(420, 375 + $midOffsetY, True), Hex(0xD0E978, 6), 20) Then
-					Click(420, 375 + $midOffsetY, 1, 0, "#0464")
+				If _ColorCheck(_GetPixelColor(428, 227 + $midOffsetY, True), Hex(0xFFFFFF, 6), 20) Then
+					Click(430, 415 + $midOffsetY, 1, 0, "#0464")
 					If _Sleep($iDelayBoostHeroes4) Then Return
 					If _ColorCheck(_GetPixelColor(586, 267 + $midOffsetY, True), Hex(0xd80405, 6), 20) Then
 						$cmbBoostWarden = 0

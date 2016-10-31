@@ -15,22 +15,22 @@
 ;
 Func ArmyHeroStatus($Hero)
 	Local $directory = @ScriptDir & "\images\Other\HeroStatus"
-	Local Const $aHeroesRect[3][4] = [[610, 340, 680, 370], [683, 340, 755, 370], [757, 340, 828, 370]]
+	Local Const $aHeroesRect[3][4] = [[610, 340, 680, 370], [683, 340, 755, 370], [757, 340, 830, 370]]
 	Local $Result
 
 	Select
-		Case $Hero = "King" Or $Hero = 1 Or $Hero = $eKing
-			$Result = SearchArmy($directory, $aHeroesRect[0][0], $aHeroesRect[0][1], $aHeroesRect[0][2], $aHeroesRect[0][3])
+		Case $Hero = "King" Or $Hero = 0 Or $Hero = $eKing
+			$Result = SearchArmy($directory, $aHeroesRect[0][0], $aHeroesRect[0][1], $aHeroesRect[0][2], $aHeroesRect[0][3], "", True)
 			$Status = $Result[0][0]
 			If $Status = "" Then $Status = "king"
 			Return $Status
-		Case $Hero = "Queen" Or $Hero = 2 Or $Hero = $eQueen
-			$Result = SearchArmy($directory, $aHeroesRect[1][0], $aHeroesRect[1][1], $aHeroesRect[1][2], $aHeroesRect[1][3])
+		Case $Hero = "Queen" Or $Hero = 1 Or $Hero = $eQueen
+			$Result = SearchArmy($directory, $aHeroesRect[1][0], $aHeroesRect[1][1], $aHeroesRect[1][2], $aHeroesRect[1][3], "", True)
 			$Status = $Result[0][0]
 			If $Status = "" Then $Status = "queen"
 			Return $Status
-		Case $Hero = "Warden" Or $Hero = 3 Or $Hero = $eWarden
-			$Result = SearchArmy($directory, $aHeroesRect[2][0], $aHeroesRect[2][1], $aHeroesRect[2][2], $aHeroesRect[2][3])
+		Case $Hero = "Warden" Or $Hero = 2 Or $Hero = $eWarden
+			$Result = SearchArmy($directory, $aHeroesRect[2][0], $aHeroesRect[2][1], $aHeroesRect[2][2], $aHeroesRect[2][3], "", True)
 			$Status = $Result[0][0]
 			If $Status = "" Then $Status = "warden"
 			Return $Status
@@ -39,12 +39,12 @@ EndFunc   ;==>ArmyHeroStatus
 
 Func CountHeroes()
 	Local $directory = @ScriptDir & "\images\Other\HeroStatus"
-	Local Const $aHeroesRect[3][4] = [[610, 340, 680, 370], [683, 340, 755, 370], [757, 340, 828, 370]]
+	Local Const $aHeroesRect[3][4] = [[610, 340, 680, 370], [683, 340, 755, 370], [757, 340, 830, 370]]
 	Local $Result
 	Local $Available = 0, $Healing = 0, $Upgrading = 0, $None = 0, $AvaiAndHealing = 0
 	Local $ToReturn[5] = [$Available, $Healing, $Upgrading, $None, $AvaiAndHealing]
 	For $i = 0 To (UBound($aHeroesRect) - 1)
-		$Result = SearchArmy($directory, $aHeroesRect[$i][0], $aHeroesRect[$i][1], $aHeroesRect[$i][2], $aHeroesRect[$i][3])
+		$Result = SearchArmy($directory, $aHeroesRect[$i][0], $aHeroesRect[$i][1], $aHeroesRect[$i][2], $aHeroesRect[$i][3], "", True)
 		$Status = $Result[0][0]
 		Switch $Status
 			Case "heal"

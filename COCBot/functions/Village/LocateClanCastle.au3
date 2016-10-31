@@ -69,7 +69,8 @@ Func LocateClanCastle()
 			Return
 		EndIf
 		$sInfo = BuildingInfo(242, 520 + $bottomOffsetY) ; 860x780
-		If $sInfo[0] > 1 Or $sInfo[0] = "" Then
+
+		If UBound($sInfo) > 2 And ($sInfo[0] > 1 Or $sInfo[0] = "") Then
 			If StringInStr($sInfo[1], "clan") = 0 Then
 				If $sInfo[0] = "" Then
 					$sLocMsg = "Nothing"
@@ -130,7 +131,7 @@ Func AutoLocateClanCastle()
 			If Not $VerifyResult = False Then
 				$aCCPos[0] = $pixel[0]
 				$aCCPos[1] = $pixel[1]
-				SetLog("Clan Castle: " & "(" & $aCCPos[0] & "," & $aCCPos[1] & ")", $COLOR_PURPLE)
+				SetLog("Clan Castle: " & "(" & $aCCPos[0] & "," & $aCCPos[1] & ")", $COLOR_DEBUG) ;Debug
 				SetLog("Your Clan Castle is at level: " & $VerifyResult, $COLOR_GREEN)
 				$IsCCAutoLocated[0] = 1
 				$IsCCAutoLocated[1] = $VerifyResult

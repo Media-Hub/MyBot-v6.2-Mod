@@ -184,9 +184,9 @@ Func GoldElixirChangeEBO()
 		Return False
 	Else
 		If $debugsetlog = 1 Then
-			Setlog("Gold1: " & Number($Gold1) & "  Gold2: " & Number($Gold2), $COLOR_PURPLE)
-			Setlog("Elixir1: " & Number($Elixir1) & "  Elixir2: " & Number($Elixir2), $COLOR_PURPLE)
-			Setlog("Dark Elixir1: " & Number($DarkElixir1) & "  Dark Elixir2: " & Number($DarkElixir2), $COLOR_PURPLE)
+			Setlog("Gold1: " & Number($Gold1) & "  Gold2: " & Number($Gold2), $COLOR_DEBUG) ;Debug
+			Setlog("Elixir1: " & Number($Elixir1) & "  Elixir2: " & Number($Elixir2), $COLOR_DEBUG) ;Debug
+			Setlog("Dark Elixir1: " & Number($DarkElixir1) & "  Dark Elixir2: " & Number($DarkElixir2), $COLOR_DEBUG) ;Debug
 		EndIf
 		SetLog("Gold & Elixir & DE change detected, waiting...", $COLOR_GREEN)
 		Return True

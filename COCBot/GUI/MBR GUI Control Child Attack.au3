@@ -13,6 +13,22 @@
 ; Example .......: No
 ; ===============================================================================================================================
 
+Func chkDBWaitForCCSpell()
+	If GUICtrlRead($chkDBWaitForCastleSpell) = $GUI_CHECKED Then
+		GUICtrlSetState($cmbDBWaitForCastleSpell, $GUI_ENABLE)
+	Else
+		GUICtrlSetState($cmbDBWaitForCastleSpell, $GUI_DISABLE)
+	EndIf
+EndFunc
+
+Func chkABWaitForCCSpell()
+	If GUICtrlRead($chkABWaitForCastleSpell) = $GUI_CHECKED Then
+		GUICtrlSetState($cmbABWaitForCastleSpell, $GUI_ENABLE)
+	Else
+		GUICtrlSetState($cmbABWaitForCastleSpell, $GUI_DISABLE)
+	EndIf
+EndFunc
+
 Func chkBalanceDR()
 	If GUICtrlRead($chkUseCCBalanced) = $GUI_CHECKED Then
 		GUICtrlSetState($cmbCCDonated, $GUI_ENABLE)
