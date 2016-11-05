@@ -1039,24 +1039,19 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		IniReadS($iRadio_Army3, $config, "troop", "QuickTrain3", "0")
 
 ;==============================================================
-; SmartZap - Added by NTS team
+; SmartZap - Added by DocOC team
 ;==============================================================
-		$ichkSmartZap = IniRead($config, "SmartZap", "UseSmartZap", "1")
+		$ichkSmartZap = IniRead($config, "SmartZap", "UseSmartZap", "0")
 		$ichkSmartZapDB = IniRead($config, "SmartZap", "ZapDBOnly", "1")
 		$ichkSmartZapSaveHeroes = IniRead($config, "SmartZap", "THSnipeSaveHeroes", "1")
-		$itxtMinDE = IniRead($config, "SmartZap", "MinDE", "300")
+		$itxtMinDE = IniRead($config, "SmartZap", "MinDE", "250")
+		$ichkNoobZap = IniRead($config, "SmartZap", "UseNoobZap", "0")
+		$itxtExpectedDE = IniRead($config, "SmartZap", "ExpectedDE", "95")
 ;==============================================================
-; SmartZap - Added by NTS team
+; SmartZap - Added by DocOC team
 ;==============================================================
 
-		; SwitchAcc Mode - DEMEN
-		$ichkSwitchAcc = IniRead($profile, "Switch Account", "Enable", "0")
-		$icmbTotalCoCAcc = IniRead($profile, "Switch Account", "Total Coc Account", "0")	; 0 = AutoDetect
-		$ichkSmartSwitch = IniRead($profile, "Switch Account", "Smart Switch", "1")
-		$ichkCloseTraining = Number(IniRead($profile, "Switch Account", "Sleep Combo", "0"))	; Sleep Combo, 1 = Close CoC, 2 = Close Android, 0 = No sleep
-
-		$ProfileType = IniRead($config, "Switch Account", "Profile Type", "")
-		$MatchProfileAcc = IniRead($config, "Switch Account", "Match Profile Acc", "")
+		#include "..\..\Mod\Config read - Mod.au3"				;	Adding Config Read for SwitchAcc Mode - Demen
 
 	Else
 		Return False

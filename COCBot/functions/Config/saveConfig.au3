@@ -2428,7 +2428,7 @@ Func saveConfig() ;Saves the controls settings to the config
 
 	If $ichkExtraAlphabets = 1 Then FileClose($config)
 
-	SaveStatChkTownHall() ;call function save stats
+	;SaveStatChkTownHall() ;call function save stats
 	SaveStatChkDeadBase() ;call function save stats
 
 	IniWriteS($config, "attack", "ScriptDB", $scmbDBScriptName)
@@ -2597,12 +2597,17 @@ Func saveConfig() ;Saves the controls settings to the config
 	EndIf
 
 ;==============================================================
-; SmartZap - Added by NTS team
+; SmartZap - Added by DocOC team
 ;==============================================================
 	If GUICtrlRead($chkSmartLightSpell) = $GUI_CHECKED Then
 		IniWrite($config, "SmartZap", "UseSmartZap", 1)
 	Else
 		IniWrite($config, "SmartZap", "UseSmartZap", 0)
+	EndIf
+	If GUICtrlRead($chkNoobZap) = $GUI_CHECKED Then
+		IniWrite($config, "SmartZap", "UseNoobZap", 1)
+	Else
+		IniWrite($config, "SmartZap", "UseNoobZap", 0)
 	EndIf
 	If GUICtrlRead($chkSmartZapDB) = $GUI_CHECKED Then
 		IniWrite($config, "SmartZap", "ZapDBOnly", 1)
@@ -2615,47 +2620,12 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWrite($config, "SmartZap", "THSnipeSaveHeroes", 0)
 	EndIf
 	IniWrite($config, "SmartZap", "MinDE", GUICtrlRead($txtMinDark))
+	IniWrite($config, "SmartZap", "ExpectedDE", GUICtrlRead($txtExpectedDE))
 ;==============================================================
-; SmartZap - Added by NTS team
+; SmartZap - Added by DocOC team
 ;==============================================================
 
-	; SwitchAcc Mode - DEMEN
-	If GUICtrlRead($radActiveProfile) = $GUI_CHECKED Then														; 1 = Active, 2 = Donate, 3 = Idle
-		IniWrite($config, "Switch Account", "Profile Type", 1)
-		IniWrite($profile, "Profile Type", _GUICtrlCombobox_GetCurSel($cmbProfile)+1, 1)
-	 ElseIf GUICtrlRead($radDonateProfile) = $GUI_CHECKED Then
-		IniWrite($config, "Switch Account", "Profile Type", 2)
-		IniWrite($profile, "Profile Type", _GUICtrlCombobox_GetCurSel($cmbProfile)+1, 2)
-	 Else
-		IniWrite($config, "Switch Account", "Profile Type", 3)
-		IniWrite($profile, "Profile Type", _GUICtrlCombobox_GetCurSel($cmbProfile)+1, 3)
-	EndIf
-
-	IniWrite($config, "Switch Account", "Match Profile Acc", _GUICtrlCombobox_GetCurSel($cmbMatchProfileAcc))	 ; 0 = No Acc (idle), 1 = Acc 1, 2 = Acc 2, etc.
-
-	If GUICtrlRead($chkSwitchAcc) = $GUI_CHECKED Then
-		IniWrite($profile, "Switch Account", "Enable", 1)
-	Else
-		IniWrite($profile, "Switch Account", "Enable", 0)
-	EndIf
-
-	IniWrite($profile, "Switch Account", "Total Coc Account", _GUICtrlCombobox_GetCurSel($cmbTotalAccount))	; 0 = AutoDetect, 1 = 1 Acc, 2 = 2 Acc, etc.
-
-	If GUICtrlRead($radSmartSwitch) = $GUI_CHECKED Then
-	   IniWrite($profile, "Switch Account", "Smart Switch", 1)
-	Else
-	   IniWrite($profile, "Switch Account", "Smart Switch", 0)
-	EndIf
-
-	If GUICtrlRead($chkUseTrainingClose) = $GUI_CHECKED Then
-		If GUICtrlRead($radCloseCoC) = $GUI_CHECKED Then
-			IniWrite($profile, "Switch Account", "Sleep Combo", 1)		; Sleep Combo = 1 => Close CoC
-		Else
-			IniWrite($profile, "Switch Account", "Sleep Combo", 2)		; Sleep Combo = 2 => Close Android
-		EndIf
-	Else
-		IniWrite($profile, "Switch Account", "Sleep Combo", 0)
-	EndIf
+	#include "..\..\Mod\Config save - Mod.au3"				;	Adding Config Save for SwitchAcc Mode - Demen
 
 	If $hFile <> -1 Then FileClose($hFile)
 

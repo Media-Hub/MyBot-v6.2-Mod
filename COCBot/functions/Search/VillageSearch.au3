@@ -139,9 +139,9 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 		$THy=0
 
 		If $match[$DB] Or $match[$LB] Or $match[$TS] Then; make sure resource conditions are met
-			$THString = FindTownhall(False);find TH, but only if TH condition is checked
-		ElseIf ($iChkMeetOne[$DB] = 1 Or $iChkMeetOne[$LB] = 1) Then;meet one then attack, do not need correct resources
-			$THString = FindTownhall(True)
+			$THString = townHallCheck(False)
+		ElseIf ($iChkMeetOne[$DB] = 1 Or $iChkMeetOne[$LB] = 1) Then ;meet one then attack, do not need correct resources
+			$THString = townHallCheck(True)
 		EndIf
 
 		For $i = 0 To $iModeCount - 2
@@ -346,7 +346,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 
 		$iSkipped = $iSkipped + 1
 		$iSkippedVillageCount += 1
-		If $ichkSwitchAcc = 1 Then $aSkippedVillageCountAcc[$nCurProfile - 1] += 1 ; SwitchAcc Mod - DEMEN
+		If $ichkSwitchAcc = 1 Then $aSkippedVillageCountAcc[$nCurProfile - 1] += 1 							; Separate Stats per Each Account - SwitchAcc Mode - DEMEN
 
 		If $iTownHallLevel <> "" Then
 			$iSearchCost += $aSearchCost[$iTownHallLevel - 1]

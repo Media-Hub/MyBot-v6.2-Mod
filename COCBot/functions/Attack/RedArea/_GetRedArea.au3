@@ -98,7 +98,7 @@ Func _GetRedArea()
 	$PixelBottomRight = GetPixelSide($listPixelBySide, 3)
 	$PixelTopRight = GetPixelSide($listPixelBySide, 4)
 
-	Local $offsetArcher = 15
+	Local $offsetTroops = 12 ;;;;;; This can be selectable on GUI ... from 5 to 20 --- future release
 
 	ReDim $PixelRedArea[UBound($PixelTopLeft) + UBound($PixelBottomLeft) + UBound($PixelTopRight) + UBound($PixelBottomRight)]
 	ReDim $PixelRedAreaFurther[UBound($PixelTopLeft) + UBound($PixelBottomLeft) + UBound($PixelTopRight) + UBound($PixelBottomRight)]
@@ -143,28 +143,28 @@ Func _GetRedArea()
 		$count = 0
 		ReDim $PixelTopLeftFurther[UBound($PixelTopLeft)]
 		For $i = 0 To UBound($PixelTopLeft) - 1
-			$PixelTopLeftFurther[$i] = _GetOffsetTroopFurther($PixelTopLeft[$i], $eVectorLeftTop, $offsetArcher)
+			$PixelTopLeftFurther[$i] = _GetOffsetTroopFurther($PixelTopLeft[$i], $eVectorLeftTop, $offsetTroops)
 			$PixelRedArea[$count] = $PixelTopLeft[$i]
 			$PixelRedAreaFurther[$count] = $PixelTopLeftFurther[$i]
 			$count += 1
 		Next
 		ReDim $PixelBottomLeftFurther[UBound($PixelBottomLeft)]
 		For $i = 0 To UBound($PixelBottomLeft) - 1
-			$PixelBottomLeftFurther[$i] = _GetOffsetTroopFurther($PixelBottomLeft[$i], $eVectorLeftBottom, $offsetArcher)
+			$PixelBottomLeftFurther[$i] = _GetOffsetTroopFurther($PixelBottomLeft[$i], $eVectorLeftBottom, $offsetTroops)
 			$PixelRedArea[$count] = $PixelBottomLeft[$i]
 			$PixelRedAreaFurther[$count] = $PixelBottomLeftFurther[$i]
 			$count += 1
 		Next
 		ReDim $PixelTopRightFurther[UBound($PixelTopRight)]
 		For $i = 0 To UBound($PixelTopRight) - 1
-			$PixelTopRightFurther[$i] = _GetOffsetTroopFurther($PixelTopRight[$i], $eVectorRightTop, $offsetArcher)
+			$PixelTopRightFurther[$i] = _GetOffsetTroopFurther($PixelTopRight[$i], $eVectorRightTop, $offsetTroops)
 			$PixelRedArea[$count] = $PixelTopRight[$i]
 			$PixelRedAreaFurther[$count] = $PixelTopRightFurther[$i]
 			$count += 1
 		Next
 		ReDim $PixelBottomRightFurther[UBound($PixelBottomRight)]
 		For $i = 0 To UBound($PixelBottomRight) - 1
-			$PixelBottomRightFurther[$i] = _GetOffsetTroopFurther($PixelBottomRight[$i], $eVectorRightBottom, $offsetArcher)
+			$PixelBottomRightFurther[$i] = _GetOffsetTroopFurther($PixelBottomRight[$i], $eVectorRightBottom, $offsetTroops)
 			$PixelRedArea[$count] = $PixelBottomRight[$i]
 			$PixelRedAreaFurther[$count] = $PixelBottomRightFurther[$i]
 			$count += 1
@@ -198,7 +198,7 @@ Func GetImgLoc2MBR()
 
 	_CaptureRegion2()
 	Local $_PixelTopLeft, $_PixelBottomLeft, $_PixelBottomRight, $_PixelTopRight , $AllPoints , $EachPoint[1][2]
-	Local $SingleCocDiamond = "FV"
+	Local $SingleCocDiamond = "ECD"
 	Local $res = DllCall($pImgLib2, "str", "SearchRedLines", "handle", $hHBitmap2, "str", $SingleCocDiamond)
 
 	If @error Then _logErrorDLLCall($pImgLib2 & ", SearchRedLines: ", @error)
@@ -245,16 +245,16 @@ Func GetImgLoc2MBR()
 		EndIf
 	EndIf
 
-	_CaptureRegion2()
-	Local $result = DllCall($hFuncRedLib, "str", "getRedArea", "ptr", $hHBitmap2, "int", 1, "int", 5, "int", 60)
-	If @error Then _logErrorDLLCall($hFuncRedLib & ", getRedArea: ", @error)
+;~ 	_CaptureRegion2()
+;~ 	Local $result = DllCall($hFuncRedLib, "str", "getRedArea", "ptr", $hHBitmap2, "int", 1, "int", 5, "int", 60)
+;~ 	If @error Then _logErrorDLLCall($hFuncRedLib & ", getRedArea: ", @error)
 
-	Local $AllPoints2 = StringSplit($result[0], "#", $STR_NOCOUNT)
+;~ 	Local $AllPoints2 = StringSplit($result[0], "#", $STR_NOCOUNT)
 
-	$_PixelTopLeft &= "|" & $AllPoints2[0]
-	$_PixelBottomLeft &= "|" & $AllPoints2[1]
-	$_PixelBottomRight &= "|" & $AllPoints2[2]
-	$_PixelTopRight &= "|" & $AllPoints2[3]
+;~ 	$_PixelTopLeft &= "|" & $AllPoints2[0]
+;~ 	$_PixelBottomLeft &= "|" & $AllPoints2[1]
+;~ 	$_PixelBottomRight &= "|" & $AllPoints2[2]
+;~ 	$_PixelTopRight &= "|" & $AllPoints2[3]
 
 	Local $__PixelTopLeft = ReturnString($_PixelTopLeft)
 	Local $__PixelBottomLeft = ReturnString($_PixelBottomLeft)

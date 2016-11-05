@@ -48,14 +48,14 @@ Func getArmyHeroTime($HeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = Fa
 	; Constant Array with OCR find location: [X pos, Y Pos, Text Name, Global enum value]
 	Local Const $aHeroRemainData[3][4] = [[620, 414, "King", $eKing], [695, 414, "Queen", $eQueen], [775, 414, "Warden", $eWarden]]
 
-	For $index = 0 To UBound($aHeroRemainData) - 1 ;cycle through all 3 slots and hero types
+	For $index = 0 To UBound($HeroSlots) - 1 ;cycle through all 3 slots and hero types
 
 		; check if OCR required
 		If StringInStr($HeroType, "all", $STR_NOCASESENSEBASIC) = 0 And $HeroType <> $aHeroRemainData[$index][3] Then ContinueLoop
 
 		; Check if slot has healing hero
 		;$sResult = getHeroStatus($HeroSlots[$index][0], $HeroSlots[$index][1]) ; OCR slot for status information
-		$sResult = ArmyHeroStatus($index + 1) ; OCR slot for status information
+		$sResult = ArmyHeroStatus($index) ; OCR slot for status information
 		If $sResult <> "" Then ; we found something
 			If StringInStr($sResult, "heal", $STR_NOCASESENSEBASIC) = 0 or StringInStr($sResult, "none", $STR_NOCASESENSEBASIC) <> 0 Then
 				If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then

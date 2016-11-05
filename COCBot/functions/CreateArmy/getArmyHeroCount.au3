@@ -41,8 +41,8 @@ Func getArmyHeroCount($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 	Local Const $HeroSlots[3][2] = [[464, 446], [526, 446], [588, 446]] ; Location of hero status check tile
 	Local $sMessage = ""
 
-	For $i = 0 To UBound($HeroSlots) - 1
-		$sResult = ArmyHeroStatus($i) ; OCR slot for information
+	For $index = 0 To UBound($HeroSlots) - 1
+		$sResult = ArmyHeroStatus($index) ; OCR slot for information
 		If $sResult <> "" Then ; we found something, figure out what?
 			Select
 				Case StringInStr($sResult, "king", $STR_NOCASESENSEBASIC)
@@ -56,7 +56,7 @@ Func getArmyHeroCount($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 					$iHeroAvailable = BitOR($iHeroAvailable, $HERO_WARDEN)
 				Case StringInStr($sResult, "heal", $STR_NOCASESENSEBASIC)
 					If $debugsetlogTrain = 1 Or $debugArmyHeroCount = 1 Then
-						Switch $i
+						Switch $index
 							Case 0
 								$sMessage = "-Barbarian King"
 							Case 1
@@ -66,13 +66,13 @@ Func getArmyHeroCount($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 							Case Else
 								$sMessage = "-Very Bad Monkey Needs"
 						EndSwitch
-						SetLog("Hero slot#" & $i + 1 & $sMessage & " Healing", $COLOR_DEBUG) ;Debug
+						SetLog("Hero slot#" & $index + 1 & $sMessage & " Healing", $COLOR_DEBUG) ;Debug
 					EndIf
-					If $i = 0 then Setlog(" - Barbarian King Recovering", $COLOR_ACTION)
-					If $i = 1 then Setlog(" - Archer Queen Recovering", $COLOR_ACTION)
-					If $i = 2 then Setlog(" - Grand Warden Recovering", $COLOR_ACTION)
+					If $index = 0 then Setlog(" - Barbarian King Recovering", $COLOR_ACTION)
+					If $index = 1 then Setlog(" - Archer Queen Recovering", $COLOR_ACTION)
+					If $index = 2 then Setlog(" - Grand Warden Recovering", $COLOR_ACTION)
 				Case StringInStr($sResult, "upgrade", $STR_NOCASESENSEBASIC)
-					Switch $i
+					Switch $index
 						Case 0
 							$sMessage = "-Barbarian King"
 							; safety code to warn user when wait for hero found while being upgraded to reduce stupid user posts for not attacking
@@ -109,15 +109,15 @@ Func getArmyHeroCount($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 						Case Else
 							$sMessage = "-Need to Get Monkey"
 					EndSwitch
-					If $debugsetlogTrain = 1 Or $debugArmyHeroCount = 1 Then SetLog("Hero slot#" & $i + 1 & $sMessage & " Upgrade in Process", $COLOR_DEBUG) ;Debug
+					If $debugsetlogTrain = 1 Or $debugArmyHeroCount = 1 Then SetLog("Hero slot#" & $index + 1 & $sMessage & " Upgrade in Process", $COLOR_DEBUG) ;Debug
 				Case StringInStr($sResult, "none", $STR_NOCASESENSEBASIC)
-					If $debugsetlogTrain = 1 Or $debugArmyHeroCount = 1 Then SetLog("Hero slot#" & $i + 1 & " Empty, stop count", $COLOR_DEBUG) ;Debug
+					If $debugsetlogTrain = 1 Or $debugArmyHeroCount = 1 Then SetLog("Hero slot#" & $index + 1 & " Empty, stop count", $COLOR_DEBUG) ;Debug
 					ExitLoop ; when we find empty slots, done looking for heroes
 				Case Else
 					SetLog("Hero slot#" & $i + 1 & " bad OCR string returned!", $COLOR_RED)
 			EndSelect
 		Else
-			SetLog("Hero slot#" & $i + 1 & " status read problem!", $COLOR_RED)
+			SetLog("Hero slot#" & $index + 1 & " status read problem!", $COLOR_RED)
 		EndIf
 	Next
 

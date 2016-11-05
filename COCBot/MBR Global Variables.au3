@@ -477,7 +477,7 @@ Global Enum $eIcnArcher = 1, $eIcnDonArcher, $eIcnBalloon, $eIcnDonBalloon, $eIc
 		$eIcnBldgElixir, $eIcnBldgGold, $eIcnMagnifier, $eIcnWallElixir, $eIcnWallGold, $eIcnQueen, $eIcnKing, $eIcnDarkSpellBoost, $eIcnQueenBoostLocate, $eIcnKingBoostLocate, $eIcnKingUpgr, $eIcnQueenUpgr, $eIcnWardenAbility, $eIcnWarden, $eIcnWardenBoostLocate, $eIcnKingBoost, _
 		$eIcnQueenBoost, $eIcnWardenBoost, $eIcnWardenUpgr, $eIcnReload, $eIcnCopy, $eIcnAddcvs, $eIcnEdit, $eIcnTreeSnow, $eIcnSleepingQueen, $eIcnSleepingKing, $eIcnGoldElixir, $eIcnBowler, $eIcnDonBowler, $eIcnCCDonate, $eIcnEagleArt, $eIcnGembox, $eIcnInferno4, $eIcnInfo, $eIcnMain, _
 		$eIcnTree, $eIcnProfile, $eIcnCCRequest, $eIcnTelegram, $eIcnTiles, $eIcnXbow3, $eIcnBark, $eIcnDailyProgram, $eIcnLootCart, $eIcnSleepMode, $eIcnTH11, $eIcnTrainMode, $eIcnSleepingWarden, $eIcnCloneSpell, $eIcnSkeletonSpell, $eIcnBabyDragon, $eIcnDonBabyDragon, $eIcnMiner, $eIcnDonMiner, _
-		$eIcnNoShield, $eIcnDonCustomB, $eIcnDarkBarrackBoost, $eIcnAirDefense = 150, $eIcnBrain, $eIcnChat, $eIcnSwords, $eIcnLoop, $eIcnRepeat, $eIcnClan, $eIcnNewSmartZap1 , $eIcnNewSmartZap2, $eIcnPBNotify, $eIcnModNguyenAnh
+		$eIcnNoShield, $eIcnDonCustomB, $eIcnDarkBarrackBoost, $eIcnAirDefense = 150, $eIcnBrain, $eIcnChat, $eIcnSwords, $eIcnLoop, $eIcnRepeat, $eIcnClan, $eIcnNewSmartZap1 , $eIcnNewSmartZap2, $eIcnPBNotify
 
 Global $eIcnDonBlank = $eIcnDonBlacklist
 Global $eIcnOptions = $eIcnDonBlacklist
@@ -1048,8 +1048,9 @@ Global $itxtRestartElixir = 25000
 Global $itxtRestartDark = 500
 
 ;Create troop training variables
-Global $DefaultTroopGroup[12][3] = [ ["Arch", 1, 1], ["Giant", 2, 5], ["Wall", 4, 2], ["Barb", 0, 1], ["Gobl", 3, 1], ["Heal", 7, 14], ["Pekk", 9, 25],  _
-									 ["Ball", 5, 5], ["Wiza", 6, 4], ["Drag", 8, 20], ["BabyD", 10, 10],["Mine", 11, 5]]
+Global $DefaultTroopGroup[19][3] = [ ["Arch", 1, 1], ["Giant", 2, 5], ["Wall", 4, 2], ["Barb", 0, 1], ["Gobl", 3, 1], ["Heal", 7, 14], ["Pekk", 9, 25],  _
+									 ["Ball", 5, 5], ["Wiza", 6, 4], ["Drag", 8, 20], ["BabyD", 10, 10],["Mine", 11, 5], _
+									 ["Mini", 0, 2], ["Hogs", 1, 5], ["Valk", 2, 8], ["Gole", 3, 30], ["Witc", 4, 12], ["Lava", 5, 30], ["Bowl", 6, 6]]
 
 ; notes $MergedTroopGroup[19][0] = $TroopName | [1] = $TroopNamePosition | [2] = $TroopHeight | [3] = qty | [4] = marker for DarkTroop or ElixerTroop]
 Global $MergedTroopGroup[19][5] = [ ["Lava", 5, 30, 0, "d"], ["Gole", 3, 30, 0, "d"], ["Pekk", 9, 25, 0, "e"], ["Drag", 8, 20, 0, "e"], ["Heal", 7, 14, 0, "e"], ["Witc", 4, 12, 0, "d"], _
@@ -1057,10 +1058,10 @@ Global $MergedTroopGroup[19][5] = [ ["Lava", 5, 30, 0, "d"], ["Gole", 3, 30, 0, 
 									["Mine", 11, 5, 0, "e"], ["Wiza", 6, 4, 0, "e"], ["Mini", 0, 2, 0, "d"], ["Wall", 4, 2, 0, "e"], ["Arch", 1, 1, 0, "e"], ["Barb", 0, 1, 0, "e"], _
 									["Gobl", 3, 1, 0, "e"] ]
 
-Global $TroopGroup1[12][3] = [  ["Pekk", 9, 25], ["Drag", 8, 20], ["Heal", 7, 14], ["BabyD", 10, 10],  ["Ball", 5, 5], ["Giant", 2, 5], ["Mine", 11, 5], _
-								["Wiza", 6, 4], ["Wall", 4, 2], ["Arch", 1, 1], ["Barb", 0, 1], ["Gobl", 3, 1]]
+Global $TroopGroup1[19][3] = [  ["Gole", 3, 30], ["Lava", 5, 30], ["Pekk", 9, 25], ["Drag", 8, 20], ["Heal", 7, 14], ["Witc", 4, 12], ["BabyD", 10, 10], ["Valk", 2, 8], ["Bowl", 6, 6], ["Hogs", 1, 5], ["Ball", 5, 5], ["Giant", 2, 5], ["Mine", 11, 5], _
+								["Wiza", 6, 4], ["Mini", 0, 2], ["Wall", 4, 2], ["Arch", 1, 1], ["Barb", 0, 1], ["Gobl", 3, 1]]
 
-Global $TroopGroup[12][3]  ; Actual training order values determined dynamically based on GUI.
+Global $TroopGroup[19][3]  ; Actual training order values determined dynamically based on GUI.
 Global $TroopName[UBound($TroopGroup, 1)]
 Global $TroopNamePosition[UBound($TroopGroup, 1)]
 Global $TroopHeight[UBound($TroopGroup, 1)]
@@ -1068,7 +1069,7 @@ SetDefaultTroopGroup(False)
 
 ; Create custom train order GUI variables
 Global $chkTroopOrder, $ichkTroopOrder, $btnTroopOrderSet
-Global $aTroopOrderIcon[13] = [$eIcnOptions, $eIcnBarbarian, $eIcnArcher, $eIcnGiant, $eIcnGoblin, $eIcnWallBreaker, $eIcnBalloon, $eIcnWizard, $eIcnHealer, $eIcnDragon, $eIcnPekka, $eIcnBabyDragon, $eIcnMiner]
+Global $aTroopOrderIcon[21] = [$eIcnOptions, $eIcnBarbarian, $eIcnArcher, $eIcnGiant, $eIcnGoblin, $eIcnWallBreaker, $eIcnBalloon, $eIcnWizard, $eIcnHealer, $eIcnDragon, $eIcnPekka, $eIcnBabyDragon, $eIcnMiner, $eIcnMinion, $eIcnHogRider, $eIcnValkyrie, $eIcnGolem, $eIcnWitch, $eIcnLavaHound, $eIcnBowler]
 Global $cmbTroopOrder[UBound($aTroopOrderIcon)], $icmbTroopOrder[UBound($aTroopOrderIcon)], $lblTroopOrder[UBound($aTroopOrderIcon)], $ImgTroopOrder[UBound($aTroopOrderIcon)]
 Global $chkDarkTroopOrder, $ichkDarkTroopOrder, $btnDarkTroopOrderSet
 Global $aDarkTroopOrderIcon[8] = [$eIcnOptions, $eIcnMinion, $eIcnHogRider, $eIcnValkyrie, $eIcnGolem, $eIcnWitch, $eIcnLavaHound, $eIcnBowler]
@@ -1660,18 +1661,21 @@ Global $ichkUseQTrain = 1
 Global 	$iRadio_Army1, $iRadio_Army2, $iRadio_Army3
 
 ;---------------------------------------------------------------
-; SmartZap GUI variables - Added by NTS team
+; SmartZap GUI variables - Added by DocOC team
 ;---------------------------------------------------------------
-	Global $ichkSmartZap = 1
+	Global $ichkSmartZap = 0
 	Global $ichkSmartZapDB = 1
 	Global $ichkSmartZapSaveHeroes = 1
-	Global $itxtMinDE = 300
+	Global $itxtMinDE = 250
+	; NoobZap
+	Global $ichkNoobZap = 0
+	Global $itxtExpectedDE = 95
 	; SmartZap stats
 	Global $smartZapGain = 0
 	Global $numLSpellsUsed = 0
 	Global $iOldsmartZapGain = 0, $iOldNumLTSpellsUsed = 0
 	; SmartZap Array to hold Total Amount of DE available from Drill at each level (1-6)
-	Global Const $drillLevelHold[6] = [	120, 225, 405, 630, 960, 1350]
+	Global Const $drillLevelHold[6] = [120, 225, 405, 630, 960, 1350]
 	; SmartZap Array to hold Amount of DE available to steal from Drills at each level (1-6)
 	Global Const $drillLevelSteal[6] = [59, 102, 172, 251, 343, 479]
 ;---------------------------------------------------------------
@@ -1687,38 +1691,6 @@ Global $iChkWaitForCastleSpell[$iModeCount]
 Global $iCmbWaitForCastleSpell[$iModeCount]
 Global $iChkWaitForCastleTroops[$iModeCount]
 
-;SwitchAcc - DEMEN
-Global $profile = $sProfilePath & "\Profile.ini"
-Global $aconfig[8]
-Global $ichkSwitchAcc = 0
-
-Global $icmbTotalCoCAcc		; 0 = Auto detect, 1 = 1 account, 2 = 2 accounts
-Global $nTotalCoCAcc
-Global $ichkSmartSwitch = 1
-
-Global $ichkCloseTraining = 0
-
-Global $nCurProfile = 1
-Global $ProfileList
-Global $nTotalProfile = 1
-
-Global $ProfileType			; Type of the Current Profile, 1 = active, 2 = donate, 3 = idle
-Global $aProfileType[8]		; Type of the all Profiles, 1 = active, 2 = donate, 3 = idle
-
-Global $MatchProfileAcc		; Account match with Current Profile
-Global $aMatchProfileAcc[8]	; Accounts match with All Profiles
-
-Global $DonateSwitchCounter = 0
-
-Global $bReMatchAcc = False
-
-Global $aTimerStart[8]
-Global $aTimerEnd[8]
-Global $aRemainTrainTime[8]
-Global $aUpdateRemainTrainTime[8]
-Global $nNexProfile
-Global $nMinRemainTrain
-
 ; Stats Top Loot
 Global $myHourlyStatsGold = ""
 Global $myHourlyStatsElixir = ""
@@ -1728,6 +1700,8 @@ Global $topgoldloot = 0
 Global $topelixirloot = 0
 Global $topdarkloot = 0
 Global $topTrophyloot = 0
+
+#include "Mod\Global Variables - Mod.au3"
 
 ;=== No variables below ! ================================================
 

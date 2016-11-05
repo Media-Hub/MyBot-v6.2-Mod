@@ -91,6 +91,7 @@ Func smartZap($minDE = -1)
 
 	; If smartZap is not checked, exit.
 	If $ichkSmartZap <> 1 Then Return $performedZap
+	If $ichkNoobZap = 1 Then SetLog("====== Your Activate NoobZap Mode ======", $COLOR_RED)
 
 	; Use UI Setting if no Min DE is specified
 	If $minDE = -1 Then $minDE = Number($itxtMinDE)
@@ -110,7 +111,7 @@ Func smartZap($minDE = -1)
 		Return $performedZap
 	; Check to ensure there is at least the minimum amount of DE available.
 	ElseIf (Number($searchDark) < Number($minDE)) Then
-		SetLog("Dark Elixir is below minimum value, exiting now!", $COLOR_FUCHSIA)
+		SetLog("Dark Elixir is below minimum value [" & $itxtMinDE & "], Exiting Now!", $COLOR_FUCHSIA)
 		Return $performedZap
 	EndIf
 
@@ -148,9 +149,7 @@ Func smartZap($minDE = -1)
 		SetLog("Number of Dark Elixir Drills: " & $numDrills, $COLOR_FUCHSIA)
 	EndIf
 
-	; Create the log entry string for amount stealable
 	_ArraySort($aDarkDrills, 1, 0, 0, 3)
-	displayStealableLog($aDarkDrills)
 
 	; Offset the drill level based on town hall level
 	$drillLvlOffset = getDrillOffset()
@@ -160,34 +159,21 @@ Func smartZap($minDE = -1)
 	$spellAdjust = getSpellOffset()
 	If $debugSetLog = 1 Then SetLog("Spell Adjust is: " & $spellAdjust, $COLOR_PURPLE)
 
+	Local $itotalStrikeGain = 0
+
 	; Loop while you still have spells and the first drill in the array has Dark Elixir, if you are town hall 7 or higher
 	While IsAttackPage() And $numSpells > 0 And $aDarkDrills[0][3] <> -1 And $spellAdjust <> -1
+		; Store the DE value before any Zaps are done.
+		Local $oldSearchDark = $searchDark
 		CheckHeroesHealth()
 
-		; Store the DE value before any Zaps are done.
-		$oldSearchDark = $searchDark
+		If ($searchDark < Number($itxtMinDE)) Then
+			SetLog("Dark Elixir is below minimum value [" & $itxtMinDE & "], Exiting Now!", $COLOR_ACTION)
+			Return $performedZap
+		EndIf
 
-		; If you have max lightning spells, drop lightning on any level DE drill
-		If $numSpells > (4 - $spellAdjust) Then
-			SetLog("First condition: " & 4 - $spellAdjust & "+ Spells so attack any drill.", $COLOR_FUCHSIA)
-			zapDrill($eLSpell, $aDarkDrills[0][0] + $strikeOffsets[0], $aDarkDrills[0][1] + $strikeOffsets[1])
-
-			$performedZap = True
-			$skippedZap = False
-
-			If _Sleep(3500) Then Return
-		; If you have one less then max, drop it on drills level (3 - drill offset)
-		ElseIf $numSpells > (3 - $spellAdjust) And $aDarkDrills[0][2] > (3 - $drillLvlOffset) Then
-			SetLog("Second condition: Attack Lvl " & 3 - $drillLvlOffset & "+ drills if you have " & 3 - $spellAdjust & "+ spells", $COLOR_FUCHSIA)
-			zapDrill($eLSpell, $aDarkDrills[0][0] + $strikeOffsets[0], $aDarkDrills[0][1] + $strikeOffsets[1])
-
-			$performedZap = True
-			$skippedZap = False
-
-			If _Sleep(3500) Then Return
-		; If the collector is higher than lvl (4 - drill offset) and collector is estimated more than 30% full
-		ElseIf $aDarkDrills[0][2] > (4 - $drillLvlOffset) And ($aDarkDrills[0][3] / $DrillLevelHold[$aDarkDrills[0][2] - 1]) > 0.3 Then
-			SetLog("Third condition: Attack Lvl " & 4 - $drillLvlOffset & "+ drills with more then 30% estimated DE if you have less than " & 4 - $spellAdjust & " spells", $COLOR_FUCHSIA)
+		If $ichkNoobZap = 1 Then
+			SetLog("NoobZap will attack any drill.", $COLOR_ACTION)
 			zapDrill($eLSpell, $aDarkDrills[0][0] + $strikeOffsets[0], $aDarkDrills[0][1] + $strikeOffsets[1])
 
 			$performedZap = True
@@ -195,11 +181,43 @@ Func smartZap($minDE = -1)
 
 			If _Sleep(3500) Then Return
 		Else
-			$skippedZap = True
-			SetLog("Drill did not match any attack conditions, so we will remove it from the list.", $COLOR_FUCHSIA)
-			For $i = 0 To UBound($aDarkDrills, 2) - 1
-				$aDarkDrills[0][$i] = -1
-			Next
+			; Create the log entry string for amount stealable
+			displayStealableLog($aDarkDrills)
+
+			; If you have max lightning spells, drop lightning on any level DE drill
+			If $numSpells > (4 - $spellAdjust) Then
+				SetLog("First condition: " & 4 - $spellAdjust & "+ Spells so attack any drill.", $COLOR_FUCHSIA)
+				zapDrill($eLSpell, $aDarkDrills[0][0] + $strikeOffsets[0], $aDarkDrills[0][1] + $strikeOffsets[1])
+
+				$performedZap = True
+				$skippedZap = False
+
+				If _Sleep(3500) Then Return
+			; If you have one less then max, drop it on drills level (3 - drill offset)
+			ElseIf $numSpells > (3 - $spellAdjust) And $aDarkDrills[0][2] > (3 - $drillLvlOffset) Then
+				SetLog("Second condition: Attack Lvl " & 3 - $drillLvlOffset & "+ drills if you have " & 3 - $spellAdjust & "+ spells", $COLOR_FUCHSIA)
+				zapDrill($eLSpell, $aDarkDrills[0][0] + $strikeOffsets[0], $aDarkDrills[0][1] + $strikeOffsets[1])
+
+				$performedZap = True
+				$skippedZap = False
+
+				If _Sleep(3500) Then Return
+			; If the collector is higher than lvl (4 - drill offset) and collector is estimated more than 30% full
+			ElseIf $aDarkDrills[0][2] > (4 - $drillLvlOffset) And ($aDarkDrills[0][3] / $DrillLevelHold[$aDarkDrills[0][2] - 1]) > 0.3 Then
+				SetLog("Third condition: Attack Lvl " & 4 - $drillLvlOffset & "+ drills with more then 30% estimated DE if you have less than " & 4 - $spellAdjust & " spells", $COLOR_FUCHSIA)
+				zapDrill($eLSpell, $aDarkDrills[0][0] + $strikeOffsets[0], $aDarkDrills[0][1] + $strikeOffsets[1])
+
+				$performedZap = True
+				$skippedZap = False
+
+				If _Sleep(3500) Then Return
+			Else
+				$skippedZap = True
+				SetLog("Drill did not match any attack conditions, so we will remove it from the list.", $COLOR_FUCHSIA)
+				For $i = 0 To UBound($aDarkDrills, 2) - 1
+					$aDarkDrills[0][$i] = -1
+				Next
+			EndIf
 		EndIf
 
 		; Get the DE Value after SmartZap has performed its actions.
@@ -218,7 +236,11 @@ Func smartZap($minDE = -1)
 			$numSpells -= 1
 
 			If $aDarkDrills[0][2] <> -1 Then
-				$expectedDE = $drillLevelSteal[($aDarkDrills[0][2] - 1)] * 0.75
+				If $ichkNoobZap = 0 Then
+					$expectedDE = $drillLevelSteal[($aDarkDrills[0][2] - 1)] * 0.75
+				Else 
+					$expectedDE = $itxtExpectedDE
+				EndIf
 			Else
 				$expectedDE = -1
 			EndIf
@@ -228,16 +250,16 @@ Func smartZap($minDE = -1)
 				For $i = 0 To UBound($aDarkDrills, 2) - 1
 					$aDarkDrills[0][$i] = -1
 				Next
-
 				SetLog("Gained: " & $strikeGain & ", Expected: " & $expectedDE, $COLOR_PURPLE)
-				SetLog("Last zap gained less DE then expected, removing the drill from the list.", $COLOR_FUCHSIA)
+				SetLog("Last zap gained less DE then expected, removing the drill from the list.", $COLOR_ACTION)
 			Else
 				$aDarkDrills[0][3] -= $strikeGain
 				SetLog("Gained: " & $strikeGain & ". Adjusting amount left in this drill.", $COLOR_PURPLE)
 			EndIf
 
+			$itotalStrikeGain += $strikeGain
 			$smartZapGain += $strikeGain
-			SetLog("DE from last zap: " & $strikeGain & ", Total DE from SmartZap: " & $smartZapGain, $COLOR_FUCHSIA)
+			SetLog("DE from last zap: " & $strikeGain & ", Total DE from SmartZap/NoobZap: " & $itotalStrikeGain, $COLOR_FUCHSIA)
 		EndIf
 
 		; Resort the array
@@ -280,9 +302,6 @@ Func smartZap($minDE = -1)
 				_ArraySort($aDarkDrills, 1, 0, 0, 3)
 			EndIf
 		EndIf
-
-		; Create the log entry string for amount stealable
-		displayStealableLog($aDarkDrills)
 	WEnd
 
 	Return $performedZap

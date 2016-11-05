@@ -35,7 +35,7 @@ Func BotDetectFirstTime()
 			If $debugSetlog = 1 Then SetLog("ImgLoc# Townhall: (" & $TownHallPos[0] & "," & $TownHallPos[1] & ")", $COLOR_DEBUG) ;Debug
 		EndIf
 		If $TownHallPos[1] = "" Or $TownHallPos[1] = -1 Then
-			checkTownhallADV2()
+			townHallCheck(True)
 			$TownHallPos[0] = $THx
 			$TownHallPos[1] = $THy
 			If $debugSetlog = 1 Then SetLog("OldDDL Townhall: (" & $TownHallPos[0] & "," & $TownHallPos[1] & ")", $COLOR_DEBUG) ;Debug

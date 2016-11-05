@@ -25,11 +25,11 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 		Return True
 	EndIf
 
-	; SwitchAcc - DEMEN
+	; Switch Acc - DEMEN
 	If _ColorCheck(_GetPixelColor(383, 405), Hex(0xF0BE70, 6), 20) Then
 		SetLog("Found SwitchAcc Dialog")
 		PureClick(383, 405, 1, 0, "Click Cancel")      ;Click Cancel
-	EndIf		; SwitchAcc - DEMEN
+	EndIf		; Switch Acc - DEMEN
 
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	; Detect All Reload Button errors => 1- Another device, 2- Take a break, 3- Connection lost or error, 4- Out of sync, 5- Inactive, 6- Maintenance

@@ -58,7 +58,7 @@ Global $aTabControlsAttackOptions[5] = [$hGUI_AttackOption_TAB, $hGUI_AttackOpti
 Global $aTabControlsStrategies[3] = [$hGUI_STRATEGIES_TAB, $hGUI_STRATEGIES_TAB_ITEM1, $hGUI_STRATEGIES_TAB_ITEM2]
 
 Global $aTabControlsBot[5] = [$hGUI_BOT_TAB, $hGUI_BOT_TAB_ITEM1, $hGUI_BOT_TAB_ITEM2, $hGUI_BOT_TAB_ITEM3, $hGUI_BOT_TAB_ITEM4]
-Global $aTabControlsStats[5] = [$hGUI_STATS_TAB, $hGUI_STATS_TAB_ITEM1, $hGUI_STATS_TAB_ITEM2, $hGUI_STATS_TAB_ITEM3, $hGUI_STATS_TAB_ITEM4]
+Global $aTabControlsStats[6] = [$hGUI_STATS_TAB, $hGUI_STATS_TAB_ITEM1, $hGUI_STATS_TAB_ITEM2, $hGUI_STATS_TAB_ITEM3, $hGUI_STATS_TAB_ITEM4, $hGUI_STATS_TAB_ITEM5]
 
 Global $aAlwaysEnabledControls[24] = [$chkUpdatingWhenMinimized, $chkHideWhenMinimized, $chkDebugClick, $chkDebugSetlog, $chkDebugOcr, $chkDebugImageSave, $chkdebugBuildingPos, $chkdebugTrain, $chkdebugOCRDonate, $chkdebugDeadBaseImage, $btnTestTrain, $btnTestDonateCC, $btnTestAttackBar, $btnTestClickDrag, $btnTestImage, $btnEagle, $btnImageFolder, $btnEQDeploy, $btnDropS, $btnTestAD, $btnDBCheck, $btnPosCheck, $lblLightningUsed, $lblSmartZap]
 
@@ -147,6 +147,7 @@ AtkLogHead()
 #include "GUI\MBR GUI Control Bot Options.au3"
 #include "GUI\MBR GUI Control Preset.au3"
 #include "GUI\MBR GUI Control Child Misc.au3"
+#include "MOD\GUI Control - Mod.au3"
 
 ; Accelerator Key, more responsive than buttons in run-mode
 Local $aAccelKeys[2][2] = [["{ESC}", $btnStop], ["{PAUSE}", $btnPause]]
@@ -373,8 +374,6 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 			;	ShellExecute("https://mybot.run/forums/index.php?/donate/make-donation/")
 		Case $CheckVersionConfig
 			If CheckMODVersion() Then MsgBox(0, "", "You Are Using The Latest Version Of Mod Nguyen Anh")
-		;Case $DownloadLatestConfig
-		;	ShellExecute("https://github.com/" & $sGitHubModOwner & "/" & $sGitHubModRepo & "/releases/latest")
 		Case $ModSupportConfig
 			ShellExecute($sModSupportUrl)
 		Case $btnDeletePBMessages
@@ -638,6 +637,13 @@ Func BotClose($SaveConfig = Default, $bExit = True)
 	$TPaused = False
 	ResumeAndroid()
 	SetLog("Closing " & $sBotTitle & " now ...")
+	Sleep(500)
+	SetLog(" » All SharedFolder Deleted...", $COLOR_ORANGE)
+	Sleep(1000)
+	SetLog(" » Thanks For Using MyBot Mod", $COLOR_ORANGE)
+	Sleep(800)
+	SetLog(" »» By Nguyen Anh", $COLOR_ORANGE)
+	Sleep(500)
 	AndroidEmbed(False) ; detach Android Window
 	AndroidShieldDestroy() ; destroy Shield Hooks
 	AndroidBotStopEvent() ; signal android that bot is now stoppting
@@ -1398,7 +1404,7 @@ Func Bind_ImageList($nCtrl)
 
 		Case $hGUI_STATS_TAB
 			; the icons for stats tab
-			Local $aIconIndex[5] = [$eIcnGoldElixir, $eIcnGoldElixir, $eIcnOptions, $eIcnCamp, $eIcnCCDonate]
+			Local $aIconIndex[5] = [$eIcnGoldElixir, $eIcnOptions, $eIcnCamp, $eIcnGoldElixir, $eIcnCCDonate]
 
 		Case Else
 			;do nothing

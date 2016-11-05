@@ -2687,18 +2687,27 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	EndIf
 
 ;==============================================================
-; SmartZap - Added by NTS team
+; SmartZap - Added by DocOC team
 ;==============================================================
 	If $ichkSmartZap = 1 Then
 		GUICtrlSetState($chkSmartLightSpell, $GUI_CHECKED)
 		GUICtrlSetState($chkSmartZapDB, $GUI_ENABLE)
 		GUICtrlSetState($chkSmartZapSaveHeroes, $GUI_ENABLE)
 		GUICtrlSetState($txtMinDark, $GUI_ENABLE)
+		GUICtrlSetState($chkNoobZap, $GUI_ENABLE)
 	Else
 		GUICtrlSetState($chkSmartZapDB, $GUI_DISABLE)
 		GUICtrlSetState($chkSmartZapSaveHeroes, $GUI_DISABLE)
 		GUICtrlSetState($txtMinDark, $GUI_DISABLE)
 		GUICtrlSetState($chkSmartLightSpell, $GUI_UNCHECKED)
+		GUICtrlSetState($chkNoobZap, $GUI_DISABLE)
+	EndIf
+	If $ichkNoobZap = 1 Then
+		GUICtrlSetState($chkNoobZap, $GUI_CHECKED)
+		GUICtrlSetState($txtExpectedDE, $GUI_ENABLE)
+	Else
+		GUICtrlSetState($chkNoobZap, $GUI_UNCHECKED)
+		GUICtrlSetState($txtExpectedDE, $GUI_DISABLE)
 	EndIf
 	If $ichkSmartZapDB = 1 Then
 		GUICtrlSetState($chkSmartZapDB, $GUI_CHECKED)
@@ -2711,49 +2720,13 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 		GUICtrlSetState($chkSmartZapSaveHeroes, $GUI_UNCHECKED)
 	EndIf
 	GUICtrlSetData($txtMinDark, $itxtMinDE)
+	GUICtrlSetData($txtExpectedDE, $itxtExpectedDE)
 
 ;==============================================================
-; SmartZap - Added by NTS team
+; SmartZap - Added by DocOC team
 ;==============================================================
 
-	; SwitchAcc- DEMEN
-	Switch $ProfileType
-	Case 1
-	   GUICtrlSetState($radActiveProfile, $GUI_CHECKED)
-	Case 2
-	   GUICtrlSetState($radDonateProfile, $GUI_CHECKED)
-	Case 3
-	   GUICtrlSetState($radIdleProfile, $GUI_CHECKED)
-	EndSwitch
-
-	_GUICtrlCombobox_SetCurSel($cmbMatchProfileAcc, $MatchProfileAcc)
-
- 	If $ichkSwitchAcc = 1 Then
- 		GUICtrlSetState($chkSwitchAcc, $GUI_CHECKED)
- 	Else
- 		GUICtrlSetState($chkSwitchAcc, $GUI_UNCHECKED)
- 	EndIf
-
-	If $ichkSmartSwitch = 1 Then
-	   GUICtrlSetState($radSmartSwitch, $GUI_CHECKED)
- 	Else
-	   GUICtrlSetState($radNormalSwitch, $GUI_CHECKED)
- 	EndIf
-
-	chkSwitchAcc()
-
-	_GUICtrlCombobox_SetCurSel($cmbTotalAccount, $icmbTotalCoCAcc)	; 0 = AutoDetect
-
-	If $ichkCloseTraining >= 1 Then
-		GUICtrlSetState($chkUseTrainingClose, $GUI_CHECKED)
-		If $ichkCloseTraining = 1 Then
-			GUICtrlSetState($radCloseCoC, $GUI_CHECKED)
-		Else
-			GUICtrlSetState($radCloseAndroid, $GUI_CHECKED)
-		EndIf
-	Else
-		GUICtrlSetState($chkUseTrainingClose, $GUI_UNCHECKED)
-	EndIf
+	#include "..\..\Mod\Config apply - Mod.au3"				;	Adding Config Apply for SwitchAcc Mode - Demen
 
 	; Reenabling window redraw - Keep this last....
 	If $bRedrawAtExit Then SetRedrawBotWindow(True)

@@ -37,7 +37,7 @@ Local $hBotLaunchTime = TimerInit()
 
 Global $sGitHubModOwner = "NguyenAnhHD"
 Global $sGitHubModRepo = "MyBot-v6.2-Mod"
-Global $sGitHubModLatestReleaseTag = "v5.0"
+Global $sGitHubModLatestReleaseTag = "v5.1"
 Global $sModSupportUrl = "http://clashofclans.vn/threads/update-26-08-mybot-6-2-1-mod-v4-1-4-2.8075"
 
 $sBotVersion = "v6.2.2" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it it also use on Checkversion()
@@ -184,7 +184,7 @@ SetLog(GetTranslated(500, 8, "Android Emulator Configuration: %s", $sAndroidInfo
 
 CheckDisplay() ; verify display size and DPI (Dots Per Inch) setting
 
-LoadTHImage() ; Load TH images
+;LoadTHImage() ; Load TH images
 LoadElixirImage() ; Load Elixir images
 LoadElixirImage75Percent(); Load Elixir images full at 75%
 LoadElixirImage50Percent(); Load Elixir images full at 50%
@@ -229,9 +229,9 @@ WEnd
 
 Func runBot() ;Bot that runs everything in order
 
-	If $ichkSwitchAcc = 1 And $bReMatchAcc = True Then ; SwitchAcc - DEMEN
-		$nCurProfile = _GUICtrlComboBox_GetCurSel($cmbProfile) + 1
-		Setlog("Rematching Profile [" & $nCurProfile & "] - " & $ProfileList[$nCurProfile] & " (CoC Acc. " & $aMatchProfileAcc[$nCurProfile - 1] & ")")
+	If $ichkSwitchAcc = 1 And $bReMatchAcc = True Then 				; SwitchAcc - DEMEN
+		$nCurProfile = _GUICtrlCombobox_GetCurSel($cmbProfile) + 1
+		Setlog("Rematching Profile [" & $nCurProfile &"] - " & $ProfileList[$nCurProfile] & " (CoC Acc. " & $aMatchProfileAcc[$nCurProfile-1] & ")")
 		SwitchCoCAcc()
 		$bReMatchAcc = False
 	EndIf
@@ -315,9 +315,6 @@ Func runBot() ;Bot that runs everything in order
 				EndIf
 			    If $Restart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
 			WEnd
-
-			    If $ichkSwitchAcc = 1 And $aProfileType[$nCurProfile - 1] = 2 Then checkSwitchAcc() ;  Switching to active account after donation - SwitchAcc for  - DEMEN
-
 				If $RunState = False Then Return
 				If $Restart = True Then ContinueLoop
 			DonateCC()
@@ -370,11 +367,14 @@ Func runBot() ;Bot that runs everything in order
 				UpgradeWall()
 					If _Sleep($iDelayRunBot3) Then Return
 					If $Restart = True Then ContinueLoop
+
+					If $ichkSwitchAcc = 1 And $aProfileType[$nCurProfile-1] = 2 Then checkSwitchAcc()  		;  Switching to active account after donation - SwitchAcc for  - DEMEN
+
 				Idle()
 					;$fullArmy1 = $fullArmy
 					If _Sleep($iDelayRunBot3) Then Return
 					If $Restart = True Then ContinueLoop
-				SaveStatChkTownHall()
+				;SaveStatChkTownHall()
 				SaveStatChkDeadBase()
 				If $CommandStop <> 0 And $CommandStop <> 3 Then
 				  AttackMain()

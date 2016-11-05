@@ -259,14 +259,14 @@ Func TestTrainRevamp()
 		$tempElixirSpent = ($tempElixir - $iElixirCurrent)
 		$iTrainCostElixir += $tempElixirSpent
 		$iElixirTotal -= $tempElixirSpent
-		If $ichkSwitchAcc = 1 Then $aElixirTotalAcc[$nCurProfile-1] -= $tempElixirSpent ; Separate stats per account - SwitchAcc - DEMEN
+		If $ichkSwitchAcc = 1 Then $aElixirTotalAcc[$nCurProfile-1] -= $tempElixirSpent 	; Separate stats per account - SwitchAcc - DEMEN
 	EndIf
 
 	If $tempDElixir <> "" And $iDarkCurrent <> "" Then
 		$tempDElixirSpent = ($tempDElixir - $iDarkCurrent)
 		$iTrainCostDElixir += $tempDElixirSpent
 		$iDarkTotal -= $tempDElixirSpent
-		If $ichkSwitchAcc = 1 Then $aDarkTotalAcc[$nCurProfile - 1] -= $tempDElixirSpent ; Separate stats per account - SwitchAcc -  DEMEN
+		If $ichkSwitchAcc = 1 Then $aDarkTotalAcc[$nCurProfile - 1] -= $tempDElixirSpent 	; Separate stats per account - SwitchAcc -  DEMEN
 	EndIf
 
 	If $Runstate = False Then Return
@@ -322,7 +322,7 @@ Func TestTrainRevampOldStyle()
 		Return
 	EndIf
 
-	If IsWaitforHeroesActive() Then
+	If IsWaitforHeroesActive() Or $iChkTrophyRange = 1 Then
 		;CheckExistentArmy("Heroes")
 		getArmyHeroCount()
 	Else
@@ -333,7 +333,7 @@ Func TestTrainRevampOldStyle()
 
 	If $fullarmy And $checkSpells And $bFullArmyHero And $fullcastlespells And $fullcastletroops Then
 		$IsFullArmywithHeroesAndSpells = True
-		$FirstStart = false
+		$FirstStart = False
 	Else
 		$IsFullArmywithHeroesAndSpells = False
 	EndIf
@@ -471,14 +471,14 @@ Func TestTrainRevampOldStyle()
 		$tempElixirSpent = ($tempElixir - $iElixirCurrent)
 		$iTrainCostElixir += $tempElixirSpent
 		$iElixirTotal -= $tempElixirSpent
-		If $ichkSwitchAcc = 1 Then $aElixirTotalAcc[$nCurProfile-1] -= $tempElixirSpent ; Separate stats per account - SwitchAcc - DEMEN
+		If $ichkSwitchAcc = 1 Then $aElixirTotalAcc[$nCurProfile-1] -= $tempElixirSpent 	; Separate stats per account - SwitchAcc - DEMEN
 	EndIf
 
 	If $tempDElixir <> "" And $iDarkCurrent <> "" Then
 		$tempDElixirSpent = ($tempDElixir - $iDarkCurrent)
 		$iTrainCostDElixir += $tempDElixirSpent
 		$iDarkTotal -= $tempDElixirSpent
-		If $ichkSwitchAcc = 1 Then $aDarkTotalAcc[$nCurProfile - 1] -= $tempDElixirSpent ; Separate stats per account - SwitchAcc -  DEMEN
+		If $ichkSwitchAcc = 1 Then $aDarkTotalAcc[$nCurProfile - 1] -= $tempDElixirSpent 	; Separate stats per account - SwitchAcc -  DEMEN
 	EndIf
 
 	If $Runstate = False Then Return
@@ -883,7 +883,7 @@ Func TotalSpellsToBrewInGUI()
 	If $iTotalCountSpell = 0 Then Return $ToReturn
 	If $Runstate = False Then Return
 	For $i = 0 To (UBound($SpellName) - 1)
-		$ToReturn += Number(Eval($SpellName[$i] & "Comp"))
+		$ToReturn += Number(Number(Eval($SpellName[$i] & "Comp") * $SpellHeight[$i]))
 	Next
 	Return $ToReturn
 EndFunc   ;==>TotalSpellsToBrewInGUI
@@ -1293,7 +1293,7 @@ Func GetSlotNumber($Spells = False)
 			Local Const $Orders[19] = [$eBarb, $eArch, $eGiant, $eGobl, $eWall, $eBall, $eWiza, $eHeal, $eDrag, $ePekk, $eBabyD, $eMine, _
 					$eMini, $eHogs, $eValk, $eGole, $eWitc, $eLava, $eBowl] ; Set Order of troop display in Army Tab
 
-			Local $allCurTroops[UBound($Orders) - 1]
+			Local $allCurTroops[UBound($Orders)]
 
 			; Code for Elixir Troops to Put Current Troops into an array by Order
 			For $i = 0 To (UBound($TroopName) - 1)
@@ -1307,6 +1307,7 @@ Func GetSlotNumber($Spells = False)
 				EndIf
 			Next
 
+			#CS		This Codes Not Needed With New 'True' Train Order and new Training System ;)
 			; Code for DARK Elixir Troops to Put Current Troops into an array by Order
 			For $i = 0 To (UBound($TroopDarkName) - 1)
 				If $Runstate = False Then Return
@@ -1318,6 +1319,7 @@ Func GetSlotNumber($Spells = False)
 					Next
 				EndIf
 			Next
+			#CE
 
 			_ArryRemoveBlanks($allCurTroops)
 
@@ -1327,7 +1329,7 @@ Func GetSlotNumber($Spells = False)
 			; Set Order of Spells display in Army Tab
 			Local Const $SpellsOrders[10] = [$eLSpell, $eHSpell, $eRSpell, $eJSpell, $eFSpell, $eCSpell, $ePSpell, $eESpell, $eHaSpell, $eSkSpell]
 
-			Local $allCurSpells[UBound($SpellsOrders) - 1]
+			Local $allCurSpells[UBound($SpellsOrders)]
 
 			; Code for Spells to Put Current Spells into an array by Order
 			For $i = 0 To (UBound($SpellName) - 1)
@@ -1365,6 +1367,7 @@ Func WhatToTrain($ReturnExtraTroopsOnly = False, $showlog = True)
 				ReDim $ToReturn[UBound($ToReturn) + 1][2]
 			EndIf
 		Next
+		#CS		This Codes Not Needed With New 'True' Train Order and new Training System ;)
 		; Dark Troops
 		For $i = 0 To (UBound($TroopDarkName) - 1)
 			If Number(Eval($TroopDarkName[$i] & "Comp")) > 0 Then
@@ -1373,6 +1376,7 @@ Func WhatToTrain($ReturnExtraTroopsOnly = False, $showlog = True)
 				ReDim $ToReturn[UBound($ToReturn) + 1][2]
 			EndIf
 		Next
+		#CE
 		; Spells
 		For $i = 0 To (UBound($SpellName) - 1)
 			If $Runstate = False Then Return
@@ -1415,6 +1419,7 @@ Func WhatToTrain($ReturnExtraTroopsOnly = False, $showlog = True)
 				EndIf
 			Next
 
+			#CS		This Codes Not Needed With New 'True' Train Order and new Training System ;)
 			; Check DARK Elixir Troops needed quantity to Train
 			For $i = 0 To (UBound($TroopDarkName) - 1)
 				If $Runstate = False Then Return
@@ -1424,6 +1429,7 @@ Func WhatToTrain($ReturnExtraTroopsOnly = False, $showlog = True)
 					ReDim $ToReturn[UBound($ToReturn) + 1][2]
 				EndIf
 			Next
+			#CE
 
 			; Check Spells needed quantity to Brew
 			For $i = 0 To (UBound($SpellName) - 1)
@@ -1447,6 +1453,8 @@ Func WhatToTrain($ReturnExtraTroopsOnly = False, $showlog = True)
 					EndIf
 				EndIf
 			Next
+
+			#CS		This Codes Not Needed With New 'True' Train Order and new Training System ;)
 			; Check DARK Elixir Troops Extra Quantity
 			For $i = 0 To (UBound($TroopDarkName) - 1)
 				If $Runstate = False Then Return
@@ -1458,6 +1466,8 @@ Func WhatToTrain($ReturnExtraTroopsOnly = False, $showlog = True)
 					EndIf
 				EndIf
 			Next
+			#CE
+
 			; Check Spells Extra Quantity
 			For $i = 0 To (UBound($SpellName) - 1)
 				If $Runstate = False Then Return
@@ -1633,8 +1643,10 @@ Func CheckExistentArmy($txt = "", $showlog = True)
 					If $txt = "Heroes" Then
 						If $showlog = True Then Setlog(" - " & NameOfTroop(Eval("e" & $result[$i][0]), $Plural) & " Recovered", $COLOR_GREEN)
 					ElseIf $txt = "Troops" Then
+						ResetDropTrophiesVariable()
 						If $showlog = True Then Setlog(" - " & $result[$i][3] & " " & NameOfTroop(Eval("e" & $result[$i][0]), $Plural) & " Available", $COLOR_GREEN)
 						Assign("Cur" & $result[$i][0], Eval("Cur" & $result[$i][0]) + $result[$i][3])
+						CanBeUsedToDropTrophies(Eval("e" & $result[$i][0]), Eval("Cur" & $result[$i][0]))
 					Else
 						If $result[$i][3] = 0 Then
 							If $showlog = True Then SetLog(" - No Spells are Brewed", $COLOR_GREEN)
@@ -1653,6 +1665,35 @@ Func CheckExistentArmy($txt = "", $showlog = True)
 	EndIf
 
 EndFunc   ;==>CheckExistentArmy
+
+Func CanBeUsedToDropTrophies($eTroop, $Quantity)
+	;SetLog("CanBeUsedToDrop|$eTroop = " & $eTroop & @CRLF & "Quantity = " & $Quantity)
+	If $eTroop = $eBarb Then
+		$aDTtroopsToBeUsed[0][1] = $Quantity
+
+	ElseIf $eTroop = $eArch Then
+		$aDTtroopsToBeUsed[1][1] = $Quantity
+
+	ElseIf $eTroop = $eGiant Then
+		$aDTtroopsToBeUsed[2][1] = $Quantity
+
+	ElseIf $eTroop = $eGobl Then
+		$aDTtroopsToBeUsed[4][1] = $Quantity
+
+	ElseIf $eTroop = $eWall Then
+		$aDTtroopsToBeUsed[3][1] = $Quantity
+
+	ElseIf $eTroop = $eMini Then
+		$aDTtroopsToBeUsed[5][1] = $Quantity
+	EndIf
+
+EndFunc   ;==>CanBeUsedToDropTrophies
+
+Func ResetDropTrophiesVariable()
+	For $i = 0 To (UBound($aDTtroopsToBeUsed, 1) - 1) ; Reset the variables
+		$aDTtroopsToBeUsed[$i][1] = 0
+	Next
+EndFunc   ;==>ResetDropTrophiesVariable
 
 Func CheckQueueTroops($getQuantity = True, $showlog = True)
 	Local $res[1] = [""]
@@ -2166,7 +2207,7 @@ EndFunc   ;==>MakingDonatedTroops
 Func GetOCRCurrent($x_start, $y_start)
 
 	Local $FinalResult[3] = [0, 0, 0]
-	If $Runstate = False Then Return
+	If $Runstate = False Then Return $FinalResult
 
 	; [0] = Current Army  | [1] = Total Army Capacity  | [2] = Remain Space for the current Army
 	Local $result = getArmyCapacityOnTrainTroops($x_start, $y_start)
@@ -2285,6 +2326,23 @@ Func AttackBarCheck()
 					$aCoordArray[0][0] = -1
 					$aCoordArray[0][1] = -1
 				EndIf
+				If $DebugSetlog = 1 Then Setlog($aResult[$i][0] & " | $aCoordArray: " & $aCoordArray[0][0] & "-" & $aCoordArray[0][1])
+				;;;;;;;; Is exist Castle Spell ;;;;;;;
+				If UBound($aCoords) > 1 And StringInStr($aResult[$i][0], "Spell") <> 0 Then
+					If $DebugSetlog = 1 Then Setlog($aResult[$i][0] & " detected twice!")
+					Local $aCoordsSplit2 = StringSplit($aCoords[1], ",", $STR_NOCOUNT)
+					If UBound($aCoordsSplit2) = 2 Then
+						; Store the coords into a two dimensional array
+						If $aCoordsSplit2[0] < $aCoordsSplit[0] then
+							$aCoordArray[0][0] = $aCoordsSplit2[0] ; X coord.
+							$aCoordArray[0][1] = $aCoordsSplit2[1] ; Y coord.
+						If $DebugSetlog = 1 Then Setlog($aResult[$i][0] & " | $aCoordArray: " & $aCoordArray[0][0] & "-" & $aCoordArray[0][1])
+						EndIf
+					Else
+						$aCoordArray[0][0] = -1
+						$aCoordArray[0][1] = -1
+					EndIf
+				EndIf
 				; Store the coords array as a sub-array
 				$aResult[$i][1] = Number($aCoordArray[0][0])
 				$aResult[$i][2] = Number($aCoordArray[0][1])
@@ -2294,22 +2352,24 @@ Func AttackBarCheck()
 
 			For $i = 0 To UBound($aResult) - 1
 				Local $Slottemp
-				If $DebugSetlog = 1 Then SetLog("$aResult : " & $i, $COLOR_DEBUG) ;Debug
-				If $DebugSetlog = 1 Then SetLog("UBound($aResult) : " & $aResult[$i][0] & "|" & $aResult[$i][1] & "|" & $aResult[$i][2], $COLOR_DEBUG) ;Debug
-				$Slottemp = SlotAttack($aResult[$i][1])
-				If $DebugSetlog = 1 Then SetLog("$Slottemp : " & $Slottemp[0] & "|" & $Slottemp[1], $COLOR_DEBUG) ;Debug
-				If $aResult[$i][0] = "Castle" Or $aResult[$i][0] = "King" Or $aResult[$i][0] = "Queen" Or $aResult[$i][0] = "Warden" Then
-					$aResult[$i][3] = 1
-					$aResult[$i][4] = $Slottemp[1]
-				Else
-					$aResult[$i][3] = Number(getTroopCountBig($Slottemp[0], 636)) ; For Bigg Numbers , when the troops is slelected
-					$aResult[$i][4] = $Slottemp[1]
-					If $aResult[$i][3] = "" Or $aResult[$i][3] = 0 Then
-						$aResult[$i][3] = Number(getTroopCountSmall($Slottemp[0], 641)) ; For small Numbers
+				If $aResult[$i][1] > 0 Then
+					If $DebugSetlog = 1 Then SetLog("$aResult : " & $i, $COLOR_DEBUG) ;Debug
+					If $DebugSetlog = 1 Then SetLog("UBound($aResult) : " & $aResult[$i][0] & "|" & $aResult[$i][1] & "|" & $aResult[$i][2], $COLOR_DEBUG) ;Debug
+					$Slottemp = SlotAttack($aResult[$i][1])
+					If $DebugSetlog = 1 Then SetLog("$Slottemp : " & $Slottemp[0] & "|" & $Slottemp[1], $COLOR_DEBUG) ;Debug
+					If $aResult[$i][0] = "Castle" Or $aResult[$i][0] = "King" Or $aResult[$i][0] = "Queen" Or $aResult[$i][0] = "Warden" Then
+						$aResult[$i][3] = 1
 						$aResult[$i][4] = $Slottemp[1]
+					Else
+						$aResult[$i][3] = Number(getTroopCountBig($Slottemp[0], 636)) ; For Bigg Numbers , when the troops is slelected
+						$aResult[$i][4] = $Slottemp[1]
+						If $aResult[$i][3] = "" Or $aResult[$i][3] = 0 Then
+							$aResult[$i][3] = Number(getTroopCountSmall($Slottemp[0], 641)) ; For small Numbers
+							$aResult[$i][4] = $Slottemp[1]
+						EndIf
 					EndIf
+					$strinToReturn &= "|" & Eval("e" & $aResult[$i][0]) & "#" & $aResult[$i][4] & "#" & $aResult[$i][3]
 				EndIf
-				$strinToReturn &= "|" & Eval("e" & $aResult[$i][0]) & "#" & $aResult[$i][4] & "#" & $aResult[$i][3]
 			Next
 		EndIf
 	EndIf
@@ -2409,6 +2469,8 @@ Func SlotAttack($x)
 		Case $x > 823 And $x < 860
 			$Slottemp[0] = 830
 			$Slottemp[1] = 11
+			Return $Slottemp
+		Case Else
 			Return $Slottemp
 	EndSwitch
 

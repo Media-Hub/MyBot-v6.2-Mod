@@ -123,10 +123,11 @@
 
 #include "functions\Image Search\ImageSearch.au3"
 #include "functions\Image Search\checkDeadBase.au3"
-#include "functions\Image Search\checkTownhall.au3"
+;#include "functions\Image Search\checkTownhall.au3"
 #include "functions\Image Search\checkWall.au3"
 #include "functions\Image Search\CheckTombs.au3"
-#include "functions\Image Search\THSearch.au3"
+;#include "functions\Image Search\THSearch.au3"
+#include "functions\Image Search\TownHall.au3"
 
 #include "functions\Main Screen\checkMainScreen.au3"
 #include "functions\Main Screen\checkObstacles.au3"
@@ -224,7 +225,6 @@
 #include "functions\Search\VillageSearch.au3"
 #include "functions\Search\CheckZoomOut.au3"
 #include "functions\Search\SearchTownHallloc.au3"
-#include "functions\Search\FindTownHall.au3"
 #include "functions\Search\IsSearchModeActive.au3"
 #include "functions\Search\IsSearchAttackEnabled.au3"
 
@@ -275,5 +275,6 @@
 ; SmartZap - Added by NTS team
 ;==============================================================
 
-; SwitchAcc - DEMEN
-#include "functions\Mod\Switch Accounts\SwitchAcc.au3"
+; Switch Accounts
+#include "Mod\SwitchAcc.au3"
+#include "Mod\UpdateStats - Mod.au3"

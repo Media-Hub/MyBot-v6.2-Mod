@@ -43,10 +43,20 @@ Func DonateCC($Check = False)
 	; Global $aTimeTrain[0] = Remain Troops train time , minutes
 	; Global $aTimeTrain[1] = Spells remain time , minutes
 	; Global $aTimeTrain[2] = Remain time to Heroes recover , minutes
+	If ((IsWaitforSpellsActive() And $aTimeTrain[1] < 5) Or (IsWaitforHeroesActive() And $aTimeTrain[2] < 5)) And _
+			($CurCamp >= ($TotalCamp * $fulltroop / 100) * .95) And $CommandStop = -1 Then
+		If $debugsetlog = 1 Then Setlog(" »» Total troops >95%, Skip Donation", $COLOR_PURPLE)
+		Return ; skip donate if >95% full troop AND Spells OR Heroes are almost Made/Recovered
+	Else
+		If IsWaitforSpellsActive() = False And IsWaitforHeroesActive() = False And _
+				($CurCamp >= ($TotalCamp * $fulltroop / 100) * .95) And $CommandStop = -1 Then
+			If $debugsetlog = 1 Then Setlog(" » Total troops >95%, Skip Donation..", $COLOR_PURPLE)
+			Return ; skip donate if >95% full troop AND Spells OR Heroes are almost Made/Recovered
+		EndIf
+	EndIf
+;~	Local $ReturnT = ($CurCamp >= ($TotalCamp * $fulltroop / 100) * .95) ? (True) : (False)
 
-	Local $ReturnT = ($CurCamp >= ($TotalCamp * $fulltroop / 100) * .95) ? (True) : (False)
-
-	Local $ClanString = ""
+;~	Local $ClanString = ""
 
 	; If the troops are under 95% and 100% will not donate [ezeck0001]
 ;~ 	If $ReturnT And $CommandStop = -1 Then
@@ -145,7 +155,7 @@ Func DonateCC($Check = False)
 ;~ 			EndIf
 
 			;Read chat request for DonateTroop and DonateSpell
-			If $bDonateTroop Or $bDonateSpell Then
+			If $bDonateTroop Or $bDonateSpell Or $bDonateAllTroop Or $bDonateAllSpell Then
 				If $ichkExtraAlphabets = 1 Then
 					; Chat Request , Latin + Turkish + Extra latin + Cyrillic Alphabets / three paragraphs.
 					$ClanString = ""
@@ -197,7 +207,7 @@ Func DonateCC($Check = False)
 			; Get remaining CC capacity of requested troops from your ClanMates
 			RemainingCCcapacity()
 
-			If $CurTotalDarkSpell = 0 And $FirstStart and $bDonateSpell Then
+			If $CurTotalDarkSpell = 0 And $FirstStart And $bDonateSpell Then
 				SetLog("Getting total Spells Available To be ready for Donation...", $COLOR_BLUE)
 				Click($aCloseChat[0], $aCloseChat[1], 1, 0, "#0173") ; required to close Chat tab
 				If _Sleep(500) Then Return
@@ -216,21 +226,21 @@ Func DonateCC($Check = False)
 
 				$icount = 0
 				While 1
-				;If Clan tab is selected.
-				If _ColorCheck(_GetPixelColor(189, 24, True), Hex(0x706C50, 6), 20) = True Then ExitLoop ; color med gray
-				;If Global tab is selected.
-				If _ColorCheck(_GetPixelColor(189, 24, True), Hex(0x383828, 6), 20) = True Then ; Darker gray
-					If _Sleep($iDelayDonateCC1) Then Return ;small delay to allow tab to completely open
-					ClickP($aClanTab, 1, 0, "#0169") ; clicking clan tab
-					ExitLoop
-				EndIf
-				;counter for time approx 3 sec max allowed for tab to open
-				$icount += 1
-				If $icount >= 15 Then ; allows for up to a sleep of 3000
-					SetLog("Clan Chat Did Not Open - Abandon Donate")
-					Return
-				EndIf
-				If _Sleep($iDelayDonateCC1) Then Return ; delay Allow 15x
+					;If Clan tab is selected.
+					If _ColorCheck(_GetPixelColor(189, 24, True), Hex(0x706C50, 6), 20) = True Then ExitLoop ; color med gray
+					;If Global tab is selected.
+					If _ColorCheck(_GetPixelColor(189, 24, True), Hex(0x383828, 6), 20) = True Then ; Darker gray
+						If _Sleep($iDelayDonateCC1) Then Return ;small delay to allow tab to completely open
+						ClickP($aClanTab, 1, 0, "#0169") ; clicking clan tab
+						ExitLoop
+					EndIf
+					;counter for time approx 3 sec max allowed for tab to open
+					$icount += 1
+					If $icount >= 15 Then ; allows for up to a sleep of 3000
+						SetLog("Clan Chat Did Not Open - Abandon Donate")
+						Return
+					EndIf
+					If _Sleep($iDelayDonateCC1) Then Return ; delay Allow 15x
 				WEnd
 
 				While 1
@@ -238,7 +248,7 @@ Func DonateCC($Check = False)
 					;$Scroll = _PixelSearch(288, 640 + $bottomOffsetY, 290, 655 + $bottomOffsetY, Hex(0x588800, 6), 20)
 					$y = 90
 					$Scroll = _PixelSearch(293, 8 + $y, 295, 23 + $y, Hex(0xFFFFFF, 6), 20)
-					If IsArray($Scroll) and _ColorCheck(_GetPixelColor(300, 110, True), Hex(0x509808, 6), 20) = True Then ; a second pixel for the green
+					If IsArray($Scroll) And _ColorCheck(_GetPixelColor(300, 110, True), Hex(0x509808, 6), 20) = True Then ; a second pixel for the green
 						$bDonate = True
 						Click($Scroll[0], $Scroll[1], 1, 0, "#0172")
 						$y = 90
@@ -567,6 +577,8 @@ Func CheckDonateTroop($Type, $aDonTroop, $aBlkTroop, $aBlackList, $ClanString)
 		Next
 	EndIf
 
+	If $bDonateAllRespectBlk = True then Return True
+
 	If $debugsetlog = 1 Then Setlog("Bad call of CheckDonateTroop:" & $Type & "=" & NameOfTroop($Type), $COLOR_DEBUG) ;Debug
 	Return False
 EndFunc   ;==>CheckDonateTroop
@@ -702,7 +714,7 @@ Func DonateTroopType($Type, $Quant = 0, $Custom = False, $bDonateAll = False)
 					; Use slow clikc when the Train system is Quicktrain
 					If $ichkUseQTrain = 1 Then
 						$icount = 0
-						For $x = 1 To $Quant
+						For $x = 0 To $Quant
 							If _ColorCheck(_GetPixelColor(350 + ($Slot * 68), $DonationWindowY + 105 + $YComp, True), Hex(0x306ca8, 6), 20) Or _
 							   _ColorCheck(_GetPixelColor(355 + ($Slot * 68), $DonationWindowY + 106 + $YComp, True), Hex(0x306ca8, 6), 20) Or _
 							   _ColorCheck(_GetPixelColor(360 + ($Slot * 68), $DonationWindowY + 107 + $YComp, True), Hex(0x306ca8, 6), 20) Then ; check for 'blue'
@@ -769,7 +781,7 @@ Func DonateTroopType($Type, $Quant = 0, $Custom = False, $bDonateAll = False)
 					; Use slow clikc when the Train system is Quicktrain
 					If $ichkUseQTrain = 1 Then
 						$icount = 0
-						For $x = 1 To $iDonTroopsQuantity
+						For $x = 0 To $iDonTroopsQuantity
 							If _ColorCheck(_GetPixelColor(350 + ($Slot * 68), $DonationWindowY + 105 + $YComp, True), Hex(0x306ca8, 6), 20) Or _
 							   _ColorCheck(_GetPixelColor(355 + ($Slot * 68), $DonationWindowY + 106 + $YComp, True), Hex(0x306ca8, 6), 20) Or _
 							   _ColorCheck(_GetPixelColor(360 + ($Slot * 68), $DonationWindowY + 107 + $YComp, True), Hex(0x306ca8, 6), 20) Then ; check for 'blue'
@@ -783,7 +795,7 @@ Func DonateTroopType($Type, $Quant = 0, $Custom = False, $bDonateAll = False)
 							EndIf
 						Next
 						$iDonTroopsQuantity = $icount ; Count Troops Donated Clicks
-						DonatedTroop($Type,$iDonTroopsQuantity)
+						DonatedTroop($Type, $iDonTroopsQuantity)
 					Else
 						If _ColorCheck(_GetPixelColor(350 + ($Slot * 68), $DonationWindowY + 105 + $YComp, True), Hex(0x306ca8, 6), 20) Or _
 						   _ColorCheck(_GetPixelColor(355 + ($Slot * 68), $DonationWindowY + 106 + $YComp, True), Hex(0x306ca8, 6), 20) Or _

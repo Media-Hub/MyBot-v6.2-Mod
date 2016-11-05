@@ -141,9 +141,7 @@ Func IsStopped()
 EndFunc   ;==>IsStopped
 
 Func btnStart()
-
 	btnUpdateProfile()					;  SwitchAcc - DEMEN
-
 	; decide when to run
 	EnableControls($frmBotBottom, False, $frmBotBottomCtrlState)
 	Local $RunNow = $BotAction <> $eBotNoAction
@@ -291,9 +289,7 @@ Func btnAnalyzeVillage()
 	SETLOG("DEADBASE CHECK..................")
 	$dbBase = checkDeadBase()
 	SETLOG("TOWNHALL CHECK..................")
-	$searchTH = checkTownhallADV2()
-	SETLOG("TOWNHALL C# CHECK...............")
-	THSearch()
+	$searchTH = townHallCheck(True)
 	SETLOG("MINE CHECK C#...................")
 	$PixelMine = GetLocationMine()
 	SetLog("[" & UBound($PixelMine) & "] Gold Mines")
@@ -401,7 +397,7 @@ EndFunc   ;==>btnVillageStat
 
 Func btnTestDeadBase()
 	Local $test = 0
-	LoadTHImage()
+	;LoadTHImage()
 	LoadElixirImage()
 	LoadElixirImage75Percent()
 	LoadElixirImage50Percent()
@@ -413,7 +409,7 @@ Func btnTestDeadBase()
 	SETLOG("DEADBASE CHECK..................")
 	$dbBase = checkDeadBase()
 	SETLOG("TOWNHALL CHECK..................")
-	$searchTH = checkTownhallADV2()
+	$searchTH = townHallCheck(True)
 	If $test = 1 Then $debugBuildingPos = 0
 EndFunc   ;==>btnTestDeadBase
 

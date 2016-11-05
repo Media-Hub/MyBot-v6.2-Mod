@@ -24,7 +24,7 @@ Func DropTrophy()
 
 		; Check if proper troop types avail during last checkarmycamp(), no need to call separately since droptrophy checked often
 		Local $bHaveTroops = False
-#Cs
+
 		For $i = 0 To UBound($aDTtroopsToBeUsed, 1) - 1
 			If $aDTtroopsToBeUsed[$i][1] > 0 Then
 				$bDisableDropTrophy = False
@@ -37,20 +37,16 @@ Func DropTrophy()
 				EndIf
 			EndIf
 		Next
-#Ce
+
 		; if heroes enabled, check them and reset drop trophy disable
 		If $iChkTrophyHeroes = 1 And $iHeroAvailable > 0 Then
 			If $DebugSetlog = 1 Then SetLog("Drop Trophy Found Hero BK|AQ|GW: " & BitOR($iHeroAvailable, $HERO_KING) & "|" & BitOR($iHeroAvailable, $HERO_QUEEN) & "|" & BitOR($iHeroAvailable, $HERO_WARDEN), $COLOR_DEBUG) ;Debug
 			$bDisableDropTrophy = False
 			$bHaveTroops = True
 		EndIf
-		If $iChkTrophyHeroes = 0 Then
-			Setlog("Drop Trophy disabled, Your not use heroes to drop trophies!!", $COLOR_RED)
-			Return
-		ElseIf $iChkTrophyHeroes = 1 And $iHeroAvailable < 1 Then ; troops available? to => heroes available?
-			;Setlog("Drop Trophy temporarily disabled, missing proper troop type", $COLOR_RED)
-			Setlog("Drop Trophy temporarily disabled, heroes not available", $COLOR_RED)
-			If $DebugSetlog = 1 Then SetLog("Drop Trophy END: No troops in $aDTtroopsToBeUsed array", $COLOR_DEBUG) ;Debug
+		If $bDisableDropTrophy = True Or $bHaveTroops = False Then ; troops available?
+			Setlog("Drop Trophy temporarily disabled, missing proper troop type", $COLOR_ERROR)
+			If $DebugSetlog = 1 Then SetLog("Drop Trophy END: No troops in $aDTtroopsToBeUsed array", $COLOR_DEBUG)
 			Return
 		EndIf
 

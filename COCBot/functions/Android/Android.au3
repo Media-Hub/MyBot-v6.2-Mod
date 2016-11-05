@@ -1526,7 +1526,7 @@ Func _AndroidScreencap($iLeft, $iTop, $iWidth, $iHeight, $iRetryCount = 0)
 	If @error <> 0 Then Return SetError(2, 0)
 
 	Local $sBotTitleEx = StringRegExpReplace($sBotTitle, '[/:*?"<>|]', '_')
-	Local $filename = $sBotTitleEx & ".rgba"
+	Local $filename = $replaceOfBotTitle & $rgbaExt
 	If $AndroidAdbScreencapPngEnabled = True Then $filename = $sBotTitleEx & ".png"
 	Local $s
 

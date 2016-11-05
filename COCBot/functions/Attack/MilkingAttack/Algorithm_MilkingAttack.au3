@@ -16,7 +16,7 @@
 Func Alogrithm_MilkingAttack()
 
 	;--- TH snipe After Milking...
-	If $THSnipeBeforeDBEnable = 1 and $searchTH = "-" Then FindTownHall(True) ; if no previous detect search townhall
+	If $THSnipeBeforeDBEnable = 1 and $searchTH = "-" Then townHallCheck(True) ; if no previous detect search townhall
 	If $THSnipeBeforeDBEnable = 1 Then
 		If $searchTH <> "-" Then
 			If 	SearchTownHallLoc()  Then
@@ -147,7 +147,7 @@ Func Alogrithm_MilkingAttack()
 	If $MilkAttackAfterTHSnipe = 1 Then
 			; TH snipe attack selected, if no th found before, search enemy TH location
 			;a check th position
-			FindTownHall(True) ;force search townhall bacause we have possibility to allready destroyed
+			townHallCheck(True) ;force search townhall bacause we have possibility to allready destroyed
 
 			;b check th outside
 			If $searchTH <>"-" Then

@@ -411,6 +411,7 @@ Func btnTestImage()
 EndFunc   ;==>btnTestImage
 
 Func btnTestImageFolder()
+	local $ECD = "440,22|860,344|440,670|2,344"
 
 	$RunState = True
 	Local Const $sMessage = "Select a folder with images"
@@ -431,7 +432,7 @@ Func btnTestImageFolder()
 	Local $subDirectory = "DebugImage"
 
 	$hTimer = TimerInit()
-	local $Res = multiMatches($directory, 20,"DCD", "", "", 0, 1000)
+	local $Res = multiMatches($directory, 20, $ECD, "", "", 0, 1000)
 	Setlog("» Detection in " & Round(TimerDiff($hTimer)/1000,2) & "'s")
 
 	If UBound($Res) > 1 then

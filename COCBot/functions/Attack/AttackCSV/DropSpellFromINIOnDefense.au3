@@ -105,6 +105,11 @@ Func DropSpellFromINIOnDefense($Defense, $options, $qtaMin, $qtaMax, $troopName,
 
 		$DefenseResult = AssignPixelOfDefense($Defense, $options)
 		Local $pixel[2] = [$DefenseResult[4], $DefenseResult[5]]
+		If $DefenseResult[1] = False Then ; If Defense didn't located
+			CheckHeroesHealth() ; check hero health == does nothing if hero not dropped
+			ReleaseClicks()
+			Return
+		EndIf
 		If IsArray($pixel) Then
 			If UBound($pixel) >= 2 Then
 				If $pixel[1] <= 0 Then ; If Defense didn't located
@@ -372,7 +377,7 @@ Func LocateDefense($Defense, $options)
 				EndIf
 			EndIf
 			Local $splitedPositions = StringSplit($return, "|", 2)
-			If UBound($splitedPositions) < 1 Then DebugImageSave("EagleDetection_NotDetected_", True)
+			If Not (UBound($splitedPositions) >= 1 And StringLen($splitedPositions[0]) > 2) Then DebugImageSave("EagleDetection_NotDetected_", True)
 			Local $theEagleSide = ""
 			Local $NotdetectedEagle = True
 			$Counter = -1
@@ -441,6 +446,8 @@ Func LocateDefense($Defense, $options)
 			If UBound($splitedPositions) >= 1 And StringLen($splitedPositions[0]) > 2 Then
 				$Result[0] = True
 				Setlog(" »» Eagle located in " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds")
+			Else
+				FlagAsUnDetected($Result)
 			EndIf
 			Switch $SideCondition
 				Case "SameSide"
@@ -448,6 +455,7 @@ Func LocateDefense($Defense, $options)
 						$Result[1] = True
 						SetLog("Eagle Detected in Same Side")
 					Else
+						FlagAsUnDetected($Result)
 						SetLog("No Eagle Detected in same side", $COLOR_ORANGE)
 					EndIf
 				Case "OtherSide"
@@ -455,6 +463,7 @@ Func LocateDefense($Defense, $options)
 						$Result[1] = True
 						SetLog("Eagle Detected in the Other Side")
 					Else
+						FlagAsUnDetected($Result)
 						SetLog("No Eagle Detected in the other side", $COLOR_ORANGE)
 					EndIf
 				Case "AnySide"
@@ -462,6 +471,7 @@ Func LocateDefense($Defense, $options)
 						$Result[1] = True
 						SetLog("Eagle Detected")
 					Else
+						FlagAsUnDetected($Result)
 						SetLog("No Eagle Detected at all", $COLOR_ORANGE)
 					EndIf
 			EndSwitch
@@ -485,7 +495,7 @@ Func LocateDefense($Defense, $options)
 				EndIf
 			EndIf
 			Local $splitedPositions = StringSplit($return, "|", 2)
-			If UBound($splitedPositions) < 1 Then DebugImageSave("InfernoDetection_NotDetected_", True)
+			If Not (UBound($splitedPositions) >= 1 And StringLen($splitedPositions[0]) > 2) Then DebugImageSave("InfernoDetection_NotDetected_", True)
 			Local $theInfernoSide = ""
 			Local $NotdetectedInferno = True
 			$Counter = -1
@@ -576,6 +586,8 @@ Func LocateDefense($Defense, $options)
 			If UBound($splitedPositions) >= 1 And StringLen($splitedPositions[0]) > 2 Then
 				$Result[0] = True
 				Setlog(" »» " & UBound($splitedPositions) & "x Inferno Tower(s) located in " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds")
+			Else
+				FlagAsUnDetected($Result)
 			EndIf
 			Switch $SideCondition
 				Case "SameSide"
@@ -590,6 +602,7 @@ Func LocateDefense($Defense, $options)
 							;SetLog("Dropping Between Two Inferno Tower(s) In the Same Side...", $COLOR_BLUE)
 						EndIf
 					Else
+						FlagAsUnDetected($Result)
 						SetLog("No Inferno Tower Detected in same side", $COLOR_ORANGE)
 					EndIf
 				Case "OtherSide"
@@ -604,6 +617,7 @@ Func LocateDefense($Defense, $options)
 							;SetLog("Dropping Between Two Inferno Tower(s) In the Other Side...", $COLOR_BLUE)
 						EndIf
 					Else
+						FlagAsUnDetected($Result)
 						SetLog("No Inferno Tower Detected in the other side", $COLOR_ORANGE)
 					EndIf
 				Case "AnySide"
@@ -618,6 +632,7 @@ Func LocateDefense($Defense, $options)
 							;SetLog("Dropping Between Two Inferno Tower(s)...", $COLOR_BLUE)
 						EndIf
 					Else
+						FlagAsUnDetected($Result)
 						SetLog("No Inferno Tower Detected at all", $COLOR_ORANGE)
 					EndIf
 			EndSwitch
@@ -641,7 +656,7 @@ Func LocateDefense($Defense, $options)
 				EndIf
 			EndIf
 			Local $splitedPositions = StringSplit($return, "|", 2)
-			If UBound($splitedPositions) < 1 Then DebugImageSave("AirDefenseDetection_NotDetected_", True)
+			If Not (UBound($splitedPositions) >= 1 And StringLen($splitedPositions[0]) > 2) Then DebugImageSave("AirDefenseDetection_NotDetected_", True)
 			Local $theADefenseSide = ""
 			Local $NotdetectedADefense = True
 			$Counter = -1
@@ -714,6 +729,8 @@ Func LocateDefense($Defense, $options)
 			If UBound($splitedPositions) >= 1 And StringLen($splitedPositions[0]) > 2 Then
 				$Result[0] = True
 				Setlog(" »» " & UBound($splitedPositions) & "x Air Defense(s) located in " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds")
+			Else
+				FlagAsUnDetected($Result)
 			EndIf
 			Switch $SideCondition
 				Case "SameSide"
@@ -721,6 +738,7 @@ Func LocateDefense($Defense, $options)
 						$Result[1] = True
 						SetLog("Air Defense Detected in Same Side")
 					Else
+						FlagAsUnDetected($Result)
 						SetLog("No Air Defense Detected in same side", $COLOR_ORANGE)
 					EndIf
 				Case "OtherSide"
@@ -728,6 +746,7 @@ Func LocateDefense($Defense, $options)
 						$Result[1] = True
 						SetLog("Air Defense Detected in the Other Side")
 					Else
+						FlagAsUnDetected($Result)
 						SetLog("No Air Defense Detected in the other side", $COLOR_ORANGE)
 					EndIf
 				Case "AnySide"
@@ -735,6 +754,7 @@ Func LocateDefense($Defense, $options)
 						$Result[1] = True
 						SetLog("Air Defense Detected")
 					Else
+						FlagAsUnDetected($Result)
 						SetLog("No Air Defense Detected at all", $COLOR_ORANGE)
 					EndIf
 			EndSwitch
@@ -742,6 +762,16 @@ Func LocateDefense($Defense, $options)
 	EndSwitch
 	Return $Result
 EndFunc   ;==>LocateDefense
+
+Func FlagAsUnDetected(ByRef $Result)
+	For $i = 0 To (UBound($Result) - 1)
+		If Not $i = (UBound($Result) - 1) Then ; If index was for Additional SetLog
+			$Result[$i] = False
+		Else
+			$Result[$i] = ""
+		EndIf
+	Next
+EndFunc   ;==>FlagAsUnDetected
 
 Func IsSameColor($Defense, $Counter, $X, $Y, $bNeedCapture = False, $Equal = False, $bSkip = False)
 	If $debugDropSCommand = 1 Then SetLog("Func IsSameColor(" & $Defense & ", " & $Counter & ", " & $X & ", " & $Y & ", " & $bNeedCapture & ", " & $Equal & ", " & $bSkip & ")", $COLOR_DEBUG) ;Debug

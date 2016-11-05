@@ -73,6 +73,8 @@ Func lblTotalCount()
 			GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), 0)
 		EndIf
 	Next
+
+	#CS		This Codes Not Needed With New 'True' Train Order and new Training System ;)
 	For $i = 0 To UBound($TroopDarkName) - 1
 		If GUICtrlRead(Eval("txtNum" & $TroopDarkName[$i])) > 0 Then
 			$TotalTroopsTOtrain += GUICtrlRead(Eval("txtNum" & $TroopDarkName[$i])) * $TroopDarkHeight[$i]
@@ -80,6 +82,7 @@ Func lblTotalCount()
 			GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), 0)
 		EndIf
 	Next
+	#CE
 
 	GUICtrlSetData($lblTotalCount, String($TotalTroopsTOtrain))
 
@@ -516,7 +519,7 @@ Func ChangeTroopTrainOrder()
 	;$TroopGroup[10][3] = [["Arch", 1, 1], ["Giant", 2, 5], ["Wall", 4, 2], ["Barb", 0, 1], ["Gobl", 3, 1], ["Heal", 7, 14], ["Pekk", 9, 25], ["Ball", 5, 5], ["Wiza", 6, 4], ["Drag", 8, 20]]
 
 	Local $sComboText = ""
-	Local $NewTroopGroup[12][3]
+	Local $NewTroopGroup[19][3]
 	Local $iUpdateCount = 0
 
 	If UBound($aTroopOrderList) - 1 <> UBound($TroopGroup) Then ; safety check in case troops are added
@@ -535,7 +538,7 @@ Func ChangeTroopTrainOrder()
 		$sComboText = StringLeft(StringStripWS(GUICtrlRead($cmbTroopOrder[$i]), $STR_STRIPALL), 5)
 		For $j = 0 To UBound($DefaultTroopGroup) - 1
 			;Setlog("$i=" & $i & ", ComboSel=" & _GUICtrlComboBox_GetCurSel($cmbTroopOrder[$i]) & ", $DefaultTroopGroup[" & $j & "][0]: " & $DefaultTroopGroup[$j][0] & " = " & $sComboText& " :$sComboText" , $COLOR_DEBUG) ;Debug
-			If StringInStr($sComboText, $DefaultTroopGroup[$j][0], $STR_NOCASESENSEBASIC) = 0 Then ContinueLoop
+			If StringInStr($sComboText, $j > 11 ? StringLeft($DefaultTroopGroup[$j][0], 3) : $DefaultTroopGroup[$j][0], $STR_NOCASESENSEBASIC) = 0 Then ContinueLoop
 			$iUpdateCount += 1 ; keep count of troops updated to ensure success
 			;Setlog("$iUpdateCount: " & $iUpdateCount , $COLOR_DEBUG) ;Debug  ; debug
 			For $k = 0 To UBound($DefaultTroopGroup, 2) - 1 ; if true then assign next $i array element(s) in list to match in troopgroup
@@ -559,7 +562,7 @@ Func ChangeTroopTrainOrder()
 		Next
 		GUICtrlSetImage($ImgTroopOrderSet, $pIconLib, $eIcnGreenLight)
 	Else
-		Setlog("Error - Bad troop assignment in ChangeTroopTrainOrder()", $COLOR_RED)
+		Setlog($iUpdateCount & "|" & UBound($DefaultTroopGroup, 1) & " - Error - Bad troop assignment in ChangeTroopTrainOrder()", $COLOR_RED)
 		SetError(3, 0, False)
 		Return
 	EndIf
@@ -682,21 +685,33 @@ Func IsUseCustomDarkTroopOrder()
 EndFunc   ;==>IsUseCustomDarkTroopOrder
 
 ;==============================================================
-; SmartZap - Added by NTS team
+; SmartZap - Added by DocOC team
 ;==============================================================
 Func chkSmartLightSpell()
   If GUICtrlRead($chkSmartLightSpell) = $GUI_CHECKED Then
     GUICtrlSetState($chkSmartZapDB, $GUI_ENABLE)
     GUICtrlSetState($chkSmartZapSaveHeroes, $GUI_ENABLE)
     GUICtrlSetState($txtMinDark, $GUI_ENABLE)
+	GUICtrlSetState($chkNoobZap, $GUI_ENABLE)
 	 $ichkSmartZap = 1
   Else
     GUICtrlSetState($chkSmartZapDB, $GUI_DISABLE)
     GUICtrlSetState($chkSmartZapSaveHeroes, $GUI_DISABLE)
     GUICtrlSetState($txtMinDark, $GUI_DISABLE)
+	GUICtrlSetState($chkNoobZap, $GUI_DISABLE)
     $ichkSmartZap = 0
   EndIf
 EndFunc   ;==>chkSmartLightSpell
+
+Func chkNoobZap()
+	If GUICtrlRead($chkNoobZap) = $GUI_CHECKED Then
+		GUICtrlSetState($txtExpectedDE, $GUI_ENABLE)
+		$ichkNoobZap = 1
+	Else
+		GUICtrlSetState($txtExpectedDE, $GUI_DISABLE)
+		$ichkNoobZap = 0
+	EndIf
+EndFunc   ;==>chkDumbZap
 
 Func chkSmartZapDB()
     If GUICtrlRead($chkSmartZapDB) = $GUI_CHECKED Then
@@ -717,6 +732,10 @@ EndFunc   ;==>chkSmartZapSaveHeroes
 Func txtMinDark()
 	$itxtMinDE = GUICtrlRead($txtMinDark)
 EndFunc   ;==>txtMinDark
+
+Func txtExpectedDE()
+	$itxtExpectedDE = GUICtrlRead($txtExpectedDE)
+EndFunc   ;==>TxtExpectedDE
 ;==========================END=================================
-; =========== SmartZap - Added by NTS team
+;			 SmartZap - Added by DocOC team
 ;==============================================================

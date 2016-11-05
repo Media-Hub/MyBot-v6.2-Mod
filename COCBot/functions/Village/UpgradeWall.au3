@@ -73,6 +73,7 @@ Func UpgradeWall()
 				Click(820, 40, 1, 0, "#0315") ; Close Builder/Shop if open by accident
 			Else
 				SetLog("No free builder, Upgrade Walls skipped..", $COLOR_RED)
+				$Flag = 0
 			EndIf
 			If $ichkUpgradeContinually = 0 Then $Flag = 0
 		Until $Flag = 0

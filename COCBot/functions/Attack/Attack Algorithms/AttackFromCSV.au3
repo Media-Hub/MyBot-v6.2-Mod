@@ -124,7 +124,7 @@ Func Algorithm_AttackCSV($testattack = False, $captureredarea = True)
 	EndIf
 
 	; 07 - START TH SNIPE BEFORE ATTACK CSV IF NEED ------------------------------------------
-	If $THSnipeBeforeDBEnable = 1 And $searchTH = "-" Then FindTownHall(True) ;search townhall if no previous detect
+	If $THSnipeBeforeDBEnable = 1 And $searchTH = "-" Then townHallCheck(True) ;search townhall if no previous detect
 	If $THSnipeBeforeDBEnable = 1 Then
 		If $searchTH <> "-" Then
 			If SearchTownHallLoc() Then
@@ -168,21 +168,27 @@ Func UpdateResourcesLocations($lineContent)
 	ParseAttackCSV_Read_SIDE_variables($lineContent)
 	;	03 - TOWNHALL ------------------------------------------------------------------------
 	If $searchTH = "-" Then
+		Local $THString = ""
 
 		If $attackcsv_locate_townhall = 1 Then
 			SuspendAndroid()
 			$hTimer = TimerInit()
-			Local $searchTH = checkTownHallADV2(0, 0, False)
-			If $searchTH = "-" Then ; retry with autoit search after $iDelayVillageSearch5 seconds
-				If _Sleep($iDelayAttackCSV1) Then Return
-				If $debugsetlog = 1 Then SetLog("2nd attempt to detect the TownHall!", $COLOR_DEBUG) ;Debug
-				$searchTH = checkTownhallADV2()
-			EndIf
-			If $searchTH = "-" Then ; retry with c# search, matching could not have been caused by heroes that partially hid the townhall
-				If _Sleep($iDelayAttackCSV2) Then Return
-				If $debugImageSave = 1 Then DebugImageSave("VillageSearch_NoTHFound2try_", False)
-				THSearch()
-			EndIf
+
+;~ 			Local $searchTH = checkTownHallADV2(0, 0, False)
+;~ 			If $searchTH = "-" Then ; retry with autoit search after $iDelayVillageSearch5 seconds
+;~ 				If _Sleep($iDelayAttackCSV1) Then Return
+;~ 				If $debugsetlog = 1 Then SetLog("2nd attempt to detect the TownHall!", $COLOR_DEBUG) ;Debug
+;~ 				$searchTH = checkTownhallADV2()
+;~ 			EndIf
+;~ 			If $searchTH = "-" Then ; retry with c# search, matching could not have been caused by heroes that partially hid the townhall
+;~ 				If _Sleep($iDelayAttackCSV2) Then Return
+;~ 				If $debugImageSave = 1 Then DebugImageSave("VillageSearch_NoTHFound2try_", False)
+;~ 				THSearch()
+;~ 			EndIf
+
+			Local $aResult = townHallCheck(True)
+			$THString = convertToOldTHData($aResult)
+
 			Setlog("> Townhall located in " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds", $COLOR_BLUE)
 			ResumeAndroid()
 		Else

@@ -19,15 +19,13 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 
 	If _Sleep($iDelayalgorithm_AllTroops1) Then Return
 
-	If $iChkDeploySettings[$iMatchMode] <> 4 Then
-		SmartAttackStrategy($iMatchMode) ; detect redarea first to drop any troops
-	EndIf
+	If $iChkDeploySettings[$iMatchMode] <> 4 Then SmartAttackStrategy($iMatchMode) ; detect redarea first to drop any troops
 
 	; If one of condtions passed then start TH snipe attack
 	; - detect matchmode TS
 	; - detect matchmode DB and enabled TH snipe before attack and th outside
 	; - detect matchmode LB and enabled TH snipe before attack and th outside
-	If $searchTH = "-"  and  ($iMatchMode = $DB and $THSnipeBeforeDBEnable = 1 ) or ($iMatchMode = $LB and $THSnipeBeforeDBEnable = 1 ) Then FindTownHall(True) ;If no previous detect townhall search th position
+	If $searchTH = "-"  and  ($iMatchMode = $DB and $THSnipeBeforeDBEnable = 1 ) or ($iMatchMode = $LB and $THSnipeBeforeDBEnable = 1 ) Then townHallCheck(True) ;If no previous detect townhall search th position
 	If $iMatchMode = $TS or  ( ( ($iMatchMode = $DB and $THSnipeBeforeDBEnable = 1 ) or ($iMatchMode = $LB and $THSnipeBeforeDBEnable = 1 ) )  and   SearchTownHallLoc()  ) Then
 		SwitchAttackTHType()
 		If $zoomedin = True Then
@@ -76,7 +74,7 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 			SetLog("Attacking on all sides", $COLOR_BLUE)
 			$nbSides = 4
 		Case 4 ;Four Finger Classic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			SetLog("Attacking Four Finger Classic Fight Style", $COLOR_BLUE)
+			SetLog("Attacking Four Finger Classic fight style", $COLOR_INFO)
 			$nbSides = 5
 		Case 5 ;DE Side - Live Base only ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			SetLog("Attacking on Dark Elixir Side.", $COLOR_BLUE)
@@ -140,28 +138,25 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 						, [$eGobl, $nbSides, 1, 1, 1] _
 						]
 		EndSwitch
+
 	; Four Finger Classic
 	ElseIf $nbSides = 5 Then
-		Local $listInfoDeploy[21][5] = [[$eGiant, $nbSides, 1, 1, 2], _
-						[$eGole,  $nbSides, 1, 1, 2], _
-						[$eLava,  $nbSides, 1, 1, 2], _
-						[$ePekk,  $nbSides, 1, 1, 2], _
-						["CC",           1, 1, 1, 1], _
-						[$eBarb,  $nbSides, 1, 1, 0], _
-						["HEROES",       1, 2, 1, 1], _
-						[$eWall,  $nbSides, 1, 1, 2], _
-						[$eBowl,  $nbSides, 1, 1, 0], _
-						[$eMine,  $nbSides, 1, 1, 0], _
-						[$eDrag,  $nbSides, 1, 1, 2], _
-						[$eBall,  $nbSides, 1, 1, 2], _
-						[$eBabyD, $nbSides, 1, 1, 1], _
-						[$eWitc,  $nbSides, 1, 1, 2], _
-						[$eValk,  $nbSides, 1, 1, 2], _
-						[$eHogs,  $nbSides, 1, 1, 2], _
-						[$eArch,  $nbSides, 1, 1, 0], _
-						[$eWiza,  $nbSides, 1, 1, 2], _
-						[$eMini,  $nbSides, 1, 1, 0], _
-						[$eGobl,  $nbSides, 1, 1, 0]]
+		Local $listInfoDeploy[15][5] = [[$eGiant, $nbSides, 1, 1, 2] _
+				, [$eWall, $nbSides, 1, 1, 1] _
+				, [$eValk, $nbSides, 1, 1, 0] _
+				, [$eBabyD, $nbSides, 1, 1, 1] _
+				, [$eBowl, $nbSides, 1, 1, 0] _
+				, [$eMine, $nbSides, 1, 1, 0] _
+				, [$eBarb, $nbSides, 1, 1, 0] _
+				, [$eArch, $nbSides, 1, 1, 0] _
+				, [$eGobl, $nbSides, 1, 2, 0] _
+				, ["CC", 1, 1, 1, 1] _
+				, [$eHogs, $nbSides, 1, 1, 1] _
+				, [$eWiza, $nbSides, 1, 1, 0] _
+				, [$eMini, $nbSides, 1, 1, 0] _
+				, [$eGobl, $nbSides, 2, 2, 0] _
+				, ["HEROES", 1, 2, 1, 1] _
+				]
 
 	Else
 		If $debugSetlog = 1 Then SetLog("listdeploy standard for attack", $COLOR_DEBUG) ;Debug

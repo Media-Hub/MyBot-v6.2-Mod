@@ -21,7 +21,6 @@ Local $x = 25, $y = 45
 		$y += 25
 		GUICtrlCreateIcon($pIconLib, $eIcnTrophy, $x - 15, $y, 64, 64, $BS_ICON)
 		$x += 50
-		$lblAttentionDT = GUICtrlCreateLabel("Attention Drop Trophies Only Use Heroes!!", $x + 10, $y -20, -1, -1)
 		$chkTrophyRange = GUICtrlCreateCheckbox(GetTranslated(609,2, "Trophy range") & ":",$x + 20, $y, -1, -1)
 			GUICtrlSetOnEvent(-1, "chkTrophyRange")
 		$txtdropTrophy = GUICtrlCreateInput("5000", $x + 110, $y, 35, -1, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
@@ -42,7 +41,7 @@ Local $x = 25, $y = 45
 			_GUICtrlSetTip(-1, $txtTip)
 			GuiCtrlSetState(-1,$GUI_DISABLE)
 		$y += 20
-		$chkTrophyAtkDead = GUICtrlCreateCheckbox(GetTranslated(609,7, "Attack Dead Bases During Drop") & " <= [Temporarily Disabled]", $x  , $y +2, -1, -1)
+		$chkTrophyAtkDead = GUICtrlCreateCheckbox(GetTranslated(609,7, "Attack Dead Bases During Drop"), $x  , $y +2, -1, -1)
 			$txtTip = GetTranslated(609,8, "Attack a Deadbase found on the first search while dropping Trophies.")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkTrophyAtkDead")
@@ -52,11 +51,9 @@ Local $x = 25, $y = 45
 		$lblDTArmyMin = GUICtrlCreateLabel(GetTranslated(609,9, "Wait until Army") & " " & ChrW(8805), $x + 10, $y + 6, 120, -1, $SS_RIGHT)
 		$txtTip = GetTranslated(609,10, "Enter the percent of full army required for dead base attack before starting trophy drop.")
 			_GUICtrlSetTip(-1, $txtTip)
-			GUICtrlSetState (-1, $GUI_DISABLE)
 		$txtDTArmyMin = GUICtrlCreateInput("70", $x + 135, $y +2, 27, 21, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetLimit(-1, 2)
 			GUICtrlSetState (-1, $GUI_DISABLE)
-		$lblDTArmypercent = GUICtrlCreateLabel(GetTranslated(603,12, "%") & " <= [Temporarily Disabled]", $x + 165, $y +6, -1, -1)
-		GUICtrlSetState (-1, $GUI_DISABLE)
+		$lblDTArmypercent = GUICtrlCreateLabel(GetTranslated(603,12, "%"), $x + 165, $y +6, -1, -1)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)

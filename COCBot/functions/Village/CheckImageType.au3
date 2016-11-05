@@ -33,7 +33,7 @@ Func CheckImageType()
 
 ;~ 	readCollectorConfig();initialize collector fullness variables before loading images
 
-	LoadTHImage() ; Load TH images
+	;LoadTHImage() ; Load TH images
 	LoadElixirImage() ; Load Elixir images
 	LoadElixirImage75Percent(); Load Elixir images full at 75%
 	LoadElixirImage50Percent(); Load Elixir images full at 50%
