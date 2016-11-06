@@ -296,6 +296,10 @@ $hRadio_Army2 = GUICtrlCreateRadio("Army 2", $x + 135, $y + 40, 50, 15)
 GUICtrlSetState(-1, $GUI_DISABLE)
 $hRadio_Army3 = GUICtrlCreateRadio("Army 3", $x + 135, $y + 60, 50, 15)
 GUICtrlSetState(-1, $GUI_DISABLE)
+$hRadio_Army12 = GUICtrlCreateRadio("Army 1,2", $x + 190, $y + 20, 70, 15)
+GUICtrlSetState(-1, $GUI_DISABLE)
+$hRadio_Army123 = GUICtrlCreateRadio("Army 1,2,3", $x + 190, $y + 40, 70, 15)
+GUICtrlSetState(-1, $GUI_DISABLE)
 
 $x += 280
 $y += 20

@@ -2686,6 +2686,18 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 		GUICtrlSetState($hRadio_Army3, $GUI_UNCHECKED)
 	EndIf
 
+	If $iRadio_Army12 = 1 Then
+		GUICtrlSetState($hRadio_Army12, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($hRadio_Army12, $GUI_UNCHECKED)
+	EndIf
+
+	If $iRadio_Army123 = 1 Then
+		GUICtrlSetState($hRadio_Army123, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($hRadio_Army123, $GUI_UNCHECKED)
+	EndIf
+
 ;==============================================================
 ; SmartZap - Added by DocOC team
 ;==============================================================

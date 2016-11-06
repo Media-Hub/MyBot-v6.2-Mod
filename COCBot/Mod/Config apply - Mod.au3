@@ -13,7 +13,7 @@
 ; Example .......: No
 ; ===============================================================================================================================
 
-; Config Apply for SwitchAcc Mode - DEMEN
+	; Config Apply for SwitchAcc Mode - DEMEN
 	Switch $ProfileType
 	Case 1
 		GUICtrlSetState($radActiveProfile, $GUI_CHECKED)

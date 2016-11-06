@@ -209,9 +209,9 @@ Func AttackReport()
 
 	If $FirstAttack = 0 Then $FirstAttack = 1
 	$iGoldTotal += $iGoldLast + $iGoldLastBonus
+	$iTotalGoldGain[$iMatchMode] += $iGoldLast + $iGoldLastBonus
 	If $ichkSwitchAcc = 1 Then $aGoldTotalAcc[$nCurProfile-1] += $iGoldLast + $iGoldLastBonus 		; Separate Stats per Each Account - SwitchAcc Mode - DEMEN
 
-	$iTotalGoldGain[$iMatchMode] += $iGoldLast + $iGoldLastBonus
 	$iElixirTotal += $iElixirLast + $iElixirLastBonus
 	$iTotalElixirGain[$iMatchMode] += $iElixirLast + $iElixirLastBonus
 	If $ichkSwitchAcc = 1 Then $aElixirTotalAcc[$nCurProfile-1] += $iElixirLast + $iElixirLastBonus ; Separate Stats per Each Account - SwitchAcc Mode - DEMEN

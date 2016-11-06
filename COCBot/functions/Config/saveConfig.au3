@@ -2596,6 +2596,18 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWriteS($config, "troop", "QuickTrain3", 0)
 	EndIf
 
+	If GUICtrlRead($hRadio_Army12) = $GUI_CHECKED Then
+		IniWriteS($config, "troop", "QuickTrain12", 1)
+	Else
+		IniWriteS($config, "troop", "QuickTrain12", 0)
+	EndIf
+
+	If GUICtrlRead($hRadio_Army123) = $GUI_CHECKED Then
+		IniWriteS($config, "troop", "QuickTrain123", 1)
+	Else
+		IniWriteS($config, "troop", "QuickTrain123", 0)
+	EndIf
+
 ;==============================================================
 ; SmartZap - Added by DocOC team
 ;==============================================================

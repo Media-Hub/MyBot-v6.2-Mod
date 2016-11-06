@@ -13,7 +13,7 @@
 ; Example .......: No
 ; ===============================================================================================================================
 
-; Config Read for SwitchAcc Mode - DEMEN
+		; Config Read for SwitchAcc Mode - DEMEN
 		$ichkSwitchAcc = IniRead($profile, "Switch Account", "Enable", "0")
 		$icmbTotalCoCAcc = IniRead($profile, "Switch Account", "Total Coc Account", "0")	; 0 = AutoDetect
 		$ichkSmartSwitch = IniRead($profile, "Switch Account", "Smart Switch", "1")

@@ -44,14 +44,14 @@ Func DonateCC($Check = False)
 	; Global $aTimeTrain[1] = Spells remain time , minutes
 	; Global $aTimeTrain[2] = Remain time to Heroes recover , minutes
 	If ((IsWaitforSpellsActive() And $aTimeTrain[1] < 5) Or (IsWaitforHeroesActive() And $aTimeTrain[2] < 5)) And _
-			($CurCamp >= ($TotalCamp * $fulltroop / 100) * .95) And $CommandStop = -1 Then
-		If $debugsetlog = 1 Then Setlog(" »» Total troops >95%, Skip Donation", $COLOR_PURPLE)
-		Return ; skip donate if >95% full troop AND Spells OR Heroes are almost Made/Recovered
+			($CurCamp >= ($TotalCamp * $fulltroop / 100) * .90) And $CommandStop = -1 Then
+		If $debugsetlog = 1 Then Setlog(" »» Total troops >90%, Skip Donation", $COLOR_PURPLE)
+		Return ; skip donate if >90% full troop AND Spells OR Heroes are almost Made/Recovered
 	Else
 		If IsWaitforSpellsActive() = False And IsWaitforHeroesActive() = False And _
-				($CurCamp >= ($TotalCamp * $fulltroop / 100) * .95) And $CommandStop = -1 Then
-			If $debugsetlog = 1 Then Setlog(" » Total troops >95%, Skip Donation..", $COLOR_PURPLE)
-			Return ; skip donate if >95% full troop AND Spells OR Heroes are almost Made/Recovered
+				($CurCamp >= ($TotalCamp * $fulltroop / 100) * .90) And $CommandStop = -1 Then
+			If $debugsetlog = 1 Then Setlog(" » Total troops >90%, Skip Donation..", $COLOR_PURPLE)
+			Return ; skip donate if >90% full troop AND Spells OR Heroes are almost Made/Recovered
 		EndIf
 	EndIf
 ;~	Local $ReturnT = ($CurCamp >= ($TotalCamp * $fulltroop / 100) * .95) ? (True) : (False)

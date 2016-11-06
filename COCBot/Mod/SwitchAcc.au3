@@ -111,43 +111,49 @@ Func CheckWaitHero()	; get hero regen time remaining if enabled
 
 	If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("CheckWaitHero", $COLOR_PURPLE)
 
-	  $aHeroResult = getArmyHeroTime("all")
+	$aHeroResult = getArmyHeroTime("all")
 
-	  If @error Then
+	If @error Then
 		Setlog("getArmyHeroTime return error, exit Check Hero's wait time!", $COLOR_RED)
 		Return ; if error, then quit Check Hero's wait time
-	  EndIf
+	EndIf
 
-	  Setlog("Getting Hero's recover time, King: " & $aHeroResult[0] & " m, Queen: " & $aHeroResult[1] & " m, GW: " & $aHeroResult[2] & " m.")
+	If $aHeroResult = "" Then
+		Setlog("You have no hero or bad TH level detection Pls manually locate TH", $COLOR_RED)
+		Return
+	EndIf
 
-	  If _Sleep($iDelayRespond) Then Return
-	  If $aHeroResult[0] > 0 Or $aHeroResult[1] > 0 Or $aHeroResult[2] > 0 Then ; check if hero is enabled to use/wait and set wait time
-		 For $pTroopType = $eKing To $eWarden ; check all 3 hero
-			 For $pMatchMode = $DB To $iModeCount - 1 ; check all attack modes
-				 If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then
-					 SetLog("$pTroopType: " & NameOfTroop($pTroopType) & ", $pMatchMode: " & $sModeText[$pMatchMode], $COLOR_PURPLE)
-					 Setlog("TroopToBeUsed: " & IsSpecialTroopToBeUsed($pMatchMode, $pTroopType) & ", Hero Wait Status: " & (BitOr($iHeroAttack[$pMatchMode], $iHeroWait[$pMatchMode]) = $iHeroAttack[$pMatchMode]), $COLOR_PURPLE)
-				 EndIf
-				 $iActiveHero = -1
-				 If IsSpecialTroopToBeUsed($pMatchMode, $pTroopType) And _
-						 BitOr($iHeroAttack[$pMatchMode], $iHeroWait[$pMatchMode]) = $iHeroAttack[$pMatchMode] Then ; check if Hero enabled to wait
-					 $iActiveHero = $pTroopType - $eKing ; compute array offset to active hero
-				 EndIf
-				 If $iActiveHero <> -1 And $aHeroResult[$iActiveHero] > 0 Then ; valid time?
-					 ; check exact time & existing time is less than new time
-					 If $aTimeTrain[2] < $aHeroResult[$iActiveHero] Then
+	Setlog("Getting Hero's recover time, King: " & $aHeroResult[0] & " m, Queen: " & $aHeroResult[1] & " m, GW: " & $aHeroResult[2] & " m.")
+
+	If _Sleep($iDelayRespond) Then Return
+	If $aHeroResult[0] > 0 Or $aHeroResult[1] > 0 Or $aHeroResult[2] > 0 Then ; check if hero is enabled to use/wait and set wait time
+		For $pTroopType = $eKing To $eWarden ; check all 3 hero
+			For $pMatchMode = $DB To $iModeCount - 1 ; check all attack modes
+				If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then
+					SetLog("$pTroopType: " & NameOfTroop($pTroopType) & ", $pMatchMode: " & $sModeText[$pMatchMode], $COLOR_PURPLE)
+					Setlog("TroopToBeUsed: " & IsSpecialTroopToBeUsed($pMatchMode, $pTroopType) & ", Hero Wait Status: " & (BitOr($iHeroAttack[$pMatchMode], $iHeroWait[$pMatchMode]) = $iHeroAttack[$pMatchMode]), $COLOR_PURPLE)
+				EndIf
+				$iActiveHero = -1
+				If IsSpecialTroopToBeUsed($pMatchMode, $pTroopType) And _
+					 BitOr($iHeroAttack[$pMatchMode], $iHeroWait[$pMatchMode]) = $iHeroAttack[$pMatchMode] Then ; check if Hero enabled to wait
+				$iActiveHero = $pTroopType - $eKing ; compute array offset to active hero
+				EndIf
+				If $iActiveHero <> -1 And $aHeroResult[$iActiveHero] > 0 Then ; valid time?
+					; check exact time & existing time is less than new time
+					If $aTimeTrain[2] < $aHeroResult[$iActiveHero] Then
 						$aTimeTrain[2] = $aHeroResult[$iActiveHero] ; use exact time
-					 EndIf
-					 If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then
-						 SetLog("Wait enabled: " & NameOfTroop($pTroopType) & ", Attack Mode:" & $sModeText[$pMatchMode] & ", Hero Time:" & $aHeroResult[$iActiveHero] & ", Wait Time: " & StringFormat("%.2f", $aTimeTrain[2]), $COLOR_PURPLE)
-					 EndIf
-				 EndIf
-			 Next
-			 If _Sleep($iDelayRespond) Then Return
-		 Next
-	  Else
-		 If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("getArmyHeroTime return all zero hero wait times", $COLOR_PURPLE)
-	  EndIf
+					EndIf
+
+					If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then
+						SetLog("Wait enabled: " & NameOfTroop($pTroopType) & ", Attack Mode:" & $sModeText[$pMatchMode] & ", Hero Time:" & $aHeroResult[$iActiveHero] & ", Wait Time: " & StringFormat("%.2f", $aTimeTrain[2]), $COLOR_PURPLE)
+					EndIf
+				EndIf
+			Next
+			If _Sleep($iDelayRespond) Then Return
+		Next
+	Else
+		If $debugsetlogTrain = 1 Or $debugSetlog = 1 Then Setlog("getArmyHeroTime return all zero hero wait times", $COLOR_PURPLE)
+	EndIf
 
 	Setlog("Hero recover wait time: " & $aTimeTrain[2] & " minute(s)", $COLOR_BLUE)
 

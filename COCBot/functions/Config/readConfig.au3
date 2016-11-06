@@ -1037,6 +1037,8 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		IniReadS($iRadio_Army1, $config, "troop", "QuickTrain1", "1")
 		IniReadS($iRadio_Army2, $config, "troop", "QuickTrain2", "0")
 		IniReadS($iRadio_Army3, $config, "troop", "QuickTrain3", "0")
+		IniReadS($iRadio_Army12, $config, "troop", "QuickTrain12", "0")
+		IniReadS($iRadio_Army123, $config, "troop", "QuickTrain123", "0")
 
 ;==============================================================
 ; SmartZap - Added by DocOC team

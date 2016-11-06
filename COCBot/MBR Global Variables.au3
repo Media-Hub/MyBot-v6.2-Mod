@@ -1658,7 +1658,7 @@ Global $redLinesDefense[2] = [-2, 0] ; -2 Means Not Changed still/First value,  
 ;QuickTrain Radio Buttons
 
 Global $ichkUseQTrain = 1
-Global 	$iRadio_Army1, $iRadio_Army2, $iRadio_Army3
+Global $iRadio_Army1, $iRadio_Army2, $iRadio_Army3, $iRadio_Army12, $iRadio_Army123
 
 ;---------------------------------------------------------------
 ; SmartZap GUI variables - Added by DocOC team

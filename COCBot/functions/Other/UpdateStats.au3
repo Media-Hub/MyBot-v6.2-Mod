@@ -317,25 +317,27 @@ Func UpdateStats()
 		GUICtrlSetData($lblDElixirFromDrills, _NumberFormat($iDElixirFromDrills, True))
 		$iOldDElixirFromDrills = $iDElixirFromDrills
 	EndIf
-#cs
+
 ;==============================================================
 ; SmartZap - Added by DocOC team
 ;==============================================================
    ; SmartZap DE Gain - Added by DocOC team
 	If $iOldSmartZapGain <> $smartZapGain Then
 		GUICtrlSetData($lblSmartZap, _NumberFormat($smartZapGain, True))
+		GUICtrlSetData($lblSmartZapStat, _NumberFormat($smartZapGain, True))
 		$iOldSmartZapGain = $smartZapGain
 	EndIf
 
 	; SmartZap Spells Used - Added by DocOC team
 	If $iOldNumLTSpellsUsed <> $numLSpellsUsed Then
 		GUICtrlSetData($lblLightningUsed, _NumberFormat($numLSpellsUsed, True))
+		GUICtrlSetData($lblLightningUsedStat, _NumberFormat($numLSpellsUsed, True))
 		$iOldNumLTSpellsUsed = $numLSpellsUsed
  	EndIf
 ;==============================================================
 ; SmartZap - Added by DocOC team
 ;==============================================================
-#ce
+
 	$iAttackedCount = 0
 
 	For $i = 0 To $iModeCount
@@ -412,10 +414,7 @@ Func UpdateStats()
 		EndIf
 	EndIf
 
-	If $ichkSwitchAcc = 1 Then
-		UpdateStatsForSwitchAcc()	;	SwitchAcc Mode - Demen
-		UpdateStatsForSmartZap()	; 	SmartZap - Demen
-	EndIf
+	If $ichkSwitchAcc = 1 Then UpdateStatsForSwitchAcc()	;	SwitchAcc Mode - Demen
 
 	If $ResetStats = 1 Then
 		$ResetStats = 0
@@ -488,14 +487,11 @@ Func ResetStats()
 	$iElixirFromCollectors = 0
 	$iDElixirFromDrills = 0
 ; ======================= SmartZap - Added by NTS team =======================
-;	$smartZapGain = 0
-;	$numLSpellsUsed = 0
+	$smartZapGain = 0
+	$numLSpellsUsed = 0
 ; ======================= SmartZap - Added by NTS team =======================
 
-	If $ichkSwitchAcc = 1 Then
-		ResetStatsForSwitchAcc()		;	SwitchAcc Mode - Demen
-		ResetStatsForSmartZap()			;	SmartZap - Demen
-	EndIf
+	If $ichkSwitchAcc = 1 Then ResetStatsForSwitchAcc()		;	SwitchAcc Mode - Demen
 
 	For $i = 0 To $iModeCount
 		$iAttackedVillageCount[$i] = 0

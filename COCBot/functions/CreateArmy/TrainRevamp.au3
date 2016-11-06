@@ -162,7 +162,21 @@ Func TestTrainRevamp()
 			If GUICtrlRead($hRadio_Army2) = $GUI_CHECKED Then $Num = 2
 			If GUICtrlRead($hRadio_Army3) = $GUI_CHECKED Then $Num = 3
 
-			TrainArmyNumber($Num)
+			If $Num > 0 Then
+				TrainArmyNumber($Num)
+			Else
+				Setlog(" » Quick train combo Army")
+				If $Runstate = False Then Return
+				If ISArmyWindow(True, $QuickTrainTAB) Then
+					For $i = 1 to 3
+						Setlog(" » TrainArmyNumber: " & $i)
+						Click(817, 248 + 118*$i)
+						If $i = 2 And GUICtrlRead($hRadio_Army12) = $GUI_CHECKED Then ExitLoop
+					Next
+				Else
+					Setlog(" » Error Clicking On Army! You are not on Quick Train Window", $COLOR_RED)
+				EndIf
+			EndIf
 
 			ResetVariables("donated")
 

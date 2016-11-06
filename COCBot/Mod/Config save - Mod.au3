@@ -13,7 +13,7 @@
 ; Example .......: No
 ; ===============================================================================================================================
 
-; Config save for SwitchAcc Mode - DEMEN
+	; Config save for SwitchAcc Mode - DEMEN
 
 	If GUICtrlRead($radActiveProfile) = $GUI_CHECKED Then														; 1 = Active, 2 = Donate, 3 = Idle
 		IniWrite($config, "Switch Account", "Profile Type", 1)

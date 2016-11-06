@@ -37,7 +37,7 @@ Local $hBotLaunchTime = TimerInit()
 
 Global $sGitHubModOwner = "NguyenAnhHD"
 Global $sGitHubModRepo = "MyBot-v6.2-Mod"
-Global $sGitHubModLatestReleaseTag = "v5.1"
+Global $sGitHubModLatestReleaseTag = "v5.1.1"
 Global $sModSupportUrl = "http://clashofclans.vn/threads/update-26-08-mybot-6-2-1-mod-v4-1-4-2.8075"
 
 $sBotVersion = "v6.2.2" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it it also use on Checkversion()
@@ -583,7 +583,11 @@ Func AttackMain() ;Main control for attack functions
 			Setlog("No one of search condition match:", $COLOR_BLUE)
 			Setlog("Waiting on troops, heroes and/or spells according to search settings", $COLOR_BLUE)
 			GetReadTimeHeroesAndSpell()
-			If $ichkSwitchAcc = 1 Then CheckSwitchAcc() 		; SwitchAcc - DEMEN
+			If $ichkSwitchAcc = 1 Then
+				checkSwitchAcc()
+			Else
+				SmartWait4Train()
+			EndIf
 		EndIf
 	Else
 		SetLog("Attacking Not Planned, Skipped..", $COLOR_RED)

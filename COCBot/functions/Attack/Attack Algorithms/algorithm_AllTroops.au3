@@ -74,7 +74,7 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 			SetLog("Attacking on all sides", $COLOR_BLUE)
 			$nbSides = 4
 		Case 4 ;Four Finger Classic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			SetLog("Attacking Four Finger Classic fight style", $COLOR_INFO)
+			SetLog("Attacking Four Finger Classic fight style", $COLOR_BLUE)
 			$nbSides = 5
 		Case 5 ;DE Side - Live Base only ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			SetLog("Attacking on Dark Elixir Side.", $COLOR_BLUE)
