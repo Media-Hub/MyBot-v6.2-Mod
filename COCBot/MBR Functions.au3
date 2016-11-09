@@ -129,6 +129,8 @@
 ;#include "functions\Image Search\THSearch.au3"
 #include "functions\Image Search\TownHall.au3"
 
+#include "functions\Image Search\imglocAuxiliary.au3"
+
 #include "functions\Main Screen\checkMainScreen.au3"
 #include "functions\Main Screen\checkObstacles.au3"
 #include "functions\Main Screen\GetDPI_Ratio.au3"

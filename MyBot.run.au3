@@ -37,8 +37,8 @@ Local $hBotLaunchTime = TimerInit()
 
 Global $sGitHubModOwner = "NguyenAnhHD"
 Global $sGitHubModRepo = "MyBot-v6.2-Mod"
-Global $sGitHubModLatestReleaseTag = "v5.1.1"
-Global $sModSupportUrl = "http://clashofclans.vn/threads/update-26-08-mybot-6-2-1-mod-v4-1-4-2.8075"
+Global $sGitHubModLatestReleaseTag = "v5.1.2"
+Global $sModSupportUrl = "https://www.facebook.com/groups/clan.fire.dragon"
 
 $sBotVersion = "v6.2.2" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it it also use on Checkversion()
 $sBotTitle = "My Bot " & $sBotVersion & " DocOC MOD Nguyen Anh " & $sGitHubModLatestReleaseTag & "_S " ;~ Don't use any non file name supported characters like \ / : * ? " < > |

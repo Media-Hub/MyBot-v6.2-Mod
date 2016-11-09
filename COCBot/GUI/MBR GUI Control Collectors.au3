@@ -36,6 +36,8 @@ Func checkCollectors($log = False, $showLabel = True)
 	Return False
 EndFunc
 Func chkLvl6()
+	$chkLvl6Enabled = 0
+	GUICtrlSetState($cmbLvl6, $GUI_DISABLE)
 	If GUICtrlRead($chkLvl6) = $GUI_CHECKED Then
 		$chkLvl6Enabled = 1
 		GUICtrlSetState($cmbLvl6, $GUI_ENABLE)
@@ -129,3 +131,6 @@ EndFunc   ;==>cmbLvl12
 Func sldCollectorTolerance()
 	$toleranceOffset = GUICtrlRead($sldCollectorTolerance)
 EndFunc   ;==>sldCollectorTolerance
+Func cmbMinCollectorMatches()
+	$iMinCollectorMatches = _GUICtrlComboBox_GetCurSel($cmbMinCollectorMatches) + 1
+EndFunc   ;==>cmbMinCollectorMatches

@@ -1402,6 +1402,11 @@ Func saveConfig() ;Saves the controls settings to the config
 	EndIf
 	IniWriteS($config, "search", "RestartSearchLimit", GUICtrlRead($TxtRestartSearchlimit))
 
+	If GUICtrlRead($chkDeadBaseDisableCollectorsFilter) = $GUI_CHECKED Then
+		IniWriteS($config, "search", "chkDisableCollectorsFilter", 1)
+	Else
+		IniWriteS($config, "search", "chkDisableCollectorsFilter", 0)
+	EndIf
 
 	;Attack Basic Settings-------------------------------------------------------------------------
 
@@ -2506,6 +2511,7 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWriteS($config, "collectors", "lvl10fill", $cmbLvl10Fill)
 	IniWriteS($config, "collectors", "lvl11fill", $cmbLvl11Fill)
 	IniWriteS($config, "collectors", "lvl12fill", $cmbLvl12Fill)
+	IniWriteS($config, "collectors", "minmatches", $iMinCollectorMatches)
 	IniWriteS($config, "collectors", "tolerance", $toleranceOffset)
 
 	; Android Configuration

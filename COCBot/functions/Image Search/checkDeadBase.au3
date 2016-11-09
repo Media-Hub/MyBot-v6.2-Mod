@@ -148,16 +148,195 @@ Func LoadElixirImage50Percent()
 	Next
 EndFunc   ;==>LoadElixirImage50Percent
 
-Func checkDeadBase()
+Func hasElixirStorage()
 
-	Return ZombieSearch2() ; just so it compiles
+	Local $has = False
 
+	;aux data
+	Local $sCocDiamond = "ECD" ;
+	Local $redLines = $IMGLOCREDLINE; if TH was Search then redline is set!
+	Local $minLevel = 0
+	Local $maxLevel = 1000
+	Local $maxReturnPoints = 0 ; all positions
+	Local $returnProps="objectname,objectpoints,objectlevel"
+	Local $sDirectory = @ScriptDir & "\imgxml\deadbase\elix\storage\"
+	Local $bForceCapture = False ; force CaptureScreen
+	Local $result = findMultiple($sDirectory ,$sCocDiamond ,$redLines, $minLevel, $maxLevel, $maxReturnPoints , $returnProps, $bForceCapture)
+
+	If IsArray($result) then
+		For $matchedValues In $result
+			Local $aPoints = StringSplit($matchedValues[1], "|", $STR_NOCOUNT); multiple points splited by | char
+			Local $found = Ubound($aPoints)
+			If $found > 0 Then
+				$has = True
+				ExitLoop
+			EndIf
+		Next
+	EndIf
+
+	Return $has
+
+EndFunc   ;==>hasElixirStorage
+
+Func setZombie($RaidedElixir = -1, $AvailableElixir = -1, $Matched = -1, $SearchIdx = -1, $Timestamp = @YEAR & "-" & @MON & "-" & @MDAY & "_" & StringReplace(_NowTime(5), ":", "-"))
+	If TestCapture() Then Return ""
+	If $RaidedElixir = -1 And $AvailableElixir = -1 And $Matched = -1 And $SearchIdx = -1 Then
+		$aZombie[0] = ""
+		$aZombie[1] = 0
+		$aZombie[2] = 0
+		$aZombie[3] = 0
+		$aZombie[4] = 0
+		$aZombie[5] = ""
+	Else
+		If $RaidedElixir >= 0 Then $aZombie[1] = Number($RaidedElixir)
+		If $AvailableElixir >= 0 Then $aZombie[2] = Number($AvailableElixir)
+		If $Matched >= 0 Then $aZombie[3] = Number($Matched)
+		If $SearchIdx >= 0 Then $aZombie[4] = Number($SearchIdx)
+		If $aZombie[5] = "" Then $aZombie[5] = $Timestamp
+		Local $dbFound = $aZombie[3] >= $iMinCollectorMatches
+		Local $path = @ScriptDir & (($dbFound) ? ("\Zombies\") : ("\SkippedZombies\"))
+		Local $availK = Round($aZombie[2] / 1000)
+		; $ZombieFilename = "DebugDB_xxx%_" & $sCurrProfile & @YEAR & "-" & @MON & "-" & @MDAY & "_" & StringReplace(_NowTime(5), ":", "-") & "_search_" & StringFormat("%03i", $SearchCount) & "_" & StringFormat("%04i", Round($searchElixir / 1000)) & "k_matched_" & $TotalMatched
+		If $aZombie[0] = "" Then
+			Local $create = $aZombie[0] = "" And ($dbFound = True Or ($aZombie[7] = -1 And $aZombie[8] = -1) Or ($availK >= $aZombie[7] And hasElixirStorage() = False) Or $availK >= $aZombie[8])
+			If $create = True Then
+				Local $ZombieFilename = "DebugDB_" & StringFormat("%04i", $availK) & "k_" & $sCurrProfile & "_search_" & StringFormat("%03i", $aZombie[4]) & "_matched_" & $aZombie[3] & "_" & $aZombie[5] & ".png"
+				SetDebugLog("Saving enemy village screenshot for deadbase validation: " & $ZombieFilename)
+				$aZombie[0] = $ZombieFilename
+				Local $hBitmapZombie = _GDIPlus_BitmapCreateFromHBITMAP($hHBitmap2)
+				_GDIPlus_ImageSaveToFile($hBitmapZombie, $path & $aZombie[0])
+				_GDIPlus_BitmapDispose($hBitmapZombie)
+			EndIf
+		ElseIf $aZombie[0] <> "" Then
+			Local $raidPct = 0
+			If $aZombie[2] > 0 And $aZombie[2] >= $aZombie[1] Then
+				$raidPct = Round((100 * $aZombie[1]) / $aZombie[2])
+			EndIf
+			If $aZombie[6] = -1 Or $raidPct >= $aZombie[6] Then
+				SetDebugLog("Delete enemy village screenshot as base seems dead: " & $aZombie[0])
+				FileDelete($path & $aZombie[0])
+			Else
+				Local $ZombieFilename = "DebugDB_" & StringFormat("%03i", $raidPct) & "%_" & $sCurrProfile & "_search_" & StringFormat("%03i", $aZombie[4]) & "_matched_" & $aZombie[3] & "_" & StringFormat("%04i", $availK) & "k_" & StringFormat("%04i", Round($aZombie[1] / 1000)) & "k_" & $aZombie[5] & ".png"
+				SetDebugLog("Rename enemy village screenshot as base seems live: " & $ZombieFilename)
+				FileMove($path & $aZombie[0], $path & $ZombieFilename)
+			EndIF
+			; clear zombie
+			setZombie()
+		Else
+			; clear zombie
+			setZombie()
+		EndIf
+	EndIf
+	Return $aZombie[0]
+EndFunc   ;==>setZombie
+
+#cs
+Func checkDeadBaseOriginal()
+	Local $isZombie = ZombieSearch2() ; just so it compiles
+	Local $tempdead = $isZombie
+	If $tempdead  = False then ;try with imgloc if regular deadbase fails
+		If $debugsetlog = 1 Then SetLog("ZombieSearch returned FALSE, Checking Deadbase With IMGLOC START", $COLOR_WARNING)
+		$tempdead = imglocIsDeadBase(100) ; try full collectors fisrt
+		If $tempdead = False then ;retry with imgloc 50% Fill collectors
+			$tempdead = imglocIsDeadBase(50) ; try >half full collectors seccond
+		EndIf
+		If $debugsetlog = 1 and $tempdead = True Then DebugImageSave("IMGLOCDEADBASE_regNonMatched", False)
+		If $debugsetlog = 1 Then SetLog("DebugDeadEnable, Regular / IMGLOC  DeadBase Check Mismatch Return : " & $isZombie & "/" & $tempdead , $COLOR_WARNING)
+		$isZombie = $tempdead
+	Else
+	 ;CheckZombie already marked as deadbase, but want to recheck with imgloc also when debugdead is enabled
+		If $debugsetlog = 1 Then
+			If $debugsetlog = 1 Then SetLog("ZombieSearch returned TRUE, ReChecking Deadbase With IMGLOC START", $COLOR_WARNING)
+			$tempdead = imglocIsDeadBase(100) ; try full collectors fisrt
+			If $tempdead = False then ;retry with imgloc 50% Fill collectors
+				If $tempdead = False Then SetLog("DebugDeadEnable, Rechecking IMGLOC 100 : NOTFOUND", $COLOR_WARNING)
+				$tempdead = imglocIsDeadBase(50) ; try >half full collectors seccond
+				If $tempdead = False Then SetLog("DebugDeadEnable, Rechecking IMGLOC 50 : NOTFOUND", $COLOR_WARNING)
+			EndIf
+			if $isZombie <>  $tempdead then
+				SetLog("DebugDeadEnable, Regular / IMGLOC Deadbase MisMatch Check Return : " & $isZombie & "/" & $tempdead , $COLOR_WARNING)
+				If $debugsetlog = 1 Then DebugImageSave("IMGLOCDEADBASE_NOTDEADBASE", False)
+			EndIf
+			If $debugsetlog = 1 Then SetLog(">>> DebugDeadEnable, Rechecking also with IMGLOC END ", $COLOR_WARNING)
+		EndIf
+	EndIf
+	return $isZombie
+EndFunc
+#ce
+
+Func checkDeadBaseNew()
+
+    If $iDeadBaseDisableCollectorsFilter = 1 Then
+		Return True
+	EndIf
+	Local $minCollectorLevel = 0
+	Local $maxCollectorLevel = 0
+	Local $anyFillLevel[2] = [False, False] ; 50% and 100%
+	If $debugsetlog = 1 Then SetLog("Checking Deadbase With IMGLOC START", $COLOR_WARNING)
+
+	For $i = 6 To 12
+		Local $e = Eval("chkLvl" & $i & "Enabled")
+		If $e = 1 Then
+			If $minCollectorLevel = 0 Then $minCollectorLevel = $i
+			If $i > $maxCollectorLevel Then $maxCollectorLevel = $i
+			$anyFillLevel[Eval("cmbLvl" & $i & "Fill")] = True
+		EndIf
+	Next
+
+	If $maxCollectorLevel = 0 Then
+		Return True
+	EndIf
+
+	If $debugsetlog = 1 Then SetLog("Checking Deadbase With IMGLOC START", $COLOR_WARNING)
+
+	Local $TotalMatched = 0
+	Local $Matched[2] = [-1, -1]
+	Local $aPoints[0]
+
+	; only one capture here, very important for consistent zombies
+	_CaptureRegion2()
+
+	;retry with imgloc 50% Fill collectors
+	If $anyFillLevel[0] = True Then
+		$Matched[0] = imglocIsDeadBase($aPoints, 50, $minCollectorLevel, $maxCollectorLevel, True, False) ; try half full collectors
+		If $Matched[0] > 0 Then $TotalMatched += $Matched[0]
+	EndIf
+
+	If $TotalMatched < $iMinCollectorMatches Then ;retry with imgloc 100% Fill collectors
+		$Matched[1] = imglocIsDeadBase($aPoints, 100, $minCollectorLevel, $maxCollectorLevel, True, False) ; try full collectors
+		If $Matched[1] > 0 Then $TotalMatched += $Matched[1]
+	EndIf
+
+	Local $dbFound = $TotalMatched >= $iMinCollectorMatches
+	If $dbFound Then
+		If $debugsetlog = 1 Then SetLog("IMGLOC : FOUND DEADBASE !!! Matched: " & $TotalMatched & "/" & $iMinCollectorMatches & ": " & UBound($aPoints), $COLOR_GREEN)
+	Else
+		If $debugsetlog = 1 Then
+			If $Matched[0] = -1 And $Matched[1] = -1 Then
+				SetLog("IMGLOC : NOT A DEADBASE!!! ", $COLOR_INFO)
+			Else
+				SetLog("IMGLOC : DEADBASE NOT MATCHED Matched: " & $TotalMatched & "/" & $iMinCollectorMatches , $COLOR_WARNING)
+			EndIf
+		EndIf
+	EndIF
+
+	; always update $aZombie[3], current matched collectors count
+	$aZombie[3] = $TotalMatched
+	If $debugDeadBaseImage = 1 Then
+		setZombie(0, $searchElixir, $TotalMatched, $SearchCount)
+	EndIf
+
+	Return $dbFound
 EndFunc   ;==>checkDeadBase
+
+Func checkDeadBase()
+	Return checkDeadBaseSuperNew()
+EndFunc
 
 ;checkDeadBase Variables:-------------===========================
 Global $AdjustTolerance = 0
 Global $Tolerance[5][11] = [[55, 55, 55, 80, 70, 70, 75, 80, 0, 75, 65], [55, 55, 55, 80, 80, 70, 75, 80, 0, 75, 65], [55, 55, 55, 80, 80, 70, 75, 80, 0, 75, 65], [55, 55, 55, 80, 80, 60, 75, 75, 0, 75, 60], [55, 55, 55, 80, 80, 70, 75, 80, 0, 75, 65]]
-Global $ZC = 0, $ZombieCount = 0 ;, $E
+Global $ZC = 0, $ZombieCount = 0;, $E
 Global $ZombieFileSets = 3 ;Variant Image to use organized as per Folder
 Global $ZSExclude = 0 ;Set to 0 to include Elixir Lvl 6, 1 to include lvl 7 and so on..
 Global $Lx[4] = [0, 400, 0, 400]
@@ -234,7 +413,7 @@ Func ZombieSearch()
 ;~ 		$ZSExclude = 0 ;Set to 0 to include Elixir Lvl 6, 1 to include lvl 7 and so on..
 ;~ 	EndIf
 
-	; If $debugSetlog = 1 Then SetLog("$ZSExclude :" & $ZSExclude, $COLOR_DEBUG) ;Debug
+	; If $debugSetlog = 1 Then SetLog("$ZSExclude :" & $ZSExclude, $COLOR_DEBUG)
 
 	$ZombieCount = 0
 	$ZC = 0
@@ -268,9 +447,6 @@ Func ZombieSearch2($limit = 0, $tolerancefix = 0)
 	Local $ElixirLocation
 	Local $ElixirLocationx, $ElixirLocationy
 	Local $ZombieFound = False
-
-	Local $LogCase = $debugBuildingPos
-	If $LogCase = 0 Then $LogCase = 2
 
 	; calculate max number of files into folders
 	Local $Tolerance
@@ -306,29 +482,29 @@ Func ZombieSearch2($limit = 0, $tolerancefix = 0)
 				Else
 					$Tolerance = Number(StringMid(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), ".bmp") - StringInStr(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), "T") - 1))
 				EndIf
-				LogItInCase("Examine image 50% n." & $i, $LogCase)
-				LogItInCase(" for ElixirImage " & $t & "_50percent", $LogCase)
-				LogItInCase(" - image name: " & Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), $LogCase)
-				LogItInCase(" - tolerance: <" & StringMid(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), ".BMP") - StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") - 1) & ">", $LogCase)
-				LogItInCase(" - tolerancecalc: " & $Tolerance, $LogCase)
-				LogItInCase(@CRLF, $LogCase)
+				ConsoleWrite("Examine image 50% n." & $i)
+				ConsoleWrite(" for ElixirImage " & $t & "_50percent")
+				ConsoleWrite(" - image name: " & Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"))
+				ConsoleWrite(" - tolerance: <" & StringMid(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), ".BMP") - StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") - 1) & ">")
+				ConsoleWrite(" - tolerancecalc: " & $Tolerance)
+				ConsoleWrite(@CRLF)
 				$ElixirLocation = _ImageSearch(@ScriptDir & "\images\ELIXIR50PERCENT\" & $t + 6 & "\" & Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), 1, $ElixirLocationx, $ElixirLocationy, $Tolerance + ($DevMode = 1 ? Number($toleranceoffset) : 0)) ; Getting Elixir Location
-				LogItInCase("Imagesearch return: ", $LogCase)
-				LogItInCase("- ElixirLocation : " & $ElixirLocation, $LogCase)
-				LogItInCase("- ElixirLocationx : " & $ElixirLocationx, $LogCase)
-				LogItInCase("- TElixirLocationy : " & $ElixirLocationy, $LogCase)
-				LogItInCase(@CRLF, $LogCase)
+				ConsoleWrite("Imagesearch return: ")
+				ConsoleWrite("- ElixirLocation : " & $ElixirLocation)
+				ConsoleWrite("- ElixirLocationx : " & $ElixirLocationx)
+				ConsoleWrite("- TElixirLocationy : " & $ElixirLocationy)
+				ConsoleWrite(@CRLF)
 
 				If $ElixirLocation = 1 Then
 
 					If $debugBuildingPos = 1 Then
-						Setlog("#*# ZombieSearch2: ", $COLOR_TEAL)
-						Setlog("  - Position (" & $ElixirLocationx & "," & $ElixirLocationy & ")", $COLOR_TEAL)
-						Setlog("  - Elixir Collector 50% level " & $t + 6, $COLOR_TEAL)
-						Setlog("  - Image Match " & Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), $COLOR_TEAL)
-						Setlog("  - IsInsidediamond: " & isInsideDiamondXY($ElixirLocationx, $ElixirLocationy), $COLOR_TEAL)
-						SetLog("  - Calculated  in: " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_TEAL)
-						SetLog("  - Images checked: " & $count, $COLOR_TEAL)
+						Setlog("#*# ZombieSearch2: ", $COLOR_DEBUG1)
+						Setlog("  - Position (" & $ElixirLocationx & "," & $ElixirLocationy & ")", $COLOR_DEBUG1)
+						Setlog("  - Elixir Collector 50% level " & $t + 6, $COLOR_DEBUG1)
+						Setlog("  - Image Match " & Execute("$ElixirImages" & $t & "_50percent" & "[" & $i & "]"), $COLOR_DEBUG1)
+						Setlog("  - IsInsidediamond: " & isInsideDiamondXY($ElixirLocationx, $ElixirLocationy), $COLOR_DEBUG1)
+						SetLog("  - Calculated  in: " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_DEBUG1)
+						SetLog("  - Images checked: " & $count, $COLOR_DEBUG1)
 					EndIf
 					If isInsideDiamondXY($ElixirLocationx, $ElixirLocationy) = True Then
 						;add in stats-----
@@ -359,29 +535,29 @@ Func ZombieSearch2($limit = 0, $tolerancefix = 0)
 						$Tolerance = Number(StringMid(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), ".bmp") - StringInStr(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), "T") - 1))
 					EndIf
 
-					LogItInCase("Examine image 75% n." & $i, $LogCase)
-					LogItInCase(" for ElixirImage " & $t & "_75percent", $LogCase)
-					LogItInCase(" - image name: " & Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), $LogCase)
-					LogItInCase(" - tolerance: <" & StringMid(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), ".BMP") - StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") - 1) & ">", $LogCase)
-					LogItInCase(" - tolerancecalc: " & $Tolerance, $LogCase)
-					LogItInCase(@CRLF, $LogCase)
+					ConsoleWrite("Examine image 75% n." & $i)
+					ConsoleWrite(" for ElixirImage " & $t & "_75percent")
+					ConsoleWrite(" - image name: " & Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"))
+					ConsoleWrite(" - tolerance: <" & StringMid(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), ".BMP") - StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") - 1) & ">")
+					ConsoleWrite(" - tolerancecalc: " & $Tolerance)
+					ConsoleWrite(@CRLF)
 					$ElixirLocation = _ImageSearch(@ScriptDir & "\images\ELIXIR75PERCENT\" & $t + 6 & "\" & Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), 1, $ElixirLocationx, $ElixirLocationy, $Tolerance + ($DevMode = 1 ? Number($toleranceoffset) : 0)) ; Getting Elixir Location
-					LogItInCase("Imagesearch return: ", $LogCase)
-					LogItInCase("- ElixirLocation : " & $ElixirLocation, $LogCase)
-					LogItInCase("- ElixirLocationx : " & $ElixirLocationx, $LogCase)
-					LogItInCase("- TElixirLocationy : " & $ElixirLocationy, $LogCase)
-					LogItInCase(@CRLF, $LogCase)
+					ConsoleWrite("Imagesearch return: ")
+					ConsoleWrite("- ElixirLocation : " & $ElixirLocation)
+					ConsoleWrite("- ElixirLocationx : " & $ElixirLocationx)
+					ConsoleWrite("- TElixirLocationy : " & $ElixirLocationy)
+					ConsoleWrite(@CRLF)
 
 					If $ElixirLocation = 1 Then
 
 						If $debugBuildingPos = 1 Then
-							Setlog("#*# ZombieSearch2: ", $COLOR_TEAL)
-							Setlog("  - Position (" & $ElixirLocationx & "," & $ElixirLocationy & ")", $COLOR_TEAL)
-							Setlog("  - Elixir Collector 75% level " & $t + 6, $COLOR_TEAL)
-							Setlog("  - Image Match " & Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), $COLOR_TEAL)
-							Setlog("  - IsInsidediamond: " & isInsideDiamondXY($ElixirLocationx, $ElixirLocationy), $COLOR_TEAL)
-							SetLog("  - Calculated  in: " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_TEAL)
-							SetLog("  - Images checked: " & $count, $COLOR_TEAL)
+							Setlog("#*# ZombieSearch2: ", $COLOR_DEBUG1)
+							Setlog("  - Position (" & $ElixirLocationx & "," & $ElixirLocationy & ")", $COLOR_DEBUG1)
+							Setlog("  - Elixir Collector 75% level " & $t + 6, $COLOR_DEBUG1)
+							Setlog("  - Image Match " & Execute("$ElixirImages" & $t & "_75percent" & "[" & $i & "]"), $COLOR_DEBUG1)
+							Setlog("  - IsInsidediamond: " & isInsideDiamondXY($ElixirLocationx, $ElixirLocationy), $COLOR_DEBUG1)
+							SetLog("  - Calculated  in: " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_DEBUG1)
+							SetLog("  - Images checked: " & $count, $COLOR_DEBUG1)
 						EndIf
 						If isInsideDiamondXY($ElixirLocationx, $ElixirLocationy) = True Then
 							;add in stats-----
@@ -413,29 +589,29 @@ Func ZombieSearch2($limit = 0, $tolerancefix = 0)
 					Else
 						$Tolerance = Number(StringMid(Execute("$ElixirImages" & $t & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), ".bmp") - StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") - 1))
 					EndIf
-					LogItInCase("Examine image 100% n." & $i, $LogCase)
-					LogItInCase(" for ElixirImage " & $t, $LogCase)
-					LogItInCase(" - image name: " & Execute("$ElixirImages" & $t & "[" & $i & "]"), $LogCase)
-					LogItInCase(" - tolerance: <" & StringMid(Execute("$ElixirImages" & $t & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), ".BMP") - StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") - 1) & ">", $LogCase)
-					LogItInCase(" - tolerancecalc: " & $Tolerance, $LogCase)
-					LogItInCase(@CRLF, $LogCase)
+					ConsoleWrite("Examine image 100% n." & $i)
+					ConsoleWrite(" for ElixirImage " & $t)
+					ConsoleWrite(" - image name: " & Execute("$ElixirImages" & $t & "[" & $i & "]"))
+					ConsoleWrite(" - tolerance: <" & StringMid(Execute("$ElixirImages" & $t & "[" & $i & "]"), StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") + 1, StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), ".BMP") - StringInStr(Execute("$ElixirImages" & $t & "[" & $i & "]"), "T") - 1) & ">")
+					ConsoleWrite(" - tolerancecalc: " & $Tolerance)
+					ConsoleWrite(@CRLF)
 					$ElixirLocation = _ImageSearch(@ScriptDir & "\images\ELIXIR\" & $t + 6 & "\" & Execute("$ElixirImages" & $t & "[" & $i & "]"), 1, $ElixirLocationx, $ElixirLocationy, $Tolerance + ($DevMode = 1 ? Number($toleranceoffset) : 0)) ; Getting Elixir Location
-					LogItInCase("Imagesearch return: ", $LogCase)
-					LogItInCase("- ElixirLocation : " & $ElixirLocation, $LogCase)
-					LogItInCase("- ElixirLocationx : " & $ElixirLocationx, $LogCase)
-					LogItInCase("- TElixirLocationy : " & $ElixirLocationy, $LogCase)
-					LogItInCase(@CRLF, $LogCase)
+					ConsoleWrite("Imagesearch return: ")
+					ConsoleWrite("- ElixirLocation : " & $ElixirLocation)
+					ConsoleWrite("- ElixirLocationx : " & $ElixirLocationx)
+					ConsoleWrite("- TElixirLocationy : " & $ElixirLocationy)
+					ConsoleWrite(@CRLF)
 
 					If $ElixirLocation = 1 Then
 
 						If $debugBuildingPos = 1 Then
-							Setlog("#*# ZombieSearch2: ", $COLOR_TEAL)
-							Setlog("  - Position (" & $ElixirLocationx & "," & $ElixirLocationy & ")", $COLOR_TEAL)
-							Setlog("  - Elixir Collector 100% level " & $t + 6, $COLOR_TEAL)
-							Setlog("  - Image Match " & Execute("$ElixirImages" & $t & "[" & $i & "]"), $COLOR_TEAL)
-							Setlog("  - IsInsidediamond: " & isInsideDiamondXY($ElixirLocationx, $ElixirLocationy), $COLOR_TEAL)
-							SetLog("  - Calculated  in: " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_TEAL)
-							SetLog("  - Images checked: " & $count, $COLOR_TEAL)
+							Setlog("#*# ZombieSearch2: ", $COLOR_DEBUG1)
+							Setlog("  - Position (" & $ElixirLocationx & "," & $ElixirLocationy & ")", $COLOR_DEBUG1)
+							Setlog("  - Elixir Collector 100% level " & $t + 6, $COLOR_DEBUG1)
+							Setlog("  - Image Match " & Execute("$ElixirImages" & $t & "[" & $i & "]"), $COLOR_DEBUG1)
+							Setlog("  - IsInsidediamond: " & isInsideDiamondXY($ElixirLocationx, $ElixirLocationy), $COLOR_DEBUG1)
+							SetLog("  - Calculated  in: " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_DEBUG1)
+							SetLog("  - Images checked: " & $count, $COLOR_DEBUG1)
 						EndIf
 						If isInsideDiamondXY($ElixirLocationx, $ElixirLocationy) = True Then
 							;add in stats-----
@@ -458,24 +634,22 @@ Func ZombieSearch2($limit = 0, $tolerancefix = 0)
 	If $ZombieFound = False Then
 		If $debugBuildingPos = 1 Then
 
-			Setlog("#*# ZombieSearch2: NONE ", $COLOR_TEAL)
-			SetLog("  - Calculated  in: " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_TEAL)
-			SetLog("  - Images checked: " & $count, $COLOR_TEAL)
-			Setlog(" FOUND = " & $ZombieFound, $COLOR_TEAL)
+			Setlog("#*# ZombieSearch2: NONE ", $COLOR_DEBUG1)
+			SetLog("  - Calculated  in: " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds ", $COLOR_DEBUG1)
+			SetLog("  - Images checked: " & $count, $COLOR_DEBUG1)
+			Setlog(" FOUND = " & $ZombieFound, $COLOR_DEBUG1)
 		EndIf
-		If $debugBuildingPos = 1 And ($limit <> 0 Or $tolerancefix <> 0) Then Setlog("#*# ZombieSearch2: limit= " & $limit & ", tolerancefix=" & $tolerancefix, $COLOR_TEAL)
+		If $debugBuildingPos = 1 And ($limit <> 0 Or $tolerancefix <> 0) Then Setlog("#*# ZombieSearch2: limit= " & $limit & ", tolerancefix=" & $tolerancefix, $COLOR_DEBUG1)
 		If $debugImageSave = 1 Then DebugImageSave("ZombieSearch2_NoDeadBaseFound_", True)
-		If $debugsetlog = 1 Then Setlog("Collectors NO match, dead base not found", $COLOR_DEBUG) ;Debug
+	    If $debugsetlog=1 then Setlog("Collectors NO match, dead base not found",$COLOR_DEBUG)
 		Return False
 	Else
 		If $debugBuildingPos = 1 Then
-			Setlog(" FOUND = " & $ZombieFound, $COLOR_TEAL)
+			Setlog(" FOUND = " & $ZombieFound, $COLOR_DEBUG1)
 		EndIf
-		If $debugsetlog = 1 Then Setlog("Collectors match, dead base found", $COLOR_DEBUG) ;Debug
+	    If $debugsetlog=1 then Setlog("Collectors match, dead base found",$COLOR_DEBUG)
 		Return True
 	EndIf
-
-
 
 EndFunc   ;==>ZombieSearch2
 
@@ -512,20 +686,345 @@ Func SaveStatChkDeadBase()
 	FileClose($hFile)
 EndFunc   ;==>SaveStatChkDeadBase
 
-Func LogItInCase($String, $Case)
-	Switch $Case
-		Case 1
-			If $String = @CRLF Or $String = @CR Or $String = @LF Then
-				SetLog("=========================")
-				Return True
+Func GetCollectorIndexByFillLevel($level)
+	If Number($level) >= 85 Then Return 1
+	Return 0
+EndFunc   ;==>GetCollectorIndexByFillLevel
+
+Func imglocIsDeadBase(ByRef $aPos, $FillLevel = 100, $minCollectorLevel = 0, $maxCollectorLevel = 1000, $CheckConfig = False, $bForceCapture = True)
+	;only supports 50 and 100
+    ;accepts "regular,dark,spells"
+	;returns array with all found objects
+	Local $sCocDiamond = "ECD" ;
+	Local $redLines = $IMGLOCREDLINE; if TH was Search then redline is set!
+	Local $minLevel = $minCollectorLevel  ; We only support TH6+
+	Local $maxLevel = $maxCollectorLevel
+	Local $maxReturnPoints = 0 ; all positions
+	Local $returnProps="objectname,objectpoints,objectlevel"
+	Local $sDirectory = @ScriptDir & "\imgxml\deadbase\elix\" & $FillLevel & "\"
+	Local $matchedValues
+	Local $TotalMatched = 0
+	Local $fillIndex = GetCollectorIndexByFillLevel($FillLevel)
+
+	If $debugsetlog = 1 Then SetLog("IMGLOC : Searching Deadbase for FillLevel/MinLevel/MaxLevel: " & $FillLevel & "/" & $minLevel & "/" & $maxLevel & " using "&  $sDirectory, $COLOR_INFO)
+
+	Local $result = findMultiple($sDirectory ,$sCocDiamond ,$redLines, $minLevel, $maxLevel, $maxReturnPoints , $returnProps, $bForceCapture)
+	If IsArray($result) then
+		For $matchedValues In $result
+			Local $aPoints = StringSplit($matchedValues[1], "|", $STR_NOCOUNT); multiple points splited by | char
+			Local $found = Ubound($aPoints)
+
+			If $CheckConfig = True Then
+				Local $level = Number($matchedValues[2])
+				Local $e = Eval("chkLvl" & $level & "Enabled")
+				If $e = 1 Then
+					If $fillIndex < Eval("cmbLvl" & $level & "Fill") Then
+						; collector fill level not reached
+						$found = 0
+					EndIf
+				Else
+					; collector is not enabled
+					$found = 0
+				EndIf
 			EndIf
-			SetLog($String)
-			Return True
-		Case 2
-			ConsoleWrite($String)
-			Return True
-		Case Else
-			Return False
-	EndSwitch
-	Return False
-EndFunc   ;==>LogItInCase
+
+			If $found > 0 Then
+				For $sPoint in $aPoints
+					Local $aP = StringSplit($sPoint, ",", $STR_NOCOUNT)
+					Local $bSkipPoint = False
+					For $bP in $aPos
+						Local $a = $aP[1] - $bP[1]
+						Local $b = $aP[0] - $bP[0]
+						Local $c = Sqrt($a * $a + $b * $b)
+						If $c < 25 Then
+							; duplicate point: skip
+							If $debugsetlog = 1 Then SetLog("IMGLOC : Searching Deadbase ignore duplicate collector " & $matchedValues[0] & " at " & $aP[0] & ", " & $aP[1], $COLOR_INFO)
+							$bSkipPoint = True
+							$found -= 1
+							ExitLoop
+						EndIf
+					Next
+					If $bSkipPoint = False Then
+						Local $i = UBound($aPos)
+						ReDim $aPos[$i + 1]
+						$aPos[$i] = $aP
+					EndIf
+				Next
+
+			EndIf
+
+			$TotalMatched += $found
+		Next
+	Else
+		$TotalMatched = -1
+	EndIf
+
+	Return $TotalMatched
+
+EndFunc
+
+Func checkDeadBaseSuperNew()
+
+    If $iDeadBaseDisableCollectorsFilter = 1 Then
+		Return True
+	EndIf
+
+	Local $bForceCapture = True
+	Local $minCollectorLevel = 0
+	Local $maxCollectorLevel = 0
+	Local $anyFillLevel[2] = [False, False] ; 50% and 100%
+	If $debugsetlog = 1 Then SetLog("Checking Deadbase With IMGLOC START (super new)", $COLOR_WARNING)
+
+	For $i = 6 To 12
+		Local $e = Eval("chkLvl" & $i & "Enabled")
+		If $e = 1 Then
+			If $minCollectorLevel = 0 Then $minCollectorLevel = $i
+			If $i > $maxCollectorLevel Then $maxCollectorLevel = $i
+			$anyFillLevel[Eval("cmbLvl" & $i & "Fill")] = True
+		EndIf
+	Next
+
+	If $maxCollectorLevel = 0 Then
+		Return True
+	EndIf
+
+	If $debugsetlog = 1 Then SetLog("Checking Deadbase With IMGLOC START", $COLOR_WARNING)
+
+	Local $TotalMatched = 0
+	Local $Matched[2] = [-1, -1]
+	Local $aPoints[0]
+
+	; only one capture here, very important for consistent zombies
+	_CaptureRegion2()
+
+	; found fill positions (deduped)
+	Local $aPos[0]
+
+	Local $sDirectory = @ScriptDir & "\imgxml\deadbase\elix\fill\"
+	Local $sCocDiamond = "ECD" ;
+	Local $redLines = $IMGLOCREDLINE; if TH was Search then redline is set!
+	Local $minLevel = 0
+	Local $maxLevel = 1000
+	Local $maxReturnPoints = 0 ; all positions
+	Local $returnProps="objectname,objectpoints,objectlevel,fillLevel"
+	Local $matchedValues
+	Local $TotalMatched = 0
+	Local $x, $y, $lvl, $fill
+
+	If $debugsetlog = 1 Then SetLog("IMGLOC : Searching Deadbase for fill levels using "&  $sDirectory, $COLOR_INFO)
+
+	Local $result = findMultiple($sDirectory, $sCocDiamond, $redLines, $minLevel, $maxLevel, $maxReturnPoints, $returnProps, $bForceCapture)
+
+	Local $foundFilledCollectors = IsArray($result) = 1
+
+	If $foundFilledCollectors = True Then
+
+		For $matchedValues In $result
+			Local $aPoints = StringSplit($matchedValues[1], "|", $STR_NOCOUNT); multiple points splited by | char
+			Local $found = Ubound($aPoints)
+			If $found > 0 Then
+				$lvl = Number($matchedValues[3])
+				For $sPoint in $aPoints
+					Local $aP = StringSplit($sPoint, ",", $STR_NOCOUNT)
+					ReDim $aP[4] ; 2=fill, 3=lvl
+					$aP[3] = 0 ; initial lvl is 0 (for found/identified yet)
+					$aP[2] = $lvl
+					Local $bSkipPoint = False
+					For $i = 0 To UBound($aPos) - 1
+						Local $bP = $aPos[$i]
+						Local $a = $aP[1] - $bP[1]
+						Local $b = $aP[0] - $bP[0]
+						Local $c = Sqrt($a * $a + $b * $b)
+						If $c < 25 Then
+							; duplicate point: skipped
+							If $aP[2] > $bP[2] Then
+								; keep this one with higher level
+								$aPos[$i] = $aP
+								$aP = $bP ; just for logging
+							EndIf
+							If $debugsetlog = 1 Then SetLog("IMGLOC : Searching Deadbase ignore duplicate collector with fill level " & $aP[2] & " at " & $aP[0] & ", " & $aP[1], $COLOR_INFO)
+							$bSkipPoint = True
+							$found -= 1
+							ExitLoop
+						EndIf
+					Next
+					If $bSkipPoint = False Then
+						Local $i = UBound($aPos)
+						ReDim $aPos[$i + 1]
+						$aPos[$i] = $aP
+					EndIf
+				Next
+			EndIf
+		Next
+
+		; check each collector location for collector level
+		$sDirectory = @ScriptDir & "\imgxml\deadbase\elix\lvl\"
+		For $aP in $aPos
+			$x = $aP[0]
+			$y = $aP[1]
+			$fill = $aP[2]
+			$lvl = $aP[3]
+			; search area for collector level, add 20 left and right, 25 top and 15 bottom
+			$sCocDiamond = ($x - 20) & "," & ($y - 25) & "|" & ($x + 20) & "," & ($y - 25) & "|" & ($x + 20) & "," & ($y + 15) & "|" & ($x - 20) & "," & ($y + 15)
+			$redLines = $sCocDiamond ; override red line with CoC Diamond so not calculated again
+			$result = findMultiple($sDirectory, $sCocDiamond, $redLines, $minLevel, $maxLevel, $maxReturnPoints, $returnProps, $bForceCapture)
+			If IsArray($result) then
+				For $matchedValues In $result
+					Local $aPoints = StringSplit($matchedValues[1], "|", $STR_NOCOUNT); multiple points splited by | char
+					If Ubound($aPoints) > 0 Then
+						; collector level found
+						$lvl = Number($matchedValues[2])
+						If $lvl > $aP[3] Then $aP[3] = $lvl ; update collector level
+					EndIf
+				Next
+			EndIf
+			$lvl = $aP[3] ; update level variable as modified above
+			If $lvl = 0 Then
+				; collector level not identified
+				If $debugsetlog = 1 Then SetLog("IMGLOC : Searching Deadbase no collector identified with fill level " & $fill & " at " & $x & ", " & $y, $COLOR_INFO)
+				ContinueLoop ; jump to next collector
+			EndIF
+
+			; check if this collector level with fill level is enabled
+			Local $e = Eval("chkLvl" & $lvl & "Enabled")
+			If $e = 1 Then
+				Local $fillIndex = GetCollectorIndexByFillLevel($fill)
+				If $fillIndex < Eval("cmbLvl" & $lvl & "Fill") Then
+					; collector fill level not reached
+					If $debugsetlog = 1 Then SetLog("IMGLOC : Searching Deadbase collector level " & $lvl & " found but not enough elixir, fill level " & $fill & " at " & $x & ", " & $y, $COLOR_INFO)
+					ContinueLoop ; jump to next collector
+				EndIf
+			Else
+				; collector is not enabled
+				If $debugsetlog = 1 Then SetLog("IMGLOC : Searching Deadbase collector level " & $lvl & " found but not enabled, fill level " & $fill & " at " & $x & ", " & $y, $COLOR_INFO)
+				ContinueLoop ; jump to next collector
+			EndIf
+
+			; found collector
+			$TotalMatched += 1
+		Next
+	EndIf
+
+	Local $dbFound = $TotalMatched >= $iMinCollectorMatches
+	If $debugsetlog = 1 Then
+		If $foundFilledCollectors = False Then
+			SetLog("IMGLOC : NOT A DEADBASE!!!", $COLOR_INFO)
+		ElseIf $dbFound = False Then
+			SetLog("IMGLOC : DEADBASE NOT MATCHED: " & $TotalMatched & "/" & $iMinCollectorMatches , $COLOR_WARNING)
+		Else
+			SetLog("IMGLOC : FOUND DEADBASE !!! Matched: " & $TotalMatched & "/" & $iMinCollectorMatches & ": " & UBound($aPoints), $COLOR_GREEN)
+		EndIf
+	EndIf
+
+	; always update $aZombie[3], current matched collectors count
+	$aZombie[3] = $TotalMatched
+	If $debugDeadBaseImage = 1 Then
+		setZombie(0, $searchElixir, $TotalMatched, $SearchCount)
+	EndIf
+
+	Return $dbFound
+
+EndFunc
+
+Func checkDeadBaseFolder($directory)
+
+	Local $aFiles = _FileListToArray($directory, "*.png", $FLTA_FILES)
+
+	If IsArray($aFiles) = 0 Then Return False
+	If $aFiles[0] = 0 Then Return False
+
+	Local $wasDebugsetlog = $debugsetlog
+	$debugsetlog = 0
+
+	SetLog("Checking " & $aFiles[0] & " village screenshots for dead base...")
+
+	DirCreate($directory & "\better")
+	DirCreate($directory & "\worse")
+	DirCreate($directory & "\same")
+
+	Local $iTotalMsSuperNew = 0
+	Local $iTotalMsNew = 0
+	Local $iSuperNewFound = 0
+	Local $iNewFound = 0
+	Local $iBetter = 0
+	Local $iWorse = 0
+	Local $iSame = 0
+
+	Local $sCocDiamond = "ECD" ;
+
+	For $i = 1 To $aFiles[0]
+
+		Local $sFile = $aFiles[$i]
+		Local $srcFile = $directory & "\" & $sFile
+
+		; local image
+		Local $hBMP = _GDIPlus_BitmapCreateFromFile($directory & "\" & $sFile)
+		Local $hHBMP = _GDIPlus_BitmapCreateDIBFromBitmap($hBMP)
+		_GDIPlus_BitmapDispose($hBMP)
+		TestCapture($hHBMP)
+
+		; get readline
+		Local $res = DllCall($hImgLib2, "str", "SearchRedLines", "handle", $hHBMP, "str", $sCocDiamond)
+		$IMGLOCREDLINE = ""
+		If IsArray($res) = 1 Then
+			$IMGLOCREDLINE = $res[0]
+		EndIf
+
+		For $j = 1 to 2
+
+			If Mod($i + $j, 2) = 0  Then
+				; checkDeadBaseNew
+				Local $hTimer = TimerInit()
+				checkDeadBaseNew()
+				Local $iMsNew = TimerDiff($hTimer)
+				$iTotalMsNew += $iMsNew
+				$iMsNew = Round($iMsNew)
+				Local $new = $aZombie[3]
+				$iNewFound += $new
+			Else
+				; checkDeadBaseSuperNew
+				$hTimer = TimerInit()
+				checkDeadBaseSuperNew()
+				Local $iMsSuperNew = TimerDiff($hTimer)
+				$iTotalMsSuperNew += $iMsSuperNew
+				$iMsSuperNew = Round($iMsSuperNew)
+				Local $superNew = $aZombie[3]
+				$iSuperNewFound += $superNew
+			EndIf
+		Next
+
+		_WinAPI_DeleteObject($hHBMP)
+		TestCapture(0)
+
+		Local $result = ""
+		If $superNew > $new Then
+			SetLog(StringFormat("%5i/%5i", $i, $aFiles[0]) & ": Dead base result: BETTER : " & $superNew & " > " & $new & " (" & StringFormat("%4i/%4i", $iMsSuperNew, $iMsNew) & " ms.) " & $srcFile)
+			$result = "better"
+			$iBetter += 1
+		ElseIf $superNew < $new Then
+			SetLog(StringFormat("%5i/%5i", $i, $aFiles[0]) & ": Dead base result: WORSE  : " & $superNew & " < " & $new & " (" & StringFormat("%4i/%4i", $iMsSuperNew, $iMsNew) & " ms.) " & $srcFile)
+			$result = "worse"
+			$iWorse += 1
+		Else
+			SetLog(StringFormat("%5i/%5i", $i, $aFiles[0]) & ": Dead base result: SAME   : " & $superNew & " = " & $new & " (" & StringFormat("%4i/%4i", $iMsSuperNew, $iMsNew) & " ms.) " & $srcFile)
+			$result = "same"
+			$iSame += 1
+		EndIf
+
+		Local $dstFile = $directory & "\" & $result & "\" & $sFile
+		FileMove($srcFile, $dstFile)
+
+	Next
+
+	SetLog("Checking dead base completed")
+	SetLog("Super new image detection BETTER : " & $iBetter)
+	SetLog("Super new image detection WORSE  : " & $iWorse)
+	SetLog("Super new image detection SAME   : " & $iSame)
+	SetLog("Collectos found (Super new/new)  : " & $iSuperNewFound & " / " & $iNewFound)
+	SetLog("Duration in ms. (Super new/new)  : " & Round($iTotalMsSuperNew) & " / " & Round($iTotalMsNew))
+
+	$debugsetlog = $wasDebugsetlog
+
+	Return True
+
+EndFunc

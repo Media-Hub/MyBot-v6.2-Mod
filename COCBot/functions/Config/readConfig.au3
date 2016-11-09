@@ -378,6 +378,7 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 
 		IniReadS($itxtSWTtiles, $config, "search", "SWTtiles", "1")
 
+		IniReadS($iDeadBaseDisableCollectorsFilter,$config, "search", "chkDisableCollectorsFilter", "0")
 		;======================================================================================================================
 		;Attack Basics Settings-------------------------------------------------------------------------
 		IniReadS($iAtkAlgorithm[$DB], $config, "attack", "DBAtkAlgorithm", "0")
@@ -976,23 +977,31 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		; Extra Alphabets , Cyrillic.
 		$ichkExtraAlphabets = IniRead($config, "donate", "chkExtraAlphabets", "0")
 
-		;InireadS(xxxx,$config, "attack", "xxxx", "0")
-
-		InireadS($chkLvl6Enabled, $config, "collectors", "lvl6Enabled", "1", "Int")
+		;InireadS($chkLvl6Enabled, $config, "collectors", "lvl6Enabled", "0", "Int")
+		$chkLvl6Enabled = 0
 		InireadS($chkLvl7Enabled, $config, "collectors", "lvl7Enabled", "1", "Int")
 		InireadS($chkLvl8Enabled, $config, "collectors", "lvl8Enabled", "1", "Int")
 		InireadS($chkLvl9Enabled, $config, "collectors", "lvl9Enabled", "1", "Int")
 		InireadS($chkLvl10Enabled, $config, "collectors", "lvl10Enabled", "1", "Int")
 		InireadS($chkLvl11Enabled, $config, "collectors", "lvl11Enabled", "1", "Int")
 		InireadS($chkLvl12Enabled, $config, "collectors", "lvl12Enabled", "1", "Int")
-		InireadS($cmbLvl6Fill, $config, "collectors", "lvl6fill", "2")
-		InireadS($cmbLvl7Fill, $config, "collectors", "lvl7fill", "2")
-		InireadS($cmbLvl8Fill, $config, "collectors", "lvl8fill", "2")
-		InireadS($cmbLvl9Fill, $config, "collectors", "lvl9fill", "1")
-		InireadS($cmbLvl10Fill, $config, "collectors", "lvl10fill", "0")
-		InireadS($cmbLvl11Fill, $config, "collectors", "lvl11fill", "0")
-		InireadS($cmbLvl12Fill, $config, "collectors", "lvl12fill", "0")
-		InireadS($toleranceOffset, $config, "collectors", "tolerance", "0")
+		InireadS($cmbLvl6Fill, $config, "collectors", "lvl6fill", "0", "Int")
+		If $cmbLvl6Fill > 1 Then $cmbLvl6Fill = 1
+		InireadS($cmbLvl7Fill, $config, "collectors", "lvl7fill", "0", "Int")
+		If $cmbLvl7Fill > 1 Then $cmbLvl7Fill = 1
+		InireadS($cmbLvl8Fill, $config, "collectors", "lvl8fill", "0", "Int")
+		If $cmbLvl8Fill > 1 Then $cmbLvl8Fill = 1
+		InireadS($cmbLvl9Fill, $config, "collectors", "lvl9fill", "0", "Int")
+		If $cmbLvl9Fill > 1 Then $cmbLvl9Fill = 1
+		InireadS($cmbLvl10Fill, $config, "collectors", "lvl10fill", "0", "Int")
+		If $cmbLvl10Fill > 1 Then $cmbLvl10Fill = 1
+		InireadS($cmbLvl11Fill, $config, "collectors", "lvl11fill", "0", "Int")
+		If $cmbLvl11Fill > 1 Then $cmbLvl11Fill = 1
+		InireadS($cmbLvl12Fill, $config, "collectors", "lvl12fill", "0", "Int")
+		If $cmbLvl12Fill > 1 Then $cmbLvl12Fill = 1
+		InireadS($toleranceOffset, $config, "collectors", "tolerance", "0", "Int")
+		InireadS($iMinCollectorMatches, $config, "collectors", "minmatches", $iMinCollectorMatches) ; 1-6 collectors
+		If $iMinCollectorMatches < 1 Or $iMinCollectorMatches > 6 Then $iMinCollectorMatches = 3
 
 		; Android Configuration
 		$AndroidGamePackage = IniRead($config, "android", "game.package", $AndroidGamePackage)

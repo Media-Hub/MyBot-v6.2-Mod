@@ -2586,8 +2586,16 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	_GUICtrlComboBox_SetCurSel($cmbLvl10, $cmbLvl10Fill)
 	_GUICtrlComboBox_SetCurSel($cmbLvl11, $cmbLvl11Fill)
 	_GUICtrlComboBox_SetCurSel($cmbLvl12, $cmbLvl12Fill)
+	_GUICtrlComboBox_SetCurSel($cmbMinCollectorMatches, $iMinCollectorMatches - 1)
+
 	GUICtrlSetData($sldCollectorTolerance, $toleranceOffset)
 	checkCollectors()
+
+	If $iDeadBaseDisableCollectorsFilter = 0 Then
+		GUICtrlSetState($chkDeadBaseDisableCollectorsFilter , $GUI_UNCHECKED)
+	Else
+		GUICtrlSetState($chkDeadBaseDisableCollectorsFilter , $GUI_CHECKED)
+	EndIf
 
 	;Share Attack Settings----------------------------------------
 	GUICtrlSetData($txtShareMinGold, $iShareminGold)

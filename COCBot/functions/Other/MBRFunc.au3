@@ -18,6 +18,7 @@ Func MBRFunc($Start = True)
 		Case True
 			$hFuncLib = DllOpen($pFuncLib)
 			$hImgLib = DllOpen($pImgLib)
+			$hImgLib2 = DllOpen($pImgLib2)
 			$hFuncRedLib = DllOpen($pFuncRedLib)
 			If $hFuncLib = -1 Then
 				Setlog("MBRfunctions.dll not found.", $COLOR_RED)
@@ -31,6 +32,7 @@ Func MBRFunc($Start = True)
 			SetDebugLog("RedLineDetection.dll opened.")
 		Case False
 			DllClose($hFuncLib)
+			DllClose($hImgLib2)
 			DllClose($hImgLib)
 			DllClose($hFuncRedLib)
 			SetDebugLog("MBRfunctions.dll closed.")
