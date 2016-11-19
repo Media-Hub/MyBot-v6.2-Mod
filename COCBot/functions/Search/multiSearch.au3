@@ -13,9 +13,6 @@
 ; Example .......: No
 ; ===============================================================================================================================
 
-Global $DCD = "440,70|825,344|440,640|55,344"
-Global $ECD = "440,22|860,344|440,670|2,344"
-
 Func updateMultiSearchStats($aResult, $statFile = "")
 	Switch $statFile
 		Case $statChkWeakBase
@@ -153,7 +150,7 @@ Func multiMatches($directory, $maxReturnPoints = 0, $fullCocAreas = $DCD, $redLi
 			$aResult[$i + 1][0] = returnPropertyValue($aKeys[$i], "filename")
 			$aResult[$i + 1][1] = returnPropertyValue($aKeys[$i], "objectname")
 			$aResult[$i + 1][2] = returnPropertyValue($aKeys[$i], "objectlevel")
-			$aResult[$i + 1][3] = returnPropertyValue($aKeys[$i], "fillLevel")
+			$aResult[$i + 1][3] = returnPropertyValue($aKeys[$i], "filllevel")
 			$aResult[$i + 1][4] = returnPropertyValue($aKeys[$i], "totalobjects")
 
 			; Get the coords property
@@ -214,12 +211,16 @@ Func multiMatches2($directory, $maxReturnPoints = 0, $fullCocAreas = $DCD, $redL
 	Return $strPositions
 EndFunc   ;==>multiMatches2
 
-Func multiMatchesPixelOnly($directory, $maxReturnPoints = 0, $fullCocAreas = $ECD, $redLines = "", $statFile = "", $minLevel = 0, $maxLevel = 1000)
+Func multiMatchesPixelOnly($directory, $maxReturnPoints = 0, $fullCocAreas = $ECD, $redLines = "", $statFile = "", $minLevel = 0, $maxLevel = 1000, $x1 = 0, $y1 = 0, $x2 = 0, $y2 = 0)
 	; Setup arrays, including default return values for $return
 	Local $Result = ""
 
 	; Capture the screen for comparison
-	_CaptureRegion2()
+	If $x1 = 0 And $y1 = 0 And $y2 = 0 Then
+		_CaptureRegion2()
+	Else
+		_CaptureRegion2($x1, $y1, $x2, $y2)
+	EndIf
 
 	; Perform the search
 	$res = DllCall($hImgLib, "str", "SearchMultipleTilesBetweenLevels", "handle", $hHBitmap2, "str", $directory, "str", $fullCocAreas, "Int", $maxReturnPoints, "str", $redLines, "Int", $minLevel, "Int", $maxLevel)
@@ -305,9 +306,8 @@ EndFunc   ;==>returnAllMatches
 
 Func returnAllMatchesDefense($directory, $statFile = "", $minLevel = 0, $maxLevel = 1000)
 	; This is simple, just do a multiMatches search with 0 for the Max return points parameter
-	;Local $aResult = multiMatches2($directory, 0, "DCD", $LastRedLines, $statFile, $minLevel, $maxLevel)	; It was needing redlines... hehehe can be done later when i was in a good mood ;)
 
-	Local $aResult = multiMatches2($directory, 0, $ECD, "", $statFile, $minLevel, $maxLevel)
+	Local $aResult = multiMatches2($directory, 0, $DCD, $CurBaseRedLine, $statFile, $minLevel, $maxLevel)
 
 	Return $aResult
 EndFunc   ;==>returnAllMatchesDefense

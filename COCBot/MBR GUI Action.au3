@@ -16,6 +16,7 @@
 Func BotStart()
 	ResumeAndroid()
 
+	$RunModeChart = 1
 	$RunState = True
 	$TogglePauseAllowed = True
 	$SkipFirstZoomout = False
@@ -152,6 +153,7 @@ Func BotStop()
 		$hLogFileTrain = ""
 		FileClose($hAttackLogFileHandle)
 		$hAttackLogFileHandle = ""
+		FlushDebugFolder()
 	Else
 		$bSearchMode = False
 	EndIf
@@ -167,7 +169,7 @@ Func BotSearchMode()
 	If _Sleep(100) Then Return
 	$iTrophyCurrent = getTrophyMainScreen($aTrophies[0], $aTrophies[1]) ; get OCR to read current Village Trophies
 	If _Sleep(100) Then Return
-	getArmyCapacity(True, True)
+;	getArmyCapacity(True, True);REMOVED FUNCTION OCT UPDATE
 	If _Sleep(100) Then Return
 	PrepareSearch()
 	If _Sleep(1000) Then Return

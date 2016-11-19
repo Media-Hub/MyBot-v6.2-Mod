@@ -1,4 +1,4 @@
-﻿; #FUNCTION# ====================================================================================================================
+; #FUNCTION# ====================================================================================================================
 ; Name ..........: MBR Bot
 ; Description ...: This file contens the Sequence that runs all MBR Bot
 ; Author ........:  (2014)
@@ -11,9 +11,10 @@
 ; ===============================================================================================================================
 
 #RequireAdmin
-#AutoIt3Wrapper_UseX64=7n
+#AutoIt3Wrapper_UseX64=n
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #Au3Stripper_Parameters=/mo /rsln
+#AutoIt3Wrapper_Run_Before=""%scriptdir%\lib\MyBotBugTracker.exe" /include:"%scitedir%""
 ;#AutoIt3Wrapper_Change2CUI=y
 ;#pragma compile(Console, true)
 #pragma compile(Icon, "Images\MyBot.ico")
@@ -29,21 +30,19 @@
 #include <Process.au3>
 
 ;~ Boost launch time by increasing process priority (will be restored again when finished launching)
-Local $iBotProcessPriority = _ProcessGetPriority(@AutoItPID)
+;Local $iBotProcessPriority = _ProcessGetPriority(@AutoItPID)  ; Why a local here.. all local here is really global...
+Global $iBotProcessPriority = _ProcessGetPriority(@AutoItPID)
 ProcessSetPriority(@AutoItPID, $PROCESS_ABOVENORMAL)
 
 Global $iBotLaunchTime = 0
-Local $hBotLaunchTime = TimerInit()
+Global $hBotLaunchTime = TimerInit()
 
-Global $sGitHubModOwner = "NguyenAnhHD"
-Global $sGitHubModRepo = "MyBot-v6.2-Mod"
-Global $sGitHubModLatestReleaseTag = "v5.1.2"
-Global $sModSupportUrl = "https://www.facebook.com/groups/clan.fire.dragon"
+Global $sBotVersion = "v6.2.2" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it it also use on Checkversion()
+Global $sModversion = "v5.2" ;<== Just Change This to Version Number
+Global $sModSupportUrl = "https://mybot.run/forums/index.php?/topic/25631-dococ-mybot-v622-mod-nguyenanhhd-v52-update-1911/" ;<== Our Website Link Or Link Download
+Global $sDownloadUrl = "https://github.com/NguyenAnhHD/MyBot-v6.2-Mod/releases"
 
-$sBotVersion = "v6.2.2" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it it also use on Checkversion()
-$sBotTitle = "My Bot " & $sBotVersion & " DocOC MOD Nguyen Anh " & $sGitHubModLatestReleaseTag & "_S " ;~ Don't use any non file name supported characters like \ / : * ? " < > |
-$sModversion = $sGitHubModLatestReleaseTag
-
+Global $sBotTitle = "My Bot " & $sBotVersion & " DocOC MOD NguyenAnhHD " & $sModversion & "_S " ;~ Don't use any non file name supported characters like \ / : * ? " < > |
 #include "COCBot\functions\Config\DelayTimes.au3"
 #include "COCBot\MBR Global Variables.au3"
 _GDIPlus_Startup()
@@ -144,6 +143,14 @@ SetDebugLog("My Bot is " & ($OnlyInstance ? "" : "not ") & "the only running ins
 #include "COCBot\MBR GUI Control.au3"
 #include "COCBot\MBR Functions.au3"
 
+#include "COCBot\_MyBotErrorTrap.au3"
+FlushDebugFolder()
+_MyBotErrorTrap("Error ", "Hello Chief!" & @CRLF & _
+			@CRLF & "An error was detected in  MyBot, you can try again,  cancel to exit or continue to see more details of the error." & _
+			@CRLF & "Please report about this bug to developer" & @CRLF & @CRLF &"Sorry for the inconvenience!")
+
+
+
 ;DirCreate($sTemplates)
 DirCreate($sPreset)
 DirCreate($sProfilePath & "\" & $sCurrProfile)
@@ -179,6 +186,11 @@ If $FoundInstalledAndroid Then
 EndIf
 SetLog(GetTranslated(500, 8, "Android Emulator Configuration: %s", $sAndroidInfo), $COLOR_GREEN)
 
+$lastmessage = GetLastMsg()
+If $FirstRun = 1 Then
+	$lastremote = $lastuid
+EndIf
+
 ;AdlibRegister("PushBulletRemoteControl", $PBRemoteControlInterval)
 ;AdlibRegister("PushBulletDeleteOldPushes", $PBDeleteOldPushesInterval)
 
@@ -192,7 +204,10 @@ LoadAmountOfResourcesImages()
 
 ;~ InitializeVariables();initialize variables used in extra windows
 CheckVersion() ; check latest version on mybot.run site
-btnUpdateProfile() ; SwitchAcc - DEMEN
+
+;~ Update profile to write config for SwitchAcc Mode - DEMEN
+btnUpdateProfile()
+
 SetComboTroopComp()
 
 ;~ Remember time in Milliseconds bot launched
@@ -262,22 +277,24 @@ Func runBot() ;Bot that runs everything in order
 
 			checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
-			If $RequestScreenshot = 1 Then
+			If $PBRequestScreenshot = 1 Or $TGRequestScreenshot = 1 Then
 				$iForceNotify = 1
-				PushMsg("RequestScreenshot")
+				PushMsgToBoth("RequestScreenshot")
 			EndIf
-			If $RequestBuilderInfo = 1 Then
+			If $PBRequestBuilderInfo = 1 Or $TGRequestBuilderInfo = 1 Then
 				$iForceNotify = 1
-				PushMsg("BuilderInfo")
+				PushMsgToBoth("BuilderInfo")
 			EndIf
-			If $RequestShieldInfo = 1 Then
+			If $PBRequestShieldInfo = 1 Or $TGRequestShieldInfo = 1 Then
 				$iForceNotify = 1
-				PushMsg("ShieldInfo")
+				PushMsgToBoth("ShieldInfo")
 			EndIf
+			PushMsgToBoth("BuilderIdle")
 
 			If _Sleep($iDelayRunBot3) Then Return
 
 			VillageReport()
+			ProfileSwitch()
 			If $OutOfGold = 1 And (Number($iGoldCurrent) >= Number($itxtRestartGold)) Then ; check if enough gold to begin searching again
 				$OutOfGold = 0 ; reset out of gold flag
 				Setlog("Switching back to normal after no gold to search ...", $COLOR_RED)
@@ -344,6 +361,7 @@ Func runBot() ;Bot that runs everything in order
 				If $RunState = False Then Return
 				If _Sleep($iDelayRunBot3) Then Return
 			TestTrainRevamp()
+			MainSuperXPHandler()
 				If $Restart = True Then ContinueLoop
 			Local $aRndFuncList[3] = ['Laboratory', 'UpgradeHeroes', 'UpgradeBuilding']
 			While 1
@@ -367,8 +385,9 @@ Func runBot() ;Bot that runs everything in order
 				UpgradeWall()
 					If _Sleep($iDelayRunBot3) Then Return
 					If $Restart = True Then ContinueLoop
+				PushMsgToBoth("CheckBuilderIdle")
 
-					If $ichkSwitchAcc = 1 And $aProfileType[$nCurProfile-1] = 2 Then checkSwitchAcc()  		;  Switching to active account after donation - SwitchAcc for  - DEMEN
+				If $ichkSwitchAcc = 1 And $aProfileType[$nCurProfile-1] = 2 Then checkSwitchAcc()  		;  Switching to active account after donation - SwitchAcc for  - DEMEN
 
 				Idle()
 					;$fullArmy1 = $fullArmy
@@ -431,11 +450,16 @@ Func Idle() ;Sequence that runs until Full Army
 	While $IsFullArmywithHeroesAndSpells = False
 		checkAndroidTimeLag()
 
-		If $RequestScreenshot = 1 Then PushMsg("RequestScreenshot")
+		If $PBRequestScreenshot = 1 Or $TGRequestScreenshot = 1 Then PushMsgToBoth("RequestScreenshot")
 		If _Sleep($iDelayIdle1) Then Return
 		If $CommandStop = -1 Then SetLog("====== Waiting for full army ======", $COLOR_GREEN)
+
+		; Ck timer for Collecting Chart Data
+		If TimerDiff($t1HrTimer) > 3600000 Then ChartAddDataPoint1hr("Total", False) ; 180 000 3 min, 3600000 1 hr.
 		Local $hTimer = TimerInit()
 		Local $iReHere = 0
+
+		BotHumanization()
 
 		While $iReHere < 7
 			$iReHere += 1
@@ -486,6 +510,7 @@ Func Idle() ;Sequence that runs until Full Army
 		$iCollectCounter = $iCollectCounter + 1
 		If $CommandStop = -1 Then
 			TestTrainRevamp()
+			MainSuperXPHandler()
 				If $Restart = True Then ExitLoop
 				If _Sleep($iDelayIdle1) Then ExitLoop
 				checkMainScreen(False)
@@ -498,6 +523,7 @@ Func Idle() ;Sequence that runs until Full Army
 		If $CommandStop = 0 And $bTrainEnabled = True Then
 			If $fullArmy = False or $bFullArmySpells = False Then
 				TestTrainRevamp()
+				MainSuperXPHandler()
 					If $Restart = True Then ExitLoop
 					If _Sleep($iDelayIdle1) Then ExitLoop
 					checkMainScreen(False)
@@ -535,7 +561,7 @@ Func Idle() ;Sequence that runs until Full Army
 		If $CommandStop = -1 Then ; Check if closing bot/emulator while training and not in halt mode
 			If $ichkSwitchAcc = 1 Then				; SwitchAcc - DEMEN
 				checkSwitchAcc()					; SwitchAcc - DEMEN
-			Else									; SwitchAcc - DEMEN
+			Else
 				SmartWait4Train()
 			EndIf
 			If $Restart = True Then ExitLoop ; if smart wait activated, exit to runbot in case user adjusted GUI or left emulator/bot in bad state
@@ -546,6 +572,10 @@ EndFunc   ;==>Idle
 
 Func AttackMain() ;Main control for attack functions
 	;LoadAmountOfResourcesImages() ; for debug
+	If $ichkEnableSuperXP = 1 And $irbSXTraining = 2 Then
+		MainSuperXPHandler()
+		Return
+	EndIf
 	If IsSearchAttackEnabled() Then
 		If  $IsFullArmywithHeroesAndSpells = False then return
 		If (IsSearchModeActive($DB) And checkCollectors(True, False)) or IsSearchModeActive($LB) or IsSearchModeActive($TS) Then
@@ -615,7 +645,7 @@ Func QuickAttack()
    Local   $quicklythsnipe=0
    If  $IsFullArmywithHeroesAndSpells = False then return
    If ( $iAtkAlgorithm[$DB] = 2  and IsSearchModeActive($DB) ) or (IsSearchModeActive($TS) ) Then
-	  getArmyCapacity(true,true)
+;	  getArmyCapacity(true,true) ;REMOVED FUNCTION OCT UPDATE
 	  VillageReport()
    EndIf
    $iTrophyCurrent = getTrophyMainScreen($aTrophies[0], $aTrophies[1])
@@ -687,6 +717,9 @@ Func _RunFunction($action)
 			_Sleep($iDelayRunBot3)
 		Case "UpgradeBuilding"
 			UpgradeBuilding()
+			_Sleep($iDelayRunBot3)
+		Case "SuperXP"
+			MainSuperXPHandler()
 			_Sleep($iDelayRunBot3)
 		Case ""
 			SetDebugLog("Function call doesn't support empty string, please review array size", $COLOR_RED)

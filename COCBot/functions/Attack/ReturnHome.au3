@@ -14,6 +14,7 @@
 ; Example .......: No
 ; ===============================================================================================================================
 Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
+	ResetRedLines()
 	If $DebugSetLog = 1 Then Setlog("ReturnHome function... (from matchmode=" & $iMatchMode & " - " & $sModeText[$iMatchMode] & ")", $COLOR_DEBUG) ;Debug
 	Local $counter = 0
 	Local $hBitmap_Scaled
@@ -134,7 +135,6 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 		_GDIPlus_ImageSaveToFile($hBitmap_Scaled, $dirLoots & $LootFileName)
 		_GDIPlus_ImageDispose($hBitmap_Scaled)
 	EndIf
-	ResetRedLine()
 	;push images if requested..
 	If $GoldChangeCheck = True Then
 		PushMsg("LastRaid")

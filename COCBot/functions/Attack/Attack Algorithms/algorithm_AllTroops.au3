@@ -73,8 +73,8 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 		Case 3 ;All sides ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			SetLog("Attacking on all sides", $COLOR_BLUE)
 			$nbSides = 4
-		Case 4 ;Four Finger Classic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			SetLog("Attacking Four Finger Classic fight style", $COLOR_BLUE)
+		Case 4 ;Four Fingers Classic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			SetLog("Attacking Four Fingers CLassic fight style", $COLOR_BLUE)
 			$nbSides = 5
 		Case 5 ;DE Side - Live Base only ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			SetLog("Attacking on Dark Elixir Side.", $COLOR_BLUE)
@@ -139,7 +139,7 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 						]
 		EndSwitch
 
-	; Four Finger Classic
+	; Four Fingers Classic
 	ElseIf $nbSides = 5 Then
 		Local $listInfoDeploy[15][5] = [[$eGiant, $nbSides, 1, 1, 2] _
 				, [$eWall, $nbSides, 1, 1, 1] _

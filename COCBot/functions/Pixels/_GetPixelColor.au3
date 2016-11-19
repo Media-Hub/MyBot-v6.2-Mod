@@ -24,3 +24,17 @@ Func _GetPixelColor($iX, $iY, $bNeedCapture = False)
 	EndIf
 	Return Hex($aPixelColor, 6)
 EndFunc   ;==>_GetPixelColor
+
+Func _GetPixelColor2($iX, $iY, $bNeedCapture = False, $sLogText = Default, $LogTextColor = Default, $bSilentSetLog = Default)
+	If $bNeedCapture = False Or $RunState = False Then
+		$aPixelColor = _GDIPlus_BitmapGetPixel($hBitmap, $iX, $iY)
+	Else
+		_CaptureRegion($iX - 1, $iY - 1, $iX + 1, $iY + 1)
+		$aPixelColor = _GDIPlus_BitmapGetPixel($hBitmap, 1, 1)
+	EndIf
+	If $sLogText <> Default And IsString($sLogText) Then
+		Local $String = $sLogText & ", Found: " & Hex($aPixelColor, 6)
+		SetDebugLog($String, $LogTextColor, $bSilentSetLog)
+	EndIf
+	Return Hex($aPixelColor, 6)
+EndFunc   ;==>_GetPixelColor2

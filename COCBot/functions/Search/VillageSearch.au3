@@ -96,6 +96,9 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 		If $Restart = True Then Return ; exit func
 
 		; ----------------- READ ENEMY VILLAGE RESOURCES  -----------------------------------
+		WaitForClouds() ; Wait for clouds to disappear
+		If $Restart = True Then Return ; exit func
+
 		GetResources(False) ;Reads Resource Values
 		If $Restart = True Then Return ; exit func
 
@@ -113,7 +116,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 		Local $noMatchTxt = ""
 		Local $dbBase = False
 		Local $match[$iModeCount]
-		Global $isModeActive[$iModeCount]
+		Redim $isModeActive[$iModeCount]
 		For $i = 0 To $iModeCount - 1
 			$match[$i] = False
 			$isModeActive[$i] = False
@@ -172,11 +175,12 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 		EndIf
 
 		; ----------------- CHECK WEAK BASE -------------------------------------------------
-		If ($isModeActive[$DB] And IsWeakBaseActive($DB) And $dbBase And ($match[$DB] Or $iChkMeetOne[$DB] = 1)) Or _
-			($isModeActive[$LB] And IsWeakBaseActive($LB) And ($match[$LB] Or $iChkMeetOne[$LB] = 1)) Then
+
+		If ($isModeActive[$DB] And IsWeakBaseActive($DB) > 0 And $dbBase And ($match[$DB] Or $iChkMeetOne[$DB] = 1)) Or _
+			($isModeActive[$LB] And IsWeakBaseActive($LB) > 0  And ($match[$LB] Or $iChkMeetOne[$LB] = 1)) Then
 			$weakBaseValues = IsWeakBase()
 			For $i = 0 To $iModeCount - 2
-				If IsWeakBaseActive($i) And (($i = $DB And $dbBase) Or $i <> $DB) And ($match[$i] Or $iChkMeetOne[$i] = 1) Then
+				If IsWeakBaseActive($i) > 0   And (($i = $DB And $dbBase) Or $i <> $DB) And ($match[$i] Or $iChkMeetOne[$i] = 1) Then
 					If getIsWeak($weakBaseValues, $i) Then
 						$match[$i] = True
 					Else
@@ -425,7 +429,7 @@ Func SearchLimit($iSkipped)
 		WEnd
 		$Is_SearchLimit = True
 		ReturnHome(False, False) ;If End battle is available
-		getArmyCapacity(True, True)
+;		getArmyCapacity(True, True)       ;REMOVED FUNCTION OCT UPDATE
 		$Restart = True ; set force runbot restart flag
 		$Is_ClientSyncError = True ; set OOS flag for fast restart
 		Return True

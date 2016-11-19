@@ -63,6 +63,7 @@ Global $aLanguageCheck4[4] = [354, 11, 0x090908, 20] ; Main Screen Test Language
 Global $aTrophies[2] = [65, 74] ; Main Screen, Trophies
 Global $aNoCloudsAttack[4] = [757, 1, 0xFDFEFF, 30] ; Attack Screen: No More Clouds, Will be TRUE IF Clouds are Available
 ;Global $aNoCloudsAttack[4] = [757, 1, 0x2E281D, 30] ; Attack Screen: No More Clouds, Will Be TRUE IF No Clouds are Available
+Global $aNoCloudsAttack2[4] = [25, 606, 0xC00000, 10] ; Attack Screen: No More Clouds <= From Official
 Global $aMessageButton[2] = [38, 143] ; Main Screen, Message Button
 Global $aArmyTrainButton[2] = [40, 525 + $bottomOffsetY] ; Main Screen, Army Train Button
 Global $aWonOneStar[4] = [714, 538 + $bottomOffsetY, 0xC0C8C0, 20] ; Center of 1st Star for winning attack on enemy
@@ -85,6 +86,8 @@ Global $aLootCartBtn[2] = [430, 640 + $bottomOffsetY] ; Main Screen Loot Cart bu
 Global $aCleanYard[4] = [418, 587 + $bottomOffsetY, 0xE1debe, 20] ; Main Screen Clean Resources - Trees , Mushrooms etc
 Global $aIsTrainPgChk1[4]	  = [717, 120 + $midOffsetY, 0xE0070A, 10]  ; Main Screen, Train page open - Red below X
 Global $aIsTrainPgChk2[4]	  = [762, 328 + $midOffsetY, 0xF18439, 10]  ; Main Screen, Train page open - Dark Orange in left arrow
+Global $aRtnHomeCloud1[4]	  = [56, 592 + $bottomOffsetY, 0x0A223F, 15]  ; Cloud Screen, during search, blue pixel in left eye
+Global $aRtnHomeCloud2[4]	  = [72, 592 + $bottomOffsetY, 0x103F7E, 15]  ; Cloud Screen, during search, blue pixel in right eye
 
 ;Global $aKingHealth          = [ -1, 572 + $bottomOffsetY, 0x4FD404,110] ; Attack Screen, Check King's Health, X coordinate is dynamic, not used from array
 ;Global $aQueenHealth         = [ -1, 573 + $bottomOffsetY, 0x4FD404,110] ; Attack Screen, Check Queen's Health, X coordinate is dynamic, not used from array
@@ -229,6 +232,7 @@ Global Const $GemWitc[4] = [666, 372 + $midOffsetY, 0xE70A12, 30]
 Global Const $GemLava[4] = [239, 482 + $midOffsetY, 0xE70A12, 30]
 Global Const $GemBowl[4] = [342, 479 + $midOffsetY, 0xE70A12, 30]
 
+Global Const $aOpenChatTab[4] = [19, 335 + $midOffsetY, 0xE88D27, 20]
 Global Const $aCloseChat[4] = [331, 330 + $midOffsetY, 0xF0951D, 20]
 Global Const $aChatDonateBtnColors[4][4] = [[0x050505, 0, -4, 30], [0x89CA31, 0, 13, 15], [0x89CA31, 0, 16, 15], [0xFFFFFF, 21, 7, 5]]
 

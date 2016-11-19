@@ -174,7 +174,7 @@ Func AttackReport()
 	SetLog("Stars earned: " & $starsearned)
 
 	Local $AtkLogTxt
-	$AtkLogTxt = String($nCurProfile) & "|" & _NowTime(4) & "|"  ; adding Acc No. in Attack Log - SwitchAcc - DEMEN
+	$AtkLogTxt = String($nCurProfile) & "|" & _NowTime(4) & "|"
 	$AtkLogTxt &= StringFormat("%5d", $iTrophyCurrent) & "|"
 	$AtkLogTxt &= StringFormat("%6d", $SearchCount) & "|"
 	$AtkLogTxt &= StringFormat("%7d", $iGoldLast) & "|"
@@ -234,4 +234,11 @@ Func AttackReport()
 	If $ichkSwitchAcc = 1 Then $aAttackedCountAcc[$nCurProfile-1] += 1 								; SwitchAcc Mod - DEMEN
 	UpdateStats()
 
+	If $iAttackedCount = 1 Then
+		ChartAddDataPoint1hr("Rate",True)
+		ChartAddDataPoint1hr("Attack",True)
+	Else
+		ChartAddDataPoint1hr("Rate",False)
+		ChartAddDataPoint1hr("Attack",False)
+	EndIf
 EndFunc   ;==>AttackReport

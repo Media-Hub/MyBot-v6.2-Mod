@@ -17,3 +17,19 @@ Func _CheckPixel($aScreenCode, $bNeedCapture = False, $Ignore = "")
 	If _ColorCheck(_GetPixelColor($aScreenCode[0], $aScreenCode[1], $bNeedCapture), Hex($aScreenCode[2], 6), $aScreenCode[3], $Ignore) Then Return True
 	Return False;
 EndFunc   ;==>_CheckPixel
+
+Func _CheckPixel2($aScreenCode, $bNeedCapture = Default, $Ignore = Default, $sLogText = Default, $LogTextColor = Default, $bSilentSetLog = Default)
+	If $bNeedCapture = Default Then $bNeedCapture = False
+	If $debugSetlog = 1 And $sLogText <> Default And IsString($sLogText) Then
+		$sLogText &= ", Expected: " & Hex($aScreenCode[2], 6)
+	Else
+		$sLogText = Default
+	EndIf
+	If _ColorCheck2( _
+			_GetPixelColor2($aScreenCode[0], $aScreenCode[1], $bNeedCapture, $sLogText, $LogTextColor, $bSilentSetLog), _ ; capture color #1
+			Hex($aScreenCode[2], 6), _  ; compare to Color #2 from screencode
+			$aScreenCode[3], $Ignore) Then ; using tolerance from screencode and color mask name referenced by $Ignore
+		Return True
+	EndIf
+	Return False;
+EndFunc   ;==>_CheckPixel2

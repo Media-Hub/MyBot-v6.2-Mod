@@ -51,11 +51,11 @@ Func Laboratory()
 
 	; Get updated village elixir and dark elixir values
 	If _ColorCheck(_GetPixelColor(812, 141, True), Hex(0x000000, 6), 10) Then ; check if the village have a Dark Elixir Storage
-		$iElixirCount = getResourcesMainScreen(705, 74)
+		$iElixirCount = getResourcesMainScreen(696, 74)
 		$iDarkCount = getResourcesMainScreen(728, 123)
 		SetLog("Updating village values [E]: " & $iElixirCount & " [D]: " & $iDarkCount, $COLOR_GREEN)
 	Else
-		$iElixirCount = getResourcesMainScreen(710, 74)
+		$iElixirCount = getResourcesMainScreen(701, 74)
 		SetLog("Updating village values [E]: " & $iElixirCount, $COLOR_GREEN)
 	EndIf
 	$iAvailElixir = Number($iElixirCount)

@@ -19,6 +19,8 @@
 ;			Get pixel next the "out zone" , indeed the red color is very different and more uncertain
 ;			Sort each sides
 ;			Add each sides in one array (not use, but it can help to get closer pixel of all the red area)
+Global $CurBaseRedLine[2] = ["", ""]
+
 
 Func _GetRedArea()
 	$nameFunc = "[_GetRedArea] "
@@ -194,15 +196,31 @@ Func _GetRedArea()
 	debugRedArea($nameFunc & " OUT ")
 EndFunc   ;==>_GetRedArea
 
-Func GetImgLoc2MBR()
+Func GetImgLoc2MBR($redlines = "")
 
-	_CaptureRegion2()
+	Local $res
+	If $redlines = "" And IsArray($redlines) = False Then
+		_CaptureRegion2()
+		Local $SingleCocDiamond = "ECD"
+		$res = DllCall($pImgLib2, "str", "SearchRedLines", "handle", $hHBitmap2, "str", $SingleCocDiamond)
+		StoreRedLines($res)
+		If @error Then _logErrorDLLCall($pImgLib2 & ", SearchRedLines: ", @error)
+	Else
+		$res = $redlines
+	EndIf
+
+	Local $rConvert = ConvertToOldRedLines($res)
+
+	Local $NewRedLineString = $rConvert[0] & "#" & $rConvert[1] & "#" & $rConvert[2] & "#" & $rConvert[3]
+
+	Return $NewRedLineString
+
+EndFunc   ;==>GetImgLoc2MBR
+
+Func ConvertToOldRedLines($imgLocResult)
 	Local $_PixelTopLeft, $_PixelBottomLeft, $_PixelBottomRight, $_PixelTopRight , $AllPoints , $EachPoint[1][2]
-	Local $SingleCocDiamond = "ECD"
-	Local $res = DllCall($pImgLib2, "str", "SearchRedLines", "handle", $hHBitmap2, "str", $SingleCocDiamond)
 
-	If @error Then _logErrorDLLCall($pImgLib2 & ", SearchRedLines: ", @error)
-
+	Local $res = $imgLocResult
 	If IsArray($res) Then
 		If $res[0] = "0" Or $res[0] = "" Then
 			SetLog("Imgloc|SearchRedLines not found!", $COLOR_RED)
@@ -266,23 +284,42 @@ Func GetImgLoc2MBR()
 	If Not StringIsSpace($__PixelBottomRight) Then $__PixelBottomRight = StringTrimLeft($__PixelBottomRight, 1)
 	If Not StringIsSpace($__PixelTopRight) Then $__PixelTopRight = StringTrimLeft($__PixelTopRight, 1)
 
-	Local $NewRedLineString = $__PixelTopLeft & "#" & $__PixelBottomLeft & "#" & $__PixelBottomRight & "#" & $__PixelTopRight
+	Local $ToReturn[4] = [$__PixelTopLeft, $__PixelBottomLeft, $__PixelBottomRight, $__PixelTopRight]
 
-	Return $NewRedLineString
+	Return $ToReturn
+EndFunc
 
-EndFunc   ;==>GetImgLoc2MBR
+Func StoreRedLines($redLines)
+	If StringLen($CurBaseRedLine[0]) > 30 Then Return $CurBaseRedLine
+	Local $result = $redLines
+	If IsArray($result) Then
+		$CurBaseRedLine[0] = $result[0]
+	EndIf
+	Return $CurBaseRedLine
+EndFunc
 
-Func IsRedLineOld()
-	If $redLinesDefense[0] <= 0 Or $redLinesDefense[1] = 0 Then Return True
-	Local $tDiff = TimerDiff($redLinesDefense[1])
-	If Int($tDiff, 1) <= 240000 Then Return False
+Func IsRedLineAvailable()
+	If StringLen($CurBaseRedLine[0]) > 30 Then Return True
+	Return False
+EndFunc
+
+Func ResetRedLines()
+	_ArrayClear($CurBaseRedLine)
 	Return True
-EndFunc   ;==>IsRedLineOld
+EndFunc
 
-Func ResetRedLine()
-	$redLinesDefense[0] = -1
-	$redLinesDefense[1] = 0
-EndFunc   ;==>ResetRedLine
+Func _ArrayClear(ByRef $aArray)
+    Local $iCols = UBound($aArray, 2)
+    Local $iDim = UBound($aArray, 0)
+    Local $iRows = UBound($aArray, 1)
+    If $iDim = 1 Then
+        Local $aArray1D[$iRows]
+        $aArray = $aArray1D
+    Else
+        Local $aArray2D[$iRows][$iCols]
+        $aArray = $aArray2D
+    EndIf
+EndFunc   ;==>_ArrayClear
 
 Func ReturnString($string = "")
 

@@ -12,6 +12,24 @@
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: No
 ; ===============================================================================================================================
+Func cmbDeployAB()
+   If _GUICtrlCombobox_GetCurSel($cmbDeployAB) = 4 Then
+	  GUICtrlSetState($chkSmartAttackRedAreaAB, $GUI_UNCHECKED)
+	  GUICtrlSetState($chkSmartAttackRedAreaAB, $GUI_DISABLE)
+   Else
+	  GUICtrlSetState($chkSmartAttackRedAreaAB, $GUI_ENABLE)
+   EndIf
+EndFunc
+
+Func cmbDeployDB()
+   If _GUICtrlCombobox_GetCurSel($cmbDeployDB) = 4 Then
+	  GUICtrlSetState($chkSmartAttackRedAreaDB, $GUI_UNCHECKED)
+	  GUICtrlSetState($chkSmartAttackRedAreaDB, $GUI_DISABLE)
+   Else
+	  GUICtrlSetState($chkSmartAttackRedAreaDB, $GUI_ENABLE)
+   EndIf
+EndFunc
+
 Func chkRandomSpeedAtkAB()
 	If GUICtrlRead($chkRandomSpeedAtkAB) = $GUI_CHECKED Then
 		;$iChkABRandomSpeedAtk = 1

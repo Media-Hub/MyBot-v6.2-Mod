@@ -71,14 +71,14 @@ Func DropOnEdge($troop, $edge, $number, $slotsPerEdge = 0, $edge2 = -1, $x = -1,
 		For $i = 0 To $slotsPerEdge - 1
 			Local $nbtroopPerSlot = Round($nbTroopsLeft / ($slotsPerEdge - $i)) ; progressively adapt the number of drops to fill at the best
 			If $FourFingers = 5 Then
-			   Local $posX = Round($minX + (($maxX - $minX) * $i) / ($slotsPerEdge - 1))
-			   Local $posY = Round($minY + (($maxY - $minY) * $i) / ($slotsPerEdge - 1))
-			   AttackClick($posX, $posY, $nbtroopPerSlot, SetSleep(0), 0, "#0108")
-			   Local $posX = $minXTL + (($maxXTL - $minXTL) * $i) / ($slotsPerEdge - 1)
-			   Local $posY = $minYTL + (($maxYTL - $minYTL) * $i) / ($slotsPerEdge - 1)
+				Local $posX = Round($minX + (($maxX - $minX) * $i) / ($slotsPerEdge - 1))
+				Local $posY = Round($minY + (($maxY - $minY) * $i) / ($slotsPerEdge - 1))
+				AttackClick($posX, $posY, $nbtroopPerSlot, SetSleep(0), 0, "#0108")
+				Local $posX = $minXTL + (($maxXTL - $minXTL) * $i) / ($slotsPerEdge - 1)
+				Local $posY = $minYTL + (($maxYTL - $minYTL) * $i) / ($slotsPerEdge - 1)
 			Else
-			   Local $posX = Round($minX + (($maxX - $minX) * $i) / ($slotsPerEdge - 1))
-			   Local $posY = Round($minY + (($maxY - $minY) * $i) / ($slotsPerEdge - 1))
+				Local $posX = Round($minX + (($maxX - $minX) * $i) / ($slotsPerEdge - 1))
+				Local $posY = Round($minY + (($maxY - $minY) * $i) / ($slotsPerEdge - 1))
 			EndIf
 			AttackClick($posX, $posY, $nbtroopPerSlot, SetSleep(0), 0, "#0108")
 			If $edge2 <> -1 Then ; for 2, 3 and 4 sides attack use 2x dropping
@@ -92,9 +92,10 @@ Func DropOnEdge($troop, $edge, $number, $slotsPerEdge = 0, $edge2 = -1, $x = -1,
 					Local $posX2 = Round($maxX2 - (($maxX2 - $minX2) * $i) / ($slotsPerEdge - 1))
 					Local $posY2 = Round($maxY2 - (($maxY2 - $minY2) * $i) / ($slotsPerEdge - 1))
 					;If $x = 0 Then
-					;  If _SleepAttack(SetSleep(0)) Then Return ; add delay for first wave attack to prevent skip dropping troops, must add for 4 sides attack
+					;	If _SleepAttack(SetSleep(0)) Then Return ; add delay for first wave attack to prevent skip dropping troops, must add for 4 sides attack
 					;EndIf
 				EndIf
+
 				AttackClick($posX2, $posY2, $nbtroopPerSlot, SetSleep(0), 0, "#0109")
 			EndIf
 			$nbTroopsLeft -= $nbtroopPerSlot

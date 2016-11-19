@@ -75,7 +75,7 @@ Func TogglePauseSleep()
 	While $TPaused ; Actual Pause loop
 		If _Sleep($iDelayTogglePause1, True, True, False) Then ExitLoop
 		$counter = $counter + 1
-		If $PushBulletEnabled = 1 And $pRemote = 1 And $counter = 200 Then
+		If ($PushBulletEnabled = 1 Or $TelegramEnabled = 1) And $pRemote = 1 And $counter = 200 Then
 			_RemoteControl()
 			$counter = 0
 		EndIf

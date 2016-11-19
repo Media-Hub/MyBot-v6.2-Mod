@@ -278,6 +278,12 @@ Global Const $iDelayDropTrophy2 = 2000
 Global Const $iDelayDropTrophy3 = 1500
 Global Const $iDelayDropTrophy4 = 250
 
+;SuperXP / GoblinXP
+Global Const $iDelayDropSuperXP1 = 500
+Global Const $iDelayDropSuperXP2 = 1000
+Global Const $iDelayDropSuperXP3 = 250
+Global Const $iDelayPrepareSearchSuperXP = 500
+
 ;GetTownHallLevel
 Global Const $iDelayGetTownHallLevel1 = 1000
 Global Const $iDelayGetTownHallLevel2 = 1500

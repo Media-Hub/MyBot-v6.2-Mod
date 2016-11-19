@@ -19,10 +19,10 @@ Essential software :
 - Windows Vista/7/8/8.1/10
 - Microsoft Visual C++ 2010 Redistributable Package (x86)
 - Microsoft .NET Framework 4.5
-- BlueStacks 0.9.x - 0.10.x OR Bluestacks 2 OR Droid4x 0.8.6 OR MEmu 2.2.1
+- Android Emulator , more infor : \COCBot\functions\Android\Android Status & Information.txt
 - The latest drivers for your graphics device
 - MyBot last version avaiable
-- DON´T USE THE OLD CONFIG FILES
+- DON´T USE THE OLD CONFIG\Profile FILES\Folders
 
 Licensing
   ---------
@@ -32,13 +32,16 @@ Please see the file called LICENSE.
 
 - Curl.exe - curl is an open source command line tool and library for transferring data with URL syntax, supporting DICT, FILE, FTP, FTPS, Gopher, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, POP3, POP3S, RTMP, RTSP, SCP, SFTP, SMB, SMTP, SMTPS, Telnet and TFTP. curl supports SSL certificates, HTTP POST, HTTP PUT, FTP uploading, HTTP form based upload, proxies, HTTP/2, cookies, user+password authentication (Basic, Plain, Digest, CRAM-MD5, NTLM, Negotiate and Kerberos), file transfer resume, proxy tunneling and more. This executable is used in our software because Pushbullet.
   http://curl.haxx.se/
+  
+- Trap Mod uses MyBotBugTracker.exe - Proprietary software from @Media Hub 2016,  The owner can restrict use, inspection of source code, modification of source code, and redistribution
 
 Mybot uses non-GPL/GPL 3rd party libraries for extension (#SystemLibraryException): 
 - OpenCV - BSD license - repository : https://github.com/MyBotRun/Libraries
 - ImageSearch - GNU license - repository : https://github.com/MyBotRun/Libraries
 - OpenCV - BSD License - http://opencv.org/license.html 
-- ImgLoc - Proprietary library from the Developer TRlopes 2016
-- Functional library MBRfunctions.dll - Proprietary library from the Developer Didipe 2015
+- ImgLoc\MyBotRunImgLoc.dll - Functional library from the Developer TRlopes 2016 , The owner can restrict use, inspection of source code, modification of source code, and redistribution.
+- Functional library MBRfunctions.dll - Proprietary library from the Developer Didipe 2015, The owner can restrict use, inspection of source code, modification of source code, and redistribution.
+   -- Didipe Passed to ProMac the MBRfunctions.dll rights in July 2016.
 
 Contacts
   --------

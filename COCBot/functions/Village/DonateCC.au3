@@ -34,7 +34,7 @@ Func DonateCC($Check = False)
 	Global $bDonate = BitOR($bDonateTroop, $bDonateAllTroop, $bDonateSpell, $bDonateAllSpell)
 	Global $iTotalDonateCapacity, $iTotalDonateSpellCapacity
 
-	Global $iDonTroopsLimit = 5, $iDonSpellsLimit = 1, $iDonTroopsAv = 0, $iDonSpellsAv = 0
+	Global $iDonTroopsLimit = 8, $iDonSpellsLimit = 1, $iDonTroopsAv = 0, $iDonSpellsAv = 0
 	Global $iDonTroopsQuantityAv = 0, $iDonTroopsQuantity = 0, $iDonSpellsQuantityAv = 0, $iDonSpellsQuantity = 0
 
 	Global $bSkipDonTroops = False, $bSkipDonSpells = False
@@ -43,6 +43,17 @@ Func DonateCC($Check = False)
 	; Global $aTimeTrain[0] = Remain Troops train time , minutes
 	; Global $aTimeTrain[1] = Spells remain time , minutes
 	; Global $aTimeTrain[2] = Remain time to Heroes recover , minutes
+
+;~	Local $ReturnT = ($CurCamp >= ($TotalCamp * $fulltroop / 100) * .80) ? (True) : (False)
+
+;~	Local $ClanString = ""
+
+	; If the troops are under 95% and 100% will not donate [ezeck0001]
+;~ 	If $ReturnT And $CommandStop = -1 Then
+;~ 		Setlog("Canceled donation, your army are almost ready!")
+;~ 		Return
+;~ 	EndIf
+
 	If ((IsWaitforSpellsActive() And $aTimeTrain[1] < 5) Or (IsWaitforHeroesActive() And $aTimeTrain[2] < 5)) And _
 			($CurCamp >= ($TotalCamp * $fulltroop / 100) * .90) And $CommandStop = -1 Then
 		If $debugsetlog = 1 Then Setlog(" »» Total troops >90%, Skip Donation", $COLOR_PURPLE)
@@ -54,15 +65,6 @@ Func DonateCC($Check = False)
 			Return ; skip donate if >90% full troop AND Spells OR Heroes are almost Made/Recovered
 		EndIf
 	EndIf
-;~	Local $ReturnT = ($CurCamp >= ($TotalCamp * $fulltroop / 100) * .95) ? (True) : (False)
-
-;~	Local $ClanString = ""
-
-	; If the troops are under 95% and 100% will not donate [ezeck0001]
-;~ 	If $ReturnT And $CommandStop = -1 Then
-;~ 		Setlog("Canceled donation, your army are almost ready!")
-;~ 		Return
-;~ 	EndIf
 
 	If $bDonate = False Or $bDonationEnabled = False Then
 		If $debugsetlog = 1 Then Setlog("Donate Clan Castle troops skip", $COLOR_DEBUG) ;Debug
@@ -375,6 +377,16 @@ Func DonateCC($Check = False)
 			If $bDonateAllTroop Or $bDonateAllSpell Then
 				If $debugsetlog = 1 Then Setlog("Troop/Spell All checkpoint.", $COLOR_DEBUG) ;Debug
 				$bDonateAllRespectBlk = True
+
+				 ; read available donate cap, and ByRef set the $bSkipDonTroops and $bSkipDonSpells flags
+                DonateWindowCap($bSkipDonTroops, $bSkipDonSpells)
+                If $bSkipDonTroops And $bSkipDonSpells Then
+                    DonateWindow($bClose)
+                    $bDonate = True
+                    $y = $DonatePixel[1] + 50
+                    If _Sleep($iDelayDonateCC2) Then ExitLoop
+                    ContinueLoop ; go to next button if already donated, maybe this is an impossible case..
+                EndIf
 
 				If $bDonateAllTroop And $bSkipDonTroops = False Then
 					If $debugsetlog = 1 Then Setlog("Troop All checkpoint.", $COLOR_DEBUG) ;Debug
@@ -1056,7 +1068,7 @@ Func RemainingCCcapacity()
 	; Verify with OCR the Donation Clan Castle capacity
 	If $debugsetlog = 1 Then Setlog("Started dual getOcrSpaceCastleDonate", $COLOR_DEBUG) ;Debug
 	$aCapTroops = getOcrSpaceCastleDonate(49, $DonatePixel[1]) ; when the request is troops+spell
-	$aCapSpells = getOcrSpaceCastleDonate(153, $DonatePixel[1]) ; when the request is troops+spell
+	$aCapSpells = getOcrSpaceCastleDonate(154, $DonatePixel[1]) ; when the request is troops+spell
 
 	If $debugsetlog = 1 Then Setlog("$aCapTroops :" & $aCapTroops, $COLOR_DEBUG) ;Debug
 	If $debugsetlog = 1 Then Setlog("$aCapSpells :" & $aCapSpells, $COLOR_DEBUG) ;Debug

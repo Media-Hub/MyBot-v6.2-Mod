@@ -14,10 +14,13 @@ Global Enum $ArmyTAB, $TrainTroopsTAB, $BrewSpellsTAB, $QuickTrainTAB
 
 Func TestTrainRevamp()
 
+
 	If $ichkUseQTrain = 0 Then
 		TestTrainRevampOldStyle()
 		Return
 	EndIf
+
+	If $debugsetlogTrain = 1 Then Setlog(" » Initial Quick train Function")
 
 	Local $timer
 	Local $tempElixir = ""
@@ -36,9 +39,8 @@ Func TestTrainRevamp()
 	$tempElixir = $iElixirCurrent
 	$tempDElixir = $iDarkCurrent
 
-	OpenArmyWindow()
-
-	If ISArmyWindow(True, $ArmyTAB) = False Then Return
+	If $debugsetlogTrain = 1 Then Setlog(" »» Line Open Army Window")
+	If OpenArmyWindow() = False Then Return
 
 	SetLog(" »» Army Window Opened!", $COLOR_ACTION1)
 
@@ -46,15 +48,23 @@ Func TestTrainRevamp()
 	If $Runstate = False Then Return
 
 	$canRequestCC = _ColorCheck(_GetPixelColor($aRequestTroopsAO[0], $aRequestTroopsAO[1], True), Hex($aRequestTroopsAO[2], 6), $aRequestTroopsAO[5])
+	If $debugsetlogTrain = 1 Then Setlog(" »» $canRequestCC : " & _GetPixelColor($aRequestTroopsAO[0], $aRequestTroopsAO[1], True))
+
+	If $debugsetlogTrain = 1 Then $debugOcr = 1
 
 	Local $sArmyCamp = getArmyCampCap(110, 166) ; OCR read army trained and total
 	Local $aGetArmySize = StringSplit($sArmyCamp, "#", $STR_NOCOUNT)
+	If $debugsetlogTrain = 1 Then Setlog(" »» $sArmyCamp : " & $sArmyCamp)
 
 	Local $sSpells = getArmyCampCap(99, 313) ; OCR read Spells trained and total
 	Local $aGetSpellsSize = StringSplit($sSpells, "#", $STR_NOCOUNT)
+	If $debugsetlogTrain = 1 Then Setlog(" »» $sSpells : " & $sSpells)
 
 	Local $scastle = getArmyCampCap(300, 468) ; OCR read Castle Received and total
 	Local $aGetCastleSize = StringSplit($scastle, "#", $STR_NOCOUNT)
+	If $debugsetlogTrain = 1 Then Setlog(" »» $scastle : " & $scastle)
+
+	If $debugsetlogTrain = 1 Then $debugOcr = 0
 
 	;Test for Full Army
 	$fullarmy = False
@@ -74,6 +84,11 @@ Func TestTrainRevamp()
 		SetLog("Error reading Camp size")
 		Return
 	EndIf
+
+	If $debugsetlogTrain = 1 Then Setlog(" »» $CurCamp : " & $CurCamp)
+	If $debugsetlogTrain = 1 Then Setlog(" »» $TotalCamp : " & $TotalCamp)
+	If $debugsetlogTrain = 1 Then Setlog(" »» $fullarmy : " & $fullarmy)
+
 
 	$bFullArmySpells = False
 	$iTotalSpellSpace = 0
@@ -122,7 +137,7 @@ Func TestTrainRevamp()
 	If $aGetSpellsSize[0] <> "" And $aGetSpellsSize[1] <> "" Then Setlog("Spells :" & $aGetSpellsSize[0] & "/" & $aGetSpellsSize[1], $COLOR_GREEN) ; coc-ms
 	If $aGetCastleSize[0] <> "" And $aGetCastleSize[1] <> "" Then Setlog("Clan Castle : " & $aGetCastleSize[0] & "/" & $aGetCastleSize[1], $COLOR_GREEN) ; coc-ms
 
-	If IsWaitforHeroesActive() Or $iChkTrophyRange = 1 Then
+	If IsWaitforHeroesActive() Or $iChkTrophyRange = 1 Or $ichkEnableSuperXP = 1 Then
 		;CheckExistentArmy("Heroes")
 		getArmyHeroCount()
 	Else
@@ -188,6 +203,7 @@ Func TestTrainRevamp()
 
 			$timer = TimerInit()
 
+			If $debugsetlogTrain = 1 Then $debugOcr = 1
 			Local $TimeRemainTroops = getRemainTrainTimer(756, 169)
 			Local $ResultTroopsHour, $ResultTroopsMinutes, $ResultTroopsSeconds
 			Local $aRemainTrainTroopTimer = 0
@@ -242,6 +258,7 @@ Func TestTrainRevamp()
 			EndIf
 
 			If _Sleep(100) Then Return
+			If $debugsetlogTrain = 1 Then $debugOcr = 0
 
 			If $bDonationEnabled = True Then MakingDonatedTroops()
 
@@ -292,6 +309,8 @@ EndFunc   ;==>TestTrainRevamp
 
 Func TestTrainRevampOldStyle()
 
+	If $debugsetlogTrain = 1 Then Setlog(" » Initial Custom train Function")
+
 	Local $tempElixir = ""
 	Local $tempDElixir = ""
 	Local $tempElixirSpent = 0
@@ -311,7 +330,7 @@ Func TestTrainRevampOldStyle()
 
 	Setlog(" »» Army Window!", $COLOR_BLUE)
 
-	OpenArmyWindow()
+	If OpenArmyWindow() = False then return
 	If $Runstate = False Then Return
 
 	$fullarmy = False
@@ -336,7 +355,7 @@ Func TestTrainRevampOldStyle()
 		Return
 	EndIf
 
-	If IsWaitforHeroesActive() Or $iChkTrophyRange = 1 Then
+	If IsWaitforHeroesActive() Or $iChkTrophyRange = 1 Or $ichkEnableSuperXP = 1 Then
 		;CheckExistentArmy("Heroes")
 		getArmyHeroCount()
 	Else
@@ -902,9 +921,15 @@ Func TotalSpellsToBrewInGUI()
 	Return $ToReturn
 EndFunc   ;==>TotalSpellsToBrewInGUI
 
-Func HowManyTimesWillBeUsed($Spell) ;ONLY ONLY ONLY FOR SPELLS
+Func HowManyTimesWillBeUsed($Spell) ;ONLY ONLY ONLY FOR SPELLS, TO SEE IF NEEDED TO BREW, DON'T USE IT TO GET EXACT COUNT
 	Local $ToReturn = -1
 	If $Runstate = False Then Return
+
+	If $ichkForceBrewBeforeAttack = 1 Then ; If Force Brew Spells Before Attack Is Enabled
+		$ToReturn = 2
+		Return $ToReturn
+	EndIf
+
 	; Code For DeadBase
 	If $iDBcheck = 1 Then
 		If $iAtkAlgorithm[$DB] = 1 Then ; Scripted Attack is Selected
@@ -1247,7 +1272,7 @@ Func IsAlreadyTraining($Troop, $Spells = False)
 
 			Return False
 		Case $Spells = True
-			If IsQueueEmpty($BrewSpellsTAB) Then Return False ; If No Spells were in Queue
+			If IsQueueEmpty($BrewSpellsTAB, False, IIf($ichkForceBrewBeforeAttack = 1, False, True)) Then Return False ; If No Spells were in Queue
 
 			Local $QueueSpells = CheckQueueSpells(False, False) ; Get Troops that they're currently training...
 			For $i = 0 To (UBound($QueueSpells) - 1)
@@ -1259,7 +1284,7 @@ Func IsAlreadyTraining($Troop, $Spells = False)
 
 EndFunc   ;==>IsAlreadyTraining
 
-Func IsQueueEmpty($Tab = -1, $bSkipTabCheck = False)
+Func IsQueueEmpty($Tab = -1, $bSkipTabCheck = False, $removeExtraTroopsQueue = True)
 	If $Runstate = False Then Return
 	If $bSkipTabCheck = False Then
 		If $Tab = -1 Then $Tab = $TrainTroopsTAB
@@ -1267,7 +1292,9 @@ Func IsQueueEmpty($Tab = -1, $bSkipTabCheck = False)
 	EndIf
 
 	If $IsFullArmywithHeroesAndSpells = False Then
-		If _ColorCheck(_GetPixelColor(230, 208, True), Hex(0x677CB5, 6), 30) = False Then RemoveExtraTroopsQueue()
+		If $removeExtraTroopsQueue Then
+			If _ColorCheck(_GetPixelColor(230, 208, True), Hex(0x677CB5, 6), 30) = False Then RemoveExtraTroopsQueue()
+		EndIf
 	EndIf
 
 	If _ColorCheck(_GetPixelColor(230, 208, True), Hex(0x677CB5, 6), 30) Then Return True ; If No troops were in Queue Return True
@@ -1322,17 +1349,17 @@ Func GetSlotNumber($Spells = False)
 			Next
 
 			#CS		This Codes Not Needed With New 'True' Train Order and new Training System ;)
-			; Code for DARK Elixir Troops to Put Current Troops into an array by Order
-			For $i = 0 To (UBound($TroopDarkName) - 1)
+				; Code for DARK Elixir Troops to Put Current Troops into an array by Order
+				For $i = 0 To (UBound($TroopDarkName) - 1)
 				If $Runstate = False Then Return
 				If Number(Eval("Cur" & $TroopDarkName[$i])) > 0 Then
-					For $j = 0 To (UBound($Orders) - 1)
-						If Eval("e" & $TroopDarkName[$i]) = $Orders[$j] Then
-							$allCurTroops[$j] = $TroopDarkName[$i]
-						EndIf
-					Next
+				For $j = 0 To (UBound($Orders) - 1)
+				If Eval("e" & $TroopDarkName[$i]) = $Orders[$j] Then
+				$allCurTroops[$j] = $TroopDarkName[$i]
 				EndIf
-			Next
+				Next
+				EndIf
+				Next
 			#CE
 
 			_ArryRemoveBlanks($allCurTroops)
@@ -1382,14 +1409,14 @@ Func WhatToTrain($ReturnExtraTroopsOnly = False, $showlog = True)
 			EndIf
 		Next
 		#CS		This Codes Not Needed With New 'True' Train Order and new Training System ;)
-		; Dark Troops
-		For $i = 0 To (UBound($TroopDarkName) - 1)
+			; Dark Troops
+			For $i = 0 To (UBound($TroopDarkName) - 1)
 			If Number(Eval($TroopDarkName[$i] & "Comp")) > 0 Then
-				$ToReturn[UBound($ToReturn) - 1][0] = $TroopDarkName[$i]
-				$ToReturn[UBound($ToReturn) - 1][1] = Number(Eval($TroopDarkName[$i] & "Comp"))
-				ReDim $ToReturn[UBound($ToReturn) + 1][2]
+			$ToReturn[UBound($ToReturn) - 1][0] = $TroopDarkName[$i]
+			$ToReturn[UBound($ToReturn) - 1][1] = Number(Eval($TroopDarkName[$i] & "Comp"))
+			ReDim $ToReturn[UBound($ToReturn) + 1][2]
 			EndIf
-		Next
+			Next
 		#CE
 		; Spells
 		For $i = 0 To (UBound($SpellName) - 1)
@@ -1434,15 +1461,15 @@ Func WhatToTrain($ReturnExtraTroopsOnly = False, $showlog = True)
 			Next
 
 			#CS		This Codes Not Needed With New 'True' Train Order and new Training System ;)
-			; Check DARK Elixir Troops needed quantity to Train
-			For $i = 0 To (UBound($TroopDarkName) - 1)
+				; Check DARK Elixir Troops needed quantity to Train
+				For $i = 0 To (UBound($TroopDarkName) - 1)
 				If $Runstate = False Then Return
 				If Number(Eval($TroopDarkName[$i] & "Comp")) > 0 Then
-					$ToReturn[UBound($ToReturn) - 1][0] = $TroopDarkName[$i]
-					$ToReturn[UBound($ToReturn) - 1][1] = Number(Number(Eval($TroopDarkName[$i] & "Comp")) - Number(Eval("Cur" & $TroopDarkName[$i])))
-					ReDim $ToReturn[UBound($ToReturn) + 1][2]
+				$ToReturn[UBound($ToReturn) - 1][0] = $TroopDarkName[$i]
+				$ToReturn[UBound($ToReturn) - 1][1] = Number(Number(Eval($TroopDarkName[$i] & "Comp")) - Number(Eval("Cur" & $TroopDarkName[$i])))
+				ReDim $ToReturn[UBound($ToReturn) + 1][2]
 				EndIf
-			Next
+				Next
 			#CE
 
 			; Check Spells needed quantity to Brew
@@ -1469,17 +1496,17 @@ Func WhatToTrain($ReturnExtraTroopsOnly = False, $showlog = True)
 			Next
 
 			#CS		This Codes Not Needed With New 'True' Train Order and new Training System ;)
-			; Check DARK Elixir Troops Extra Quantity
-			For $i = 0 To (UBound($TroopDarkName) - 1)
+				; Check DARK Elixir Troops Extra Quantity
+				For $i = 0 To (UBound($TroopDarkName) - 1)
 				If $Runstate = False Then Return
 				If Number(Eval("Cur" & $TroopDarkName[$i])) > 0 Then
-					If StringInStr(Number(Number(Eval($TroopDarkName[$i] & "Comp")) - Number(Eval("Cur" & $TroopDarkName[$i]))), "-") > 0 Then
-						$ToReturn[UBound($ToReturn) - 1][0] = $TroopDarkName[$i]
-						$ToReturn[UBound($ToReturn) - 1][1] = StringReplace(Number(Number(Eval($TroopDarkName[$i] & "Comp")) - Number(Eval("Cur" & $TroopDarkName[$i]))), "-", "")
-						ReDim $ToReturn[UBound($ToReturn) + 1][2]
-					EndIf
+				If StringInStr(Number(Number(Eval($TroopDarkName[$i] & "Comp")) - Number(Eval("Cur" & $TroopDarkName[$i]))), "-") > 0 Then
+				$ToReturn[UBound($ToReturn) - 1][0] = $TroopDarkName[$i]
+				$ToReturn[UBound($ToReturn) - 1][1] = StringReplace(Number(Number(Eval($TroopDarkName[$i] & "Comp")) - Number(Eval("Cur" & $TroopDarkName[$i]))), "-", "")
+				ReDim $ToReturn[UBound($ToReturn) + 1][2]
 				EndIf
-			Next
+				EndIf
+				Next
 			#CE
 
 			; Check Spells Extra Quantity
@@ -1537,7 +1564,7 @@ EndFunc   ;==>TestTroopsCoords
 
 Func LeftSpace($ReturnAll = False)
 	; Need to be in 'Train Tab'
-	$RemainTrainSpace = GetOCRCurrent(45, 159)
+	$RemainTrainSpace = GetOCRCurrent(48, 160)
 	If $Runstate = False Then Return
 	;_ArrayDisplay($RemainTrainSpace, "$RemainTrainSpace")
 	If $ReturnAll = False Then
@@ -1551,14 +1578,14 @@ Func OpenArmyWindow()
 
 	ClickP($aAway, 2, 0, "#0346") ;Click Away
 	If $Runstate = False Then Return
-	If _Sleep($iDelayRunBot6) Then Return ; wait for window to open
+	If _Sleep($iDelayRunBot3) Then Return ; wait for window to open
 	If IsMainPage() = False Then ; check for main page, avoid random troop drop
 		SetLog("Can not open Army Overview window", $COLOR_RED)
 		SetError(1)
 		Return False
 	EndIf
 
-	If WaitforPixel(28, 505 + $bottomOffsetY, 30, 507 + $bottomOffsetY, Hex(0xE4A438, 6), 5, 10) Then
+	If WaitforPixel(31, 515 + $bottomOffsetY, 33, 517 + $bottomOffsetY, Hex(0xF8F0E0, 6), 10, 20) Then
 		If $debugsetlogTrain = 1 Then SetLog("Click $aArmyTrainButton", $COLOR_GREEN)
 		If $iUseRandomClick = 0 Then
 			Click($aArmyTrainButton[0], $aArmyTrainButton[1], 1, 0, "#0293") ; Button Army Overview
@@ -1567,11 +1594,18 @@ Func OpenArmyWindow()
 		EndIf
 	EndIf
 
-	If _Sleep($iDelayRunBot6) Then Return ; wait for window to open
-	If ISArmyWindow(True, $ArmyTAB) = False Then
-		SetError(1)
-		Return False ; exit if I'm not in train page
-	EndIf
+	If _Sleep($iDelayTrain4) Then Return ; wait for window to open
+
+	Local $x = 0
+    While ISArmyWindow(True, $ArmyTAB) = False
+        If _sleep($iDelayTrain4) then return
+        $x += 1
+        If $x = 50 then
+			SetError(1)
+			Return False ; exit if I'm not in train page
+        EndIf
+    WEnd
+
 	Return True
 
 EndFunc   ;==>OpenArmyWindow
@@ -2118,7 +2152,7 @@ Func MakingDonatedTroops()
 			If $Runstate = False Then Return
 			$Plural = 0
 			If $MergedTroopGroup[$i][3] > 0 Then
-				$RemainTrainSpace = GetOCRCurrent(48, 161)
+				$RemainTrainSpace = GetOCRCurrent(48, 160)
 				If $RemainTrainSpace[0] = $RemainTrainSpace[1] Then ; army camps full
 					;Camps Full All Donate Counters should be zero!!!!
 					For $j = 0 To UBound($MergedTroopGroup, 1) - 1
@@ -2146,7 +2180,7 @@ Func MakingDonatedTroops()
 					If _Sleep(1000) Then Return ; Needed Delay, OCR was not picking up Troop Changes
 				Else
 					For $z = 0 To $RemainTrainSpace[2] - 1
-						$RemainTrainSpace = GetOCRCurrent(48, 161)
+						$RemainTrainSpace = GetOCRCurrent(48, 160)
 						If $RemainTrainSpace[0] = $RemainTrainSpace[1] Then ; army camps full
 							;Camps Full All Donate Counters should be zero!!!!
 							For $j = 0 To UBound($MergedTroopGroup, 1) - 1
@@ -2179,7 +2213,7 @@ Func MakingDonatedTroops()
 			EndIf
 		Next
 		;Top Off any remianing space with archers
-		$RemainTrainSpace = GetOCRCurrent(48, 161)
+		$RemainTrainSpace = GetOCRCurrent(48, 160)
 		If $RemainTrainSpace[0] < $RemainTrainSpace[1] Then ; army camps full
 			Local $howMuch = $RemainTrainSpace[2]
 			;TrainIt(Eval($eArch), 1, $isldTrainITDelay)
@@ -2214,7 +2248,7 @@ Func MakingDonatedTroops()
 		Next
 	EndIf
 	If _Sleep(1000) Then Return
-	$RemainTrainSpace = GetOCRCurrent(48, 161)
+	$RemainTrainSpace = GetOCRCurrent(48, 160)
 	Setlog(" » Current Capacity: " & $RemainTrainSpace[0] & "/" & ($RemainTrainSpace[1]))
 EndFunc   ;==>MakingDonatedTroops
 
@@ -2249,14 +2283,14 @@ Func CheckIsFullQueuedAndNotFullArmy()
 	If _Sleep(1500) Then Return
 	If ISArmyWindow(True, $TrainTroopsTAB) = False Then Return
 
-	Local $ArmyCamp = GetOCRCurrent(48, 161)
+	Local $ArmyCamp = GetOCRCurrent(48, 160)
 
 	If UBound($ArmyCamp) = 3 And $ArmyCamp[2] < 0 Then
 		If _ColorCheck(_GetPixelColor($CheckTroop[0], $CheckTroop[1], True), Hex($CheckTroop[2], 6), $CheckTroop[3]) Then
 			SetLog(" » Conditions met: FULL Queue and Not Full Army")
 			DeleteTroopsQueued()
 			If _Sleep(500) Then Return
-			$ArmyCamp = GetOCRCurrent(48, 161)
+			$ArmyCamp = GetOCRCurrent(48, 160)
 			Local $ArchToMake = $ArmyCamp[2]
 			If ISArmyWindow(False, $TrainTroopsTAB) Then PureClick($TrainArch[0], $TrainArch[1], $ArchToMake, 500)
 			Setlog("Trained " & $ArchToMake & " archer(s)!")
@@ -2278,14 +2312,14 @@ Func CheckIsEmptyQueuedAndNotFullArmy()
 	If _Sleep(1500) Then Return
 	If ISArmyWindow(True, $TrainTroopsTAB) = False Then Return
 
-	Local $ArmyCamp = GetOCRCurrent(48, 161)
+	Local $ArmyCamp = GetOCRCurrent(48, 160)
 
 	If UBound($ArmyCamp) = 3 And $ArmyCamp[2] > 0 Then
 		If _ColorCheck(_GetPixelColor($CheckTroop[0], $CheckTroop[1], True), Hex($CheckTroop[2], 6), $CheckTroop[3]) Then
 			If Not _ColorCheck(_GetPixelColor($CheckTroop1[0], $CheckTroop1[1], True), Hex($CheckTroop1[2], 6), $CheckTroop1[3]) Then
 				SetLog(" » Conditions met: Empty Queue and Not Full Army")
 				If _Sleep(500) Then Return
-				$ArmyCamp = GetOCRCurrent(48, 161)
+				$ArmyCamp = GetOCRCurrent(48, 160)
 				Local $ArchToMake = $ArmyCamp[2]
 				If ISArmyWindow(False, $TrainTroopsTAB) Then PureClick($TrainArch[0], $TrainArch[1], $ArchToMake, 500)
 				SetLog(" » Trained " & $ArchToMake & " archer(s)!")
@@ -2347,10 +2381,10 @@ Func AttackBarCheck()
 					Local $aCoordsSplit2 = StringSplit($aCoords[1], ",", $STR_NOCOUNT)
 					If UBound($aCoordsSplit2) = 2 Then
 						; Store the coords into a two dimensional array
-						If $aCoordsSplit2[0] < $aCoordsSplit[0] then
+						If $aCoordsSplit2[0] < $aCoordsSplit[0] Then
 							$aCoordArray[0][0] = $aCoordsSplit2[0] ; X coord.
 							$aCoordArray[0][1] = $aCoordsSplit2[1] ; Y coord.
-						If $DebugSetlog = 1 Then Setlog($aResult[$i][0] & " | $aCoordArray: " & $aCoordArray[0][0] & "-" & $aCoordArray[0][1])
+							If $DebugSetlog = 1 Then Setlog($aResult[$i][0] & " | $aCoordArray: " & $aCoordArray[0][0] & "-" & $aCoordArray[0][1])
 						EndIf
 					Else
 						$aCoordArray[0][0] = -1
@@ -2952,7 +2986,7 @@ Func GetWalls($x, $y, $x1, $y2, $THlevel)
 			$aResult[$i][0] = returnPropertyValue($aKeys[$i], "filename")
 			$aResult[$i][1] = returnPropertyValue($aKeys[$i], "objectname")
 			$aResult[$i][2] = returnPropertyValue($aKeys[$i], "objectlevel")
-			$aResult[$i][3] = returnPropertyValue($aKeys[$i], "fillLevel")
+			$aResult[$i][3] = returnPropertyValue($aKeys[$i], "filllevel")
 			$aResult[$i][4] = returnPropertyValue($aKeys[$i], "totalobjects")
 
 			; Get the coords property

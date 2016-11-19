@@ -136,6 +136,7 @@ $grpAdvanced = GUICtrlCreateGroup(GetTranslated(636,93, "Advanced"), $x - 20, $y
 	$y += 19
 	$chkUseRandomClick = GUICtrlCreateCheckbox(GetTranslated(636,94, "Random Click"), $x, $y, -1, -1)
 		GUICtrlSetOnEvent(-1, "chkUseRandomClick")
+		GUICtrlSetState(-1, $GUI_DISABLE)
 GUICtrlCreateGroup("", -99, -99, 1, 1)
 	$y += 47
 $grpPhotoExpert = GUICtrlCreateGroup(GetTranslated(636,55, "Photo Screenshot Options"), $x - 20, $y - 17, 225, 60)
@@ -181,4 +182,16 @@ $txtPBTimeForcedExit = GUICtrlCreateInput("16", $x + 130, $y, 30, 16, BitOR($GUI
 	GUICtrlSetLimit(-1, 3)
 	GUICtrlSetState(-1, $GUI_DISABLE)
 $lblPBTimeForcedExit1 = GUICtrlCreateLabel( GetTranslated(603,9, -1), $x+162, $y+1, 27, 15)
+$y += 20
+	$lblNameMyBot = GUICtrlCreateLabel("Name Your Bot :",$x - 10, $y + 3, 78, 20)
+
+	$NameMyBot = GUICtrlCreateInput("",$x + 80, $y, 80, 20)
+		_GUICtrlSetTip(-1, "Will Update Name Label in Header Image on Next Restart of the Bot.")
+		$btnNameMyBot = GUICtrlCreateButton("Enter",$x + 80+83, $y, 35, 20)
+			GUICtrlSetOnEvent(-1, "NameMyBotUpdate")
+
 GUICtrlCreateGroup("", -99, -99, 1, 1)
+
+Func NameMyBotUpdate()
+	GUICtrlSetData($lblDisplayName, GUICtrlRead($NameMyBot))
+EndFunc

@@ -68,6 +68,10 @@ Func VillageReport($bBypass = False, $bSuppressLog = False)
 		UpdateStats()
 	EndIf
 
+	If $RunModeChart = 1 Then ; Add Values to Chart File. After Start Button Push, After Village Report Reads Values
+		ChartAddDataPoint1hr("Total", True)
+		$RunModeChart = 0
+	EndIf
 	Local $i = 0
 	While _ColorCheck(_GetPixelColor(819, 39, True), Hex(0xF8FCFF, 6), 20) = True ; wait for Builder/shop to close
 		$i += 1

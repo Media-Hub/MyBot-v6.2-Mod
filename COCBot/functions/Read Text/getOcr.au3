@@ -236,6 +236,28 @@ Func getHeroStatus($x_start, $y_start) ; Get status/type_of_Hero from Hero Slots
 	Return getOcrAndCapture("coc-herostatus", $x_start, $y_start, 20, 20)
 EndFunc   ;==>getHeroStatus
 
+Func getCloudTextShort($x_start, $y_start, $sLogText = Default, $LogTextColor = Default, $bSilentSetLog = Default)
+	; Get 3 characters of yellow text in center of attack search window during extended cloud waiting (388,378)
+	; Full text length is 316 pixels, some is covered by chat window when open
+	Local $result = getOcrAndCapture("coc-cloudsearch", $x_start, $y_start, 51, 27)
+	If $debugSetlog = 1 And $sLogText <> Default And IsString($sLogText) Then ; if enabled generate debug log message
+		Local $String = $sLogText & $result
+		SetDebugLog($String, $LogTextColor, $bSilentSetLog)
+	EndIf
+	Return $result
+EndFunc   ;==>getCloudTextShort
+
+Func getCloudFailShort($x_start, $y_start, $sLogText = Default, $LogTextColor = Default, $bSilentSetLog = Default)
+	; Get 6 characters of pink text in center of attack search window during failed attack search (271, 381)
+	; Full text length is 318 pixels, on checking for 1st 6 characters
+	Local $result = getOcrAndCapture("coc-cloudfail", $x_start, $y_start, 72, 24)
+	If $debugSetlog = 1 And $sLogText <> Default And IsString($sLogText) Then ; if enabled generate debug log message
+		Local $String = $sLogText & $result
+		SetDebugLog($String, $LogTextColor, $bSilentSetLog)
+	EndIf
+	Return $result
+EndFunc   ;==>getCloudFailShort
+
 Func getBarracksNewTroopQuantity($x_start, $y_start) ;  -> Gets quantity of troops in army Window
 	Return getOcrAndCapture("coc-newarmy", $x_start, $y_start, 45, 18, True)
 EndFunc   ;==>getBarracksNewTroopQuantity
@@ -247,6 +269,10 @@ EndFunc   ;==>getArmyCapacityOnTrainTroops
 Func getQueueTroopsQuantity($x_start, $y_start) ;  -> Gets quantity of troops in Queue in Train Tab
 	Return StringReplace(getOcrAndCapture("coc-qqtroop", $x_start, $y_start, 71, 22, True), "b", "")
 EndFunc   ;==>getQueueTroopsQuantity
+
+Func getVillageExp($x_start, $y_start, $removeSpace = False) ; 55, 20,  -> Gets Exp Value of Village
+	Return getOcrAndCapture("coc-ms", $x_start, $y_start, 70, 22, $removeSpace)
+EndFunc   ;==>getVillageExp
 
 Func getOcrAndCapture($language, $x_start, $y_start, $width, $height, $removeSpace = False)
 	_CaptureRegion2($x_start, $y_start, $x_start + $width, $y_start + $height)

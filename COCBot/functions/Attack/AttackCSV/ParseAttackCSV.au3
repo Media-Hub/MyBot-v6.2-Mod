@@ -217,10 +217,10 @@ Func ParseAttackCSV($debug = False)
 							EndIf
 						EndIf
 
-						If $value4 = "REMAIN" Then 		;drop remain troops
+						If $value4 = "REMAIN" Then ;drop remain troops
 							SetLog("dropRemain:  Dropping left over troops", $COLOR_BLUE)
-							IF PrepareAttack($iMatchMode, True) > 0 Then
-								For $ii = $eLava To $eBarb Step -1; lauch all remaining troops from last to first
+							If PrepareAttack($iMatchMode, True) > 0 Then
+								For $ii = $eLava To $eBarb Step -1 ; lauch all remaining troops from last to first
 									LauchTroop($ii, 1, 0, 1)
 								Next
 							EndIf
@@ -644,6 +644,150 @@ Func ParseAttackCSV($debug = False)
 								$BACK_RIGHT = "BOTTOM-LEFT-UP"
 						EndSwitch
 						ParseAndMakeDropLines($MAINSIDE)
+					Case "SIDEP"
+						Local $sidep_locate_mine = 0, $sidep_locate_elixir = 0, $sidep_locate_drill = 0
+						$sidep_locate_mine = IIf(Int($value1) > 0, 1, 0)
+						$sidep_locate_elixir = IIf(Int($value2) > 0, 1, 0)
+						$sidep_locate_drill = IIf(Int($value3) > 0, 1, 0)
+						Local $heightTopLeft = 0, $heightTopRight = 0, $heightBottomLeft = 0, $heightBottomRight = 0
+						Local $rGetCountEachSide
+						Local $hLTimer
+						If $sidep_locate_mine = 1 Then
+							$hLTimer = TimerInit()
+							$rGetCountEachSide = GetCountEachSide("Mine")
+							If Not @error Then
+								SetLog("Gold Mines Located within " & Round(Number(TimerDiff($hLTimer) / 1000), 2) & " second(s)")
+								$heightBottomRight += ($rGetCountEachSide[0] * Int($value1))
+								$heightTopRight += ($rGetCountEachSide[1] * Int($value1))
+								$heightTopLeft += ($rGetCountEachSide[2] * Int($value1))
+								$heightBottomLeft += ($rGetCountEachSide[3] * Int($value1))
+							ElseIf @error = 2 Then
+								SetLog("Cannot find Gold Mines", $COLOR_ORANGE)
+							EndIf
+						EndIf
+						If $sidep_locate_elixir = 1 Then
+							$hLTimer = TimerInit()
+							$rGetCountEachSide = GetCountEachSide("Collector")
+							If Not @error Then
+								SetLog("Elixir Collectors Located within " & Round(Number(TimerDiff($hLTimer) / 1000), 2) & " second(s)")
+								$heightBottomRight += ($rGetCountEachSide[0] * Int($value2))
+								$heightTopRight += ($rGetCountEachSide[1] * Int($value2))
+								$heightTopLeft += ($rGetCountEachSide[2] * Int($value2))
+								$heightBottomLeft += ($rGetCountEachSide[3] * Int($value2))
+							ElseIf @error = 2 Then
+								SetLog("Cannot find Elixir Collectors", $COLOR_ORANGE)
+							EndIf
+						EndIf
+						If $sidep_locate_drill = 1 Then
+							$hLTimer = TimerInit()
+							$rGetCountEachSide = GetCountEachSide("Drill")
+							If Not @error Then
+								SetLog("Dark Drills Located within " & Round(Number(TimerDiff($hLTimer) / 1000), 2) & " second(s)")
+								$heightBottomRight += ($rGetCountEachSide[0] * Int($value3))
+								$heightTopRight += ($rGetCountEachSide[1] * Int($value3))
+								$heightTopLeft += ($rGetCountEachSide[2] * Int($value3))
+								$heightBottomLeft += ($rGetCountEachSide[3] * Int($value3))
+							ElseIf @error = 2 Then
+								SetLog("Cannot find Dark Drills", $COLOR_ORANGE)
+							EndIf
+						EndIf
+
+						Local $maxValue = $heightBottomRight
+						Local $sidename = "BOTTOM-RIGHT"
+
+						Switch $value8
+							Case "Highest"
+
+								If $heightTopLeft > $maxValue Then
+									$maxValue = $heightTopLeft
+									$sidename = "TOP-LEFT"
+								EndIf
+
+								If $heightTopRight > $maxValue Then
+									$maxValue = $heightTopRight
+									$sidename = "TOP-RIGHT"
+								EndIf
+
+								If $heightBottomLeft > $maxValue Then
+									$maxValue = $heightBottomLeft
+									$sidename = "BOTTOM-LEFT"
+								EndIf
+
+							Case "Lowest"
+
+								If $heightTopLeft < $maxValue Then
+									$maxValue = $heightTopLeft
+									$sidename = "TOP-LEFT"
+								EndIf
+
+								If $heightTopRight < $maxValue Then
+									$maxValue = $heightTopRight
+									$sidename = "TOP-RIGHT"
+								EndIf
+
+								If $heightBottomLeft < $maxValue Then
+									$maxValue = $heightBottomLeft
+									$sidename = "BOTTOM-LEFT"
+								EndIf
+
+							Case Else
+
+								If $heightTopLeft > $maxValue Then
+									$maxValue = $heightTopLeft
+									$sidename = "TOP-LEFT"
+								EndIf
+
+								If $heightTopRight > $maxValue Then
+									$maxValue = $heightTopRight
+									$sidename = "TOP-RIGHT"
+								EndIf
+
+								If $heightBottomLeft > $maxValue Then
+									$maxValue = $heightBottomLeft
+									$sidename = "BOTTOM-LEFT"
+								EndIf
+						EndSwitch
+						Setlog("SideP-Mainside: " & $sidename & " (top-left:" & $heightTopLeft & " top-right:" & $heightTopRight & " bottom-left:" & $heightBottomLeft & " bottom-right:" & $heightBottomRight)
+						$MAINSIDE = $sidename
+						Switch $MAINSIDE
+							Case "BOTTOM-RIGHT"
+								$FRONT_LEFT = "BOTTOM-RIGHT-DOWN"
+								$FRONT_RIGHT = "BOTTOM-RIGHT-UP"
+								$RIGHT_FRONT = "TOP-RIGHT-DOWN"
+								$RIGHT_BACK = "TOP-RIGHT-UP"
+								$LEFT_FRONT = "BOTTOM-LEFT-DOWN"
+								$LEFT_BACK = "BOTTOM-LEFT-UP"
+								$BACK_LEFT = "TOP-LEFT-DOWN"
+								$BACK_RIGHT = "TOP-LEFT-UP"
+							Case "BOTTOM-LEFT"
+								$FRONT_LEFT = "BOTTOM-LEFT-UP"
+								$FRONT_RIGHT = "BOTTOM-LEFT-DOWN"
+								$RIGHT_FRONT = "BOTTOM-RIGHT-DOWN"
+								$RIGHT_BACK = "BOTTOM-RIGHT-UP"
+								$LEFT_FRONT = "TOP-LEFT-DOWN"
+								$LEFT_BACK = "TOP-LEFT-UP"
+								$BACK_LEFT = "TOP-RIGHT-UP"
+								$BACK_RIGHT = "TOP-RIGHT-DOWN"
+							Case "TOP-LEFT"
+								$FRONT_LEFT = "TOP-LEFT-UP"
+								$FRONT_RIGHT = "TOP-LEFT-DOWN"
+								$RIGHT_FRONT = "BOTTOM-LEFT-UP"
+								$RIGHT_BACK = "BOTTOM-LEFT-DOWN"
+								$LEFT_FRONT = "TOP-RIGHT-UP"
+								$LEFT_BACK = "TOP-RIGHT-DOWN"
+								$BACK_LEFT = "BOTTOM-RIGHT-UP"
+								$BACK_RIGHT = "BOTTOM-RIGHT-DOWN"
+							Case "TOP-RIGHT"
+								$FRONT_LEFT = "TOP-RIGHT-DOWN"
+								$FRONT_RIGHT = "TOP-RIGHT-UP"
+								$RIGHT_FRONT = "TOP-LEFT-UP"
+								$RIGHT_BACK = "TOP-LEFT-DOWN"
+								$LEFT_FRONT = "BOTTOM-RIGHT-UP"
+								$LEFT_BACK = "BOTTOM-RIGHT-DOWN"
+								$BACK_LEFT = "BOTTOM-LEFT-DOWN"
+								$BACK_RIGHT = "BOTTOM-LEFT-UP"
+						EndSwitch
+						ParseAndMakeDropLines($MAINSIDE)
 					Case Else
 						Setlog("attack row bad, discard :row " & $rownum, $COLOR_RED)
 				EndSwitch
@@ -656,8 +800,7 @@ Func ParseAttackCSV($debug = False)
 				Return
 			EndIf
 		WEnd
-		ResetRedLine()
-		$LastRedLines = ""
+		ResetRedLines()
 		ReleaseClicks()
 		FileClose($f)
 	Else

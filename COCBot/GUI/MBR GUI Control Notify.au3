@@ -14,18 +14,40 @@
 ; ===============================================================================================================================
 
 Func PushBulletRemoteControl()
-	If $PushBulletEnabled And $pRemote Then _RemoteControl()
+	If ($PushBulletEnabled Or $TelegramEnabled) And $pRemote Then _RemoteControl()
 EndFunc   ;==>PushBulletRemoteControl
 
 Func PushBulletDeleteOldPushes()
-	If $PushBulletEnabled = 1 And $ichkDeleteOldPBPushes = 1 Then _DeleteOldPushes() ; check every 30 min if must to delete old pushbullet messages, increase delay time for anti ban pushbullet
+	If ($PushBulletEnabled = 1 Or $TelegramEnabled = 1) And $ichkDeleteOldPBPushes = 1 Then _DeleteOldPushes() ; check every 30 min if must to delete old pushbullet messages, increase delay time for anti ban pushbullet
 EndFunc   ;==>PushBulletDeleteOldPushes
 
-Func chkPBenabled()
+Func chkPBTGenabled()
 	If GUICtrlRead($chkPBenabled) = $GUI_CHECKED Then
 		$PushBulletEnabled = 1
-		GUICtrlSetState($chkPBRemote, $GUI_ENABLE)
 		GUICtrlSetState($PushBulletTokenValue, $GUI_ENABLE)
+		GUICtrlSetState($btnDeletePBmessages, $GUI_ENABLE)
+		If $ichkDeleteOldPBPushes = 1 Then
+			GUICtrlSetState($cmbHoursPushBullet, $GUI_ENABLE)
+		Else
+			GUICtrlSetState($cmbHoursPushBullet, $GUI_DISABLE)
+		EndIf
+	Else
+		$PushBulletEnabled = 0
+		GUICtrlSetState($PushBulletTokenValue, $GUI_DISABLE)
+		GUICtrlSetState($btnDeletePBmessages, $GUI_DISABLE)
+		GUICtrlSetState($cmbHoursPushBullet, $GUI_DISABLE)
+	EndIf
+
+	If GUICtrlRead($chkTGenabled) = $GUI_CHECKED Then
+		$TelegramEnabled = 1
+		GUICtrlSetState($TelegramTokenValue, $GUI_ENABLE)
+	Else
+		$TelegramEnabled = 0
+		GUICtrlSetState($TelegramTokenValue, $GUI_DISABLE)
+	EndIf
+
+	If $PushBulletEnabled = 1 Or $TelegramEnabled = 1 Then
+		GUICtrlSetState($chkPBRemote, $GUI_ENABLE)
 		GUICtrlSetState($OrigPushBullet, $GUI_ENABLE)
 		GUICtrlSetState($chkAlertPBVMFound, $GUI_ENABLE)
 		GUICtrlSetState($chkAlertPBLastRaid, $GUI_ENABLE)
@@ -40,14 +62,12 @@ Func chkPBenabled()
 		GUICtrlSetState($chkDeleteOldPBPushes, $GUI_ENABLE)
 		GUICtrlSetState($btnDeletePBmessages, $GUI_ENABLE)
 		GUICtrlSetState($chkAlertPBCampFull, $GUI_ENABLE)
-
-		If $ichkDeleteOldPBPushes = 1 Then
-			GUICtrlSetState($cmbHoursPushBullet, $GUI_ENABLE)
-		EndIf
+		GUICtrlSetState($chkAlertBuilderIdle, $GUI_ENABLE)
+		GUICtrlSetState($chkAlertPBMaintenance, $GUI_ENABLE)
+		GUICtrlSetState($chkAlertPBBAN, $GUI_ENABLE)
+		GUICtrlSetState($chkAlertPBUpdate, $GUI_ENABLE)
 	Else
-		$PushBulletEnabled = 0
 		GUICtrlSetState($chkPBRemote, $GUI_DISABLE)
-		GUICtrlSetState($PushBulletTokenValue, $GUI_DISABLE)
 		GUICtrlSetState($OrigPushBullet, $GUI_DISABLE)
 		GUICtrlSetState($chkAlertPBVMFound, $GUI_DISABLE)
 		GUICtrlSetState($chkAlertPBLastRaid, $GUI_DISABLE)
@@ -62,11 +82,13 @@ Func chkPBenabled()
 		GUICtrlSetState($chkDeleteOldPBPushes, $GUI_DISABLE)
 		GUICtrlSetState($btnDeletePBmessages, $GUI_DISABLE)
 		GUICtrlSetState($chkAlertPBCampFull, $GUI_DISABLE)
-
 		GUICtrlSetState($cmbHoursPushBullet, $GUI_DISABLE)
-
+		GUICtrlSetState($chkAlertBuilderIdle, $GUI_DISABLE)
+		GUICtrlSetState($chkAlertPBMaintenance, $GUI_DISABLE)
+		GUICtrlSetState($chkAlertPBBAN, $GUI_DISABLE)
+		GUICtrlSetState($chkAlertPBUpdate, $GUI_DISABLE)
 	EndIf
-EndFunc   ;==>chkPBenabled
+EndFunc   ;==>chkPBTGenabled
 
 Func chkDeleteOldPBPushes()
 	If GUICtrlRead($chkDeleteOldPBPushes) = $GUI_CHECKED Then
@@ -192,5 +214,5 @@ Func chkNotifyWeekDays()
 			GUICtrlSetState($i, $GUI_DISABLE)
 		Next
 	EndIf
- 
+
 EndFunc	;==>chkNotifyWeekDays

@@ -14,16 +14,14 @@
 ; ===============================================================================================================================
 
 Func _RemoteControl()
-	If $PushBulletEnabled = 0 Then Return
 	If $pRemote = 1 Then _RemoteControlPushBullet()
 EndFunc   ;==>_RemoteControl
 
 Func ReportNotify()
-	If $PushBulletEnabled = 0 Then Return
-	If $iAlertPBVillage = 1 Then
+	If $pVillage = 1 Then
 		_PushBullet($iOrigPushBullet & " | My Village:" & "\n" & " [" & GetTranslated(620,35, "G") & "]: " & _NumberFormat($iGoldCurrent) & " [" & GetTranslated(620,36, "E") & "]: " & _NumberFormat($iElixirCurrent) & " [" & GetTranslated(620,37, "D") & "]: " & _NumberFormat($iDarkCurrent) & "  [" & GetTranslated(620,38, "T") & "]: " & _NumberFormat($iTrophyCurrent) & " [" & GetTranslated(620,42, "No. of Free Builders") & "]: " & _NumberFormat($iFreeBuilderCount))
 	EndIf
-	If $iLastAttackPB = 1 Then
+	If $pLastAttack = 1 Then
 		If Not ($iGoldLast = "" And $iElixirLast = "") Then _PushBullet($iOrigPushBullet & " | Last Gain :" & "\n" & " [" & GetTranslated(620,35, "G") & "]: " & _NumberFormat($iGoldLast) & " [" & GetTranslated(620,36, "E") & "]: " & _NumberFormat($iElixirLast) & " [" & GetTranslated(620,37, "D") & "]: " & _NumberFormat($iDarkLast) & "  [" & GetTranslated(620,38, "T") & "]: " & _NumberFormat($iTrophyLast))
 	EndIf
 	If _Sleep($iDelayReportPushBullet1) Then Return
@@ -31,19 +29,15 @@ Func ReportNotify()
 EndFunc   ;==>Report
 
 Func _DeletePush()
-	If $PushBulletEnabled = 0 Then Return
 		_DeletePushOfPushBullet()
 		SetLog("Delete all previous PushBullet messages...", $COLOR_BLUE)
 EndFunc   ;==>_DeletePush
 
 Func PushMsg($Message, $Source = "")
-	If $PushBulletEnabled = 0 Then Return
-		PushMsgToPushBullet($Message, $Source)
+		PushMsgToBoth($Message, $Source)
 EndFunc   ;==>PushMsg
 
 Func _DeleteOldPushes()
-	If $PushBulletEnabled = 0 Then Return
-	If $PushBulletToken = "" Or $ichkDeleteOldPBPushes = 0 Then Return
 		_DeleteOldPushesOfPushBullet()
 EndFunc   ;==>_DeleteOldPushes
 

@@ -44,17 +44,17 @@ Func LocateLab()
 						$sErrorText = "Please try to click inside the grass field!" & @CRLF
 						ContinueLoop
 					Case $iStupid = 3
-						$sErrorText = "This is not funny, why did you click @ (" & $SFPos[0] & "," & $SFPos[1] & ")?" & @CRLF & "  Please stop!" & @CRLF & @CRLF
+						$sErrorText = "This is not funny, why did you click @ (" & $aLabPos[0] & "," & $aLabPos[1] & ")?" & @CRLF & "  Please stop!" & @CRLF & @CRLF
 						ContinueLoop
 					Case $iStupid = 4
 						$sErrorText = "Last Chance, DO NOT MAKE ME ANGRY, or" & @CRLF & "I will give ALL of your gold to Barbarian King," & @CRLF & "And ALL of your Gems to the Archer Queen!" & @CRLF
 						ContinueLoop
 					Case $iStupid > 4
-						SetLog(" Operator Error - Bad Laboratory Location: " & "(" & $SFPos[0] & "," & $SFPos[1] & ")", $COLOR_RED)
+						SetLog(" Operator Error - Bad Laboratory Location: " & "(" & $aLabPos[0] & "," & $aLabPos[1] & ")", $COLOR_RED)
 						ClickP($aAway, 1, 0, "#0380")
 						Return False
 					Case Else
-						SetLog(" Operator Error - Bad Laboratory Location: " & "(" & $SFPos[0] & "," & $SFPos[1] & ")", $COLOR_RED)
+						SetLog(" Operator Error - Bad Laboratory Location: " & "(" & $aLabPos[0] & "," & $aLabPos[1] & ")", $COLOR_RED)
 						$aLabPos[0] = -1
 						$aLabPos[1] = -1
 						ClickP($aAway, 1, 0, "#0381")

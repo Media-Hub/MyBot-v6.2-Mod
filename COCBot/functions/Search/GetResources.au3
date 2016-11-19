@@ -94,3 +94,28 @@ Func GetResources($bLog = True, $pMatchMode = -1) ;Reads resources
 	ResumeAndroid()
 
 EndFunc   ;==>GetResources
+
+Func resetAttackSearch($bStuck = False)
+	; function to check main screen and restart search and display why as needed
+	$Is_ClientSyncError = True
+	checkMainScreen()
+	If $Restart Then
+		$iNbrOfOoS += 1
+		UpdateStats()
+		If $bStuck Then
+			SetLog("Connection Lost While Searching", $COLOR_ERROR)
+		Else
+			SetLog("Disconnected At Search Clouds", $COLOR_ERROR)
+		EndIf
+		PushMsg("OoSResources")
+	Else
+		If $bStuck Then
+			SetLog("Attack Is Disabled Or Slow connection issues, Restarting CoC and Bot...", $COLOR_ERROR)
+		Else
+			SetLog("Stuck At Search Clouds, Restarting CoC and Bot...", $COLOR_ERROR)
+		EndIf
+		$Is_ClientSyncError = False ; disable fast OOS restart if not simple error and restarting CoC
+		CloseCoC(True)
+	EndIf
+	Return
+EndFunc   ;==>resetAttackSearch

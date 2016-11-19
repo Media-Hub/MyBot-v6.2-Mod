@@ -253,8 +253,8 @@ Func btnTestTrain()
 	ForceCaptureRegion()
 	DebugImageSave("train_")
 	SetLog(_PadStringCenter(" Test Train begin (" & $sBotVersion & ")", 54, "="), $COLOR_BLUE)
-	getArmyTroopCount(False, False, True)
-	getArmySpellCount(False, False, True)
+;	getArmyTroopCount(False, False, True) ;REMOVED FUNCTION OCT UPDATE
+;	getArmySpellCount(False, False, True) ;REMOVED FUNCTION OCT UPDATE
 	getArmyHeroCount(False, False)
 	SetLog(_PadStringCenter(" Test Train end ", 54, "="), $COLOR_BLUE)
 	Run("Explorer.exe " & $LibDir & "\debug\ocr\")
@@ -396,6 +396,10 @@ Func btnTestImage()
 	SetLog("Testing waitMainScreenMini", $COLOR_GREEN)
 	$result = waitMainScreenMini()
 	SetLog("Testing waitMainScreenMini DONE, $Result=" & $result, $COLOR_GREEN)
+
+	SetLog("Testing WaitForClouds...", $COLOR_SUCCESS)
+	SetLog("$aNoCloudsAttack2 pixel check: " & _CheckPixel2($aNoCloudsAttack2, $bCapturePixel))
+	SetLog("Testing WaitForClouds DONE", $COLOR_SUCCESS)
 
 	;checkObstacles()
 

@@ -196,32 +196,32 @@ Func DropTrophy()
 						Case $atkTroops[0][0] = $eBarb
 							Click($aRandomEdge[$iRandomXY][0], $aRandomEdge[$iRandomXY][1], 1, 0, "#0181") ;Drop one troop
 							$CurBarb += 1
-							$ArmyComp -= 1
+;							$ArmyComp -= 1
 							SetLog("Deploying 1 Barbarian", $COLOR_BLUE)
 						Case $atkTroops[0][0] = $eArch
 							Click($aRandomEdge[$iRandomXY][0], $aRandomEdge[$iRandomXY][1], 1, 0, "#0182") ;Drop one troop
 							$CurArch += 1
-							$ArmyComp -= 1
+;							$ArmyComp -= 1
 							SetLog("Deploying 1 Archer", $COLOR_BLUE)
 						Case $atkTroops[0][0] = $eGiant
 							Click($aRandomEdge[$iRandomXY][0], $aRandomEdge[$iRandomXY][1], 1, 0, "#0183") ;Drop one troop
 							$CurGiant += 1
-							$ArmyComp -= 5
+;							$ArmyComp -= 5
 							SetLog("Deploying 1 Giant", $COLOR_BLUE)
 						Case $atkTroops[0][0] = $eWall
 							Click($aRandomEdge[$iRandomXY][0], $aRandomEdge[$iRandomXY][1], 1, 0, "#0184") ;Drop one troop
 							$CurWall += 1
-							$ArmyComp -= 2
+;							$ArmyComp -= 2
 							SetLog("Deploying 1 WallBreaker", $COLOR_BLUE)
 						Case $atkTroops[0][0] = $eGobl
 							Click($aRandomEdge[$iRandomXY][0], $aRandomEdge[$iRandomXY][1], 1, 0, "#0185") ;Drop one troop
 							$CurGobl += 1
-							$ArmyComp -= 2
+;							$ArmyComp -= 2
 							SetLog("Deploying 1 Goblin", $COLOR_BLUE)
 						Case $atkTroops[0][0] = $eMini
 							Click($aRandomEdge[$iRandomXY][0], $aRandomEdge[$iRandomXY][1], 1, 0, "#0186") ;Drop one troop
 							$CurMini += 1
-							$ArmyComp -= 2
+;							$ArmyComp -= 2
 							SetLog("Deploying 1 Minion", $COLOR_BLUE)
 						Case Else
 							SetLog("You don´t have Tier 1/2 Troops, Stop dropping trophies.", $COLOR_BLUE) ; preventing of deploying Tier 2/3 expensive troops

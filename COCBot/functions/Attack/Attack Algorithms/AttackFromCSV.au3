@@ -391,12 +391,11 @@ Func ParseAndMakeDropLines($MAINSIDE)
 
 	Local $result
 
-	If StringLen($LastRedLines) > 60 Then
-		$result = $LastRedLines
+	If IsRedLineAvailable() = True Then
+		$result = GetImgLoc2MBR($CurBaseRedLine)
 		Setlog("Used last Red Lines!!", $COLOR_RED)
 	Else
 		$result = GetImgLoc2MBR()
-		$LastRedLines = $result
 	EndIf
 
 	If $debugsetlog Then Setlog("Debug: Redline chosen")

@@ -53,6 +53,7 @@
 #include "functions\Attack\AttackCSV\Slice8.au3"
 #include "functions\Attack\AttackCSV\CleanRedArea.au3"
 #include "functions\Attack\AttackCSV\ChkAttackCSVConfig.au3"
+#include "functions\Attack\AttackCSV\SideP.au3"
 
 #include "functions\Attack\MilkingAttack\Algorithm_MilkingAttack.au3"
 #include "functions\Attack\MilkingAttack\AmountOfResourcesInStructure.au3"
@@ -100,35 +101,34 @@
 #include "functions\Attack\Troops\SelectDropTroop.au3"
 #include "functions\Attack\Troops\SetSleep.au3"
 
-#include "functions\CreateArmy\_TrainMoveBtn.au3"
-#include "functions\CreateArmy\CheckFullArmy.au3"
-#include "functions\CreateArmy\CheckArmyCamp.au3"
-#include "functions\CreateArmy\getArmyCapacity.au3"
 #include "functions\CreateArmy\getArmyCCStatus.au3"
 #include "functions\CreateArmy\getArmyHeroCount.au3"
 #include "functions\CreateArmy\getArmyHeroTime.au3"
 #include "functions\CreateArmy\getArmyHeroStatus.au3"
-#include "functions\CreateArmy\getArmySpellCapacity.au3"
-#include "functions\CreateArmy\getArmySpellCount.au3"
 #include "functions\CreateArmy\getArmySpellTime.au3"
-#include "functions\CreateArmy\getArmyTroopCount.au3"
 #include "functions\CreateArmy\getArmyTroopTime.au3"
-#include "functions\CreateArmy\isBarrack.au3"
 #include "functions\CreateArmy\openArmyOverview.au3"
-#include "functions\CreateArmy\Spell.au3"
 #include "functions\CreateArmy\SmartWait4Train.au3"
 #include "functions\CreateArmy\TrainClick.au3"
 #include "functions\CreateArmy\TrainIt.au3"
 #include "functions\CreateArmy\TrainRevamp.au3"
+;#include "functions\CreateArmy\Spell.au3"
+;#include "functions\CreateArmy\isBarrack.au3"
+;#include "functions\CreateArmy\getArmyTroopCount.au3"
+;#include "functions\CreateArmy\getArmySpellCount.au3"
+;#include "functions\CreateArmy\getArmySpellCapacity.au3"
+;#include "functions\CreateArmy\_TrainMoveBtn.au3"
+;#include "functions\CreateArmy\CheckFullArmy.au3"
+;#include "functions\CreateArmy\CheckArmyCamp.au3"
+;#include "functions\CreateArmy\getArmyCapacity.au3"
 
 #include "functions\Image Search\ImageSearch.au3"
 #include "functions\Image Search\checkDeadBase.au3"
-;#include "functions\Image Search\checkTownhall.au3"
 #include "functions\Image Search\checkWall.au3"
 #include "functions\Image Search\CheckTombs.au3"
-;#include "functions\Image Search\THSearch.au3"
 #include "functions\Image Search\TownHall.au3"
-
+;#include "functions\Image Search\THSearch.au3"
+;#include "functions\Image Search\checkTownhall.au3"
 #include "functions\Image Search\imglocAuxiliary.au3"
 
 #include "functions\Main Screen\checkMainScreen.au3"
@@ -162,7 +162,6 @@
 #include "functions\Other\WerFaultClose.au3"
 #include "functions\Other\_NumberFormat.au3"
 #include "functions\Other\_PadStringCenter.au3"
-#include "functions\Other\_ReduceMemory.au3"
 #include "functions\Other\_ProcessSuspendResume2.au3"
 #include "functions\Other\_Sleep.au3"
 #include "functions\Other\_SleepStatus.au3"
@@ -171,7 +170,6 @@
 #include "functions\Other\ClickOkay.au3"
 #include "functions\Other\ClickRemove.au3"
 #include "functions\Other\CreateLogFile.au3"
-;#include "functions\Other\MBRFunc.au3"
 #include "functions\Other\DebugImageSave.au3"
 #include "functions\Other\DebugSaveDesktopImage.au3"
 #include "functions\Other\ExtendedErrorInfo.au3"
@@ -180,7 +178,6 @@
 #include "functions\Other\SetLog.au3"
 #include "functions\Other\Tab.au3"
 #include "functions\Other\Time.au3"
-#include "functions\Other\BlockInputEx.au3"
 #include "functions\Other\TogglePause.au3"
 #include "functions\Other\CheckPrerequisites.au3"
 #include "functions\Other\CheckDisplay.au3"
@@ -195,13 +192,17 @@
 #include "functions\Other\CloseRunningBot.au3"
 #include "functions\Other\WindowSystemMenu.au3"
 #include "functions\Other\image_get_info.au3"
-
 #include "functions\Other\ComError.au3"
 #include "functions\Other\IsPage.au3"
 #include "functions\Other\MoveMouseOutBS.au3"
 #include "functions\Other\KillProcess.au3"
 #include "functions\Other\LaunchConsole.au3"
 #include "functions\Other\ADB.au3"
+#include "functions\Other\ClickZoneR.au3"
+;#include "functions\Other\BlockInputEx.au3"
+;#include "functions\Other\MBRFunc.au3"
+;#include "functions\Other\_ReduceMemory.au3"
+;#include "functions\Other\JSON.au3"
 
 #include "functions\Pixels\_CaptureRegion.au3"
 #include "functions\Pixels\_ColorCheck.au3"
@@ -234,6 +235,7 @@
 #include "functions\Village\BotDetectFirstTime.au3"
 #include "functions\Village\BotCommand.au3"
 #include "functions\Village\BreakPersonalShield.au3"
+#include "functions\Village\Chart.au3"
 #include "functions\Village\CheckImageType.au3"
 #include "functions\Village\CheckBaseQuick.au3"
 #include "functions\Village\chkShieldStatus.au3"
@@ -244,12 +246,10 @@
 #include "functions\Village\isDarkElixirFull.au3"
 #include "functions\Village\isGoldFull.au3"
 #include "functions\Village\isElixirFull.au3"
-#include "functions\Village\LocateBarrack.au3"
 #include "functions\Village\LocateUpgrade.au3"
 #include "functions\Village\LocateClanCastle.au3"
 #include "functions\Village\LocateLab.au3"
 #include "functions\Village\LocateTownHall.au3"
-#include "functions\Village\LocateSpell.au3"
 #include "functions\Village\LocateHeroesAltar.au3"
 #include "functions\Village\ProfileReport.au3"
 #include "functions\Village\ReArm.au3"
@@ -265,18 +265,32 @@
 #include "functions\Village\UpgradeHeroes.au3"
 #include "functions\Village\ClanLevel.au3"
 #include "functions\Village\StarBonus.au3"
-#include "functions\Other\ClickZoneR.au3"
-#include "functions\Village\DonateStats.au3"
-;==============================================================
-; SmartZap - Added by NTS team
-;==============================================================
-#include "functions\Attack\SmartZap\drillSearch.au3"
-#include "functions\Attack\SmartZap\smartZap.au3"
-#include "functions\Other\JSON.au3"
-;==============================================================
-; SmartZap - Added by NTS team
-;==============================================================
 
-; Switch Accounts
-#include "Mod\SwitchAcc.au3"
-#include "Mod\UpdateStats - Mod.au3"
+;#include "functions\Village\LocateBarrack.au3"
+;#include "functions\Village\LocateSpell.au3"
+
+
+#include "functions\BotHumanization\BotHumanization.au3"
+#include "functions\BotHumanization\AttackNDefenseActions.au3"
+#include "functions\BotHumanization\BestClansNPlayersActions.au3"
+#include "functions\BotHumanization\ChatActions.au3"
+#include "functions\BotHumanization\ClanActions.au3"
+#include "functions\BotHumanization\ClanWarActions.au3"
+
+#include "functions\Search\WaitForClouds.au3"
+
+#include "functions\Village\DonateStats.au3"
+
+#include "functions\Village\SuperXP.au3"
+
+; Switch Profile
+#include "functions\Village\ProfileSwitch.au3"
+
+; SmartZap files - Added by LunaEclipse
+#include "functions\Mod\SmartZap\drillSearch.au3"
+#include "functions\Mod\SmartZap\smartZap.au3"
+
+; SwitchAcc - DEMEN
+#include "functions\Mod\Switch Accounts\SwitchAcc.au3"
+#include "functions\Mod\Switch Accounts\UpdateStats - Mod.au3"
+

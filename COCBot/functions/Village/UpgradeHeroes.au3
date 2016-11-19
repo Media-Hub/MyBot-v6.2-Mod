@@ -342,10 +342,10 @@ Func WardenUpgrade()
 
 	;##### Get updated village elixir values
 	If _ColorCheck(_GetPixelColor(812, 141, True), Hex(0x000000, 6), 10) Then ; check if the village have a Dark Elixir Storage
-		$iElixirCurrent = getResourcesMainScreen(705, 74)
-		If $debugSetlog = 1 Then SetLog("Updating village values [E]: " & $iElixirCurrent, $COLOR_DEBUG) ;Debug
+		$iElixirCurrent = getResourcesMainScreen(696, 74)
+		If $debugSetlog = 1 Then SetLog("Updating village values [E]: " & $iElixirCurrent, $COLOR_PURPLE)
 	Else
-		$iElixirCurrent = getResourcesMainScreen(710, 74)
+		$iElixirCurrent = getResourcesMainScreen(701, 74)
 	EndIf
 	If _Sleep(100) Then Return
 

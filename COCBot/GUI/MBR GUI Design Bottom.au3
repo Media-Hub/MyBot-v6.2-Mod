@@ -70,12 +70,12 @@ $grpButtons = GUICtrlCreateGroup("https://mybot.run " & GetTranslated(602,0, "- 
 		_GUICtrlSetTip(-1, $txtTip)
 		GUICtrlSetOnEvent(-1, "chkBackground")
 		GUICtrlSetState(-1, (($AndroidAdbScreencap = True) ? ($GUI_CHECKED) : ($GUI_UNCHECKED)))
-	$CheckVersionConfig = GUICtrlCreateButton(GetTranslated(602,32, "Check"), $x + 95, $y + 70, 40, -1)
-		$txtTip = GetTranslated(602,33, "Use this to check version Mod.")
+	$CheckVersionConfig = GUICtrlCreateButton("Check", $x + 95, $y + 70, 40, -1)
+		$txtTip = "Use this to check version Mod."
 		_GUICtrlSetTip(-1, $txtTip)
 		IF $btnColor Then GUICtrlSetBkColor(-1, 0x22C4F5)
-	$ModSupportConfig = GUICtrlCreateButton(GetTranslated(602,34, "Support"), $x + 135, $y + 70, 45, -1)
-		$txtTip = GetTranslated(602,35, "Group Support Mod Mybot All Versions.")
+	$ModSupportConfig = GUICtrlCreateButton("Support", $x + 135, $y + 70, 45, -1)
+		$txtTip = "Support Mod Mybot All Versions."
 		_GUICtrlSetTip(-1, $txtTip)
 		IF $btnColor Then GUICtrlSetBkColor(-1, 0x22C4F5)
 	$lblDonate = GUICtrlCreateLabel(GetTranslated(601,19,"Support the development"), $x + 224, $y + 80, 220, 24, $SS_RIGHT)

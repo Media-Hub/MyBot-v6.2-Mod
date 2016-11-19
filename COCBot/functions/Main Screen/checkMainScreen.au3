@@ -13,7 +13,7 @@
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: No
 ; ===============================================================================================================================
-Func checkMainScreen($Check = True) ;Checks if in main screen
+Func checkMainScreen($Check = True, $CheckZoomout = True) ;Checks if in main screen
 
 	Local $iCount, $Result
 	If $Check = True Then
@@ -69,7 +69,7 @@ Func checkMainScreen($Check = True) ;Checks if in main screen
 			ExitLoop
 		EndIf
 	WEnd
-	ZoomOut()
+	If $CheckZoomout Then ZoomOut()
 	If Not $RunState Then Return
 
 	If $Check = True Then

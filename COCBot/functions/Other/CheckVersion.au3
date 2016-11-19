@@ -37,23 +37,27 @@ Func CheckVersion()
 #Ce
 		If $lastModversion = "" Then
 			SetLog("WE CANNOT OBTAIN MOD VERSION AT THIS TIME", $COLOR_ORANGE)
+			CheckModVersion()
 		ElseIf VersionNumFromVersionTXT($sModversion) < VersionNumFromVersionTXT($lastModversion) Then
 			SetLog("WARNING, YOUR MOD VERSION (" & $sModversion & ") IS OUT OF DATE.", $COLOR_RED)
 			SetLog("CHIEF, PLEASE DOWNLOAD THE LATEST (" & $lastModversion & ")", $COLOR_RED)
-			SetLog("FROM https://github.com/NguyenAnhHD               ", $COLOR_RED)
+			SetLog("FROM https://MyBot.run               ", $COLOR_RED)
 			SetLog(" ")
 			_PrintLogVersion($oldModversmessage)
+			CheckModVersion()
 		ElseIf VersionNumFromVersionTXT($sModversion) > VersionNumFromVersionTXT($lastModversion) Then
-			SetLog("YOU ARE USING A FUTURE MOD BY NGUYEN ANH VERSION CHIEF!", $COLOR_GREEN)
+			SetLog("YOU ARE USING A FUTURE MOD NguyenAnhHD VERSION CHIEF!", $COLOR_GREEN)
 			SetLog("YOUR MOD VERSION: " & $sModversion, $COLOR_GREEN)
 			SetLog("OFFICIAL MOD VERSION: " & $lastModversion, $COLOR_GREEN)
 			SetLog(" ")
 		Else
 			SetLog("WELCOME CHIEF, YOU HAVE THE LATEST MOD VERSION", $COLOR_GREEN)
 			SetLog(" ")
+			SetLog("NguyenAnhHD", $COLOR_BLUE)
+			SetLog("CHEEERS..")
+			SetLog(" ")
 			_PrintLogVersion($lastmessage)
 		EndIf
-		CheckMODVersion()
 	EndIf
 EndFunc   ;==>CheckVersion
 
@@ -172,38 +176,6 @@ Func VersionNumFromVersionTXT($versionTXT)
 	Return $resultnumber
 EndFunc   ;==>VersionNumFromVersionTXT
 
-Func CheckMODVersion()
-	Local $tempJson = @ScriptDir & "\Temp.json"
-	$hDownload = InetGet("https://api.github.com/repos/" & $sGitHubModOwner & "/" & $sGitHubModRepo & "/releases", $tempJson, 0, 1)
-	; Wait for the download to complete by monitoring when the 2nd index value of InetGetInfo returns True.
-	Local $i = 0
-	Do
-		Sleep($iDelayCheckVersionHTML1)
-		$i += 1
-	Until InetGetInfo($hDownload, $INET_DOWNLOADCOMPLETE) or $i > 25
-	InetClose($hDownload)
-
-	Local $file = FileOpen($tempJson, 0)
-	Local $fileContent = FileRead($file)
-	Local $decodedArray = Json_Decode($fileContent)
-
-	Local $sLatestReleaseTag = ""
-	If Ubound($decodedArray) > 0 Then
-		$sLatestReleaseTag = Json_Get($decodedArray, '[0]["tag_name"]')
-	EndIf
-	FileClose($file)
-	FileDelete($tempJson)
-
-	If $sLatestReleaseTag > $sGitHubModLatestReleaseTag Then
-		MsgBox(0, "Attentions!", "Chief, A New Version Of Mod Nguyen Anh Has Been Uploaded (" & $sLatestReleaseTag & "), Your Version Might Be Outdated." & @CRLF & _
-		"Please Download Latest Version From Official MOD Nguyen Anh")
-		ShellExecute("https://github.com/" & $sGitHubModOwner & "/" & $sGitHubModRepo & "/releases/latest")
-		Return False
-	EndIf
-
-	Return True
-EndFunc
-
 Func _PrintLogVersion($message)
 	Local $messagevet = StringSplit($message, "\n", 1)
 	If Not (IsArray($messagevet)) Then
@@ -243,3 +215,19 @@ Func GetVersionNormalized($VersionString, $Chars = 5)
 	Next
 	Return _ArrayToString($a, ".")
 EndFunc   ;==>GetVersionNormalized
+
+Func CheckModVersion()
+	If $lastModversion = "" Then
+		MsgBox($MB_ICONWARNING, "", "WE CANNOT OBTAIN MOD VERSION AT THIS TIME" &  @CRLF & _
+				"BAD CONNECTION", 10) ;10s timeout
+	ElseIf VersionNumFromVersionTXT($sModversion) < VersionNumFromVersionTXT($lastModversion) Then
+		If MsgBox(BitOr($MB_ICONWARNING, $MB_YESNO), "BOT Update Detected", "Chief, there is a new version of the bot available (" & $lastModversion & ")" & @CRLF &  @CRLF & _
+			"Do you want to download the latest version ?", 30) = $IDYES Then ;30s timeout
+			ShellExecute($sDownloadUrl)
+			Return False
+		EndIf
+	Else
+		MsgBox($MB_ICONINFORMATION, "Notify", "You Are Using The Latest Version Of Mod NguyenAnhHD" &  @CRLF & _
+				"Thanks..", 15) ;15s timeout
+	EndIf
+EndFunc   ;==>CheckModVersion

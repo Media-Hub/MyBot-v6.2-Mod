@@ -40,14 +40,14 @@ Global $aTxtBlacklistControlsSpell[4] = [$txtBlacklistPoisonSpells, $txtBlacklis
 Global $aLblBtnControls[21] = [$lblBtnBarbarians, $lblBtnArchers, $lblBtnGiants, $lblBtnGoblins, $lblBtnWallBreakers, $lblBtnBalloons, $lblBtnWizards, $lblBtnHealers, $lblBtnDragons, $lblBtnPekkas, $lblBtnBabyDragons, $lblBtnMiners, $lblBtnMinions, $lblBtnHogRiders, $lblBtnValkyries, $lblBtnGolems, $lblBtnWitches, $lblBtnLavaHounds, $lblBtnBowlers, $lblBtnCustomA, $lblBtnCustomB]
 Global $aLblBtnControlsSpell[4] = [$lblBtnPoisonSpells, $lblBtnEarthQuakeSpells, $lblBtnHasteSpells, $lblBtnSkeletonSpells]
 
-Global $aMainTabItems[7] = [$tabMain, $tabGeneral, $tabVillage, $tabAttack, $tabBot, $tabAboutUs]
+Global $aMainTabItems[7] = [$tabMain, $tabGeneral, $tabVillage, $tabAttack, $tabBot, $tabMOD, $tabAboutUs]
 
 Global $aTabControlsVillage[6] = [$hGUI_VILLAGE_TAB, $hGUI_VILLAGE_TAB_ITEM1, $hGUI_VILLAGE_TAB_ITEM2, $hGUI_VILLAGE_TAB_ITEM3, $hGUI_VILLAGE_TAB_ITEM4, $hGUI_VILLAGE_TAB_ITEM5]
 Global $aTabControlsDonate[4] = [$hGUI_DONATE_TAB, $hGUI_DONATE_TAB_ITEM1, $hGUI_DONATE_TAB_ITEM2, $hGUI_DONATE_TAB_ITEM3]
 Global $aTabControlsUpgrade[5] = [$hGUI_UPGRADE_TAB, $hGUI_UPGRADE_TAB_ITEM1, $hGUI_UPGRADE_TAB_ITEM2, $hGUI_UPGRADE_TAB_ITEM3, $hGUI_UPGRADE_TAB_ITEM4]
 Global $aTabControlsNotify[4] = [$hGUI_NOTIFY_TAB, $hGUI_NOTIFY_TAB_ITEM2, $hGUI_NOTIFY_TAB_ITEM4, $hGUI_NOTIFY_TAB_ITEM6]
 
-Global $aTabControlsAttack[5] = [$hGUI_ATTACK_TAB, $hGUI_ATTACK_TAB_ITEM1, $hGUI_ATTACK_TAB_ITEM2, $hGUI_ATTACK_TAB_ITEM3, $hGUI_ATTACK_TAB_ITEM4]
+Global $aTabControlsAttack[4] = [$hGUI_ATTACK_TAB, $hGUI_ATTACK_TAB_ITEM1, $hGUI_ATTACK_TAB_ITEM2, $hGUI_ATTACK_TAB_ITEM3]
 
 Global $aTabControlsArmy[4] = [$hGUI_ARMY_TAB, $hGUI_ARMY_TAB_ITEM1, $hGUI_ARMY_TAB_ITEM2, $hGUI_ARMY_TAB_ITEM3]
 Global $aTabControlsSearch[6] = [$hGUI_SEARCH_TAB, $hGUI_SEARCH_TAB_ITEM1, $hGUI_SEARCH_TAB_ITEM2, $hGUI_SEARCH_TAB_ITEM3, $hGUI_SEARCH_TAB_ITEM4, $hGUI_SEARCH_TAB_ITEM5]
@@ -58,9 +58,11 @@ Global $aTabControlsAttackOptions[5] = [$hGUI_AttackOption_TAB, $hGUI_AttackOpti
 Global $aTabControlsStrategies[3] = [$hGUI_STRATEGIES_TAB, $hGUI_STRATEGIES_TAB_ITEM1, $hGUI_STRATEGIES_TAB_ITEM2]
 
 Global $aTabControlsBot[5] = [$hGUI_BOT_TAB, $hGUI_BOT_TAB_ITEM1, $hGUI_BOT_TAB_ITEM2, $hGUI_BOT_TAB_ITEM3, $hGUI_BOT_TAB_ITEM4]
-Global $aTabControlsStats[6] = [$hGUI_STATS_TAB, $hGUI_STATS_TAB_ITEM1, $hGUI_STATS_TAB_ITEM2, $hGUI_STATS_TAB_ITEM3, $hGUI_STATS_TAB_ITEM4, $hGUI_STATS_TAB_ITEM5]
+Global $aTabControlsMOD[4] = [$hGUI_MOD_TAB, $hGUI_MOD_TAB_ITEM1, $hGUI_MOD_TAB_ITEM2, $hGUI_MOD_TAB_ITEM3]
+Global $aTabControlsModOptions2[3] = [$hGUI_ModOptions2_TAB, $hGUI_ModOptions2_TAB_ITEM1, $hGUI_ModOptions2_TAB_ITEM2]
+Global $aTabControlsStats[5] = [$hGUI_STATS_TAB, $hGUI_STATS_TAB_ITEM1, $hGUI_STATS_TAB_ITEM2, $hGUI_STATS_TAB_ITEM3, $hGUI_STATS_TAB_ITEM4]
 
-Global $aAlwaysEnabledControls[24] = [$chkUpdatingWhenMinimized, $chkHideWhenMinimized, $chkDebugClick, $chkDebugSetlog, $chkDebugOcr, $chkDebugImageSave, $chkdebugBuildingPos, $chkdebugTrain, $chkdebugOCRDonate, $chkdebugDeadBaseImage, $btnTestTrain, $btnTestDonateCC, $btnTestAttackBar, $btnTestClickDrag, $btnTestImage, $btnEagle, $btnImageFolder, $btnEQDeploy, $btnDropS, $btnTestAD, $btnDBCheck, $btnPosCheck, $lblLightningUsed, $lblSmartZap]
+Global $aAlwaysEnabledControls[32] = [$chkUpdatingWhenMinimized, $chkHideWhenMinimized, $chkDebugClick, $chkDebugSetlog, $chkDebugOcr, $chkDebugImageSave, $chkdebugBuildingPos, $chkdebugTrain, $chkdebugOCRDonate, $chkdebugDeadBaseImage, $btnTestTrain, $btnTestDonateCC, $btnTestAttackBar, $btnTestClickDrag, $btnTestImage, $btnEagle, $btnImageFolder, $btnEQDeploy, $btnDropS, $btnTestAD, $btnDBCheck, $btnPosCheck, $lblLightningUsed, $lblSmartZap, $DocXP1, $DocXP2, $DocXP3, $DocXP4, $lblXPatStart, $lblXPCurrent, $lblXPSXWon, $lblXPSXWonHour]
 
 Global $frmBot_WNDPROC = 0
 
@@ -104,6 +106,8 @@ Func IsTab($controlID)
 			_ArraySearch($aTabControlsAttackOptions, $controlID) <> -1 Or _
 			_ArraySearch($aTabControlsStrategies, $controlID) <> -1 Or _
 			_ArraySearch($aTabControlsBot, $controlID) <> -1 Or _
+			_ArraySearch($aTabControlsMOD, $controlID) <> -1 Or _
+			_ArraySearch($aTabControlsModOptions2, $controlID) <> -1 Or _
 			_ArraySearch($aTabControlsStats, $controlID) <> -1 Then
 		Return True
 	EndIf
@@ -147,7 +151,8 @@ AtkLogHead()
 #include "GUI\MBR GUI Control Bot Options.au3"
 #include "GUI\MBR GUI Control Preset.au3"
 #include "GUI\MBR GUI Control Child Misc.au3"
-#include "Mod\GUI Control - Mod.au3"
+#include "GUI\MBR GUI Control Tab Profiles.au3"
+#include "GUI\MBR GUI Control Tab Mod Option.au3"
 
 ; Accelerator Key, more responsive than buttons in run-mode
 Local $aAccelKeys[2][2] = [["{ESC}", $btnStop], ["{PAUSE}", $btnPause]]
@@ -373,7 +378,8 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 			;Case $idMENU_DONATE_SUPPORT
 			;	ShellExecute("https://mybot.run/forums/index.php?/donate/make-donation/")
 		Case $CheckVersionConfig
-			If CheckMODVersion() Then MsgBox(0, "", "You Are Using The Latest Version Of Mod Nguyen Anh")
+			CheckVersionHTML()
+			CheckModVersion()
 		Case $ModSupportConfig
 			ShellExecute($sModSupportUrl)
 		Case $btnDeletePBMessages
@@ -548,6 +554,8 @@ Func GUIControl_WM_NOTIFY($hWind, $iMsg, $wParam, $lParam)
 			tabTHSnipe()
 		Case $hGUI_BOT_TAB
 			tabBot()
+		Case $hGUI_MOD_TAB
+			tabMOD()
 		Case Else
 			$bCheckEmbeddedShield = False
 	EndSwitch
@@ -642,7 +650,7 @@ Func BotClose($SaveConfig = Default, $bExit = True)
 	Sleep(1000)
 	SetLog(" » Thanks For Using MyBot Mod", $COLOR_ORANGE)
 	Sleep(800)
-	SetLog(" »» By Nguyen Anh", $COLOR_ORANGE)
+	SetLog(" »» NguyenAnhHD", $COLOR_ORANGE)
 	Sleep(500)
 	AndroidEmbed(False) ; detach Android Window
 	AndroidShieldDestroy() ; destroy Shield Hooks
@@ -751,7 +759,7 @@ Func tiAbout()
 			"Version: " & $sBotVersion & @CRLF & _
 			"Released under the GNU GPLv3 license." & @CRLF & _
 			"Visit www.MyBot.run"
-	MsgBox(64 + $MB_APPLMODAL + $MB_TOPMOST, $sBotTitle, $sMsg, 0, $frmBot)
+	MsgBox(64 + $MB_APPLMODAL + $MB_TOPMOST, $sBotTitle, $sMsg, 0, $frmBot) ;30s timeout
 EndFunc   ;==>tiAbout
 
 Func tiDonate()
@@ -915,12 +923,14 @@ Func tabMain()
 			GUISetState(@SW_HIDE, $hGUI_VILLAGE)
 			GUISetState(@SW_HIDE, $hGUI_ATTACK)
 			GUISetState(@SW_HIDE, $hGUI_BOT)
+			GUISetState(@SW_HIDE, $hGUI_MOD)
 			GUISetState(@SW_SHOWNOACTIVATE, $hGUI_LOG)
 
 		Case $tabidx = 1 ; Village
 			GUISetState(@SW_HIDE, $hGUI_LOG)
 			GUISetState(@SW_HIDE, $hGUI_ATTACK)
 			GUISetState(@SW_HIDE, $hGUI_BOT)
+			GUISetState(@SW_HIDE, $hGUI_MOD)
 			GUISetState(@SW_SHOWNOACTIVATE, $hGUI_VILLAGE)
 			tabVillage()
 
@@ -928,6 +938,7 @@ Func tabMain()
 			GUISetState(@SW_HIDE, $hGUI_LOG)
 			GUISetState(@SW_HIDE, $hGUI_VILLAGE)
 			GUISetState(@SW_HIDE, $hGUI_BOT)
+			GUISetState(@SW_HIDE, $hGUI_MOD)
 			GUISetState(@SW_SHOWNOACTIVATE, $hGUI_ATTACK)
 			tabAttack()
 
@@ -935,13 +946,24 @@ Func tabMain()
 			GUISetState(@SW_HIDE, $hGUI_LOG)
 			GUISetState(@SW_HIDE, $hGUI_VILLAGE)
 			GUISetState(@SW_HIDE, $hGUI_ATTACK)
+			GUISetState(@SW_HIDE, $hGUI_MOD)
 			GUISetState(@SW_SHOWNOACTIVATE, $hGUI_BOT)
 			tabBot()
+
+		Case $tabidx = 4 ; MOD Option
+			GUISetState(@SW_HIDE, $hGUI_LOG)
+			GUISetState(@SW_HIDE, $hGUI_VILLAGE)
+			GUISetState(@SW_HIDE, $hGUI_ATTACK)
+			GUISetState(@SW_HIDE, $hGUI_BOT)
+			GUISetState(@SW_SHOWNOACTIVATE, $hGUI_MOD)
+			tabMOD()
+
 		Case Else
 			GUISetState(@SW_HIDE, $hGUI_LOG)
 			GUISetState(@SW_HIDE, $hGUI_VILLAGE)
 			GUISetState(@SW_HIDE, $hGUI_ATTACK)
 			GUISetState(@SW_HIDE, $hGUI_BOT)
+			GUISetState(@SW_HIDE, $hGUI_MOD)
 	EndSelect
 
 EndFunc   ;==>tabMain
@@ -976,23 +998,15 @@ Func tabAttack()
 			GUISetState(@SW_HIDE, $hGUI_STRATEGIES)
 			GUISetState(@SW_SHOWNOACTIVATE, $hGUI_ARMY)
 			GUISetState(@SW_HIDE, $hGUI_SEARCH)
-			GUISetState(@SW_HIDE, $hGUI_NewSmartZap)
 		Case $tabidx = 1 ; SEARCH tab
 			GUISetState(@SW_HIDE, $hGUI_STRATEGIES)
 			GUISetState(@SW_HIDE, $hGUI_ARMY)
 			GUISetState(@SW_SHOWNOACTIVATE, $hGUI_SEARCH)
-			GUISetState(@SW_HIDE, $hGUI_NewSmartZap)
 			tabSEARCH()
-		Case $tabidx = 2 ; NewSmartZap tab
-			GUISetState(@SW_HIDE, $hGUI_ARMY)
-			GUISetState(@SW_HIDE, $hGUI_SEARCH)
-			GUISetState(@SW_SHOWNOACTIVATE, $hGUI_NewSmartZap)
-			GUISetState(@SW_HIDE, $hGUI_STRATEGIES)
-		Case $tabidx = 3 ; STRATEGIES tab
+		Case $tabidx = 2 ; STRATEGIES tab
 			GUISetState(@SW_SHOWNOACTIVATE, $hGUI_STRATEGIES)
 			GUISetState(@SW_HIDE, $hGUI_ARMY)
 			GUISetState(@SW_HIDE, $hGUI_SEARCH)
-			GUISetState(@SW_HIDE, $hGUI_NewSmartZap)
 	EndSelect
 
 EndFunc   ;==>tabAttack
@@ -1106,14 +1120,32 @@ Func tabBot()
 	Select
 		Case $tabidx = 0 ; Options tab
 			GUISetState(@SW_HIDE, $hGUI_STATS)
-		Case $tabidx = 1 ; Options Debug
+		Case $tabidx = 1 ; Humanization tab
 			GUISetState(@SW_HIDE, $hGUI_STATS)
-		Case $tabidx = 2 ; Strategies tab
+		Case $tabidx = 2 ; Options Debug
 			GUISetState(@SW_HIDE, $hGUI_STATS)
 		Case $tabidx = 3 ; Stats tab
 			GUISetState(@SW_SHOWNOACTIVATE, $hGUI_STATS)
 	EndSelect
 EndFunc   ;==>tabBot
+
+Func tabMOD()
+	$tabidx = GUICtrlRead($hGUI_MOD_TAB)
+	Select
+		Case $tabidx = 0 ; Mod Option Tab
+			GUISetState(@SW_SHOWNOACTIVATE, $hGUI_ModOptions)
+			GUISetState(@SW_HIDE, $hGUI_ModOptions2)
+			GUISetState(@SW_HIDE, $hGUI_Donation)
+		Case $tabidx = 1 ; Switch Profile $ Multi Option Tab
+			GUISetState(@SW_HIDE, $hGUI_ModOptions)
+			GUISetState(@SW_HIDE, $hGUI_Donation)
+			GUISetState(@SW_SHOWNOACTIVATE, $hGUI_ModOptions2)
+		Case $tabidx = 2 ; Donation Stats Tab
+			GUISetState(@SW_HIDE, $hGUI_ModOptions)
+			GUISetState(@SW_HIDE, $hGUI_ModOptions2)
+			GUISetState(@SW_SHOWNOACTIVATE, $hGUI_Donation)
+	EndSelect
+EndFunc   ;==>tabMOD
 
 Func tabDeadbase()
 	$tabidx = GUICtrlRead($hGUI_DEADBASE_TAB)
@@ -1348,7 +1380,7 @@ Func Bind_ImageList($nCtrl)
 	Switch $nCtrl
 		Case $tabMain
 			; the icons for main tab
-			Local $aIconIndex[5] = [$eIcnHourGlass, $eIcnTH11, $eIcnCamp, $eIcnGUI, $eIcnInfo]
+			Local $aIconIndex[6] = [$eIcnHourGlass, $eIcnTH11, $eIcnCamp, $eIcnGUI, $eIcnModNguyenAnh, $eIcnInfo]
 
 		Case $hGUI_VILLAGE_TAB
 			; the icons for village tab
@@ -1372,7 +1404,7 @@ Func Bind_ImageList($nCtrl)
 
 		Case $hGUI_ATTACK_TAB
 			; the icons for attack tab
-			Local $aIconIndex[4] = [$eIcnCamp, $eIcnMagnifier, $eIcnLightSpell, $eIcnStrategies]
+			Local $aIconIndex[3] = [$eIcnCamp, $eIcnMagnifier, $eIcnStrategies]
 
 		Case $hGUI_SEARCH_TAB
 			; the icons for SEARCH tab
@@ -1392,11 +1424,19 @@ Func Bind_ImageList($nCtrl)
 
 		Case $hGUI_AttackOption_TAB
 			; the icons for Attack Options tab
-			Local $aIconIndex[4] = [$eIcnMagnifier, $eIcnCamp, $eIcnSilverStar, $eIcnTrophy]
+			Local $aIconIndex[5] = [$eIcnMagnifier, $eIcnCamp, $eIcnSilverStar, $eIcnTrophy, $eIcnOptions]
 
 		Case $hGUI_BOT_TAB
 			; the icons for Bot tab
-			Local $aIconIndex[4] = [$eIcnOptions, $eIcnProfile, $eIcnProfile, $eIcnGold]
+			Local $aIconIndex[5] = [$eIcnOptions, $eIcnBrain ,$eIcnOptions, $eIcnProfile, $eIcnGold]
+
+		Case $hGUI_MOD_TAB
+			; the icons for Mod tab
+			Local $aIconIndex[3] = [$eIcnOptions, $eIcnAchievements, $eIcnCCDonate]
+
+		Case $hGUI_ModOptions2_TAB
+			; the icons for Mod tab
+			Local $aIconIndex[2] = [$eIcnProfile, $eIcnInfo]
 
 		Case $hGUI_STRATEGIES_TAB
 			; the icons for strategies tab
@@ -1404,7 +1444,7 @@ Func Bind_ImageList($nCtrl)
 
 		Case $hGUI_STATS_TAB
 			; the icons for stats tab
-			Local $aIconIndex[5] = [$eIcnGoldElixir, $eIcnOptions, $eIcnCamp, $eIcnGoldElixir, $eIcnCCDonate]
+			Local $aIconIndex[4] = [$eIcnGoldElixir, $eIcnOptions, $eIcnGoldElixir, $eIcnCamp]
 
 		Case Else
 			;do nothing

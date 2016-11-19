@@ -29,6 +29,7 @@ Global $iOldGoldFromMines, $iOldElixirFromCollectors, $iOldDElixirFromDrills ; n
 Global $iOldAttackedCount, $iOldAttackedVillageCount[$iModeCount + 1] ; number of attack villages for DB, LB, TB, TS
 Global $iOldTotalGoldGain[$iModeCount + 1], $iOldTotalElixirGain[$iModeCount + 1], $iOldTotalDarkGain[$iModeCount + 1], $iOldTotalTrophyGain[$iModeCount + 1] ; total resource gains for DB, LB, TB, TS
 Global $iOldNbrOfDetectedMines[$iModeCount + 1], $iOldNbrOfDetectedCollectors[$iModeCount + 1], $iOldNbrOfDetectedDrills[$iModeCount + 1] ; number of mines, collectors, drills detected for DB, LB, TB
+Global $iOldGainedXPHour
 
 Func UpdateStats()
 	If $FirstRun = 1 Then
@@ -337,6 +338,10 @@ Func UpdateStats()
 ;==============================================================
 ; SmartZap - Added by DocOC team
 ;==============================================================
+	If $iOldGainedXPHour <> $iGainedXPHour Then
+		GUICtrlSetData($lblXPSXWonHour, _NumberFormat($iGainedXPHour))
+		$iOldGainedXPHour = $iGainedXPHour
+	EndIf
 
 	$iAttackedCount = 0
 
@@ -411,7 +416,7 @@ Func UpdateStats()
 			If $iDarkStart <> "" Then
 				GUICtrlSetData($lblResultDEHourNow, _NumberFormat(Round($iDarkTotal / (Int(TimerDiff($sTimer) + $iTimePassed)) * 3600 * 1000)) & " / h") ;GUI BOTTOM
 			EndIf
-		EndIf
+		EndIf							; 	SwitchAcc Mode - Demen
 	EndIf
 
 	If $ichkSwitchAcc = 1 Then UpdateStatsForSwitchAcc()	;	SwitchAcc Mode - Demen
@@ -486,13 +491,13 @@ Func ResetStats()
 	$iGoldFromMines = 0
 	$iElixirFromCollectors = 0
 	$iDElixirFromDrills = 0
+
+	If $ichkSwitchAcc = 1 Then ResetStatsForSwitchAcc()		;	SwitchAcc Mode - Demen
+
 ; ======================= SmartZap - Added by NTS team =======================
 	$smartZapGain = 0
 	$numLSpellsUsed = 0
 ; ======================= SmartZap - Added by NTS team =======================
-
-	If $ichkSwitchAcc = 1 Then ResetStatsForSwitchAcc()		;	SwitchAcc Mode - Demen
-
 	For $i = 0 To $iModeCount
 		$iAttackedVillageCount[$i] = 0
 		$iTotalGoldGain[$i] = 0

@@ -19,7 +19,7 @@ $hGUI_DEADBASE_ATTACK_SCRIPTED = GUICreate("", $_GUI_MAIN_WIDTH - 195, $_GUI_MAI
 ;GUISetBkColor($COLOR_WHITE, $hGUI_DEADBASE_ATTACK_SCRIPTED)
 
 Local $x = 25, $y = 20
-	$grpAttackCSVDB = GUICtrlCreateGroup(GetTranslated(607,1,"Deploy"), $x - 20, $y - 20, 278, 306)
+	$grpAttackCSVDB = GUICtrlCreateGroup(GetTranslated(607,1,"Deploy"), $x - 20, $y - 20, 270, 306)
 ;	 $x -= 15
 		$chkmakeIMGCSVDB = GUICtrlCreateCheckbox(GetTranslated(607,2, "IMG"), $x + 150, $y, -1, -1)
 			$txtTip = GetTranslated(607,3, "Make IMG with extra info in Profile -> Temp Folder")
@@ -53,6 +53,20 @@ Local $x = 25, $y = 20
 			$txtTip =  GetTranslated(607,8, "Copy current Attack Script to a new name")
 			_GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "DuplicateScriptDB")
+
+		$y += 134
+		; CSV Deployment Speed Mod
+		$grpScriptSpeedDB = GUICtrlCreateGroup("CSV Deployment Speed", $x+10, $y, 230, 50)
+			$lbltxtSelectedSpeedDB = GUICtrlCreateLabel("Normal speed", $x + 20, $y+20, 75, 25)
+				_GUICtrlSetTip(-1, "Increase or decrease the speed at which the CSV attack script deploys troops and waves.")
+			$sldSelectedSpeedDB = GUICtrlCreateSlider($x + 108, $y + 20, 125, 25, BitOR($TBS_TOOLTIPS, $TBS_AUTOTICKS))
+				_GUICtrlSetTip(-1, "Increase or decrease the speed at which the CSV attack script deploys troops and waves.")
+				_GUICtrlSlider_SetTipSide(-1, $TBTS_BOTTOM)
+				_GUICtrlSlider_SetTicFreq(-1, 1)
+				GUICtrlSetLimit(-1, 18, 0) ; change max/min value
+				GUICtrlSetData(-1, 5) ; default value
+				GUICtrlSetOnEvent(-1, "sldSelectedSpeedDB")
+
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 ;GUISetState()

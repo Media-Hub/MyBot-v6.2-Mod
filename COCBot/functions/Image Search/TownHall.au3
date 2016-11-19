@@ -85,7 +85,6 @@ Func townHallCheck($check = False)
 			$THy = 0
 		Return ""
 	EndIf
-
 EndFunc   ;==>townHallCheck
 
 
@@ -100,9 +99,9 @@ Func convertToOldTHData($aResult)
 		; Save the town hall level to the old global variable
 		If $aResult[1] = "" Then
 			$searchTH = "-"
-		ElseIf $aResult[2] <= 6 Then
+		ElseIf Number($aResult[2]) < 7 Then
 			$searchTH = "4-6"
-		ElseIF $aResult[2] >= 7 Then
+		ElseIF Number($aResult[2]) >= 7 Then
 			$searchTH = String($aResult[2])
 		EndIf
 

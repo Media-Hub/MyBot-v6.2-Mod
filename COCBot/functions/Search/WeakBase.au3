@@ -193,7 +193,7 @@ Func getIsWeak($aResults, $searchType)
 EndFunc   ;==>getIsWeak
 
 Func IsWeakBaseActive($type)
-	Return $iChkMaxEagle[$type] Or $iChkMaxInferno[$type] Or $iChkMaxXBow[$type] Or $iChkMaxWizTower[$type] Or $iChkMaxMortar[$type] Or $iChkMaxAirDefense[$type]
+	Return BitOr($iChkMaxEagle[$type],$iChkMaxInferno[$type],$iChkMaxXBow[$type],$iChkMaxWizTower[$type],$iChkMaxMortar[$type],$iChkMaxAirDefense[$type])
 EndFunc   ;==>IsWeakBaseActive
 
 Func defenseSearch(ByRef $aResult, $directory, $townHallLevel, $settingArray, $defenseType, ByRef $performSearch, $guiEnabledArray)

@@ -62,10 +62,10 @@ Func CheckMilkingBaseTest()
 
 	Local $MilkingElixirImages = _FileListToArray(@ScriptDir & "\images\Milking\Elixir", "*.*")
         If @error = 1 Then
-            MsgBox(0, "", "Folder" &  @ScriptDir & "\images\Milking\Elixir" & " not Found.")
+            MsgBox(0, "", "Folder" &  @ScriptDir & "\images\Milking\Elixir" & " not Found.", 30) ;30s timeout
         EndIf
         If @error = 4 Then
-            MsgBox(0, "", "No Files in folder " &@ScriptDir & "\images\Milking\Elixir" )
+            MsgBox(0, "", "No Files in folder " &@ScriptDir & "\images\Milking\Elixir" , 30) ;30s timeout
         EndIf
 	Setlog("Locate Elixir..." )
 	$hTimer = TimerInit()

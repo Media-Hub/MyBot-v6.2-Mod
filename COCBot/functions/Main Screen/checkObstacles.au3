@@ -25,11 +25,11 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 		Return True
 	EndIf
 
-	; Switch Acc - DEMEN
+	; SwitchAcc - DEMEN
 	If _ColorCheck(_GetPixelColor(383, 405), Hex(0xF0BE70, 6), 20) Then
 		SetLog("Found SwitchAcc Dialog")
 		PureClick(383, 405, 1, 0, "Click Cancel")      ;Click Cancel
-	EndIf		; Switch Acc - DEMEN
+	EndIf		; SwitchAcc - DEMEN
 
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	; Detect All Reload Button errors => 1- Another device, 2- Take a break, 3- Connection lost or error, 4- Out of sync, 5- Inactive, 6- Maintenance
@@ -127,6 +127,8 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 						SetLog("Error reading Maintenance Break time?", $COLOR_RED)
 				EndSelect
 				SetLog("Maintenance Break, waiting: " & $iMaintenanceWaitTime / 60000 & " minutes....", $COLOR_RED)
+				If ($PushBulletEnabled = 1 Or $TelegramEnabled = 1) And $pMaintenance = 1 Then _PushToBoth("Maintenance Break, waiting: " & $iMaintenanceWaitTime / 60000 & " minutes....")
+
 				If $ichkSinglePBTForced = 1 Then $bGForcePBTUpdate = True
 				If _SleepStatus($iMaintenanceWaitTime) Then Return
 				checkObstacles_ResetSearch()
@@ -136,6 +138,7 @@ Func checkObstacles() ;Checks if something is in the way for mainscreen
 				$result = getOcrMaintenanceTime(171, 325 + $midOffsetY, "Check Obstacles OCR 'Good News!'=") ; OCR text for "Good News!"
 				If StringInStr($result, "new", $STR_NOCASESENSEBASIC) Then
 					SetLog("Game Update is required, Bot must stop!!", $COLOR_RED)
+					If ($PushBulletEnabled = 1 Or $TelegramEnabled = 1) And $pMaintenance = 1 Then _PushToBoth("Game Update is required, Bot must stop!!")
 					Btnstop() ; stop bot
 					Return True
 				EndIf
@@ -269,8 +272,9 @@ EndFunc   ;==>checkObstacles_ResetSearch
 
 Func BanMsgBox()
 	Local $MsgBox
-	Local $stext = "Sorry, youy account is banned!!" & @CRLF & "Bot will stop now..."
+	Local $stext = "Sorry, your account is banned!!" & @CRLF & "Bot will stop now..."
 	While 1
+		PushMsg("BAN")
 		_ExtMsgBoxSet(4, 1, 0x004080, 0xFFFF00, 20, "Comic Sans MS", 600)
 		$MsgBox = _ExtMsgBox(48, "Ok", "Banned", $stext, 1, $frmBot)
 		If $MsgBox = 1 Then Return

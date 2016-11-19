@@ -141,7 +141,6 @@ Func IsStopped()
 EndFunc   ;==>IsStopped
 
 Func btnStart()
-	btnUpdateProfile()					;  SwitchAcc - DEMEN
 	; decide when to run
 	EnableControls($frmBotBottom, False, $frmBotBottomCtrlState)
 	Local $RunNow = $BotAction <> $eBotNoAction
@@ -913,7 +912,21 @@ Func ToggleGuiControls($Enable, $OptimizedRedraw = True)
 	$GUIControl_Disabled = True
 	For $i = $FirstControlToHide To $LastControlToHide
 		If IsTab($i) Or IsAlwaysEnabledControl($i) Then ContinueLoop
-		If $PushBulletEnabled And $i = $btnDeletePBmessages Then ContinueLoop ; exclude the DeleteAllMesages button when PushBullet is enabled
+		If $PushBulletEnabled Or $TelegramEnabled And $i = $btnDeletePBmessages Then ContinueLoop ; exclude the DeleteAllMesages button when PushBullet is enabled
+		If $i = $btnMakeScreenshot Then ContinueLoop ; exclude
+		If $i = $divider Then ContinueLoop ; exclude divider
+		If $Enable = False Then
+			; Save state of all controls on tabs
+			$iPrevState[$i] = GUICtrlGetState($i)
+			GUICtrlSetState($i, $GUI_DISABLE)
+		Else
+			; Restore previous state of controls
+			GUICtrlSetState($i, $iPrevState[$i])
+		EndIf
+	Next
+	For $i = $FirstControlToHideMOD To $LastControlToHideMOD ; Save state of all controls on tabs
+		If IsTab($i) Or IsAlwaysEnabledControl($i) Then ContinueLoop
+		If $PushBulletEnabled Or $TelegramEnabled And $i = $btnDeletePBmessages Then ContinueLoop ; exclude the DeleteAllMesages button when PushBullet is enabled
 		If $i = $btnMakeScreenshot Then ContinueLoop ; exclude
 		If $i = $divider Then ContinueLoop ; exclude divider
 		If $Enable = False Then

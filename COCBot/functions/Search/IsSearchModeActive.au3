@@ -29,6 +29,8 @@ Func IsSearchModeActive($iMatchMode, $nocheckHeroes = False)
 	;--- To Brew
 	$totalSpellsToBrew += $PSpellComp + $ESpellComp + $HaSpellComp + $SkSpellComp + _
 	$LSpellComp + $RSpellComp + $HSpellComp + $JSpellComp + $FSpellComp + $CSpellComp
+
+	$iTotalCountSpell = $totalSpellsToBrew
 	;---
 	If GetCurTotalSpell() = $totalSpellsToBrew And $iEnableSpellsWait[$iMatchMode] = 1 Then
 		$checkSpells = True
@@ -156,3 +158,17 @@ Func IsWaitforHeroesActive()
 	If $debugsetlogTrain = 1 Or $debugsetlog = 1 Then Setlog("IsWaitforHeroesActive = False", $COLOR_DEBUG) ;Debug
 	Return False
 EndFunc   ;==>IsWaitforHeroesActive
+
+Func GetCurTotalSpell()  ;Updated FUNCTION OCT UPDATE used in isSearchModeActive.au3
+	If $CurTotalSpell = False And $iTotalCountSpell > 0 Then Return -1
+	Return $CurLSpell + _
+			$CurHSpell + _
+			$CurRSpell + _
+			$CurJSpell + _
+			$CurFSpell + _
+			$CurCSpell + _
+			$CurPSpell + _
+			$CurHaSpell + _
+			$CurSkSpell + _
+			$CurESpell
+EndFunc   ;==>GetCurTotalSpell

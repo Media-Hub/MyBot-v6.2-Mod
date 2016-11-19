@@ -118,6 +118,7 @@ Func LocateClanCastle()
 
 EndFunc   ;==>LocateClanCastle
 
+#cs
 Func AutoLocateClanCastle()
 	Local $PixelCCHere = GetLocationCC()
 	If UBound($PixelCCHere) > 0 Then
@@ -190,3 +191,4 @@ Func SetClanNameOffset($CCLevel)
 			Return False
 	EndSelect
 EndFunc   ;==>SetClanNameOffset
+#ce

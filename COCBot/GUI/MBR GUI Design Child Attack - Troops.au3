@@ -333,6 +333,9 @@ $txtTotalCampForced = GUICtrlCreateInput("200", $x + 135, $y + 3, 30, 17, BitOR(
 GUICtrlSetOnEvent(-1, "SetComboTroopComp")
 GUICtrlSetLimit(-1, 3)
 
+$chkForceBrewBeforeAttack = GUICtrlCreateCheckbox("Force Brew Spells", $x + 175, $y, -1, -1)
+GUICtrlSetState(-1, $GUI_UNCHECKED)
+
 $caltotaltroops = GUICtrlCreateProgress($x, $y + 22, 420, 10)
 $lbltotalprogress = GUICtrlCreateLabel("", $x, $y + 22, 418, 8)
 GUICtrlSetBkColor(-1, $COLOR_RED)
