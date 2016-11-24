@@ -56,11 +56,11 @@ Local $x = 25, $y = 20
 
 		$y += 134
 		; CSV Deployment Speed Mod
-		$grpScriptSpeedDB = GUICtrlCreateGroup("CSV Deployment Speed", $x+10, $y, 230, 50)
-			$lbltxtSelectedSpeedDB = GUICtrlCreateLabel("Normal speed", $x + 20, $y+20, 75, 25)
-				_GUICtrlSetTip(-1, "Increase or decrease the speed at which the CSV attack script deploys troops and waves.")
+		$grpScriptSpeedDB = GUICtrlCreateGroup(GetTranslated(607,30, "CSV Deployment Speed"), $x+10, $y, 230, 50)
+			$lbltxtSelectedSpeedDB = GUICtrlCreateLabel(GetTranslated(607,31, "Normal speed"), $x + 20, $y+20, 75, 25)
+				_GUICtrlSetTip(-1, GetTranslated(607,32, "Increase or decrease the speed at which the CSV attack script deploys troops and waves."))
 			$sldSelectedSpeedDB = GUICtrlCreateSlider($x + 108, $y + 20, 125, 25, BitOR($TBS_TOOLTIPS, $TBS_AUTOTICKS))
-				_GUICtrlSetTip(-1, "Increase or decrease the speed at which the CSV attack script deploys troops and waves.")
+				_GUICtrlSetTip(-1, GetTranslated(607,33, "Increase or decrease the speed at which the CSV attack script deploys troops and waves."))
 				_GUICtrlSlider_SetTipSide(-1, $TBTS_BOTTOM)
 				_GUICtrlSlider_SetTicFreq(-1, 1)
 				GUICtrlSetLimit(-1, 18, 0) ; change max/min value

@@ -2990,6 +2990,15 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 	sldSelectedSpeedDB()
 	sldSelectedSpeedAB()
 
+	; Check Collectors Outside
+	If $ichkDBMeetCollOutside = 1 Then
+		GUICtrlSetState($chkDBMeetCollOutside, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkDBMeetCollOutside, $GUI_UNCHECKED)
+	EndIf
+	chkDBMeetCollOutside()
+	GUICtrlSetData($txtDBMinCollOutsidePercent, $iDBMinCollOutsidePercent)
+
 	; Reenabling window redraw - Keep this last....
 	If $bRedrawAtExit Then SetRedrawBotWindow(True)
 

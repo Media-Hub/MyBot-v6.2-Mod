@@ -32,7 +32,7 @@ $hGUI_BOT_TAB_ITEM1 = GUICtrlCreateTabItem(GetTranslated(600,35,"Options"))
 #include "MBR GUI Design Child Bot - Options.au3"
 GUICtrlCreateTabItem("")
 
-$hGUI_BOT_TAB_ITEM4 = GUICtrlCreateTabItem("Bot Humanization")
+$hGUI_BOT_TAB_ITEM4 = GUICtrlCreateTabItem(GetTranslated(701,0,"Bot Humanization"))
 #include "MBR GUI Design Child Bot - Humanization.au3"
 GUICtrlCreateTabItem("")
 

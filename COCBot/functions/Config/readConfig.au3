@@ -1152,6 +1152,10 @@ Func readConfig($inputfile = $config, $partial = False) ;Reads config and sets i
 		IniReadS($isldSelectedCSVSpeed[$DB], $config, "attack", "CSVSpeedDB", 3)
 		IniReadS($isldSelectedCSVSpeed[$LB], $config, "attack", "CSVSpeedAB", 3)
 
+		; Check Collectors Outside
+		$ichkDBMeetCollOutside = IniRead($config, "search", "DBMeetCollOutside", "0")
+		$iDBMinCollOutsidePercent = IniRead($config, "search", "DBMinCollOutsidePercent", "50")
+
 	Else
 		Return False
 	EndIf

@@ -294,3 +294,5 @@
 #include "functions\Mod\Switch Accounts\SwitchAcc.au3"
 #include "functions\Mod\Switch Accounts\UpdateStats - Mod.au3"
 
+; Check Collector Outside
+#include "functions\Mod\CollectorsOutside\AreCollectorsOutside.au3"
