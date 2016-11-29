@@ -12,7 +12,7 @@
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: No
 ; ===============================================================================================================================
-
+#cs
 Func cmbProfile()
 	saveConfig()
 
@@ -33,7 +33,7 @@ Func cmbProfile()
 	btnUpdateProfile()			;- Refreshing setting of all profiles in SwitchAcc Mode - DEMEN
 
 EndFunc   ;==>cmbProfile
-
+#ce
 ; ============= SwitchAcc Mode ============= - DEMEN
 Func radProfileType()
 	If GUICtrlRead($radIdleProfile) = $GUI_CHECKED Then

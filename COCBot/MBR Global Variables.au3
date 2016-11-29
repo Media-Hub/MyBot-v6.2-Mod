@@ -115,26 +115,6 @@ Global $debugGetLocation = 0 ;make a image of each structure detected with getlo
 Global $debugOCRdonate = 0 ; when 1 make OCR and simulate but do not donate
 Global $debugAndroidEmbedded = 1
 Global $debugWindowMessages = 0 ; 0=off, 1=most Window Messages, 2=all Window Messages
-Global $DebugMode = 0
-Func EnableDebugMode()
-	$DebugMode = 1
-	$debugSearchArea = 1
-	$debugOcr = 1
-	$debugRedArea = 1
-	$debugSetlog = 1
-	$debugDeadBaseImage = 1
-	$debugImageSave = 1
-	$debugWalls = 1
-	$debugBuildingPos = 1
-	$debugVillageSearchImages = 1
-	$debugAttackCSV = 1
-	$makeIMGCSV = 1 ;attackcsv debug
-	$debugMultilanguage = 0
-	$debugsetlogTrain = 1
-	$debugGetLocation = 1 ;make a image of each structure detected with getlocation
-	$debugOCRdonate = 1 ; when 1 make OCR and simulate but do not donate
-	$debugWindowMessages = 0 ; 0=off, 1=most Window Messages, 2=all Window Messages
-EndFunc
 Global Const $COLOR_ORANGE = 0xFF7700  ; Used for donate GUI buttons
 Global Const $COLOR_ERROR = $COLOR_RED   ; Error messages
 Global Const $COLOR_WARNING = $COLOR_MAROON ; Warning messages
@@ -441,10 +421,6 @@ If $CmdLine[0] > 0 Then
 			; terminate bot if it exists (by window title!)
 			Case "/restart", "/r", "-restart", "-r"
 				$bBotLaunchOption_Restart = True
-			Case "/debug","-debug","/d","-d"	; Enable Debug Mode on bot
-				EnableDebugMode()
-			Case "/MyBotErrorTrap"
-;~ 				_ConsoleWrite("Error Trap Mod For Next version, and code removed","mod")
 			Case Else
 				$aCmdLine[0] += 1
 				ReDim $aCmdLine[$aCmdLine[0] + 1]
@@ -468,8 +444,19 @@ EndIf
 ; Arrays to hold stat information
 Global $aWeakBaseStats
 
-Global $config , $ChartPath,  $InputConfigFile , $statChkWeakBase, $statChkTownHall, $statChkDeadBase, $statChkDeadBase75percent , $statChkDeadBase50percent , $building
-Global $dirLogs , $dirLoots , $dirTemp, $dirTempDebug , $dirDebug
+Global	$config = $sProfilePath & "\" & $sCurrProfile & "\config.ini"
+Global	$ChartPath = $sProfilePath & "\" & $sCurrProfile & "\Chart\ChartData" ; The Rest of the File name is completed in the called functions Example $chartpath &"Total.ini"
+Global	$InputConfigFile = $sProfilePath & "\" & $sCurrProfile & "\InputConfig.ini"
+Global	$statChkWeakBase = $sProfilePath & "\" & $sCurrProfile & "\stats_chkweakbase.INI"
+Global	$statChkTownHall = $sProfilePath & "\" & $sCurrProfile & "\stats_chktownhall.INI"
+Global	$statChkDeadBase = $sProfilePath & "\" & $sCurrProfile & "\stats_chkelixir.INI"
+Global	$statChkDeadBase75percent = $sProfilePath & "\" & $sCurrProfile & "\stats_chkelixir75percent.INI"
+Global	$statChkDeadBase50percent = $sProfilePath & "\" & $sCurrProfile & "\stats_chkelixir50percent.INI"
+Global	$building = $sProfilePath & "\" & $sCurrProfile & "\building.ini"
+Global	$dirLogs = $sProfilePath & "\" & $sCurrProfile & "\Logs\"
+Global	$dirLoots = $sProfilePath & "\" & $sCurrProfile & "\Loots\"
+Global	$dirTemp = $sProfilePath & "\" & $sCurrProfile & "\Temp\"
+Global	$dirTempDebug = $sProfilePath & "\" & $sCurrProfile & "\Temp\Debug\"
 
 Func SetupProfileFolder()
 	$config = $sProfilePath & "\" & $sCurrProfile & "\config.ini"
@@ -485,7 +472,7 @@ Func SetupProfileFolder()
 	$dirLoots = $sProfilePath & "\" & $sCurrProfile & "\Loots\"
 	$dirTemp = $sProfilePath & "\" & $sCurrProfile & "\Temp\"
 	$dirTempDebug = $sProfilePath & "\" & $sCurrProfile & "\Temp\Debug\"
-	$dirDebug = $sProfilePath & "\" & $sCurrProfile & "\Debug\"
+	;$dirDebug = $sProfilePath & "\" & $sCurrProfile & "\Debug\"
 EndFunc   ;==>SetupProfileFolder
 SetupProfileFolder()
 

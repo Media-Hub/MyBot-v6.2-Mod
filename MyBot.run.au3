@@ -11,10 +11,10 @@
 ; ===============================================================================================================================
 
 #RequireAdmin
-#AutoIt3Wrapper_UseX64=n
+#AutoIt3Wrapper_UseX64=7n
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #Au3Stripper_Parameters=/mo /rsln
-#AutoIt3Wrapper_Run_Before=""%scriptdir%\lib\MyBotBugTracker.exe" /include:"%scitedir%""
+;#AutoIt3Wrapper_Run_Before=""%scriptdir%\lib\MyBotBugTracker.exe" /include:"%scitedir%""
 ;#AutoIt3Wrapper_Change2CUI=y
 ;#pragma compile(Console, true)
 #pragma compile(Icon, "Images\MyBot.ico")
@@ -38,9 +38,9 @@ Global $iBotLaunchTime = 0
 Global $hBotLaunchTime = TimerInit()
 
 Global $sBotVersion = "v6.2.2" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it it also use on Checkversion()
-Global $sModversion = "v5.2.1" ;<== Just Change This to Version Number
+Global $sModversion = "v5.2.2" ;<== Just Change This to Version Number
 Global $sModSupportUrl = "https://mybot.run/forums/index.php?/topic/25631-dococ-mybot-v622-mod-nguyenanhhd-v52-update-1911/" ;<== Our Website Link Or Link Download
-Global $sDownloadUrl = "https://github.com/NguyenAnhHD/MyBot-v6.2-Mod/releases"
+Global $sModDownloadUrl = "https://github.com/NguyenAnhHD/MyBot-v6.2-Mod/releases"
 
 Global $sBotTitle = "My Bot " & $sBotVersion & " DocOC MOD NguyenAnhHD " & $sModversion & "_S " ;~ Don't use any non file name supported characters like \ / : * ? " < > |
 #include "COCBot\functions\Config\DelayTimes.au3"
@@ -143,11 +143,11 @@ SetDebugLog("My Bot is " & ($OnlyInstance ? "" : "not ") & "the only running ins
 #include "COCBot\MBR GUI Control.au3"
 #include "COCBot\MBR Functions.au3"
 
-#include "COCBot\_MyBotErrorTrap.au3"
-FlushDebugFolder()
-_MyBotErrorTrap("Error ", "Hello Chief!" & @CRLF & _
-			@CRLF & "An error was detected in  MyBot, you can try again,  cancel to exit or continue to see more details of the error." & _
-			@CRLF & "Please report about this bug to developer" & @CRLF & @CRLF &"Sorry for the inconvenience!")
+;#include "COCBot\_MyBotErrorTrap.au3"
+;FlushDebugFolder()
+;_MyBotErrorTrap("Error ", "Hello Chief!" & @CRLF & _
+			;@CRLF & "An error was detected in  MyBot, you can try again,  cancel to exit or continue to see more details of the error." & _
+			;@CRLF & "Please report about this bug to developer" & @CRLF & @CRLF &"Sorry for the inconvenience!")
 
 
 

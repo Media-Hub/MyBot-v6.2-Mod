@@ -153,7 +153,7 @@ Func BotStop()
 		$hLogFileTrain = ""
 		FileClose($hAttackLogFileHandle)
 		$hAttackLogFileHandle = ""
-		FlushDebugFolder()
+		;FlushDebugFolder()
 	Else
 		$bSearchMode = False
 	EndIf

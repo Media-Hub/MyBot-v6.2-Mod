@@ -323,6 +323,20 @@ Func CheckSwitchAcc(); Switch CoC Account with or without sleep combo - DEMEN
 EndFunc; ==> Check & Switch CoC Account with / without sleep combo - DEMEN
 
 Func SwitchCOCAcc()
+
+	If OpenArmyWindow() = False Then Return
+	SetLog(" »» Army Window Opened!", $COLOR_ACTION1)
+	If _Sleep(2000) Then Return
+	OpenTrainTabNumber($QuickTrainTAB)
+	If _Sleep(1000) Then Return
+
+	Local $Num = 3
+	TrainArmyNumber($Num)
+
+	ClickP($aAway, 2, 0, "#0346") ;Click Away
+	If _Sleep(1000) Then Return ; Delay AFTER the click Away Prevents lots of coc restarts
+	SetLog(" »» Army Window Closed!", $COLOR_ACTION1)
+
    Local Const $XConnect = 431
    Local Const $YConnect = 434
    Local Const $ColorConnect = 4284458031      ;Connected Button: green
@@ -340,7 +354,7 @@ Func SwitchCOCAcc()
 
    Click($XConnect, $YConnect, 1, 0, "Click DisConnect")      ;Click DisConnect
 
-   If _Sleepstatus(10000) Then Return
+   If _Sleepstatus(8000) Then Return
 
 
    Local $nCurCoCAcc
@@ -353,7 +367,7 @@ Func SwitchCOCAcc()
 	   Click(383, 373.5 - ($nTotalCoCAcc - 1)*36.5 + 73*($nCurCoCAcc - 1), 1, 0, "Click Account " & $nCurCoCAcc)      ;Click Account - DEMEN
    EndIf
 
-   If _Sleepstatus(10000) Then Return
+   If _Sleepstatus(6000) Then Return
 
    If _ColorCheck(_GetPixelColor($XConnect, $YConnect, True), Hex($ColorConnect, 6), 20) Then       ;Blue
 	  Setlog("Already in current account")
@@ -381,7 +395,7 @@ Func SwitchCOCAcc()
 		 EndIf
 	  WEnd
 
-	  If _Sleepstatus(5000) Then Return
+	  If _Sleepstatus(3000) Then Return
 	  PureClick(353, 180, 1, 0, "Click Text box")      ;Click Text box
 	  If _Sleepstatus(2000) Then Return
 	  AndroidSendText("CONFIRM")
@@ -400,11 +414,11 @@ Func SwitchCOCAcc()
 	  If _ColorCheck(_GetPixelColor(480, 200, True), "71BB1E", 20) Then
 		 If _Sleepstatus(1000) Then Return
 		 PureClick(480, 200, 1, 0, "Click CONFIRM")      ;Click CONFIRM
-		 Setlog("OKAY button clicked")
-		 Setlog("please wait 10 seconds for loading CoC")
+		 Setlog("OKAY Button Clicked")
+		 Setlog("Please Wait 8 Seconds For Loading CoC")
 		 If _Sleepstatus(1000) Then Return
 		 ClickP($aAway, 1, 0, "#0167") ;Click Away
-		 If _Sleepstatus(10000) Then Return
+		 If _Sleepstatus(8000) Then Return
 		 $bReMatchAcc = False
 		 $iShouldRearm = True
 	   Else

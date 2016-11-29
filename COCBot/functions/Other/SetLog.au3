@@ -21,12 +21,12 @@
 ; ===============================================================================================================================
 Func SetLog($String, $Color = $COLOR_BLACK, $Font = "Verdana", $FontSize = 7.5, $statusbar = 1, $time = Time(), $bConsoleWrite = True, $LogPrefix = "L ", $LogType = "bot") ;Sets the text for the log
 	Local $log = $LogPrefix & TimeDebug() & $String
-	If $bConsoleWrite = True And $String <> "" Then _ConsoleWrite($log & @CRLF, $LogType) ; Always write any log to console
+	;If $bConsoleWrite = True And $String <> "" Then _ConsoleWrite($log & @CRLF, $LogType) ; Always write any log to console
 	If $hLogFileHandle = "" Then CreateLogFile()
 	If $SilentSetLog = True Then
 		; Silent mode is active, only write to log file, not to log control
 		__FileWriteLog($hLogFileHandle, $log)
-		_Log($log, $LogType)
+		;_Log($log, $LogType)
 		Return
 	EndIf
 	If IsDeclared("txtLog") Then
@@ -49,7 +49,7 @@ Func SetLog($String, $Color = $COLOR_BLACK, $Font = "Verdana", $FontSize = 7.5, 
 		If $activeBot And $hCtrl <> $txtLog Then _WinAPI_SetFocus($hCtrl) ; Restore Focus
 		;If $activeBot = False Then _GUICtrlRichEdit_ScrollLineOrPage($txtLog, "pd")
 		__FileWriteLog($hLogFileHandle, $log)
-		_Log($log, $LogType)
+		;_Log($log, $LogType)
 	Else
 		; log it to RichEdit later...
 		Local $iIndex = UBound($aTxtLogInitText)
@@ -67,13 +67,13 @@ Func SetDebugLog($String, $Color = Default, $bSilentSetLog = False, $Font = "Ver
 	If $Color = Default Then $Color = $COLOR_PURPLE
 	Local $LogPrefix = "D "
 	Local $log = $LogPrefix & TimeDebug() & $String
-	If $String <> "" Then _ConsoleWrite($log & @CRLF) ; Always write any log to console
+	;If $String <> "" Then _ConsoleWrite($log & @CRLF) ; Always write any log to console
 	If $debugSetlog = 1 And $bSilentSetLog = False Then
 		SetLog($String, $Color, $Font, $FontSize, $statusbar, Time(), False, $LogPrefix, $LogType)
 	Else
 		If $hLogFileHandle = "" Then CreateLogFile()
 		__FileWriteLog($hLogFileHandle, $log)
-		_Log($log, $LogType)
+		;_Log($log, $LogType)
 	EndIf
 EndFunc   ;==>SetDebugLog
 

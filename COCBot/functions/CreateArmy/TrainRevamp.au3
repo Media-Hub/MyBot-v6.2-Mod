@@ -186,7 +186,7 @@ Func TestTrainRevamp()
 					For $i = 1 to 3
 						Setlog(" » TrainArmyNumber: " & $i)
 						Click(817, 248 + 118*$i)
-						If $i = 2 And GUICtrlRead($hRadio_Army12) = $GUI_CHECKED Then ExitLoop
+						If $i = 2 And GUICtrlRead($hRadio_Army12)  = $GUI_CHECKED Then ExitLoop
 					Next
 				Else
 					Setlog(" » Error Clicking On Army! You are not on Quick Train Window", $COLOR_RED)
@@ -1959,12 +1959,20 @@ Func TrainArmyNumber($Num)
 		; _ColorCheck($nColor1, $nColor2, $sVari = 5, $Ignore = "")
 		If _ColorCheck(_GetPixelColor($a_TrainArmy[$Num][0], $a_TrainArmy[$Num][1], True), Hex($a_TrainArmy[$Num][2], 6), $a_TrainArmy[$Num][3]) Then
 			Click($a_TrainArmy[$Num][0], $a_TrainArmy[$Num][1])
-			SetLog("Making the Army " & $Num + 1)
+			SetLog(" » Making the Army " & $Num + 1, $COLOR_ACTION1)
 			If _Sleep(1000) Then Return
 		Else
-			Setlog(" » Error Clicking On Army: " & $Num + 1 & "| Pixel was :" & _GetPixelColor($a_TrainArmy[$Num][0], $a_TrainArmy[$Num][1], True), $COLOR_ORANGE)
-			Setlog(" » Please 'edit' the Army " & $Num + 1 & " before start the BOT!!!", $COLOR_RED)
-			BotStop()
+			Setlog(" » Error Clicking On Army: " & $Num + 1, $COLOR_ORANGE)
+			;Setlog(" » Please 'edit' the Army " & $Num + 1 & " before start the BOT!!!", $COLOR_RED)
+			DeleteTroopsQueued()
+			If _Sleep(500) Then Return
+			DeleteSpellsQueued()
+			If _Sleep(250) Then Return
+			OpenTrainTabNumber($QuickTrainTAB)
+			If _Sleep(1000) Then Return
+			Click($a_TrainArmy[$Num][0], $a_TrainArmy[$Num][1])
+			SetLog(" » Making the Army " & $Num + 1, $COLOR_ACTION1)
+			If _Sleep(1000) Then Return
 		EndIf
 	Else
 		Setlog(" » Error Clicking On Army! You are not on Quick Train Window", $COLOR_RED)

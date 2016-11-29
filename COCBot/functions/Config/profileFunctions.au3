@@ -89,7 +89,7 @@ Func createProfile($bCreateNew = False)
 	DirCreate($dirLoots)
 	DirCreate($dirTemp)
 	DirCreate($dirTempDebug)
-	DirCreate($dirDebug)
+	;DirCreate($dirDebug)
 
 	If FileExists($config) = 0 Then SetLog("New Profile '" & $sCurrProfile & "' created")
 EndFunc   ;==>createProfile
