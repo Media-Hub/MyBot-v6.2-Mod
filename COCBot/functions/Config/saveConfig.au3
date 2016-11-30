@@ -2835,6 +2835,12 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWrite($profile, "Switch Account", "Enable", 0)
 	EndIf
 
+	If GUICtrlRead($chkTrain) = $GUI_CHECKED Then
+		IniWrite($profile, "Switch Account", "Train", 1)
+	Else
+		IniWrite($profile, "Switch Account", "Train", 0)
+	EndIf
+
 	IniWrite($profile, "Switch Account", "Total Coc Account", _GUICtrlCombobox_GetCurSel($cmbTotalAccount))	; 0 = AutoDetect, 1 = 1 Acc, 2 = 2 Acc, etc.
 
 	If GUICtrlRead($radSmartSwitch) = $GUI_CHECKED Then

@@ -1816,6 +1816,7 @@ Global $ichkTrophySwitchMax, $itxtMaxTrophyAmount, $icmbTrophyMaxProfile, $ichkT
 Global $profile = $sProfilePath & "\Profile.ini"
 Global $aconfig[8]
 Global $ichkSwitchAcc = 0
+Global $ichkTrain = 0
 
 Global $icmbTotalCoCAcc		; 0 = 8, 1 = 1 account, 2 = 2 accounts
 Global $nTotalCoCAcc = 8

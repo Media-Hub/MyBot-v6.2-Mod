@@ -16,7 +16,7 @@
 Func CheckVersion()
 	If $ichkVersion = 1 Then
 		CheckVersionHTML()
-
+#cs
 		If $lastversion = "" Then
 			SetLog("WE CANNOT OBTAIN PRODUCT VERSION AT THIS TIME", $COLOR_ORANGE)
 		ElseIf VersionNumFromVersionTXT($sBotVersion) < VersionNumFromVersionTXT($lastversion) Then
@@ -34,7 +34,7 @@ Func CheckVersion()
 			SetLog(" ")
 			_PrintLogVersion($lastmessage)
 		EndIf
-
+#ce
 		If $lastModversion = "" Then
 			SetLog("WE CANNOT OBTAIN MOD VERSION AT THIS TIME", $COLOR_ORANGE)
 			CheckModVersion()
@@ -53,9 +53,9 @@ Func CheckVersion()
 		Else
 			SetLog("WELCOME CHIEF, YOU HAVE THE LATEST MOD VERSION", $COLOR_GREEN)
 			SetLog(" ")
-			SetLog("NguyenAnhHD", $COLOR_GREEN)
+			SetLog("NguyenAnhHD", $COLOR_ORANGE)
 			SetLog(" ")
-			_PrintLogVersion($lastmessage)
+			_PrintLogVersion($lastModmessage)
 		EndIf
 	EndIf
 EndFunc   ;==>CheckVersion
@@ -107,11 +107,11 @@ Func CheckVersionHTML()
 
 	;search version into downloaded page
 	Local $f, $f2, $line, $line2, $Casesense = 0, $chkvers = False, $chkmsg = False, $chkmsg2 = False, $i = 0
-	$lastversion = ""
+	;$lastversion = ""
 	$lastModversion = ""
 	If FileExists($versionfile) Then
 		$f = FileOpen($versionfile, 0)
-		$lastversion = IniRead($versionfile, "general", "version", "")
+		;$lastversion = IniRead($versionfile, "general", "version", "")
 		$lastModversion = IniRead($versionfile,"mod","version","")
 		;look for localized messages for the new and old versions
 		Local $versionfilelocalized = @ScriptDir & "\LastVersion_" & $sLanguage & ".txt";
@@ -132,15 +132,15 @@ Func CheckVersionHTML()
 		EndIf
 		If FileExists($versionfilelocalized) Then
 			$f2 = FileOpen($versionfilelocalized, 0)
-			$lastmessage = IniRead($versionfilelocalized, "general", "messagenew", "")
-			$oldversmessage = IniRead($versionfilelocalized, "general", "messageold", "")
+			;$lastmessage = IniRead($versionfilelocalized, "general", "messagenew", "")
+			;$oldversmessage = IniRead($versionfilelocalized, "general", "messageold", "")
 			$lastModmessage = IniRead($versionfilelocalized,"mod","messagenew","")
 			$oldModversmessage = IniRead($versionfilelocalized,"mod","messageold","")
 			FileClose($f2)
 			FileDelete($versionfilelocalized)
 		Else
-			$lastmessage = IniRead($versionfile, "general", "messagenew", "")
-			$oldversmessage = IniRead($versionfile, "general", "messageold", "")
+			;$lastmessage = IniRead($versionfile, "general", "messagenew", "")
+			;$oldversmessage = IniRead($versionfile, "general", "messageold", "")
 			$lastModmessage = IniRead($versionfilelocalized,"mod","messagenew","")
 			$oldModversmessage = IniRead($versionfilelocalized,"mod","messageold","")
 		EndIf

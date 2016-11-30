@@ -324,6 +324,7 @@ EndFunc; ==> Check & Switch CoC Account with / without sleep combo - DEMEN
 
 Func SwitchCOCAcc()
 
+	If $ichkTrain = 1 Then
 	If OpenArmyWindow() = False Then Return
 	SetLog(" »» Army Window Opened!", $COLOR_ACTION1)
 	If _Sleep(2000) Then Return
@@ -336,6 +337,7 @@ Func SwitchCOCAcc()
 	ClickP($aAway, 2, 0, "#0346") ;Click Away
 	If _Sleep(1000) Then Return ; Delay AFTER the click Away Prevents lots of coc restarts
 	SetLog(" »» Army Window Closed!", $COLOR_ACTION1)
+	EndIf
 
    Local Const $XConnect = 431
    Local Const $YConnect = 434
@@ -367,7 +369,7 @@ Func SwitchCOCAcc()
 	   Click(383, 373.5 - ($nTotalCoCAcc - 1)*36.5 + 73*($nCurCoCAcc - 1), 1, 0, "Click Account " & $nCurCoCAcc)      ;Click Account - DEMEN
    EndIf
 
-   If _Sleepstatus(6000) Then Return
+   If _Sleepstatus(8000) Then Return
 
    If _ColorCheck(_GetPixelColor($XConnect, $YConnect, True), Hex($ColorConnect, 6), 20) Then       ;Blue
 	  Setlog("Already in current account")

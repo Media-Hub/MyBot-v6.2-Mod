@@ -166,10 +166,15 @@ $hGUI_ModOptions2_TAB_ITEM1 = GUICtrlCreateTabItem(GetTranslated(655,1, "Switch 
 
 	Local $x = 20, $y = 125
 	$grpSwitchAcc = GUICtrlCreateGroup(GetTranslated(655,63, "Switch Account Mode"), $x - 15, $y - 20, 215, 255)
-		$chkSwitchAcc = GUICtrlCreateCheckbox(GetTranslated(655,64, "Enable Switch Account"), $x , $y, -1, -1)
+		$chkSwitchAcc = GUICtrlCreateCheckbox(GetTranslated(655,64, "Enable Switch Account"), $x - 10 , $y, -1, -1)
 			$txtTip = GetTranslated(655,65, "Switch to another account & profile when troop training time is >= 3 minutes") & @CRLF & GetTranslated(655,66, "This function supports maximum 8 CoC accounts & 8 Bot profiles") & @CRLF & GetTranslated(655,67, "Make sure to create sufficient Profiles equal to number of CoC Accounts, and align the index of accounts order with profiles order")
 			GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkSwitchAcc")
+
+		$chkTrain = GUICtrlCreateCheckbox(GetTranslated(655,200, "Train"), $x + 155, $y, -1, -1)
+			GUICtrlSetTip(-1, GetTranslated(655,201, "Enable it to pre-train donated troops in quick train 3 before switch to next account.") & @CRLF & GetTranslated(655,202, "This function requires use Quick Train, not Custom Train.") & @CRLF & GetTranslated(655,203, "Use army 1 for farming troops, army 2 for spells and army 3 for donated troops."))
+			GUICtrlSetState(-1, $GUI_DISABLE)
+			GUICtrlSetOnEvent(-1, "chkTrain")
 
 		$lblTotalAccount = GUICtrlCreateLabel(GetTranslated(655,68, "Total CoC Acc:"), $x + 15, $y + 29, -1, -1)
 			$txtTip = GetTranslated(655,69, "Choose number of CoC Accounts pre-logged")
@@ -192,7 +197,7 @@ $hGUI_ModOptions2_TAB_ITEM1 = GUICtrlCreateTabItem(GetTranslated(655,1, "Switch 
 
 		$y += 80
 
-		$chkUseTrainingClose = GUICtrlCreateCheckbox(GetTranslated(655,74, "Combo Sleep after Switch Account"), $x, $y, -1, -1)
+		$chkUseTrainingClose = GUICtrlCreateCheckbox(GetTranslated(655,74, "Combo Sleep after Switch Account"), $x - 10, $y, -1, -1)
 			$txtTip = GetTranslated(655,75, "Close CoC combo with Switch Account when there is more than 3 mins remaining on training time of all accounts.")
 			GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetOnEvent(-1, "chkUseTrainingClose")

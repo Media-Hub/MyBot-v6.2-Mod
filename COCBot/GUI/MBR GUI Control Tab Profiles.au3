@@ -138,7 +138,7 @@ Func chkSwitchAcc()
 			GUICtrlSetState($chkSwitchAcc, $GUI_UNCHECKED)
 			MsgBox($MB_OK, "SwitchAcc Mode", "Cannot enable SwitchAcc Mode" & @CRLF & "You have only " & _GUICtrlComboBox_GetCount($cmbProfile) & " Profile set", 30, $hGUI_BOT)
 		Else
-			For $i = $lblTotalAccount To $radNormalSwitch
+			For $i = $chkTrain To $radNormalSwitch
 				GUICtrlSetState($i, $GUI_ENABLE)
 			Next
 			If GUICtrlRead($radNormalSwitch) = $GUI_CHECKED And GUICtrlRead($chkUseTrainingClose) = $GUI_CHECKED Then
@@ -146,11 +146,19 @@ Func chkSwitchAcc()
 			EndIf
 		EndIf
 	Else
-		For $i = $lblTotalAccount To $radNormalSwitch
+		For $i = $chkTrain To $radNormalSwitch
 			GUICtrlSetState($i, $GUI_DISABLE)
 		Next
 	EndIf
 EndFunc   ;==>chkSwitchAcc
+
+Func chkTrain()
+	If GUICtrlRead($chkTrain) = $GUI_CHECKED Then
+		$ichkTrain = 1
+	Else
+		$ichkTrain = 0
+	EndIf
+EndFunc
 
 Func radNormalSwitch()
 	If GUICtrlRead($chkUseTrainingClose) = $GUI_CHECKED Then

@@ -2963,6 +2963,12 @@ Func applyConfig($bRedrawAtExit = True) ;Applies the data from config to the con
 		GUICtrlSetState($chkSwitchAcc, $GUI_UNCHECKED)
 	EndIf
 
+	If $ichkTrain = 1 Then
+		GUICtrlSetState($chkTrain, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkTrain, $GUI_UNCHECKED)
+	EndIf
+
 	If $ichkSmartSwitch = 1 Then
 		GUICtrlSetState($radSmartSwitch, $GUI_CHECKED)
 	Else
